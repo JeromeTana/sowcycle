@@ -37,7 +37,7 @@ export default function BreedingForm({ sow_id }: { sow_id: number }) {
   };
 
   return (
-    <div className="text-black">
+    <div>
       <input
         type="date"
         name="breed_date"
@@ -45,7 +45,7 @@ export default function BreedingForm({ sow_id }: { sow_id: number }) {
         onChange={onChange}
         className="border"
       />
-      <p className="text-white">{expectedFarrowDate}</p>
+      <p>{expectedFarrowDate}</p>
       <button className="bg-white" onClick={handleCreate}>
         Create
       </button>
