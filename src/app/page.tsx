@@ -21,7 +21,7 @@ const SowList = ({ sows }: { sows: Sow[] }) => (
 );
 
 export default async function Page() {
-  const cookieStore = await cookies();
+  const cookieStore = cookies();
   const supabase = createClient(cookieStore);
 
   const { data: sows } = await supabase.from("Sows").select();
