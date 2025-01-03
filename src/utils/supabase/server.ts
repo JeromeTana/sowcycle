@@ -8,12 +8,12 @@ export const createClient = (cookieStore: ReturnType<typeof cookies>) => {
     {
       cookies: {
         getAll() {
-          return cookieStore.getAll();
+          return cookieStore.then((cookies) => cookies.getAll());
         },
         setAll(cookiesToSet) {
           try {
             cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options)
+              cookieStore.then((cookies) => cookies.set(name, value, options))
             );
           } catch {
             // The `setAll` method was called from a Server Component.
