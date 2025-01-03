@@ -16,7 +16,7 @@ export default function SowForm() {
     try {
       await supabase.from("sows").upsert([sow]);
       window.location.reload();
-    } catch (error) {
+    } catch (error: any) {
       console.log(error.message);
     }
   };
