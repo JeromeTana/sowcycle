@@ -1,16 +1,36 @@
+"use client";
+
 import { Breeding } from "@/types/breeding";
 import { Sow } from "@/types/sow";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-export default async function SowCard({ sow }: { sow: Sow }) {
+export default function SowCard({ sow }: { sow: Sow }) {
   const supabase = createClient();
-  let { data: breedings } = (await supabase
-    .from("breedings")
-    .select()
-    .eq("sow_id", sow.id)) as { data: Breeding[] };
+  const [breedings, setBreedings] = useState<Breeding[]>([]);
 
+  const getBreedingsBySowId = async (id: number) => {
+    let { data, error } = (await supabase
+      .from("breedings")
+      .select()
+      .eq("sow_id", id)
+      .order("breed_date", { ascending: false })) as {
+      data: Breeding[];
+      error: any;
+    };
+
+    if (error) {
+      console.log(error);
+      return;
+    }
+    setBreedings(data);
+  };
+
+  useEffect(() => {
+    getBreedingsBySowId(sow.id);
+    return () => {};
+  }, []);
   return (
     <Link
       href={`/sows/${sow.id}`}
