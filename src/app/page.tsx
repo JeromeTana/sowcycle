@@ -1,29 +1,42 @@
-import { createClient } from "@/utils/supabase/server";
+"use client";
+
+import { createClient } from "@/utils/supabase/client";
 import type { Sow } from "@/types/sow";
-import { Breeding } from "@/types/breeding";
 import SowList from "@/components/Sow/List";
 import SowForm from "@/components/Sow/Form";
+import { useEffect, useState } from "react";
 
-export default async function Page() {
+export default function Page() {
   const supabase = createClient();
+  const [sows, setSows] = useState<Sow[]>([]);
 
-  const { data: sows } = (await supabase.from("sows").select()) as {
-    data: Sow[];
+  const getAllSows = async () => {
+    const { data, error } = (await supabase
+      .from("sows")
+      .select()
+      .order("created_at", { ascending: false })) as {
+      data: Sow[];
+      error: any;
+    };
+
+    if (error) {
+      console.log(error);
+      return;
+    }
+    setSows(data);
   };
-  const { data: breedings } = (await supabase.from("breedings").select()) as {
-    data: Breeding[];
-  };
+
+  useEffect(() => {
+    getAllSows();
+    return () => {};
+  }, []);
+
+  if (!sows) return <div>Loading...</div>;
 
   return (
     <div>
       <SowForm />
-      {sows && <SowList sows={sows} />}
-      <div>
-        {breedings &&
-          breedings.map((breeding, index) => (
-            <div key={index}>{breeding.sow_id}</div>
-          ))}
-      </div>
+      <SowList sows={sows} />
     </div>
   );
 }
