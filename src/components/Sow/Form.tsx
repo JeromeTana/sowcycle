@@ -1,65 +1,37 @@
 "use client";
 
+import { createSow, updateSow } from "@/services/sow";
+import { useSowStore } from "@/stores/useSowStore";
 import { Sow } from "@/types/sow";
-import { createClient } from "@/utils/supabase/client";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function SowForm({ edittingSow }: { edittingSow?: Sow }) {
-  const supabase = createClient();
+export default function SowForm() {
   const [sow, setSow] = useState<Sow>({} as Sow);
-  const router = useRouter();
+  const {
+    editingSow,
+    setEditingSow,
+    addSow: createSowState,
+    updateSow: updateSowState,
+  } = useSowStore();
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSow({ ...sow, [e.target.name]: e.target.value });
   };
 
-  const createSow = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("sows")
-        .insert([sow])
-        .select()
-        .single();
-      if (error) {
-        console.log(error);
-        return;
-      }
-      router.push(`/sows/${data.id}`);
-    } catch (error: any) {
-      console.log(error.message);
-    }
-  };
-
-  const updateSow = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("sows")
-        .update([sow])
-        .eq("id", sow.id)
-        .select()
-        .single();
-      if (error) {
-        console.log(error);
-        return;
-      }
-      router.push(`/sows/${data.id}`);
-    } catch (error: any) {
-      console.log(error.message);
-    }
-  };
-
   const handleSubmit = async () => {
-    if (edittingSow) {
-      updateSow();
+    if (editingSow) {
+      let res = await updateSow(sow);
+      updateSowState(res);
+      setEditingSow(null);
     } else {
-      createSow();
+      let res = await createSow(sow);
+      createSowState(res);
     }
   };
 
   useEffect(() => {
-    if (edittingSow) {
-      setSow(edittingSow);
+    if (editingSow) {
+      setSow(editingSow);
     }
   }, []);
 
@@ -74,7 +46,7 @@ export default function SowForm({ edittingSow }: { edittingSow?: Sow }) {
         value={sow.name}
       />
       <button onClick={handleSubmit}>
-        {edittingSow?.id ? "Update" : "Create"}
+        {editingSow?.id ? "Update" : "Create"}
       </button>
     </div>
   );
