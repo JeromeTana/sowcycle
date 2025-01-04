@@ -3,6 +3,30 @@ import { createClient } from "@/utils/supabase/client";
 
 const supabase = createClient();
 
+export const getAllSows = async () => {
+  try {
+    const { data, error } = (await supabase
+      .from("sows")
+      .select()
+      .order("created_at", { ascending: false })) as {
+      data: Sow[];
+      error: any;
+    };
+
+    if (error) {
+      console.log(error);
+      return;
+    }
+    return data;
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error(`Error fetching sows: ${err.message}`);
+      throw err;
+    }
+    throw new Error("An unexpected error occurred");
+  }
+};
+
 export const getSowById = async (id: number) => {
   try {
     const { data, error } = (await supabase
