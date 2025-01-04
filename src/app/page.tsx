@@ -1,41 +1,38 @@
 "use client";
 
-import { createClient } from "@/utils/supabase/client";
-import type { Sow } from "@/types/sow";
 import SowList from "@/components/Sow/List";
 import SowForm from "@/components/Sow/Form";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useSowStore } from "@/stores/useSowStore";
+import { getAllSows } from "@/services/sow";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 export default function Page() {
-  const supabase = createClient();
-  const [sows, setSows] = useState<Sow[]>([]);
-
-  const getAllSows = async () => {
-    const { data, error } = (await supabase
-      .from("sows")
-      .select()
-      .order("created_at", { ascending: false })) as {
-      data: Sow[];
-      error: any;
-    };
-
-    if (error) {
-      console.log(error);
-      return;
-    }
-    setSows(data);
-  };
+  const { sows, setSows } = useSowStore();
 
   useEffect(() => {
-    getAllSows();
+    const fetchData = async () => {
+      const sows = await getAllSows();
+      if (!sows) return;
+      setSows(sows);
+    };
+    fetchData();
     return () => {};
   }, []);
 
-  if (!sows) return <div>Loading...</div>;
+  if (sows.length === 0) return <div>Loading...</div>;
 
   return (
-    <div>
-      <SowForm />
+    <div suppressHydrationWarning>
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button>เพิ่มแม่หมู</Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-md">
+          <SowForm />
+        </DialogContent>
+      </Dialog>
       <SowList sows={sows} />
     </div>
   );

@@ -1,52 +1,33 @@
 "use client";
 
 import BreedingForm from "@/components/Breeding/Form";
-import SowDeleteButton from "@/components/Sow/DeleteButton";
+import SowForm from "@/components/Sow/Form";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { getBreedingsBySowId } from "@/services/breeding";
+import { deleteSow, getSowById } from "@/services/sow";
+import { useSowStore } from "@/stores/useSowStore";
 import { Breeding } from "@/types/breeding";
 import { Sow } from "@/types/sow";
-import { createClient } from "@/utils/supabase/client";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function SowsPage({ params }: any) {
-  const supabase = createClient();
   const router = useRouter();
   const [id, setId] = useState<number | null>();
+  const { editingSow, setEditingSow, removeSow } = useSowStore();
   const [sow, setSow] = useState<Sow>({} as Sow);
   const [breedings, setBreedings] = useState<Breeding[]>([]);
 
-  const getSowById = async (id: number) => {
-    const { data, error } = (await supabase
-      .from("sows")
-      .select()
-      .eq("id", id)
-      .single()) as { data: Sow; error: any };
-
-    if (error) {
-      console.log(error);
-      return;
+  const onDelete = async (id: number) => {
+    try {
+      await deleteSow(id);
+    } catch (err) {
+      console.error(`Error deleting sow: ${err}`);
     }
 
-    setSow(data);
-  };
-
-  const getBreedingsBySowId = async (sowId: number) => {
-    const { data, error } = (await supabase
-      .from("breedings")
-      .select()
-      .eq("sow_id", sowId)
-      .order("breed_date", { ascending: false })) as {
-      data: Breeding[];
-      error: any;
-    };
-
-    if (error) {
-      console.log(error);
-      return;
-    }
-
-    setBreedings(data);
+    removeSow(id);
+    router.push("/sows");
   };
 
   useEffect(() => {
@@ -61,15 +42,25 @@ export default function SowsPage({ params }: any) {
 
   useEffect(() => {
     if (!id) return;
-    getSowById(id);
-    getBreedingsBySowId(id);
+    const fetchData = async () => {
+      let sow = await getSowById(id);
+      if (!sow) return;
+      setSow(sow);
+
+      let breeding = await getBreedingsBySowId(id);
+      if (!breeding) return;
+      setBreedings(breeding);
+    };
+    fetchData();
   }, [id]);
 
   if (!id || !sow.id) return <div>Loading...</div>;
 
+  if (editingSow) return <SowForm />;
+
   return (
     <div>
-      <Link href={`/sows/${id}/edit`}>Edit</Link>
+      <Button onClick={() => setEditingSow(sow)}>Edit</Button>
       <div className="w-full max-w-sm rounded overflow-hidden shadow-lg border">
         <div className="px-6 py-4">
           <div className="font-bold text-xl mb-2">{sow.name}</div>
@@ -82,12 +73,20 @@ export default function SowsPage({ params }: any) {
             <div className="font-bold text-xl mb-2">Breedings</div>
             <div className="flex flex-col gap-4">
               {breedings.map((breeding, index) => (
-                <div key={index}>
-                  Breed at: {breeding.breed_date}
-                  <br />
-                  Expected farowwing at:
-                  {breeding.expected_farrow_date}
-                </div>
+                <Card key={index}>
+                  <CardHeader>Breed at: {breeding.breed_date}</CardHeader>
+                  <CardContent>
+                    Expected farowwing at:
+                    {breeding.expected_farrow_date}
+                    <br />
+                    Actual farowwing at:
+                    {breeding.actual_farrow_date}
+                    <br />
+                    Piglet alive: {breeding.piglets_born_alive}
+                    <br /> Piglet dead: {breeding.piglets_born_dead}
+                    <br /> Piglet count: {breeding.piglets_born_count}
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </div>
@@ -95,7 +94,7 @@ export default function SowsPage({ params }: any) {
           <div>No breedings</div>
         )}
       </div>
-      <SowDeleteButton id={id} />
+      <button onClick={() => onDelete(id)}>Delete</button>
     </div>
   );
 }
