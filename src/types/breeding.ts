@@ -1,5 +1,5 @@
 export interface Breeding {
-  id: number;
+  id?: number;
   created_at?: string;
   updated_at?: string;
   sow_id: number;

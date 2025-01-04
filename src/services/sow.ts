@@ -107,3 +107,23 @@ export const deleteSow = async (id: number) => {
     throw new Error("An unexpected error occurred");
   }
 };
+
+export const patchSow = async (sow: Partial<Sow>) => {
+  try {
+    const { data, error } = await supabase
+      .from("sows")
+      .update(sow)
+      .eq("id", sow.id)
+      .select();
+
+    if (error) throw new Error(`Failed to patch sow: ${error.message}`);
+
+    return data;
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error(`Error patching sow: ${err.message}`);
+      throw err;
+    }
+    throw new Error("An unexpected error occurred");
+  }
+};

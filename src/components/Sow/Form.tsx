@@ -6,13 +6,23 @@ import { Sow } from "@/types/sow";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+
 import {
-  DialogClose,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+
+const formSchema = z.object({
+  name: z.string().nonempty("กรุณากรอกชื่อแม่พันธุ์"),
+});
 
 export default function SowForm() {
   const [sow, setSow] = useState<Sow>({} as Sow);
@@ -23,19 +33,23 @@ export default function SowForm() {
     updateSow: updateSowState,
   } = useSowStore();
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSow({ ...sow, [e.target.name]: e.target.value });
-  };
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: editingSow?.name || "",
+    },
+  });
 
-  const handleSubmit = async () => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     if (editingSow) {
-      let res = await updateSow(sow);
+      let res = await updateSow({ ...sow, ...values });
       updateSowState(res);
       setEditingSow(null);
-    } else {
-      let res = await createSow(sow);
-      createSowState(res);
+      return;
     }
+
+    let res = await createSow({ ...sow, ...values });
+    createSowState(res);
   };
 
   useEffect(() => {
@@ -45,33 +59,25 @@ export default function SowForm() {
   }, []);
 
   return (
-    <div>
-      <DialogHeader>
-        <DialogTitle>Share link</DialogTitle>
-        <DialogDescription>
-          Anyone who has this link will be able to view this.
-        </DialogDescription>
-      </DialogHeader>
-      <div className="flex items-center space-x-2">
-        <Input
-          type="text"
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 ">
+        <FormField
+          control={form.control}
           name="name"
-          placeholder="Name"
-          onChange={onChange}
-          className="border"
-          value={sow.name}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>ชื่อ</FormLabel>
+              <FormControl>
+                <Input placeholder="เช่น ทองดี" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
-      <DialogFooter className="sm:justify-start">
-        <DialogClose asChild>
-          <Button type="button" variant="secondary">
-            Close
-          </Button>
-        </DialogClose>
-        <Button onClick={handleSubmit}>
-          {editingSow?.id ? "Update" : "Create"}
-        </Button>
-      </DialogFooter>
-    </div>
+        <div className="w-full flex justify-end">
+          <Button type="submit">{editingSow ? "แก้ไข" : "เพิ่ม"}</Button>
+        </div>
+      </form>
+    </Form>
   );
 }
