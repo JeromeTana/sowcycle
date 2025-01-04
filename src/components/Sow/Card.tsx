@@ -1,58 +1,72 @@
 "use client";
 
+import { getBreedingsBySowId } from "@/services/breeding";
 import { Breeding } from "@/types/breeding";
 import { Sow } from "@/types/sow";
-import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export default function SowCard({ sow }: { sow: Sow }) {
-  const supabase = createClient();
-  const [breedings, setBreedings] = useState<Breeding[]>([]);
-
-  const getBreedingsBySowId = async (id: number) => {
-    let { data, error } = (await supabase
-      .from("breedings")
-      .select()
-      .eq("sow_id", id)
-      .order("breed_date", { ascending: false })) as {
-      data: Breeding[];
-      error: any;
-    };
-
-    if (error) {
-      console.log(error);
-      return;
-    }
-    setBreedings(data);
-  };
+  const [latestBreedings, setLatestBreedings] = useState<Breeding>(
+    {} as Breeding
+  );
 
   useEffect(() => {
-    getBreedingsBySowId(sow.id);
+    let fetchBreedings = async () => {
+      const breedings = await getBreedingsBySowId(sow.id);
+      if (breedings) {
+        setLatestBreedings(breedings[0]);
+      }
+    };
+    fetchBreedings();
     return () => {};
   }, []);
   return (
-    <Link
-      href={`/sows/${sow.id}`}
-      className="w-full max-w-sm rounded overflow-hidden shadow-lg border"
-    >
-      <div className="px-6 py-4">
-        <div className="font-bold text-xl mb-2">{sow.name}</div>
-        <div>
-          {breedings && breedings.length > 0 ? (
-            <div>
-              <div className="font-bold text-xl mb-2">Breedings</div>
-              <div>
-                {breedings.map((breeding, index) => (
-                  <div key={index}>Breed at: {breeding.breed_date}</div>
-                ))}
-              </div>
-            </div>
-          ) : (
-            <div>No breedings</div>
-          )}
-        </div>
-      </div>
+    <Link href={`/sows/${sow.id}`}>
+      <Card className="w-[380px]">
+        <CardHeader>
+          <CardTitle>{sow.name}</CardTitle>
+          <CardDescription>
+            {sow.birthdate ? new Date(sow.birthdate).toLocaleDateString() : ""}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div>
+            {latestBreedings && latestBreedings.actual_farrow_date === null ? (
+              <>
+                <div>
+                  Farrow in{" "}
+                  {Math.ceil(
+                    (new Date(latestBreedings.expected_farrow_date).getTime() -
+                      new Date().getTime()) /
+                      (1000 * 60 * 60 * 24)
+                  )}{" "}
+                  days
+                </div>
+                <div>
+                  Breed at:{" "}
+                  {new Date(latestBreedings.breed_date).toLocaleDateString()}
+                </div>
+                <div>
+                  Expected farrow at:{" "}
+                  {new Date(
+                    latestBreedings.expected_farrow_date
+                  ).toLocaleDateString()}
+                </div>
+              </>
+            ) : (
+              <div>No breedings</div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
     </Link>
   );
 }
