@@ -3,7 +3,7 @@ import SowCard from "./Card";
 
 export default function SowList({ sows }: { sows: Sow[] }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-3">
+    <div className="flex flex-col items-center justify-center gap-2">
       {sows.map((sow, index) => (
         <SowCard key={index} sow={sow} />
       ))}
