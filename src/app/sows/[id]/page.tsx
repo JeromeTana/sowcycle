@@ -100,10 +100,21 @@ export default function SowsPage({ params }: any) {
                 พร้อมผสม
               </p>
             ) : (
-              <p className="text-pink-500 inline-flex items-center gap-1">
-                <Heart size={16} />
-                ตั้งครรภ์
-              </p>
+              <div className="flex items-center gap-2">
+                <p className="text-pink-500 inline-flex items-center gap-1">
+                  <Heart size={16} />
+                  ตั้งครรภ์
+                </p>
+                <p className="text-sm inline-flex gap-1 items-center bg-pink-500 text-white py-1 px-2 rounded-full">
+                  คลอดใน{" "}
+                  {Math.ceil(
+                    (new Date(breedings[0].expected_farrow_date).getTime() -
+                      new Date().getTime()) /
+                      (1000 * 60 * 60 * 24)
+                  )}{" "}
+                  วัน
+                </p>
+              </div>
             )
           ) : (
             <div>แม่พันธุ์ไม่อยู่ในขณะนี้</div>
