@@ -1,5 +1,9 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Breeding } from "@/types/breeding";
+import DialogComponent from "../DialogComponent";
+import { Button } from "../ui/button";
+import { Check } from "lucide-react";
+import { FarrowForm } from "./Form";
 
 export default function BreedingCard({ breeding }: { breeding: Breeding }) {
   if (!breeding) return null;
@@ -23,6 +27,18 @@ export default function BreedingCard({ breeding }: { breeding: Breeding }) {
               <p>รวมทั้งหมด: {breeding.piglets_born_count}</p>
             </div>
           </div>
+        )}
+        {breeding.actual_farrow_date === null && (
+          <DialogComponent
+            title="บันทึกการคลอด"
+            dialogTriggerButton={
+              <Button>
+                <Check /> บันทึกการคลอด
+              </Button>
+            }
+          >
+            <FarrowForm breeding={breeding} />
+          </DialogComponent>
         )}
       </CardContent>
     </Card>
