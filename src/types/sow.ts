@@ -1,6 +1,7 @@
 import { Breeding } from "./breeding";
 
 export interface Sow {
+  [key: string]: any;
   id: number;
   created_at?: string;
   updated_at?: string;
