@@ -29,7 +29,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <main
-          className="max-w-screen-sm m-auto flex flex-col gap-2 p-2"
+          className="max-w-screen-sm m-auto flex flex-col gap-2 px-2 py-8"
           suppressHydrationWarning
         >
           {children}
