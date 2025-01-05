@@ -2,18 +2,49 @@
 
 import SowList from "@/components/Sow/List";
 import SowForm from "@/components/Sow/Form";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSowStore } from "@/stores/useSowStore";
 import { getAllSowsWithLatestBreeding } from "@/services/sow";
 
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import DialogComponent from "@/components/DialogComponent";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 
 export default function Page() {
   const { sows, setSows } = useSowStore();
   const [isLoading, setIsLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState({});
+  const filterOptions = [
+    { label: "ทั้งหมด", value: {} },
+    { label: "ตั้งครรภ์", value: { is_available: false } },
+    { label: "พร้อมผสม", value: { is_available: true } },
+    { label: "ยังอยู่", value: { is_active: true } },
+    { label: "ไม่อยู่", value: { is_active: false } },
+  ];
+
+  const breededSows = sows
+    .filter((sow) => !sow.is_available)
+    .sort((a, b) => {
+      return (
+        new Date(a.breedings[0].breed_date).getTime() -
+        new Date(b.breedings[0].breed_date).getTime()
+      );
+    });
+
+  const filteredSows = useMemo(() => {
+    return sows
+      .filter((sow) => sow.name.includes(search))
+      .filter((sow) => {
+        if (!filter) return true;
+        return Object.entries(filter).every(([key, value]) => {
+          return sow[key] === value;
+        });
+      });
+  }, [sows, search, filter]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,16 +75,7 @@ export default function Page() {
       {sows.some((sow) => !sow.is_available) && (
         <div className="space-y-4">
           <h2 className="text-xl font-bold">แม่พันธุ์ตั้งครรภ์</h2>
-          <SowList
-            sows={sows
-              .filter((sow) => !sow.is_available)
-              .sort((a, b) => {
-                return (
-                  new Date(a.breedings[0].breed_date).getTime() -
-                  new Date(b.breedings[0].breed_date).getTime()
-                );
-              })}
-          />
+          <SowList sows={breededSows} />
         </div>
       )}
       <div className="space-y-4">
@@ -70,7 +92,33 @@ export default function Page() {
             <SowForm />
           </DialogComponent>
         </div>
-        <SowList sows={sows} />
+        <Input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          startIcon={Search}
+          placeholder="ค้นหาชื่อแม่พันธุ์"
+          className="bg-white"
+        />
+        <div className="flex gap-2 overflow-auto">
+          {filterOptions.map((option, index) => (
+            <Button
+              key={index}
+              onClick={() => {
+                setFilter(option.value);
+              }}
+              variant={"outline"}
+              className={cn(
+                JSON.stringify(option.value) === JSON.stringify(filter)
+                  ? "bg-black text-white hover:bg-black hover:text-white"
+                  : "bg-white text-black",
+                "text-sm rounded-full"
+              )}
+            >
+              {option.label}
+            </Button>
+          ))}
+        </div>
+        <SowList sows={filteredSows} />
       </div>
     </div>
   );

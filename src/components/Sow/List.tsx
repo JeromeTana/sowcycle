@@ -7,7 +7,7 @@ export default function SowList({ sows }: { sows: Sow[] }) {
       {sows.length > 0 ? (
         sows.map((sow, index) => <SowCard key={index} sow={sow} />)
       ) : (
-        <div className="text-gray-400">ไม่มีข้อมูล</div>
+        <div className="text-gray-400 my-72">ไม่พบข้อมูล</div>
       )}
     </div>
   );
