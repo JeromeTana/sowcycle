@@ -61,3 +61,17 @@ export const updateBreeding = async (breeding: Breeding) => {
     throw new Error("An unexpected error occurred");
   }
 };
+
+export const deleteBreeding = async (id: number) => {
+  try {
+    const { error } = await supabase.from("breedings").delete().eq("id", id);
+
+    if (error) throw new Error(`Failed to delete breeding: ${error.message}`);
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error(`Error deleting breeding: ${err.message}`);
+      throw err;
+    }
+    throw new Error("An unexpected error occurred");
+  }
+};
