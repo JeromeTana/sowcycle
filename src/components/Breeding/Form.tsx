@@ -35,6 +35,7 @@ import { Breeding } from "@/types/breeding";
 import { createBreeding, updateBreeding } from "@/services/breeding";
 import { patchSow } from "@/services/sow";
 import { useSowStore } from "@/stores/useSowStore";
+import { useToast } from "@/hooks/use-toast";
 
 const newFormSchema = z.object({
   sow_id: z.string(),
@@ -49,6 +50,7 @@ const farrowFormSchema = z.object({
 
 export function NewBreedingForm({ id }: { id: string }) {
   const { sows } = useSowStore();
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof newFormSchema>>({
     resolver: zodResolver(newFormSchema),
@@ -74,10 +76,18 @@ export function NewBreedingForm({ id }: { id: string }) {
     });
 
     if (res) {
-      await patchSow({
+      let res = await patchSow({
         id: Number(values.sow_id),
         is_available: false,
       });
+
+      if (res) {
+        form.reset();
+        toast({
+          title: "เพิ่มสำเร็จ",
+          description: "เพิ่มประวัติการผสมเรียบร้อย",
+        });
+      }
     }
   };
 

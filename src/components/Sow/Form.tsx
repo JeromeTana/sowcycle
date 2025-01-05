@@ -19,6 +19,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
+import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
   name: z.string().nonempty("กรุณากรอกชื่อแม่พันธุ์"),
@@ -26,24 +27,50 @@ const formSchema = z.object({
 
 export default function SowForm({ editingSow }: any) {
   const [sow, setSow] = useState<Sow>({} as Sow);
-  const { addSow: createSowState, updateSow: updateSowState } = useSowStore();
+  const { addSow, updateSow: updateSowState } = useSowStore();
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: editingSow?.name || "",
+      name: editingSow.name || "",
     },
   });
 
+  const handleCreateSow = async (
+    sow: Sow,
+    values: z.infer<typeof formSchema>
+  ) => {
+    let res = await createSow({ ...sow, ...values });
+    if (res) {
+      addSow(res);
+      toast({
+        title: "เพิ่มข้อมูลเรียบร้อย",
+        description: "ข้อมูลของแม่พันธุ์ถูกเพิ่มเรียบร้อยแล้ว",
+      });
+    }
+  };
+
+  const handleUpdateSow = async (
+    sow: Sow,
+    values: z.infer<typeof formSchema>
+  ) => {
+    let res = await updateSow({ ...sow, ...values });
+    if (res) {
+      updateSowState(res);
+      toast({
+        title: "แก้ไขข้อมูลเรียบร้อย",
+        description: "ข้อมูลของแม่พันธุ์ถูกแก้ไขเรียบร้อยแล้ว",
+      });
+    }
+  };
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     if (editingSow) {
-      let res = await updateSow({ ...sow, ...values });
-      updateSowState(res);
+      handleUpdateSow(sow, values);
       return;
     }
-
-    let res = await createSow({ ...sow, ...values });
-    createSowState(res);
+    handleCreateSow(sow, values);
   };
 
   useEffect(() => {

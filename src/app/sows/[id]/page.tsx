@@ -80,7 +80,7 @@ export default function SowsPage({ params }: any) {
               </Button>
             }
           >
-            <SowForm edittingSow={sow} />
+            <SowForm editingSow={sow} />
           </DialogComponent>
           <Button
             variant="ghost"
