@@ -30,7 +30,7 @@ import { cn } from "@/lib/utils";
 import CountdownBadge from "../CountdownBadge";
 
 export default function SowCard({ sow }: { sow: Sow }) {
-  const latestBreeding = sow.breedings[0];
+  const latestBreeding = sow.breedings?.[0];
 
   return (
     <Card className={cn(sow.is_active ? "" : "opacity-60", "w-full")}>
@@ -52,19 +52,26 @@ export default function SowCard({ sow }: { sow: Sow }) {
                     <PiggyBank size={16} />
                     พร้อมผสม
                   </p>
-                  {latestBreeding?.actual_farrow_date && (
-                    <div className="flex flex-col gap-2 mt-6">
-                      <p className="inline-flex items-center gap-1">
-                        <span className="border p-2 bg-gray-50 rounded-lg">
-                          <Calendar size={16} className="text-gray-500" />
+                  <div className="flex flex-col gap-2 mt-6">
+                    <p className="inline-flex items-center gap-1">
+                      <span className="border p-2 bg-gray-50 rounded-lg">
+                        <Calendar size={16} className="text-gray-500" />
+                      </span>
+                      {latestBreeding?.actual_farrow_date ? (
+                        <span>
+                          คลอดล่าสุด{" "}
+                          {new Date(
+                            latestBreeding?.actual_farrow_date
+                          ).toLocaleDateString("en-GB")}
                         </span>
-                        คลอดล่าสุด{" "}
-                        {new Date(
-                          latestBreeding?.actual_farrow_date
-                        ).toLocaleDateString("en-GB")}
-                      </p>
-                    </div>
-                  )}
+                      ) : (
+                        <span className="text-gray-400">
+                          {" "}
+                          ไม่มีประวัติการคลอด
+                        </span>
+                      )}
+                    </p>
+                  </div>
                 </>
               ) : (
                 <div className="flex items-center gap-2">
@@ -79,28 +86,29 @@ export default function SowCard({ sow }: { sow: Sow }) {
           ) : (
             <>ไม่อยู่</>
           )}
-          {latestBreeding?.breed_date && (
-            <div className="flex flex-col gap-2 mt-6">
-              <p className="inline-flex items-center gap-1">
-                <span className="border p-2 bg-gray-50 rounded-lg">
-                  <CalendarHeart size={16} className="text-gray-500" />
-                </span>
-                ผสมเมื่อ{" "}
-                {new Date(latestBreeding.breed_date).toLocaleDateString(
-                  "en-GB"
-                )}
-              </p>
-              <p className="inline-flex items-center gap-1">
-                <span className="border p-2 bg-gray-50 rounded-lg">
-                  <CalendarCheck size={16} className="text-gray-500" />
-                </span>
-                กำหนดคลอด{" "}
-                {new Date(
-                  latestBreeding.expected_farrow_date!
-                ).toLocaleDateString("en-GB")}
-              </p>
-            </div>
-          )}
+          {latestBreeding?.breed_date &&
+            !latestBreeding?.actual_farrow_date && (
+              <div className="flex flex-col gap-2 mt-6">
+                <p className="inline-flex items-center gap-1">
+                  <span className="border p-2 bg-gray-50 rounded-lg">
+                    <CalendarHeart size={16} className="text-gray-500" />
+                  </span>
+                  ผสมเมื่อ{" "}
+                  {new Date(latestBreeding.breed_date).toLocaleDateString(
+                    "en-GB"
+                  )}
+                </p>
+                <p className="inline-flex items-center gap-1">
+                  <span className="border p-2 bg-gray-50 rounded-lg">
+                    <CalendarCheck size={16} className="text-gray-500" />
+                  </span>
+                  กำหนดคลอด{" "}
+                  {new Date(
+                    latestBreeding.expected_farrow_date!
+                  ).toLocaleDateString("en-GB")}
+                </p>
+              </div>
+            )}
         </div>
       </CardContent>
       <CardFooter>

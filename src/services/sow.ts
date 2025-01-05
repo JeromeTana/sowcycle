@@ -8,27 +8,15 @@ export const getAllSows = async () => {
     const { data, error } = (await supabase
       .from("sows")
       .select(
-        `id,
-        name,
-        is_available,
-        is_active,
-        created_at,
-        updated_at,
-        breedings (
-          id,
-          created_at,
-          updated_at,
-          sow_id,
-          breed_date,
-          expected_farrow_date,
-          actual_farrow_date,
-          piglets_born_count,
-          piglets_male_born_alive,
-          piglets_female_born_alive,
-          piglets_born_dead
-          )`
+        `*,
+        breedings(*)
+        `
       )
-      .order("created_at", { ascending: false })) as {
+      .order("breed_date", { ascending: false, referencedTable: "breedings" })
+      .order("created_at", { ascending: false })
+      .limit(1, {
+        foreignTable: "breedings",
+      })) as {
       data: Sow[];
       error: any;
     };
