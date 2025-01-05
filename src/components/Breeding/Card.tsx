@@ -1,9 +1,15 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
 import { Breeding } from "@/types/breeding";
 import DialogComponent from "../DialogComponent";
 import { Button } from "../ui/button";
-import { Check } from "lucide-react";
+import { Check, Trash } from "lucide-react";
 import { FarrowForm } from "./Form";
+import { deleteBreeding } from "@/services/breeding";
 
 export default function BreedingCard({ breeding }: { breeding: Breeding }) {
   if (!breeding) return null;
@@ -28,6 +34,8 @@ export default function BreedingCard({ breeding }: { breeding: Breeding }) {
             </div>
           </div>
         )}
+      </CardContent>
+      <CardFooter>
         {breeding.actual_farrow_date === null && (
           <DialogComponent
             title="บันทึกการคลอด"
@@ -40,7 +48,34 @@ export default function BreedingCard({ breeding }: { breeding: Breeding }) {
             <FarrowForm breeding={breeding} />
           </DialogComponent>
         )}
-      </CardContent>
+        <DialogComponent
+          title="บันทึกการคลอด"
+          dialogTriggerButton={
+            <Button
+              variant={"ghost"}
+              className="text-red-500 hover:text-red-500 hover:bg-red-50"
+            >
+              <Trash /> ลบ
+            </Button>
+          }
+        >
+          <p>ต้องการลบข้อมูลการผสมนี้หรือไม่</p>
+          <div className="flex justify-end">
+            <Button
+              variant={"destructive"}
+              onClick={async () => {
+                try {
+                  await deleteBreeding(breeding.id!);
+                } catch (err) {
+                  console.error(err);
+                }
+              }}
+            >
+              ลบ
+            </Button>
+          </div>
+        </DialogComponent>
+      </CardFooter>
     </Card>
   );
 }
