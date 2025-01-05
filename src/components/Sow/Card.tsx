@@ -15,14 +15,9 @@ import {
 } from "@/components/ui/card";
 import { Button } from "../ui/button";
 import { Check } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTrigger,
-  DialogTitle,
-} from "../ui/dialog";
+
 import { FarrowForm } from "../Breeding/Form";
+import DialogComponent from "../DialogComponent";
 
 export default function SowCard({ sow }: { sow: Sow }) {
   const [latestBreedings, setLatestBreedings] = useState<Breeding>(
@@ -82,24 +77,16 @@ export default function SowCard({ sow }: { sow: Sow }) {
             <Button variant={"secondary"}>ดูรายละเอียด</Button>
           </Link>
           {latestBreedings?.actual_farrow_date === null && (
-            <Dialog>
-              <DialogTrigger asChild>
-                <div>
-                  <Button>
-                    <Check /> บันทึกการคลอด
-                  </Button>
-                </div>
-              </DialogTrigger>
-
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>
-                    <p className="font-bold">บันทึกการคลอด</p>
-                  </DialogTitle>
-                </DialogHeader>
-                <FarrowForm breeding={latestBreedings} />
-              </DialogContent>
-            </Dialog>
+            <DialogComponent
+              title="บันทึกการคลอด"
+              dialogTriggerButton={
+                <Button>
+                  <Check /> บันทึกการคลอด
+                </Button>
+              }
+            >
+              <FarrowForm breeding={latestBreedings} />
+            </DialogComponent>
           )}
         </div>
       </CardFooter>

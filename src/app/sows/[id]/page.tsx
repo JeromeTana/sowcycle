@@ -3,43 +3,25 @@
 import BreedingCard from "@/components/Breeding/Card";
 import SowForm from "@/components/Sow/Form";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { createBreeding, getBreedingsBySowId } from "@/services/breeding";
+import { getBreedingsBySowId } from "@/services/breeding";
 import { deleteSow, getSowById, getAllSows } from "@/services/sow";
 import { useSowStore } from "@/stores/useSowStore";
 import { Breeding } from "@/types/breeding";
 import { Sow } from "@/types/sow";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
-
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTrigger,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverTrigger } from "@radix-ui/react-popover";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
-import { PopoverContent } from "@/components/ui/popover";
-import { Label } from "@/components/ui/label";
-import { CalendarIcon, Cross, Pen, Plus, Trash, X } from "lucide-react";
+import { useEffect, useState } from "react";
 
 import { NewBreedingForm } from "@/components/Breeding/Form";
+import DialogComponent from "@/components/DialogComponent";
+import { Pen, Plus, Trash } from "lucide-react";
 
 export default function SowsPage({ params }: any) {
   const router = useRouter();
-  const { sows, setSows, editingSow, setEditingSow, removeSow } = useSowStore();
+  const { setSows, removeSow } = useSowStore();
 
   const [id, setId] = useState<number | null>();
   const [sow, setSow] = useState<Sow>({} as Sow);
   const [breedings, setBreedings] = useState<Breeding[]>([]);
-  let [breeding, setBreeding] = useState<Breeding>({} as Breeding);
-
-  const [breedDate, setBreedDate] = useState<Date>();
 
   const onDelete = async (id: number) => {
     try {
@@ -50,34 +32,6 @@ export default function SowsPage({ params }: any) {
 
     removeSow(id);
     router.push("/sows");
-  };
-
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setBreeding({ ...breeding, [e.target.name]: e.target.value });
-  };
-
-  const expectedFarrowDate = useMemo(() => {
-    if (breeding.breed_date) {
-      const breedDate = new Date(breeding.breed_date);
-      const expectedFarrowDate = new Date(breedDate);
-      expectedFarrowDate.setDate(expectedFarrowDate.getDate() + 114);
-      return expectedFarrowDate.toISOString().split("T")[0];
-    }
-  }, [breeding.breed_date]);
-
-  const handleCreate = async () => {
-    breeding = {
-      ...breeding,
-      sow_id: id!,
-      expected_farrow_date: expectedFarrowDate?.toString()!,
-    };
-
-    try {
-      let res = await createBreeding(breeding);
-      setBreedings([res, ...breedings]);
-    } catch (error: any) {
-      console.log(error.message);
-    }
   };
 
   useEffect(() => {
@@ -118,19 +72,16 @@ export default function SowsPage({ params }: any) {
       <div className="flex justify-between">
         <p className="w-full">{sow.name}</p>
         <div className="flex">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button onClick={() => setEditingSow(sow)}>
+          <DialogComponent
+            title="แก้ไขแม่พันธุ์"
+            dialogTriggerButton={
+              <Button>
                 <Pen /> แก้ไข
               </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-md">
-              <DialogHeader>
-                <DialogTitle>แก้ไขแม่พันธุ์</DialogTitle>
-              </DialogHeader>
-              <SowForm />
-            </DialogContent>
-          </Dialog>
+            }
+          >
+            <SowForm edittingSow={sow} />
+          </DialogComponent>
           <Button
             variant="ghost"
             onClick={() => onDelete(id)}
@@ -155,21 +106,16 @@ export default function SowsPage({ params }: any) {
             <div className="font-bold mb-2">
               ประวัติผสม {`(${breedings.length} ครั้ง)`}
             </div>
-            <Dialog>
-              <DialogTrigger asChild>
+            <DialogComponent
+              title="เพิ่มประวัติผสม"
+              dialogTriggerButton={
                 <Button>
                   <Plus /> เพิ่มประวัติผสม
                 </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>
-                    <p className="font-bold">เพิ่มประวัติผสม</p>
-                  </DialogTitle>
-                </DialogHeader>
-                <NewBreedingForm id={sow.id.toString()} />
-              </DialogContent>
-            </Dialog>
+              }
+            >
+              <NewBreedingForm id={sow.id.toString()} />
+            </DialogComponent>
           </div>
           {breedings.length > 0 ? (
             <div className="flex flex-col gap-2">
