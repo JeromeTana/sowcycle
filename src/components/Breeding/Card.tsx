@@ -35,10 +35,18 @@ export default function BreedingCard({
       }
     >
       <CardHeader>
-        <p className="font-bold inline-flex items-center gap-1">
-          <Heart size={20} />
+        <p
+          className={cn(
+            breeding.actual_farrow_date ? "text-black" : "text-pink-500",
+            "font-bold inline-flex items-center gap-1"
+          )}
+        >
+          <Heart
+            size={20}
+            className={cn(!breeding.actual_farrow_date && "animate-bounce")}
+          />
           ผสมครั้งที่ {index}{" "}
-          <span className="font-normal text-pink-500">
+          <span className="font-normal">
             {!breeding.actual_farrow_date && (
               <>
                 (คลอดใน{" "}
