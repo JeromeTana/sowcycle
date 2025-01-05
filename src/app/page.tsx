@@ -30,7 +30,7 @@ export default function Page() {
       <div>
         <Skeleton className=" w-40 h-8" />
         <Skeleton className="w-full h-80 mt-4 rounded-xl" />
-        <div className="flex justify-between mt-8">
+        <div className="flex justify-between mt-16">
           <Skeleton className=" w-40 h-8" />
           <Skeleton className=" w-32 h-8" />
         </div>
