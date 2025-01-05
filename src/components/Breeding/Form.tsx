@@ -186,41 +186,48 @@ export function NewBreedingForm({
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="breed_date"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel>วันที่ผสม</FormLabel>
-              <DatePicker field={field} />
-              <FormMessage />
-            </FormItem>
+
+        <div className="w-full flex gap-2">
+          <FormField
+            control={form.control}
+            name="breed_date"
+            render={({ field }) => (
+              <FormItem className="w-full flex flex-col">
+                <FormLabel>วันที่ผสม</FormLabel>
+                <DatePicker field={field} />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormItem className="w-full flex flex-col">
+            <FormLabel>กำหนดคลอด</FormLabel>
+            <FormControl>
+              <Button
+                variant={"outline"}
+                disabled
+                className={cn(
+                  "w-full pl-3 text-left font-normal",
+                  !expectedFarrowDate && "text-muted-foreground"
+                )}
+              >
+                {expectedFarrowDate ? (
+                  format(expectedFarrowDate, "P")
+                ) : (
+                  <span>เลือกวันที่ผสม</span>
+                )}
+                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+              </Button>
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        </div>
+        <div
+          className={cn(
+            breeding ? "justify-between" : "justify-end",
+            "w-full flex"
           )}
-        />
-
-        <FormItem className="flex flex-col">
-          <FormLabel>กำหนดคลอด</FormLabel>
-          <FormControl>
-            <Button
-              variant={"outline"}
-              disabled
-              className={cn(
-                "w-[240px] pl-3 text-left font-normal",
-                !expectedFarrowDate && "text-muted-foreground"
-              )}
-            >
-              {expectedFarrowDate ? (
-                format(expectedFarrowDate, "P")
-              ) : (
-                <span>เลือกวันที่ผสม</span>
-              )}
-              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-            </Button>
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-
-        <div className="w-full flex justify-between">
+        >
           {breeding && <DeleteDialog id={breeding.id!} />}
           <Button type="submit">{breeding ? "บันทึก" : "เพิ่ม"}</Button>
         </div>
@@ -332,39 +339,41 @@ export function FarrowForm({ breeding }: { breeding: Breeding }) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="breed_date"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel>วันที่ผสม</FormLabel>
-              <DatePicker field={field} />
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="w-full flex gap-2">
+          <FormField
+            control={form.control}
+            name="breed_date"
+            render={({ field }) => (
+              <FormItem className="w-full flex flex-col">
+                <FormLabel>วันที่ผสม</FormLabel>
+                <DatePicker field={field} />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormItem className="flex flex-col">
-          <FormLabel>กำหนดคลอด</FormLabel>
-          <FormControl>
-            <Button
-              variant={"outline"}
-              disabled
-              className={cn(
-                "w-[240px] pl-3 text-left font-normal",
-                !expectedFarrowDate && "text-muted-foreground"
-              )}
-            >
-              {expectedFarrowDate ? (
-                format(expectedFarrowDate, "P")
-              ) : (
-                <span>เลือกวันที่ผสม</span>
-              )}
-              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-            </Button>
-          </FormControl>
-          <FormMessage />
-        </FormItem>
+          <FormItem className="w-full flex flex-col">
+            <FormLabel>กำหนดคลอด</FormLabel>
+            <FormControl>
+              <Button
+                variant={"outline"}
+                disabled
+                className={cn(
+                  "w-full pl-3 text-left font-normal",
+                  !expectedFarrowDate && "text-muted-foreground"
+                )}
+              >
+                {expectedFarrowDate ? (
+                  format(expectedFarrowDate, "P")
+                ) : (
+                  <span>เลือกวันที่ผสม</span>
+                )}
+                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+              </Button>
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        </div>
         {breeding.breed_date && (
           <>
             <FormField
@@ -379,7 +388,7 @@ export function FarrowForm({ breeding }: { breeding: Breeding }) {
               )}
             />
 
-            <p>จำนวนลูกเกิด</p>
+            <p className="text-sm">จำนวนลูกเกิด</p>
             <div className="border p-4 rounded-lg space-y-4 bg-gray-50">
               <div className="flex gap-2">
                 <FormField
