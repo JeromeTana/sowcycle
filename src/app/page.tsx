@@ -27,7 +27,15 @@ export default function Page() {
   ];
 
   const breededSows = sows
-    .filter((sow) => !sow.is_available)
+    .filter(
+      (sow) =>
+        !sow.is_available &&
+        sow.breedings.some(
+          (breeding) =>
+            new Date(breeding.expected_farrow_date).getTime() - Date.now() <
+            30 * 24 * 60 * 60 * 1000
+        )
+    )
     .sort((a, b) => {
       return (
         new Date(a.breedings[0].breed_date).getTime() -
@@ -74,7 +82,7 @@ export default function Page() {
     <div className="space-y-16">
       {sows.some((sow) => !sow.is_available) && (
         <div className="space-y-4">
-          <h2 className="text-xl font-bold">แม่พันธุ์ตั้งครรภ์</h2>
+          <h2 className="text-xl font-bold">แม่พันธุ์ใกล้คลอด</h2>
           <SowList sows={breededSows} />
         </div>
       )}
