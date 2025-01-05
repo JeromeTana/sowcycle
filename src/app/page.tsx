@@ -81,7 +81,7 @@ export default function Page() {
   return (
     <div className="space-y-16">
       {sows.some((sow) => !sow.is_available) && (
-        <div className="space-y-4">
+        <div className="space-y-4 p-5  border border-pink-300 bg-pink-100 rounded-2xl">
           <h2 className="text-xl font-bold">แม่พันธุ์ใกล้คลอด</h2>
           <SowList sows={breededSows} />
         </div>

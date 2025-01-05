@@ -31,7 +31,7 @@ export default function BreedingCard({
   return (
     <Card
       className={
-        breeding.actual_farrow_date ? "" : "bg-pink-100 border-pink-300"
+        breeding.actual_farrow_date ? "" : "bg-gradient-to-br from-white to-pink-100 border-pink-300"
       }
     >
       <CardHeader>
