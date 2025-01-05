@@ -5,6 +5,8 @@ import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
+import { enGB } from "date-fns/locale";
+
 import { Calendar } from "./ui/calendar";
 
 export default function DatePicker({ field }: any) {
@@ -22,7 +24,7 @@ export default function DatePicker({ field }: any) {
             )}
           >
             {field.value ? (
-              format(field.value.toLocaleDateString("en-GB"), "P")
+              format(field?.value, "P", { locale: enGB })
             ) : (
               <span>Pick a date</span>
             )}
