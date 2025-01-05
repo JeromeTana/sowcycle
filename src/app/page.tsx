@@ -4,7 +4,7 @@ import SowList from "@/components/Sow/List";
 import SowForm from "@/components/Sow/Form";
 import { useEffect, useState } from "react";
 import { useSowStore } from "@/stores/useSowStore";
-import { getAllSows } from "@/services/sow";
+import { getAllSowsWithLatestBreeding } from "@/services/sow";
 
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
@@ -17,7 +17,7 @@ export default function Page() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const sows = await getAllSows();
+      const sows = await getAllSowsWithLatestBreeding();
       if (!sows) return;
       setSows(sows);
       setIsLoading(false);

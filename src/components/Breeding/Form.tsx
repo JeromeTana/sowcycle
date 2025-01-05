@@ -33,7 +33,11 @@ import {
   deleteBreeding,
   updateBreeding,
 } from "@/services/breeding";
-import { getAllSows, patchSow } from "@/services/sow";
+import {
+  getAllSows,
+  getAllSowsWithLatestBreeding,
+  patchSow,
+} from "@/services/sow";
 import { useSowStore } from "@/stores/useSowStore";
 import { useToast } from "@/hooks/use-toast";
 import DialogComponent from "../DialogComponent";
@@ -99,6 +103,7 @@ export function NewBreedingForm({
         sow_id: Number(values.sow_id),
         breed_date: values.breed_date.toISOString(),
         expected_farrow_date: expectedFarrowDate!.toISOString(),
+        updated_at: new Date().toISOString(),
       });
 
       if (res) {
@@ -127,6 +132,7 @@ export function NewBreedingForm({
         let res = await patchSow({
           id: Number(values.sow_id),
           is_available: false,
+          updated_at: new Date().toISOString(),
         });
 
         if (res) {
@@ -150,7 +156,7 @@ export function NewBreedingForm({
       if (!sows) return;
       setSows(sows);
     };
-    fetchData();
+    if (sows.length === 0) fetchData();
   }, []);
 
   return (
@@ -304,6 +310,7 @@ export function FarrowForm({ breeding }: { breeding: Breeding }) {
         let res = await patchSow({
           id: breeding.sow_id,
           is_available: true,
+          updated_at: new Date().toISOString(),
         });
         if (res) {
           toast({
@@ -322,7 +329,10 @@ export function FarrowForm({ breeding }: { breeding: Breeding }) {
 
   const handleUpdate = async (breeding: Breeding) => {
     try {
-      let res = await updateBreeding(breeding);
+      let res = await updateBreeding({
+        ...breeding,
+        updated_at: new Date().toISOString(),
+      });
       if (res) {
         toast({
           title: "แก้ไขสำเร็จ",

@@ -3,9 +3,7 @@
 import BreedingCard from "@/components/Breeding/Card";
 import SowForm from "@/components/Sow/Form";
 import { Button } from "@/components/ui/button";
-import { getBreedingsBySowId } from "@/services/breeding";
-import { getSowById } from "@/services/sow";
-import { Breeding } from "@/types/breeding";
+import { getSowByIdWithAllBreedings } from "@/services/sow";
 import { Sow } from "@/types/sow";
 import { useEffect, useState } from "react";
 
@@ -19,7 +17,7 @@ import CountdownBadge from "@/components/CountdownBadge";
 export default function SowsPage({ params }: any) {
   const [id, setId] = useState<number | null>();
   const [sow, setSow] = useState<Sow>({} as Sow);
-  const [breedings, setBreedings] = useState<Breeding[]>([]);
+  const { breedings } = sow;
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -34,13 +32,9 @@ export default function SowsPage({ params }: any) {
   useEffect(() => {
     if (!id) return;
     const fetchData = async () => {
-      let sow = await getSowById(id);
+      let sow = await getSowByIdWithAllBreedings(id);
       if (!sow) return;
       setSow(sow);
-
-      let breeding = await getBreedingsBySowId(id);
-      if (!breeding) return;
-      setBreedings(breeding);
       setIsLoading(false);
     };
     fetchData();

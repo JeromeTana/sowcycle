@@ -7,6 +7,30 @@ export const getAllSows = async () => {
   try {
     const { data, error } = (await supabase
       .from("sows")
+      .select()
+      .order("created_at", { ascending: false })) as {
+      data: Sow[];
+      error: any;
+    };
+
+    if (error) {
+      console.log(error);
+      return;
+    }
+    return data;
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error(`Error fetching sows: ${err.message}`);
+      throw err;
+    }
+    throw new Error("An unexpected error occurred");
+  }
+};
+
+export const getAllSowsWithLatestBreeding = async () => {
+  try {
+    const { data, error } = (await supabase
+      .from("sows")
       .select(
         `*,
         breedings(*)
@@ -28,7 +52,7 @@ export const getAllSows = async () => {
     return data;
   } catch (err) {
     if (err instanceof Error) {
-      console.error(`Error fetching sows: ${err.message}`);
+      console.error(`Error fetching sows with latest breeding: ${err.message}`);
       throw err;
     }
     throw new Error("An unexpected error occurred");
@@ -41,6 +65,31 @@ export const getSowById = async (id: number) => {
       .from("sows")
       .select()
       .eq("id", id)
+      .single()) as { data: Sow; error: any };
+
+    if (error) throw new Error(`Failed to fetch sow: ${error.message}`);
+
+    return data;
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error(`Error fetching sow: ${err.message}`);
+      throw err;
+    }
+    throw new Error("An unexpected error occurred");
+  }
+};
+
+export const getSowByIdWithAllBreedings = async (id: number) => {
+  try {
+    const { data, error } = (await supabase
+      .from("sows")
+      .select(
+        `*,
+        breedings(*)
+        `
+      )
+      .eq("id", id)
+      .order("breed_date", { ascending: false, referencedTable: "breedings" })
       .single()) as { data: Sow; error: any };
 
     if (error) throw new Error(`Failed to fetch sow: ${error.message}`);

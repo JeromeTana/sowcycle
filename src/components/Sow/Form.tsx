@@ -67,7 +67,9 @@ export default function SowForm({ editingSow }: any) {
     sow: Sow,
     values: z.infer<typeof formSchema>
   ) => {
-    let res = await updateSow({ ...sow, ...values });
+    let data: any = { ...sow, ...values, updated_at: new Date().toISOString() };
+    delete data.breedings;
+    let res = await updateSow(data);
     if (res) {
       updateSowState(res);
       toast({
