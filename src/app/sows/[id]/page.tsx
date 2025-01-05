@@ -111,7 +111,9 @@ export default function SowsPage({ params }: any) {
 
       <div className="mt-8 space-y-4">
         <div className="flex justify-between">
-          <p className="text-xl font-bold mb-2">ประวัติผสม</p>
+          <p className="text-xl font-bold mb-2">
+            ประวัติผสม <span>({breedings.length})</span>
+          </p>
           <DialogComponent
             title="เพิ่มประวัติผสม"
             dialogTriggerButton={
