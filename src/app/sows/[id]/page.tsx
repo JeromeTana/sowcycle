@@ -4,35 +4,22 @@ import BreedingCard from "@/components/Breeding/Card";
 import SowForm from "@/components/Sow/Form";
 import { Button } from "@/components/ui/button";
 import { getBreedingsBySowId } from "@/services/breeding";
-import { deleteSow, getSowById } from "@/services/sow";
-import { useSowStore } from "@/stores/useSowStore";
+import { getSowById } from "@/services/sow";
 import { Breeding } from "@/types/breeding";
 import { Sow } from "@/types/sow";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { NewBreedingForm } from "@/components/Breeding/Form";
 import DialogComponent from "@/components/DialogComponent";
-import { Pen, Plus, Trash } from "lucide-react";
+import { Heart, Pen, PiggyBank, PiggyBankIcon, Plus } from "lucide-react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function SowsPage({ params }: any) {
-  const router = useRouter();
-  const { removeSow } = useSowStore();
-
   const [id, setId] = useState<number | null>();
   const [sow, setSow] = useState<Sow>({} as Sow);
   const [breedings, setBreedings] = useState<Breeding[]>([]);
-
-  const onDelete = async (id: number) => {
-    try {
-      await deleteSow(id);
-    } catch (err) {
-      console.error(`Error deleting sow: ${err}`);
-    }
-
-    removeSow(id);
-    router.push("/sows");
-  };
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const getParamsId = async () => {
@@ -53,66 +40,87 @@ export default function SowsPage({ params }: any) {
       let breeding = await getBreedingsBySowId(id);
       if (!breeding) return;
       setBreedings(breeding);
+      setIsLoading(false);
     };
     fetchData();
   }, [id]);
 
-  if (!id || !sow.id) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div>
+        <div className="flex justify-between">
+          <Skeleton className=" w-40 h-8" />
+          <Skeleton className=" w-32 h-8" />
+        </div>
+        <Skeleton className="w-full h-32 mt-4 rounded-xl" />
+        <div className="flex justify-between mt-8">
+          <Skeleton className=" w-40 h-8" />
+          <Skeleton className=" w-32 h-8" />
+        </div>
+        <Skeleton className="w-full h-80 mt-4 rounded-xl" />
+        <Skeleton className="w-full h-80 mt-2 rounded-xl" />
+      </div>
+    );
 
   return (
     <div>
-      <div className="flex justify-between">
-        <p className="w-full text-2xl font-bold">{sow.name}</p>
+      <div className="flex justify-between mb-4">
+        <div className="relative">
+          <p className="text-2xl font-bold inline-flex items-center gap-1">
+            <PiggyBankIcon size={32} className="inline" />
+            {sow.name}
+          </p>
+          {sow.is_active && (
+            <div className="absolute top-0 -right-3 w-1 h-1 rounded-full bg-green-500 animate-ping" />
+          )}
+        </div>
         <div className="flex">
           <DialogComponent
             title="แก้ไขแม่พันธุ์"
             dialogTriggerButton={
               <Button variant={"ghost"}>
-                <Pen /> แก้ไข
+                <Pen /> แก้ไขแม่พันธุ์
               </Button>
             }
           >
             <SowForm editingSow={sow} />
           </DialogComponent>
-
-          <DialogComponent
-            title="ลบแม่พันธู์"
-            dialogTriggerButton={
-              <Button
-                variant="ghost"
-                className="text-red-500 hover:text-red-500"
-              >
-                <Trash /> ลบ
-              </Button>
-            }
-          >
-            <p>คุณแน่ใจหรือไม่ที่จะลบแม่พันธุ์นี้?</p>
-            <div className="flex justify-end gap-2">
-              <Button onClick={() => onDelete(id)} variant="destructive">
-                ลบ
-              </Button>
-            </div>
-          </DialogComponent>
         </div>
       </div>
-      <p>
-        เกิดเมื่อ:{" "}
-        {sow.birthdate
-          ? new Date(sow.birthdate).toLocaleDateString("en-GB")
-          : "ไม่มีข้อมูล"}
-      </p>
-      <p>สถานะ: {sow.is_available ? "พร้อมผสม" : "ตั้งครรภ์"} </p>
 
-      {!sow.is_available && <BreedingCard breeding={breedings[0]} />}
+      <Card className={sow.is_active ? "" : "opacity-50"}>
+        <CardHeader>
+          <p className="font-bold">รายละเอียด</p>
+        </CardHeader>
+        <CardContent>
+          {sow.is_active ? (
+            sow.is_available ? (
+              <p className="text-emerald-600 inline-flex items-center gap-1">
+                <PiggyBank size={16} />
+                พร้อมผสม
+              </p>
+            ) : (
+              <p className="text-pink-500 inline-flex items-center gap-1">
+                <Heart size={16} />
+                ตั้งครรภ์
+              </p>
+            )
+          ) : (
+            <div>แม่พันธุ์ไม่อยู่ในขณะนี้</div>
+          )}
+        </CardContent>
+      </Card>
+
       <div className="mt-8 space-y-4">
         <div className="flex justify-between">
-          <p className="text-xl font-bold mb-2">
-            ประวัติผสม {`(${breedings.length} ครั้ง)`}
-          </p>
+          <p className="text-xl font-bold mb-2">ประวัติผสม</p>
           <DialogComponent
             title="เพิ่มประวัติผสม"
             dialogTriggerButton={
-              <Button>
+              <Button
+                disabled={!sow.is_active || !sow.is_available}
+                variant={"outline"}
+              >
                 <Plus /> เพิ่มประวัติผสม
               </Button>
             }
@@ -123,11 +131,15 @@ export default function SowsPage({ params }: any) {
         {breedings.length > 0 ? (
           <div className="flex flex-col gap-2">
             {breedings.map((breeding, index) => (
-              <BreedingCard key={index} breeding={breeding} />
+              <BreedingCard
+                index={breedings.length - index}
+                key={index}
+                breeding={breeding}
+              />
             ))}
           </div>
         ) : (
-          <div>No breedings</div>
+          <div className="text-center pt-20 text-gray-400">ไม่มีประวัติผสม</div>
         )}
       </div>
     </div>

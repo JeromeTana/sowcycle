@@ -7,6 +7,7 @@ export interface Breeding {
   expected_farrow_date: string;
   actual_farrow_date?: string;
   piglets_born_count?: number;
-  piglets_born_alive?: number;
+  piglets_male_born_alive?: number;
+  piglets_female_born_alive?: number;
   piglets_born_dead?: number;
 }

@@ -5,4 +5,5 @@ export interface Sow {
   name: string;
   birthdate?: string;
   is_available?: boolean;
+  is_active?: boolean;
 }

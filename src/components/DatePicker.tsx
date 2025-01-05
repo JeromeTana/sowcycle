@@ -1,0 +1,49 @@
+import { useState } from "react";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { FormControl } from "./ui/form";
+import { Button } from "./ui/button";
+import { cn } from "@/lib/utils";
+import { CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import { Calendar } from "./ui/calendar";
+
+export default function DatePicker({ field }: any) {
+  const [calendarPop, setCalendarPop] = useState(false);
+
+  return (
+    <Popover open={calendarPop} onOpenChange={setCalendarPop}>
+      <PopoverTrigger asChild>
+        <FormControl>
+          <Button
+            variant={"outline"}
+            className={cn(
+              "w-[240px] pl-3 text-left font-normal",
+              !field.value && "text-muted-foreground"
+            )}
+          >
+            {field.value ? (
+              format(field.value.toLocaleDateString("en-GB"), "P")
+            ) : (
+              <span>Pick a date</span>
+            )}
+            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+          </Button>
+        </FormControl>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0" align="start">
+        <Calendar
+          mode="single"
+          selected={field.value}
+          onSelect={(e) => {
+            field.onChange(e);
+            setCalendarPop(false);
+          }}
+          disabled={(date) =>
+            date > new Date() || date < new Date("1900-01-01")
+          }
+          initialFocus
+        />
+      </PopoverContent>
+    </Popover>
+  );
+}

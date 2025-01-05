@@ -21,21 +21,22 @@ import {
 } from "@/components/ui/select";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import DatePicker from "../DatePicker";
+
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
-import { Calendar } from "../ui/calendar";
+import { CalendarIcon, Trash } from "lucide-react";
 import { useEffect, useMemo } from "react";
 import { Breeding } from "@/types/breeding";
-import { createBreeding, updateBreeding } from "@/services/breeding";
+import {
+  createBreeding,
+  deleteBreeding,
+  updateBreeding,
+} from "@/services/breeding";
 import { getAllSows, patchSow } from "@/services/sow";
 import { useSowStore } from "@/stores/useSowStore";
 import { useToast } from "@/hooks/use-toast";
+import DialogComponent from "../DialogComponent";
 
 const newFormSchema = z.object({
   sow_id: z.string(),
@@ -43,21 +44,34 @@ const newFormSchema = z.object({
 });
 
 const farrowFormSchema = z.object({
+  breed_date: z.date({ required_error: "กรุณาเลือกวันที่" }),
   actual_farrow_date: z.date(),
-  piglets_born_alive: z.coerce.number().nonnegative(),
+  piglets_male_born_alive: z.coerce.number().nonnegative(),
+  piglets_female_born_alive: z.coerce.number().nonnegative(),
   piglets_born_dead: z.coerce.number().nonnegative(),
 });
 
-export function NewBreedingForm({ id }: { id: string }) {
+export function NewBreedingForm({
+  id,
+  breeding,
+}: {
+  id?: string;
+  breeding?: Breeding;
+}) {
   const { sows, setSows } = useSowStore();
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof newFormSchema>>({
     resolver: zodResolver(newFormSchema),
-    defaultValues: {
-      sow_id: id,
-      breed_date: new Date(),
-    },
+    defaultValues: breeding
+      ? {
+          sow_id: breeding?.sow_id.toString(),
+          breed_date: new Date(breeding.breed_date),
+        }
+      : {
+          sow_id: id,
+          breed_date: new Date(),
+        },
   });
 
   const expectedFarrowDate = useMemo(() => {
@@ -69,25 +83,63 @@ export function NewBreedingForm({ id }: { id: string }) {
   }, [form.watch("breed_date")]);
 
   const onSubmit = async (values: z.infer<typeof newFormSchema>) => {
-    let res = await createBreeding({
-      sow_id: Number(values.sow_id),
-      breed_date: values.breed_date.toISOString(),
-      expected_farrow_date: expectedFarrowDate!.toISOString(),
-    });
+    if (breeding) {
+      handleUpdate(values);
+      return;
+    }
+    handleCreate(values);
+  };
 
-    if (res) {
-      let res = await patchSow({
-        id: Number(values.sow_id),
-        is_available: false,
+  const handleUpdate = async (values: z.infer<typeof newFormSchema>) => {
+    try {
+      let res = await updateBreeding({
+        ...breeding,
+        ...values,
+        sow_id: Number(values.sow_id),
+        breed_date: values.breed_date.toISOString(),
+        expected_farrow_date: expectedFarrowDate!.toISOString(),
       });
 
       if (res) {
-        form.reset();
         toast({
-          title: "เพิ่มสำเร็จ",
-          description: "เพิ่มประวัติการผสมเรียบร้อย",
+          title: "แก้ไขสำเร็จ",
+          description: "แก้ไขประวัติการผสมเรียบร้อย",
         });
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleCreate = async (values: z.infer<typeof newFormSchema>) => {
+    try {
+      let res = await createBreeding({
+        sow_id: Number(values.sow_id),
+        breed_date: values.breed_date.toISOString(),
+        expected_farrow_date: expectedFarrowDate!.toISOString(),
+      });
+
+      if (res) {
+        let res = await patchSow({
+          id: Number(values.sow_id),
+          is_available: false,
+        });
+
+        if (res) {
+          toast({
+            title: "เพิ่มสำเร็จ",
+            description: "เพิ่มประวัติการผสมเรียบร้อย",
+          });
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        }
+      }
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -102,14 +154,18 @@ export function NewBreedingForm({ id }: { id: string }) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
           name="sow_id"
           render={({ field }) => (
             <FormItem>
               <FormLabel>แม่พันธุ์</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select
+                onValueChange={field.onChange}
+                defaultValue={field.value}
+                disabled={breeding?.id ? true : false}
+              >
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="เลือกแม่พันธุ์" />
@@ -136,37 +192,7 @@ export function NewBreedingForm({ id }: { id: string }) {
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>วันที่ผสม</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-[240px] pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground"
-                      )}
-                    >
-                      {field.value ? (
-                        format(field.value, "PPP")
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    disabled={(date) =>
-                      date > new Date() || date < new Date("1900-01-01")
-                    }
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
+              <DatePicker field={field} />
               <FormMessage />
             </FormItem>
           )}
@@ -184,7 +210,7 @@ export function NewBreedingForm({ id }: { id: string }) {
               )}
             >
               {expectedFarrowDate ? (
-                format(expectedFarrowDate, "PPP")
+                format(expectedFarrowDate, "P")
               ) : (
                 <span>เลือกวันที่ผสม</span>
               )}
@@ -194,8 +220,9 @@ export function NewBreedingForm({ id }: { id: string }) {
           <FormMessage />
         </FormItem>
 
-        <div className="w-full flex justify-end">
-          <Button type="submit">บันทึก</Button>
+        <div className="w-full flex justify-between">
+          {breeding && <DeleteDialog id={breeding.id!} />}
+          <Button type="submit">{breeding ? "บันทึก" : "เพิ่ม"}</Button>
         </div>
       </form>
     </Form>
@@ -206,134 +233,277 @@ export function FarrowForm({ breeding }: { breeding: Breeding }) {
   const { toast } = useToast();
   const form = useForm<z.infer<typeof farrowFormSchema>>({
     resolver: zodResolver(farrowFormSchema),
-    defaultValues: {
-      actual_farrow_date: new Date(),
-      piglets_born_alive: 0,
-      piglets_born_dead: 0,
-    },
+    defaultValues: breeding.actual_farrow_date
+      ? {
+          breed_date: new Date(breeding.breed_date),
+          actual_farrow_date: new Date(breeding.actual_farrow_date),
+          piglets_male_born_alive: breeding.piglets_male_born_alive,
+          piglets_female_born_alive: breeding.piglets_female_born_alive,
+          piglets_born_dead: breeding.piglets_born_dead,
+        }
+      : {
+          breed_date: new Date(breeding.breed_date),
+          actual_farrow_date: new Date(),
+          piglets_male_born_alive: 0,
+          piglets_female_born_alive: 0,
+          piglets_born_dead: 0,
+        },
   });
 
-  const totalPiglets = useMemo(() => {
+  const totalBornPiglets = useMemo(() => {
     return (
-      Number(form.getValues("piglets_born_alive")) +
-      Number(form.getValues("piglets_born_dead"))
+      Number(form.getValues("piglets_male_born_alive")) +
+      Number(form.getValues("piglets_female_born_alive"))
     );
-  }, [form.watch("piglets_born_alive"), form.watch("piglets_born_dead")]);
+  }, [
+    form.watch("piglets_male_born_alive"),
+    form.watch("piglets_female_born_alive"),
+  ]);
+
+  const totalPiglets = useMemo(() => {
+    return totalBornPiglets + Number(form.getValues("piglets_born_dead"));
+  }, [totalBornPiglets, form.watch("piglets_born_dead")]);
 
   const onSubmit = async (values: z.infer<typeof farrowFormSchema>) => {
-    const updatedBreeding = {
+    let formattedBreeding = {
       ...breeding,
       ...values,
+      breed_date: values.breed_date.toISOString(),
       actual_farrow_date: values.actual_farrow_date.toISOString(),
       piglets_born_count: totalPiglets,
     };
 
-    try {
-      let res = await updateBreeding(updatedBreeding);
+    if (breeding.actual_farrow_date) {
+      handleUpdate(formattedBreeding);
+      return;
+    }
 
+    handleCreate(formattedBreeding);
+  };
+
+  const expectedFarrowDate = useMemo(() => {
+    if (form.watch("breed_date")) {
+      const breedDate = new Date(form.watch("breed_date"));
+      breedDate.setDate(breedDate.getDate() + 114);
+      return breedDate;
+    }
+  }, [form.watch("breed_date")]);
+
+  const handleCreate = async (breeding: Breeding) => {
+    try {
+      let res = await updateBreeding(breeding);
       if (res) {
         let res = await patchSow({
           id: breeding.sow_id,
           is_available: true,
         });
-
         if (res) {
-          form.reset();
           toast({
             title: "เพิ่มสำเร็จ",
-            description: "เพิ่มประวัติการผสมเรียบร้อย",
+            description: "เพิ่มประวัติการคลอดเรียบร้อย",
           });
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
         }
       }
     } catch (err) {
       console.error(err);
     }
   };
+
+  const handleUpdate = async (breeding: Breeding) => {
+    try {
+      let res = await updateBreeding(breeding);
+      if (res) {
+        toast({
+          title: "แก้ไขสำเร็จ",
+          description: "แก้ไขประวัติการผสมเรียบร้อย",
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
-          name="actual_farrow_date"
+          name="breed_date"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>Date of birth</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-[240px] pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground"
-                      )}
-                    >
-                      {field.value ? (
-                        format(field.value, "PPP")
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    disabled={(date) =>
-                      date > new Date() || date < new Date("1900-01-01")
-                    }
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
+              <FormLabel>วันที่ผสม</FormLabel>
+              <DatePicker field={field} />
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="piglets_born_alive"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>จำนวนลูกเกิดรอด</FormLabel>
-              <FormControl>
-                <Input type="number" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="piglets_born_dead"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>จำนวนลูกเกิดตาย</FormLabel>
-              <FormControl>
-                <Input type="number" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormItem>
-          <FormLabel>รวมทั้งหมด</FormLabel>
+        <FormItem className="flex flex-col">
+          <FormLabel>กำหนดคลอด</FormLabel>
           <FormControl>
-            <Input disabled type="number" value={totalPiglets} />
+            <Button
+              variant={"outline"}
+              disabled
+              className={cn(
+                "w-[240px] pl-3 text-left font-normal",
+                !expectedFarrowDate && "text-muted-foreground"
+              )}
+            >
+              {expectedFarrowDate ? (
+                format(expectedFarrowDate, "P")
+              ) : (
+                <span>เลือกวันที่ผสม</span>
+              )}
+              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+            </Button>
           </FormControl>
           <FormMessage />
         </FormItem>
+        {breeding.breed_date && (
+          <>
+            <FormField
+              control={form.control}
+              name="actual_farrow_date"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>วันที่คลอดจริง</FormLabel>
+                  <DatePicker field={field} />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-        <div className="w-full flex justify-end">
+            <p>จำนวนลูกเกิด</p>
+            <div className="border p-4 rounded-lg space-y-4 bg-gray-50">
+              <div className="flex gap-2">
+                <FormField
+                  control={form.control}
+                  name="piglets_male_born_alive"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>ตัวผู้</FormLabel>
+                      <FormControl>
+                        <Input
+                          className="bg-white"
+                          type="number"
+                          min={0}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="piglets_female_born_alive"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>ตัวเมีย</FormLabel>
+                      <FormControl>
+                        <Input
+                          className="bg-white"
+                          type="number"
+                          min={0}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <FormItem>
+                <FormLabel>รวม</FormLabel>
+                <FormControl>
+                  <Input
+                    className="bg-white"
+                    type="number"
+                    disabled
+                    value={totalBornPiglets}
+                    min={0}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </div>
+
+            <FormField
+              control={form.control}
+              name="piglets_born_dead"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>จำนวนลูกเกิดตาย</FormLabel>
+                  <FormControl>
+                    <Input type="number" {...field} min={0} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormItem>
+              <FormLabel>รวมทั้งหมด</FormLabel>
+              <FormControl>
+                <Input disabled type="number" value={totalPiglets} min={0} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          </>
+        )}
+
+        <div className="w-full flex justify-between">
+          <DeleteDialog id={breeding.id!} />
           <Button type="submit">บันทึก</Button>
         </div>
       </form>
     </Form>
+  );
+}
+
+export default function DeleteDialog({ id }: { id: number }) {
+  const { toast } = useToast();
+  const handleDelete = async () => {
+    try {
+      await deleteBreeding(id);
+
+      toast({
+        title: "ลบสำเร็จ",
+        description: "ลบประวัติการผสมเรียบร้อย",
+      });
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  return (
+    <DialogComponent
+      title="บันทึกการคลอด"
+      dialogTriggerButton={
+        <Button
+          variant={"ghost"}
+          className="text-red-500 hover:text-red-500 hover:bg-red-50"
+        >
+          <Trash /> ลบ
+        </Button>
+      }
+    >
+      <p>ต้องการลบข้อมูลการผสมนี้หรือไม่</p>
+      <div className="flex justify-end gap-2">
+        <Button variant={"destructive"} onClick={handleDelete}>
+          ลบ
+        </Button>
+      </div>
+    </DialogComponent>
   );
 }

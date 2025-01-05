@@ -2,34 +2,48 @@
 
 import SowList from "@/components/Sow/List";
 import SowForm from "@/components/Sow/Form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSowStore } from "@/stores/useSowStore";
 import { getAllSows } from "@/services/sow";
 
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import DialogComponent from "@/components/DialogComponent";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Page() {
   const { sows, setSows } = useSowStore();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       const sows = await getAllSows();
       if (!sows) return;
       setSows(sows);
+      setIsLoading(false);
     };
     fetchData();
-    return () => {};
   }, []);
 
-  if (sows.length === 0) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div>
+        <Skeleton className=" w-40 h-8" />
+        <Skeleton className="w-full h-80 mt-4 rounded-xl" />
+        <div className="flex justify-between mt-8">
+          <Skeleton className=" w-40 h-8" />
+          <Skeleton className=" w-32 h-8" />
+        </div>
+        <Skeleton className="w-full h-40 mt-4 rounded-xl" />
+        <Skeleton className="w-full h-40 mt-2 rounded-xl" />
+      </div>
+    );
 
   return (
     <div>
       <div className="space-y-4">
         <h2 className="text-xl font-bold">แม่พันธุ์ใกล้คลอด</h2>
-        <SowList sows={sows.filter((sow) => sow.is_available === false)} />
+        <SowList sows={sows.filter((sow) => !sow.is_available)} />
       </div>
       <div className="mt-10 space-y-4">
         <div className="flex justify-between">
@@ -37,7 +51,7 @@ export default function Page() {
           <DialogComponent
             title="เพิ่มแม่พันธุ์ใหม่"
             dialogTriggerButton={
-              <Button variant={'outline'}>
+              <Button variant={"outline"}>
                 <Plus /> เพิ่มแม่พันธุ์
               </Button>
             }

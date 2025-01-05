@@ -21,17 +21,19 @@ import {
   Clock,
   Heart,
   PiggyBank,
-  PiggyBankIcon,
   Plus,
 } from "lucide-react";
 
 import { FarrowForm, NewBreedingForm } from "../Breeding/Form";
 import DialogComponent from "../DialogComponent";
+import { cn } from "@/lib/utils";
+import { Skeleton } from "../ui/skeleton";
 
 export default function SowCard({ sow }: { sow: Sow }) {
   const [latestBreedings, setLatestBreedings] = useState<Breeding>(
     {} as Breeding
   );
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     let fetchBreedings = async () => {
@@ -39,12 +41,16 @@ export default function SowCard({ sow }: { sow: Sow }) {
       if (breedings) {
         setLatestBreedings(breedings[0]);
       }
+      setIsLoading(false);
     };
+    if (sow.is_available) return;
     fetchBreedings();
+
     return () => {};
   }, []);
+
   return (
-    <Card className="w-full">
+    <Card className={cn(sow.is_active ? "" : "opacity-60", "w-full")}>
       <CardHeader>
         <CardTitle>{sow.name}</CardTitle>
         <CardDescription>
@@ -55,18 +61,31 @@ export default function SowCard({ sow }: { sow: Sow }) {
       </CardHeader>
       <CardContent>
         <div>
-          <div>
-            <p className="inline-flex gap-1 items-center">
-              {sow.is_available ? <Heart size={16} /> : <PiggyBank size={16} />}
-              สถานะ: {sow.is_available ? "พร้อมผสม" : "ตั้งครรภ์"}
-            </p>
-          </div>
-          {latestBreedings?.actual_farrow_date === null && (
-            <div className="border p-4 rounded-lg mt-2 bg-slate-50">
-              <div>
-                <p className="inline-flex gap-1 items-center">
+          {sow.is_active ? (
+            <div>
+              {sow.is_available ? (
+                <p className="text-emerald-600 inline-flex items-center gap-1">
+                  <PiggyBank size={16} />
+                  พร้อมผสม
+                </p>
+              ) : (
+                <p className="text-pink-500 inline-flex items-center gap-1">
+                  <Heart size={16} />
+                  ตั้งครรภ์
+                </p>
+              )}
+            </div>
+          ) : (
+            <>ไม่อยู่</>
+          )}
+          {!sow.is_available &&
+            (isLoading ? (
+              <Skeleton className="w-full h-32 mt-2" />
+            ) : (
+              <div className="mt-2 space-y-2">
+                <p className="inline-flex gap-1 items-center bg-pink-500 text-white py-2 px-4 rounded-full">
                   <Clock size={16} />
-                  คลอดภายใน{" "}
+                  คลอดในอีก{" "}
                   {Math.ceil(
                     (new Date(latestBreedings.expected_farrow_date).getTime() -
                       new Date().getTime()) /
@@ -74,29 +93,28 @@ export default function SowCard({ sow }: { sow: Sow }) {
                   )}{" "}
                   วัน
                 </p>
-              </div>
-              <div className="mt-2">
-                <div>
-                  <p className="inline-flex gap-1 items-center">
-                    <CalendarHeart size={16} />
-                    ผสมวันที่:{" "}
+                <div className="flex flex-col gap-1">
+                  <p className="inline-flex items-center gap-1">
+                    <div className="border p-2 bg-gray-50 rounded-lg">
+                      <CalendarHeart size={16} className="text-gray-500" />
+                    </div>
+                    ผสมเมื่อ{" "}
                     {new Date(latestBreedings.breed_date).toLocaleDateString(
                       "en-GB"
                     )}
                   </p>
-                </div>
-                <div>
-                  <p className="inline-flex gap-1 items-center">
-                    <CalendarCheck size={16} />
-                    กำหนดคลอด:{" "}
+                  <p className="inline-flex items-center gap-1">
+                    <div className="border p-2 bg-gray-50 rounded-lg">
+                      <CalendarCheck size={16} className="text-gray-500" />
+                    </div>
+                    กำหนดคลอด{" "}
                     {new Date(
                       latestBreedings.expected_farrow_date
                     ).toLocaleDateString("en-GB")}
                   </p>
                 </div>
               </div>
-            </div>
-          )}
+            ))}
         </div>
       </CardContent>
       <CardFooter>
@@ -119,7 +137,7 @@ export default function SowCard({ sow }: { sow: Sow }) {
             <DialogComponent
               title="บันทึกการคลอด"
               dialogTriggerButton={
-                <Button variant={"secondary"}>
+                <Button disabled={!sow.is_active} variant={"secondary"}>
                   <Plus /> เพิ่มประวัติผสม
                 </Button>
               }

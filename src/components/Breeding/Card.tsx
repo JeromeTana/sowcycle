@@ -7,62 +7,164 @@ import {
 import { Breeding } from "@/types/breeding";
 import DialogComponent from "../DialogComponent";
 import { Button } from "../ui/button";
-import { Check, Trash } from "lucide-react";
-import { FarrowForm } from "./Form";
-import { deleteBreeding } from "@/services/breeding";
+import {
+  Check,
+  Pen,
+  X,
+  Calendar,
+  CalendarHeart,
+  CalendarCheck,
+  PiggyBank,
+  Clock,
+  Heart,
+} from "lucide-react";
+import { FarrowForm, NewBreedingForm } from "./Form";
 
-export default function BreedingCard({ breeding }: { breeding: Breeding }) {
+export default function BreedingCard({
+  breeding,
+  index,
+}: {
+  breeding: Breeding;
+  index: number;
+}) {
   if (!breeding) return null;
   return (
-    <Card>
+    <Card
+      className={
+        breeding.actual_farrow_date ? "" : "bg-pink-100 border-pink-300"
+      }
+    >
       <CardHeader>
-        ผสมเมื่อ: {new Date(breeding.breed_date).toLocaleDateString("en-GB")}
+        <p className="text-lg font-bold inline-flex items-center gap-1">
+          <Heart size={20} />
+          ผสมครั้งที่ {index}
+        </p>
       </CardHeader>
       <CardContent>
-        กำหนดคลอด:{" "}
-        {new Date(breeding.expected_farrow_date).toLocaleDateString("en-GB")}
-        {breeding.actual_farrow_date && (
-          <div className="">
-            <p>
-              วันคลอดจริง:{" "}
-              {new Date(breeding.actual_farrow_date).toLocaleDateString("en-GB")}
-            </p>
-            <div>
-              <p>จำนวนลูกหมูเกิดรอด: {breeding.piglets_born_alive}</p>
-              <p>จำนวนลูกหมูเกิดตาย: {breeding.piglets_born_dead}</p>
-              <p>รวมทั้งหมด: {breeding.piglets_born_count}</p>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            {!breeding.actual_farrow_date && (
+              <p className="inline-flex gap-1 items-center bg-pink-500 text-white py-2 px-4 rounded-full">
+                <Clock size={16} />
+                คลอดในอีก{" "}
+                {Math.ceil(
+                  (new Date(breeding.expected_farrow_date).getTime() -
+                    new Date().getTime()) /
+                    (1000 * 60 * 60 * 24)
+                )}{" "}
+                วัน
+              </p>
+            )}
+            <div className="flex flex-col gap-1">
+              <p className="inline-flex items-center gap-1">
+                <div className="border p-2 bg-gray-50 rounded-lg">
+                  <CalendarHeart size={16} className="text-gray-500" />
+                </div>
+                ผสมเมื่อ{" "}
+                {new Date(breeding.breed_date).toLocaleDateString("en-GB")}
+              </p>
+              {breeding.actual_farrow_date ? (
+                <p className="inline-flex items-center gap-1">
+                  <span className="border p-2 bg-gray-50 rounded-lg">
+                    <Calendar size={16} className="text-gray-500" />
+                  </span>
+                  คลอดเมื่อ{" "}
+                  {new Date(breeding.actual_farrow_date).toLocaleDateString(
+                    "en-GB"
+                  )}{" "}
+                  <span className="text-gray-400">
+                    (
+                    {new Date(breeding.actual_farrow_date) <
+                    new Date(breeding.expected_farrow_date) ? (
+                      <>
+                        ก่อนกำหนด{" "}
+                        {Math.ceil(
+                          (new Date(breeding.expected_farrow_date).getTime() -
+                            new Date(breeding.actual_farrow_date).getTime()) /
+                            (1000 * 60 * 60 * 24)
+                        )}{" "}
+                        วัน
+                      </>
+                    ) : (
+                      <>
+                        หลังกำหนด{" "}
+                        {Math.ceil(
+                          (new Date(breeding.actual_farrow_date).getTime() -
+                            new Date(breeding.expected_farrow_date).getTime()) /
+                            (1000 * 60 * 60 * 24)
+                        )}{" "}
+                        วัน
+                      </>
+                    )}
+                    )
+                  </span>
+                </p>
+              ) : (
+                <p className="inline-flex items-center gap-1">
+                  <div className="border p-2 bg-gray-50 rounded-lg">
+                    <CalendarCheck size={16} className="text-gray-500" />
+                  </div>
+                  กำหนดคลอด{" "}
+                  {new Date(breeding.expected_farrow_date).toLocaleDateString(
+                    "en-GB"
+                  )}
+                </p>
+              )}
             </div>
           </div>
-        )}
+          {breeding.actual_farrow_date && (
+            <div className="space-y-4 border p-4 bg-gray-50 rounded-lg">
+              <div>
+                <p className="inline-flex items-center gap-1">
+                  <PiggyBank size={16} /> จำนวนลูกหมูเกิดรอด{" "}
+                  <span className="font-semibold">
+                    {breeding.piglets_born_count}
+                  </span>
+                  ตัว
+                </p>
+                <div className="flex gap-1 mt-2">
+                  <p className="text-blue-500 border border-blue-300 p-2 bg-blue-50 rounded">
+                    ตัวผู้ {breeding.piglets_male_born_alive} ตัว
+                  </p>
+                  <p className="text-pink-500 border border-pink-300 p-2 bg-pink-50 rounded">
+                    ตัวเมีย {breeding.piglets_female_born_alive} ตัว
+                  </p>
+                </div>
+              </div>
+              <p className="inline-flex items-center gap-1">
+                <X size={16} />
+                จำนวนลูกหมูไม่รอด
+                <span className="font-semibold">
+                  {breeding.piglets_born_dead}
+                </span>
+                ตัว
+              </p>
+              <p className="border p-4 bg-gray-100 rounded">
+                รวมทั้งหมด{" "}
+                <span className="font-semibold">
+                  {breeding.piglets_born_count}
+                </span>{" "}
+                ตัว
+              </p>
+            </div>
+          )}
+        </div>
       </CardContent>
       <CardFooter>
-        <div className="w-full flex justify-end">
+        <div className="w-full flex justify-end gap-2">
           <DialogComponent
             title="บันทึกการคลอด"
             dialogTriggerButton={
-              <Button
-                variant={"ghost"}
-                className="text-red-500 hover:text-red-500 hover:bg-red-50"
-              >
-                <Trash /> ลบ
+              <Button variant={"ghost"}>
+                <Pen /> แก้ไขประวัติ
               </Button>
             }
           >
-            <p>ต้องการลบข้อมูลการผสมนี้หรือไม่</p>
-            <div className="flex justify-end">
-              <Button
-                variant={"destructive"}
-                onClick={async () => {
-                  try {
-                    await deleteBreeding(breeding.id!);
-                  } catch (err) {
-                    console.error(err);
-                  }
-                }}
-              >
-                ลบ
-              </Button>
-            </div>
+            {breeding.actual_farrow_date ? (
+              <FarrowForm breeding={breeding} />
+            ) : (
+              <NewBreedingForm breeding={breeding} />
+            )}
           </DialogComponent>
           {breeding.actual_farrow_date === null && (
             <DialogComponent
