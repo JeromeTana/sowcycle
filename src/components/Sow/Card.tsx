@@ -15,10 +15,10 @@ import {
 } from "@/components/ui/card";
 import { Button } from "../ui/button";
 import {
+  Calendar,
   CalendarCheck,
   CalendarHeart,
   Check,
-  Clock,
   Heart,
   PiggyBank,
   Plus,
@@ -43,7 +43,6 @@ export default function SowCard({ sow }: { sow: Sow }) {
       }
       setIsLoading(false);
     };
-    if (sow.is_available) return;
     fetchBreedings();
 
     return () => {};
@@ -64,15 +63,47 @@ export default function SowCard({ sow }: { sow: Sow }) {
           {sow.is_active ? (
             <div>
               {sow.is_available ? (
-                <p className="text-emerald-600 inline-flex items-center gap-1">
-                  <PiggyBank size={16} />
-                  พร้อมผสม
-                </p>
+                <>
+                  <p className="text-emerald-600 inline-flex items-center gap-1">
+                    <PiggyBank size={16} />
+                    พร้อมผสม
+                  </p>
+                  {latestBreedings?.actual_farrow_date && (
+                    <div className="flex flex-col gap-2 mt-6">
+                      <p className="inline-flex items-center gap-1">
+                        <span className="border p-2 bg-gray-50 rounded-lg">
+                          <Calendar size={16} className="text-gray-500" />
+                        </span>
+                        คลอดล่าสุด{" "}
+                        {new Date(
+                          latestBreedings?.actual_farrow_date
+                        ).toLocaleDateString("en-GB")}
+                      </p>
+                    </div>
+                  )}
+                </>
               ) : (
-                <p className="text-pink-500 inline-flex items-center gap-1">
-                  <Heart size={16} />
-                  ตั้งครรภ์
-                </p>
+                <div className="flex items-center gap-2">
+                  <p className="text-pink-500 inline-flex items-center gap-1">
+                    <Heart size={16} />
+                    ตั้งครรภ์
+                  </p>
+                  {isLoading ? (
+                    <Skeleton className="w-28 h-7 rounded-full" />
+                  ) : (
+                    <p className="text-sm inline-flex gap-1 items-center bg-pink-500 text-white py-1 px-2 rounded-full">
+                      คลอดใน{" "}
+                      {Math.ceil(
+                        (new Date(
+                          latestBreedings.expected_farrow_date
+                        ).getTime() -
+                          new Date().getTime()) /
+                          (1000 * 60 * 60 * 24)
+                      )}{" "}
+                      วัน
+                    </p>
+                  )}
+                </div>
               )}
             </div>
           ) : (
@@ -82,37 +113,25 @@ export default function SowCard({ sow }: { sow: Sow }) {
             (isLoading ? (
               <Skeleton className="w-full h-32 mt-2" />
             ) : (
-              <div className="mt-2 space-y-2">
-                <p className="inline-flex gap-1 items-center bg-pink-500 text-white py-2 px-4 rounded-full">
-                  <Clock size={16} />
-                  คลอดในอีก{" "}
-                  {Math.ceil(
-                    (new Date(latestBreedings.expected_farrow_date).getTime() -
-                      new Date().getTime()) /
-                      (1000 * 60 * 60 * 24)
-                  )}{" "}
-                  วัน
+              <div className="flex flex-col gap-2 mt-6">
+                <p className="inline-flex items-center gap-1">
+                  <span className="border p-2 bg-gray-50 rounded-lg">
+                    <CalendarHeart size={16} className="text-gray-500" />
+                  </span>
+                  ผสมเมื่อ{" "}
+                  {new Date(latestBreedings.breed_date).toLocaleDateString(
+                    "en-GB"
+                  )}
                 </p>
-                <div className="flex flex-col gap-1">
-                  <p className="inline-flex items-center gap-1">
-                    <div className="border p-2 bg-gray-50 rounded-lg">
-                      <CalendarHeart size={16} className="text-gray-500" />
-                    </div>
-                    ผสมเมื่อ{" "}
-                    {new Date(latestBreedings.breed_date).toLocaleDateString(
-                      "en-GB"
-                    )}
-                  </p>
-                  <p className="inline-flex items-center gap-1">
-                    <div className="border p-2 bg-gray-50 rounded-lg">
-                      <CalendarCheck size={16} className="text-gray-500" />
-                    </div>
-                    กำหนดคลอด{" "}
-                    {new Date(
-                      latestBreedings.expected_farrow_date
-                    ).toLocaleDateString("en-GB")}
-                  </p>
-                </div>
+                <p className="inline-flex items-center gap-1">
+                  <span className="border p-2 bg-gray-50 rounded-lg">
+                    <CalendarCheck size={16} className="text-gray-500" />
+                  </span>
+                  กำหนดคลอด{" "}
+                  {new Date(
+                    latestBreedings.expected_farrow_date
+                  ).toLocaleDateString("en-GB")}
+                </p>
               </div>
             ))}
         </div>
