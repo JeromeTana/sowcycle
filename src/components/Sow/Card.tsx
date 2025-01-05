@@ -28,6 +28,7 @@ import { FarrowForm, NewBreedingForm } from "../Breeding/Form";
 import DialogComponent from "../DialogComponent";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "../ui/skeleton";
+import CountdownBadge from "../CountdownBadge";
 
 export default function SowCard({ sow }: { sow: Sow }) {
   const [latestBreedings, setLatestBreedings] = useState<Breeding>(
@@ -91,17 +92,9 @@ export default function SowCard({ sow }: { sow: Sow }) {
                   {isLoading ? (
                     <Skeleton className="w-28 h-7 rounded-full" />
                   ) : (
-                    <p className="text-sm inline-flex gap-1 items-center bg-pink-500 text-white py-1 px-2 rounded-full">
-                      คลอดใน{" "}
-                      {Math.ceil(
-                        (new Date(
-                          latestBreedings.expected_farrow_date
-                        ).getTime() -
-                          new Date().getTime()) /
-                          (1000 * 60 * 60 * 24)
-                      )}{" "}
-                      วัน
-                    </p>
+                    <CountdownBadge
+                      date={latestBreedings.expected_farrow_date}
+                    />
                   )}
                 </div>
               )}

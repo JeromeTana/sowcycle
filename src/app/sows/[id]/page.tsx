@@ -14,6 +14,7 @@ import DialogComponent from "@/components/DialogComponent";
 import { Heart, Pen, PiggyBank, PiggyBankIcon, Plus } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import CountdownBadge from "@/components/CountdownBadge";
 
 export default function SowsPage({ params }: any) {
   const [id, setId] = useState<number | null>();
@@ -105,15 +106,7 @@ export default function SowsPage({ params }: any) {
                   <Heart size={16} />
                   ตั้งครรภ์
                 </p>
-                <p className="text-sm inline-flex gap-1 items-center bg-pink-500 text-white py-1 px-2 rounded-full">
-                  คลอดใน{" "}
-                  {Math.ceil(
-                    (new Date(breedings[0].expected_farrow_date).getTime() -
-                      new Date().getTime()) /
-                      (1000 * 60 * 60 * 24)
-                  )}{" "}
-                  วัน
-                </p>
+                <CountdownBadge date={breedings[0].expected_farrow_date} />
               </div>
             )
           ) : (
