@@ -40,12 +40,14 @@ export default function Page() {
     );
 
   return (
-    <div>
+    <div className="space-y-8">
+      {sows.some((sow) => !sow.is_available) && (
+        <div className="space-y-4">
+          <h2 className="text-xl font-bold">แม่พันธุ์ตั้งครรภ์</h2>
+          <SowList sows={sows.filter((sow) => !sow.is_available)} />
+        </div>
+      )}
       <div className="space-y-4">
-        <h2 className="text-xl font-bold">แม่พันธุ์ใกล้คลอด</h2>
-        <SowList sows={sows.filter((sow) => !sow.is_available)} />
-      </div>
-      <div className="mt-10 space-y-4">
         <div className="flex justify-between">
           <h2 className="text-xl font-bold">แม่พันธุ์ทั้งหมด</h2>
           <DialogComponent
