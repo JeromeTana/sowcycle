@@ -28,7 +28,7 @@ export default function DialogComponent({
             <p className="font-bold">{title}</p>
           </DialogTitle>
         </DialogHeader>
-        {children}
+        <div className="max-h-[80vh] overflow-auto">{children}</div>
       </DialogContent>
     </Dialog>
   );
