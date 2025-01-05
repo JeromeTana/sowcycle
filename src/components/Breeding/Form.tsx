@@ -194,6 +194,7 @@ export function NewBreedingForm({ id }: { id: string }) {
 }
 
 export function FarrowForm({ breeding }: { breeding: Breeding }) {
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof farrowFormSchema>>({
     resolver: zodResolver(farrowFormSchema),
     defaultValues: {
@@ -222,10 +223,18 @@ export function FarrowForm({ breeding }: { breeding: Breeding }) {
       let res = await updateBreeding(updatedBreeding);
 
       if (res) {
-        await patchSow({
+        let res = await patchSow({
           id: breeding.sow_id,
           is_available: true,
         });
+
+        if (res) {
+          form.reset();
+          toast({
+            title: "เพิ่มสำเร็จ",
+            description: "เพิ่มประวัติการผสมเรียบร้อย",
+          });
+        }
       }
     } catch (err) {
       console.error(err);
