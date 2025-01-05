@@ -15,10 +15,10 @@ import {
   CalendarHeart,
   CalendarCheck,
   PiggyBank,
-  Clock,
   Heart,
 } from "lucide-react";
 import { FarrowForm, NewBreedingForm } from "./Form";
+import { cn } from "@/lib/utils";
 
 export default function BreedingCard({
   breeding,
@@ -35,82 +35,95 @@ export default function BreedingCard({
       }
     >
       <CardHeader>
-        <p className="text-lg font-bold inline-flex items-center gap-1">
+        <p className="font-bold inline-flex items-center gap-1">
           <Heart size={20} />
-          ผสมครั้งที่ {index}
-        </p>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          <div className="space-y-2">
+          ผสมครั้งที่ {index}{" "}
+          <span className="font-normal text-pink-500">
             {!breeding.actual_farrow_date && (
-              <p className="inline-flex gap-1 items-center bg-pink-500 text-white py-2 px-4 rounded-full">
-                <Clock size={16} />
-                คลอดในอีก{" "}
+              <>
+                (คลอดใน{" "}
                 {Math.ceil(
                   (new Date(breeding.expected_farrow_date).getTime() -
                     new Date().getTime()) /
                     (1000 * 60 * 60 * 24)
                 )}{" "}
-                วัน
+                วัน)
+              </>
+            )}
+          </span>
+        </p>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <div className="flex flex-col gap-2">
+            <p className="inline-flex items-center gap-1">
+              <span
+                className={cn(
+                  breeding.actual_farrow_date
+                    ? "bg-gray-50 text-gray-500"
+                    : "bg-pink-50 text-pink-400 border-pink-400",
+                  "border p-2 rounded-lg"
+                )}
+              >
+                <CalendarHeart size={16} />
+              </span>
+              ผสมเมื่อ{" "}
+              {new Date(breeding.breed_date).toLocaleDateString("en-GB")}
+            </p>
+            {breeding.actual_farrow_date ? (
+              <p className="inline-flex items-center gap-1">
+                <span className="border p-2 bg-gray-50 rounded-lg">
+                  <Calendar size={16} className="text-gray-500" />
+                </span>
+                คลอดเมื่อ{" "}
+                {new Date(breeding.actual_farrow_date).toLocaleDateString(
+                  "en-GB"
+                )}{" "}
+                <span className="text-gray-400">
+                  (
+                  {new Date(breeding.actual_farrow_date) <
+                  new Date(breeding.expected_farrow_date) ? (
+                    <>
+                      ก่อนกำหนด{" "}
+                      {Math.ceil(
+                        (new Date(breeding.expected_farrow_date).getTime() -
+                          new Date(breeding.actual_farrow_date).getTime()) /
+                          (1000 * 60 * 60 * 24)
+                      )}{" "}
+                      วัน
+                    </>
+                  ) : (
+                    <>
+                      หลังกำหนด{" "}
+                      {Math.ceil(
+                        (new Date(breeding.actual_farrow_date).getTime() -
+                          new Date(breeding.expected_farrow_date).getTime()) /
+                          (1000 * 60 * 60 * 24)
+                      )}{" "}
+                      วัน
+                    </>
+                  )}
+                  )
+                </span>
+              </p>
+            ) : (
+              <p className="inline-flex items-center gap-1">
+                <span
+                  className={cn(
+                    breeding.actual_farrow_date
+                      ? "bg-gray-50 text-gray-500"
+                      : "bg-pink-50 text-pink-400 border-pink-400",
+                    "border p-2 rounded-lg"
+                  )}
+                >
+                  <CalendarCheck size={16} />
+                </span>
+                กำหนดคลอด{" "}
+                {new Date(breeding.expected_farrow_date).toLocaleDateString(
+                  "en-GB"
+                )}
               </p>
             )}
-            <div className="flex flex-col gap-1">
-              <p className="inline-flex items-center gap-1">
-                <div className="border p-2 bg-gray-50 rounded-lg">
-                  <CalendarHeart size={16} className="text-gray-500" />
-                </div>
-                ผสมเมื่อ{" "}
-                {new Date(breeding.breed_date).toLocaleDateString("en-GB")}
-              </p>
-              {breeding.actual_farrow_date ? (
-                <p className="inline-flex items-center gap-1">
-                  <span className="border p-2 bg-gray-50 rounded-lg">
-                    <Calendar size={16} className="text-gray-500" />
-                  </span>
-                  คลอดเมื่อ{" "}
-                  {new Date(breeding.actual_farrow_date).toLocaleDateString(
-                    "en-GB"
-                  )}{" "}
-                  <span className="text-gray-400">
-                    (
-                    {new Date(breeding.actual_farrow_date) <
-                    new Date(breeding.expected_farrow_date) ? (
-                      <>
-                        ก่อนกำหนด{" "}
-                        {Math.ceil(
-                          (new Date(breeding.expected_farrow_date).getTime() -
-                            new Date(breeding.actual_farrow_date).getTime()) /
-                            (1000 * 60 * 60 * 24)
-                        )}{" "}
-                        วัน
-                      </>
-                    ) : (
-                      <>
-                        หลังกำหนด{" "}
-                        {Math.ceil(
-                          (new Date(breeding.actual_farrow_date).getTime() -
-                            new Date(breeding.expected_farrow_date).getTime()) /
-                            (1000 * 60 * 60 * 24)
-                        )}{" "}
-                        วัน
-                      </>
-                    )}
-                    )
-                  </span>
-                </p>
-              ) : (
-                <p className="inline-flex items-center gap-1">
-                  <div className="border p-2 bg-gray-50 rounded-lg">
-                    <CalendarCheck size={16} className="text-gray-500" />
-                  </div>
-                  กำหนดคลอด{" "}
-                  {new Date(breeding.expected_farrow_date).toLocaleDateString(
-                    "en-GB"
-                  )}
-                </p>
-              )}
-            </div>
           </div>
           {breeding.actual_farrow_date && (
             <div className="space-y-4 border p-4 bg-gray-50 rounded-lg">
