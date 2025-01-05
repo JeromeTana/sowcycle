@@ -4,7 +4,7 @@ import BreedingCard from "@/components/Breeding/Card";
 import SowForm from "@/components/Sow/Form";
 import { Button } from "@/components/ui/button";
 import { getBreedingsBySowId } from "@/services/breeding";
-import { deleteSow, getSowById, getAllSows } from "@/services/sow";
+import { deleteSow, getSowById } from "@/services/sow";
 import { useSowStore } from "@/stores/useSowStore";
 import { Breeding } from "@/types/breeding";
 import { Sow } from "@/types/sow";
@@ -17,7 +17,7 @@ import { Pen, Plus, Trash } from "lucide-react";
 
 export default function SowsPage({ params }: any) {
   const router = useRouter();
-  const { setSows, removeSow } = useSowStore();
+  const { removeSow } = useSowStore();
 
   const [id, setId] = useState<number | null>();
   const [sow, setSow] = useState<Sow>({} as Sow);
@@ -39,14 +39,7 @@ export default function SowsPage({ params }: any) {
       const { id } = await params;
       setId(id);
     };
-    const fetchData = async () => {
-      const sows = await getAllSows();
-      if (!sows) return;
-      setSows(sows);
-    };
-
     getParamsId();
-    fetchData();
     return () => {};
   }, [params]);
 

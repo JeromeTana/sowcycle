@@ -30,10 +30,10 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "../ui/calendar";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { Breeding } from "@/types/breeding";
 import { createBreeding, updateBreeding } from "@/services/breeding";
-import { patchSow } from "@/services/sow";
+import { getAllSows, patchSow } from "@/services/sow";
 import { useSowStore } from "@/stores/useSowStore";
 import { useToast } from "@/hooks/use-toast";
 
@@ -49,7 +49,7 @@ const farrowFormSchema = z.object({
 });
 
 export function NewBreedingForm({ id }: { id: string }) {
-  const { sows } = useSowStore();
+  const { sows, setSows } = useSowStore();
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof newFormSchema>>({
@@ -90,6 +90,15 @@ export function NewBreedingForm({ id }: { id: string }) {
       }
     }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const sows = await getAllSows();
+      if (!sows) return;
+      setSows(sows);
+    };
+    fetchData();
+  }, []);
 
   return (
     <Form {...form}>
