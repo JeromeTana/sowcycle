@@ -37,6 +37,7 @@ import { getAllSows, patchSow } from "@/services/sow";
 import { useSowStore } from "@/stores/useSowStore";
 import { useToast } from "@/hooks/use-toast";
 import DialogComponent from "../DialogComponent";
+import { enGB } from "date-fns/locale";
 
 const newFormSchema = z.object({
   sow_id: z.string(),
@@ -212,7 +213,7 @@ export function NewBreedingForm({
                 )}
               >
                 {expectedFarrowDate ? (
-                  format(expectedFarrowDate, "P")
+                  format(expectedFarrowDate, "P", { locale: enGB })
                 ) : (
                   <span>เลือกวันที่ผสม</span>
                 )}
@@ -364,7 +365,7 @@ export function FarrowForm({ breeding }: { breeding: Breeding }) {
                 )}
               >
                 {expectedFarrowDate ? (
-                  format(expectedFarrowDate, "P")
+                  format(expectedFarrowDate, "P", { locale: enGB })
                 ) : (
                   <span>เลือกวันที่ผสม</span>
                 )}
