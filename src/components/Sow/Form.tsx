@@ -24,14 +24,9 @@ const formSchema = z.object({
   name: z.string().nonempty("กรุณากรอกชื่อแม่พันธุ์"),
 });
 
-export default function SowForm() {
+export default function SowForm({ editingSow }: any) {
   const [sow, setSow] = useState<Sow>({} as Sow);
-  const {
-    editingSow,
-    setEditingSow,
-    addSow: createSowState,
-    updateSow: updateSowState,
-  } = useSowStore();
+  const { addSow: createSowState, updateSow: updateSowState } = useSowStore();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -44,7 +39,6 @@ export default function SowForm() {
     if (editingSow) {
       let res = await updateSow({ ...sow, ...values });
       updateSowState(res);
-      setEditingSow(null);
       return;
     }
 
