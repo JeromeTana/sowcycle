@@ -1,3 +1,5 @@
+import { Breeding } from "./breeding";
+
 export interface Sow {
   id: number;
   created_at?: string;
@@ -6,4 +8,5 @@ export interface Sow {
   birthdate?: string;
   is_available?: boolean;
   is_active?: boolean;
+  breedings: Breeding[];
 }

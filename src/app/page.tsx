@@ -44,7 +44,15 @@ export default function Page() {
       {sows.some((sow) => !sow.is_available) && (
         <div className="space-y-4">
           <h2 className="text-xl font-bold">แม่พันธุ์ตั้งครรภ์</h2>
-          <SowList sows={sows.filter((sow) => !sow.is_available)} />
+          <SowList
+            sows={sows
+              .filter((sow) => !sow.is_available)
+              .sort(
+                (a, b) =>
+                  new Date(a.breedings[0].expected_farrow_date).getTime() -
+                  new Date(b.breedings[0].expected_farrow_date).getTime()
+              )}
+          />
         </div>
       )}
       <div className="space-y-4">

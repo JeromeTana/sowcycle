@@ -8,7 +8,7 @@ export const getBreedingsBySowId = async (sowId: number) => {
     .from("breedings")
     .select()
     .eq("sow_id", sowId)
-    .order("created_at", { ascending: false })) as {
+    .order("breed_date", { ascending: false })) as {
     data: Breeding[];
     error: any;
   };
