@@ -62,12 +62,12 @@ export default function SowsPage({ params }: any) {
   return (
     <div>
       <div className="flex justify-between">
-        <p className="w-full">{sow.name}</p>
+        <p className="w-full text-2xl font-bold">{sow.name}</p>
         <div className="flex">
           <DialogComponent
             title="แก้ไขแม่พันธุ์"
             dialogTriggerButton={
-              <Button>
+              <Button variant={"ghost"}>
                 <Pen /> แก้ไข
               </Button>
             }
@@ -98,39 +98,37 @@ export default function SowsPage({ params }: any) {
       <p>
         เกิดเมื่อ:{" "}
         {sow.birthdate
-          ? new Date(sow.birthdate).toLocaleDateString()
+          ? new Date(sow.birthdate).toLocaleDateString("en-GB")
           : "ไม่มีข้อมูล"}
       </p>
       <p>สถานะ: {sow.is_available ? "พร้อมผสม" : "ตั้งครรภ์"} </p>
 
       {!sow.is_available && <BreedingCard breeding={breedings[0]} />}
-      <div>
-        <div>
-          <div className="flex justify-between">
-            <div className="font-bold mb-2">
-              ประวัติผสม {`(${breedings.length} ครั้ง)`}
-            </div>
-            <DialogComponent
-              title="เพิ่มประวัติผสม"
-              dialogTriggerButton={
-                <Button>
-                  <Plus /> เพิ่มประวัติผสม
-                </Button>
-              }
-            >
-              <NewBreedingForm id={sow.id.toString()} />
-            </DialogComponent>
-          </div>
-          {breedings.length > 0 ? (
-            <div className="flex flex-col gap-2">
-              {breedings.map((breeding, index) => (
-                <BreedingCard key={index} breeding={breeding} />
-              ))}
-            </div>
-          ) : (
-            <div>No breedings</div>
-          )}
+      <div className="mt-8 space-y-4">
+        <div className="flex justify-between">
+          <p className="text-xl font-bold mb-2">
+            ประวัติผสม {`(${breedings.length} ครั้ง)`}
+          </p>
+          <DialogComponent
+            title="เพิ่มประวัติผสม"
+            dialogTriggerButton={
+              <Button>
+                <Plus /> เพิ่มประวัติผสม
+              </Button>
+            }
+          >
+            <NewBreedingForm id={sow.id.toString()} />
+          </DialogComponent>
         </div>
+        {breedings.length > 0 ? (
+          <div className="flex flex-col gap-2">
+            {breedings.map((breeding, index) => (
+              <BreedingCard key={index} breeding={breeding} />
+            ))}
+          </div>
+        ) : (
+          <div>No breedings</div>
+        )}
       </div>
     </div>
   );

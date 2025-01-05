@@ -33,7 +33,7 @@ export default function SowForm({ editingSow }: any) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: editingSow.name || "",
+      name: editingSow?.name || "",
     },
   });
 

@@ -16,16 +16,16 @@ export default function BreedingCard({ breeding }: { breeding: Breeding }) {
   return (
     <Card>
       <CardHeader>
-        ผสมเมื่อ: {new Date(breeding.breed_date).toLocaleDateString()}
+        ผสมเมื่อ: {new Date(breeding.breed_date).toLocaleDateString("en-GB")}
       </CardHeader>
       <CardContent>
         กำหนดคลอด:{" "}
-        {new Date(breeding.expected_farrow_date).toLocaleDateString()}
+        {new Date(breeding.expected_farrow_date).toLocaleDateString("en-GB")}
         {breeding.actual_farrow_date && (
           <div className="">
             <p>
               วันคลอดจริง:{" "}
-              {new Date(breeding.actual_farrow_date).toLocaleDateString()}
+              {new Date(breeding.actual_farrow_date).toLocaleDateString("en-GB")}
             </p>
             <div>
               <p>จำนวนลูกหมูเกิดรอด: {breeding.piglets_born_alive}</p>
@@ -36,45 +36,47 @@ export default function BreedingCard({ breeding }: { breeding: Breeding }) {
         )}
       </CardContent>
       <CardFooter>
-        {breeding.actual_farrow_date === null && (
+        <div className="w-full flex justify-end">
           <DialogComponent
             title="บันทึกการคลอด"
             dialogTriggerButton={
-              <Button>
-                <Check /> บันทึกการคลอด
+              <Button
+                variant={"ghost"}
+                className="text-red-500 hover:text-red-500 hover:bg-red-50"
+              >
+                <Trash /> ลบ
               </Button>
             }
           >
-            <FarrowForm breeding={breeding} />
+            <p>ต้องการลบข้อมูลการผสมนี้หรือไม่</p>
+            <div className="flex justify-end">
+              <Button
+                variant={"destructive"}
+                onClick={async () => {
+                  try {
+                    await deleteBreeding(breeding.id!);
+                  } catch (err) {
+                    console.error(err);
+                  }
+                }}
+              >
+                ลบ
+              </Button>
+            </div>
           </DialogComponent>
-        )}
-        <DialogComponent
-          title="บันทึกการคลอด"
-          dialogTriggerButton={
-            <Button
-              variant={"ghost"}
-              className="text-red-500 hover:text-red-500 hover:bg-red-50"
+          {breeding.actual_farrow_date === null && (
+            <DialogComponent
+              title="บันทึกการคลอด"
+              dialogTriggerButton={
+                <Button>
+                  <Check /> บันทึกการคลอด
+                </Button>
+              }
             >
-              <Trash /> ลบ
-            </Button>
-          }
-        >
-          <p>ต้องการลบข้อมูลการผสมนี้หรือไม่</p>
-          <div className="flex justify-end">
-            <Button
-              variant={"destructive"}
-              onClick={async () => {
-                try {
-                  await deleteBreeding(breeding.id!);
-                } catch (err) {
-                  console.error(err);
-                }
-              }}
-            >
-              ลบ
-            </Button>
-          </div>
-        </DialogComponent>
+              <FarrowForm breeding={breeding} />
+            </DialogComponent>
+          )}
+        </div>
       </CardFooter>
     </Card>
   );

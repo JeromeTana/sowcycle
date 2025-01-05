@@ -28,16 +28,16 @@ export default function Page() {
   return (
     <div>
       <div className="space-y-4">
-        <p>แม่พันธุ์ใกล้คลอด</p>
+        <h2 className="text-xl font-bold">แม่พันธุ์ใกล้คลอด</h2>
         <SowList sows={sows.filter((sow) => sow.is_available === false)} />
       </div>
       <div className="mt-10 space-y-4">
         <div className="flex justify-between">
-          <p>แม่พันธุ์ทั้งหมด</p>
+          <h2 className="text-xl font-bold">แม่พันธุ์ทั้งหมด</h2>
           <DialogComponent
             title="เพิ่มแม่พันธุ์ใหม่"
             dialogTriggerButton={
-              <Button>
+              <Button variant={'outline'}>
                 <Plus /> เพิ่มแม่พันธุ์
               </Button>
             }
