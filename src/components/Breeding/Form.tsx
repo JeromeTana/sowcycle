@@ -339,7 +339,7 @@ export function FarrowForm({ breeding }: { breeding: Breeding }) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <div className="w-full flex gap-2">
+        <div className="w-full flex gap-2 bg-gray-50 border p-4 rounded-lg">
           <FormField
             control={form.control}
             name="breed_date"
