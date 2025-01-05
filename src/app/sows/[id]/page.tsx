@@ -38,7 +38,6 @@ export default function SowsPage({ params }: any) {
     const getParamsId = async () => {
       const { id } = await params;
       setId(id);
-      return id;
     };
     const fetchData = async () => {
       const sows = await getAllSows();
@@ -82,13 +81,25 @@ export default function SowsPage({ params }: any) {
           >
             <SowForm editingSow={sow} />
           </DialogComponent>
-          <Button
-            variant="ghost"
-            onClick={() => onDelete(id)}
-            className="text-red-500 hover:text-red-500"
+
+          <DialogComponent
+            title="ลบแม่พันธู์"
+            dialogTriggerButton={
+              <Button
+                variant="ghost"
+                className="text-red-500 hover:text-red-500"
+              >
+                <Trash /> ลบ
+              </Button>
+            }
           >
-            <Trash />
-          </Button>
+            <p>คุณแน่ใจหรือไม่ที่จะลบแม่พันธุ์นี้?</p>
+            <div className="flex justify-end gap-2">
+              <Button onClick={() => onDelete(id)} variant="destructive">
+                ลบ
+              </Button>
+            </div>
+          </DialogComponent>
         </div>
       </div>
       <p>
