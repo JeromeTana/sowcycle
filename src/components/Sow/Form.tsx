@@ -21,21 +21,22 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/hooks/use-toast";
 import DialogComponent from "../DialogComponent";
-import { Trash } from "lucide-react";
+import { Check, Loader, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Switch } from "../ui/switch";
+import { useLoadingStore } from "@/stores/useLoadingStore";
 
 const formSchema = z.object({
   name: z.string().nonempty("กรุณากรอกชื่อแม่พันธุ์"),
   is_active: z.boolean(),
 });
 
-export default function SowForm({ editingSow }: any) {
+export default function SowForm({ editingSow, setDialog }: any) {
   const [sow, setSow] = useState<Sow>({} as Sow);
-  const { addSow, updateSow: updateSowState } = useSowStore();
+  const { isLoading, setIsLoading } = useLoadingStore();
+  const { addSow, updateSow: updateSowState, removeSow } = useSowStore();
   const { toast } = useToast();
   const router = useRouter();
-  const { removeSow } = useSowStore();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -57,9 +58,7 @@ export default function SowForm({ editingSow }: any) {
         title: "เพิ่มข้อมูลเรียบร้อย",
         description: "ข้อมูลของแม่พันธุ์ถูกเพิ่มเรียบร้อยแล้ว",
       });
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
+      setDialog(false);
     }
   };
 
@@ -69,6 +68,7 @@ export default function SowForm({ editingSow }: any) {
   ) => {
     let data: any = { ...sow, ...values, updated_at: new Date().toISOString() };
     delete data.breedings;
+    delete data.medical_records;
     let res = await updateSow(data);
     if (res) {
       updateSowState(res);
@@ -76,17 +76,18 @@ export default function SowForm({ editingSow }: any) {
         title: "แก้ไขข้อมูลเรียบร้อย",
         description: "ข้อมูลของแม่พันธุ์ถูกแก้ไขเรียบร้อยแล้ว",
       });
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
+      setDialog(false);
     }
   };
 
   const onDelete = async (id: number) => {
+    setIsLoading(true);
     try {
       await deleteSow(id);
     } catch (err) {
       console.error(`Error deleting sow: ${err}`);
+    } finally {
+      setIsLoading(false);
     }
 
     removeSow(id);
@@ -94,11 +95,18 @@ export default function SowForm({ editingSow }: any) {
   };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    if (editingSow) {
-      handleUpdateSow(sow, values);
-      return;
+    setIsLoading(true);
+    try {
+      if (editingSow) {
+        await handleUpdateSow(sow, values);
+        return;
+      }
+      await handleCreateSow(sow, values);
+    } catch (err) {
+      console.error(`Error: ${err}`);
+    } finally {
+      setIsLoading(false);
     }
-    handleCreateSow(sow, values);
   };
 
   useEffect(() => {
@@ -157,12 +165,14 @@ export default function SowForm({ editingSow }: any) {
               <span className="font-bold">{sow.name}</span>
             </p>
             <div className="flex justify-end gap-2">
-              <Button onClick={() => onDelete(sow.id)} variant="destructive">
-                ลบ
+              <Button variant="destructive" onClick={() => onDelete(sow.id)}>
+                <Trash /> ลบ
               </Button>
             </div>
           </DialogComponent>
-          <Button type="submit">{editingSow ? "บันทึก" : "เพิ่ม"}</Button>
+          <Button type="submit">
+            <Check /> บันทึก
+          </Button>
         </div>
       </form>
     </Form>

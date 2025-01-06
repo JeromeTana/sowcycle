@@ -79,13 +79,14 @@ export const getSowById = async (id: number) => {
   }
 };
 
-export const getSowByIdWithAllBreedings = async (id: number) => {
+export const getSowByIdWithAllInfo = async (id: number) => {
   try {
     const { data, error } = (await supabase
       .from("sows")
       .select(
         `*,
-        breedings(*)
+        breedings(*),
+        medical_records(*)
         `
       )
       .eq("id", id)

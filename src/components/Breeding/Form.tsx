@@ -25,7 +25,7 @@ import DatePicker from "../DatePicker";
 
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { CalendarIcon, Trash } from "lucide-react";
+import { CalendarIcon, Check, Heart, Plus, Trash } from "lucide-react";
 import { useEffect, useMemo } from "react";
 import { Breeding } from "@/types/breeding";
 import {
@@ -33,15 +33,12 @@ import {
   deleteBreeding,
   updateBreeding,
 } from "@/services/breeding";
-import {
-  getAllSows,
-  getAllSowsWithLatestBreeding,
-  patchSow,
-} from "@/services/sow";
+import { getAllSows, patchSow } from "@/services/sow";
 import { useSowStore } from "@/stores/useSowStore";
 import { useToast } from "@/hooks/use-toast";
 import DialogComponent from "../DialogComponent";
 import { enGB } from "date-fns/locale";
+import { useLoadingStore } from "@/stores/useLoadingStore";
 
 const newFormSchema = z.object({
   sow_id: z.string(),
@@ -59,11 +56,14 @@ const farrowFormSchema = z.object({
 export function NewBreedingForm({
   id,
   breeding,
+  setDialog,
 }: {
   id?: string;
   breeding?: Breeding;
+  setDialog?: any;
 }) {
   const { sows, setSows } = useSowStore();
+  const { setIsLoading } = useLoadingStore();
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof newFormSchema>>({
@@ -88,11 +88,18 @@ export function NewBreedingForm({
   }, [form.watch("breed_date")]);
 
   const onSubmit = async (values: z.infer<typeof newFormSchema>) => {
-    if (breeding) {
-      handleUpdate(values);
-      return;
+    setIsLoading(true);
+    try {
+      if (breeding) {
+        await handleUpdate(values);
+        return;
+      }
+      await handleCreate(values);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
     }
-    handleCreate(values);
   };
 
   const handleUpdate = async (values: z.infer<typeof newFormSchema>) => {
@@ -111,9 +118,7 @@ export function NewBreedingForm({
           title: "แก้ไขสำเร็จ",
           description: "แก้ไขประวัติการผสมเรียบร้อย",
         });
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
+        setDialog(false);
       }
     } catch (err) {
       console.error(err);
@@ -140,9 +145,7 @@ export function NewBreedingForm({
             title: "เพิ่มสำเร็จ",
             description: "เพิ่มประวัติการผสมเรียบร้อย",
           });
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000);
+          setDialog(false);
         }
       }
     } catch (err) {
@@ -236,14 +239,33 @@ export function NewBreedingForm({
           )}
         >
           {breeding && <DeleteDialog id={breeding.id!} />}
-          <Button type="submit">{breeding ? "บันทึก" : "เพิ่ม"}</Button>
+          <Button type="submit">
+            {breeding ? (
+              <>
+                <Check />
+                บันทึก
+              </>
+            ) : (
+              <>
+                <Heart />
+                เพิ่มประวัติผสม
+              </>
+            )}
+          </Button>
         </div>
       </form>
     </Form>
   );
 }
 
-export function FarrowForm({ breeding }: { breeding: Breeding }) {
+export function FarrowForm({
+  breeding,
+  setDialog,
+}: {
+  breeding: Breeding;
+  setDialog?: any;
+}) {
+  const { setIsLoading } = useLoadingStore();
   const { toast } = useToast();
   const form = useForm<z.infer<typeof farrowFormSchema>>({
     resolver: zodResolver(farrowFormSchema),
@@ -286,13 +308,20 @@ export function FarrowForm({ breeding }: { breeding: Breeding }) {
       actual_farrow_date: values.actual_farrow_date.toISOString(),
       piglets_born_count: totalPiglets,
     };
+    setIsLoading(true);
 
-    if (breeding.actual_farrow_date) {
-      handleUpdate(formattedBreeding);
-      return;
+    try {
+      if (breeding.actual_farrow_date) {
+        await handleUpdate(formattedBreeding);
+        return;
+      }
+
+      await handleCreate(formattedBreeding);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
     }
-
-    handleCreate(formattedBreeding);
   };
 
   const expectedFarrowDate = useMemo(() => {
@@ -317,9 +346,7 @@ export function FarrowForm({ breeding }: { breeding: Breeding }) {
             title: "เพิ่มสำเร็จ",
             description: "เพิ่มประวัติการคลอดเรียบร้อย",
           });
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000);
+          setDialog(false);
         }
       }
     } catch (err) {
@@ -338,9 +365,7 @@ export function FarrowForm({ breeding }: { breeding: Breeding }) {
           title: "แก้ไขสำเร็จ",
           description: "แก้ไขประวัติการผสมเรียบร้อย",
         });
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
+        setDialog(false);
       }
     } catch (err) {
       console.error(err);
@@ -491,8 +516,11 @@ export function FarrowForm({ breeding }: { breeding: Breeding }) {
 }
 
 export default function DeleteDialog({ id }: { id: number }) {
+  const { setIsLoading } = useLoadingStore();
   const { toast } = useToast();
   const handleDelete = async () => {
+    setIsLoading(true);
+
     try {
       await deleteBreeding(id);
 
@@ -505,6 +533,8 @@ export default function DeleteDialog({ id }: { id: number }) {
       }, 1000);
     } catch (err) {
       console.error(err);
+    } finally {
+      setIsLoading(false);
     }
   };
   return (

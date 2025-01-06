@@ -1,4 +1,5 @@
 import { Breeding } from "./breeding";
+import { MedicalRecord } from "./medicalRecord";
 
 export interface Sow {
   [key: string]: any;
@@ -10,4 +11,5 @@ export interface Sow {
   is_available?: boolean;
   is_active?: boolean;
   breedings: Breeding[];
+  medical_records: MedicalRecord[];
 }

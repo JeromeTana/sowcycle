@@ -14,13 +14,27 @@ type DialogComponentProps = {
   dialogTriggerButton: React.ReactNode;
 };
 
+type ChildElementProps = {
+  setDialog: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
 export default function DialogComponent({
   children,
   title,
   dialogTriggerButton,
 }: DialogComponentProps) {
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  const enhancedChildren = React.Children.map(children, (child) => {
+    if (React.isValidElement(child)) {
+      return React.cloneElement(child, {
+        setDialog: setIsOpen,
+      } as ChildElementProps);
+    }
+    return child;
+  });
   return (
-    <Dialog>
+    <Dialog modal open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>{dialogTriggerButton}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -28,7 +42,7 @@ export default function DialogComponent({
             <p className="font-bold">{title}</p>
           </DialogTitle>
         </DialogHeader>
-        <div className="max-h-[80vh] overflow-auto">{children}</div>
+        <div className="max-h-[80vh] overflow-auto">{enhancedChildren}</div>
       </DialogContent>
     </Dialog>
   );

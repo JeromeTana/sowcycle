@@ -7,7 +7,15 @@ import { useSowStore } from "@/stores/useSowStore";
 import { getAllSowsWithLatestBreeding } from "@/services/sow";
 
 import { Button } from "@/components/ui/button";
-import { Plus, Search } from "lucide-react";
+import {
+  Check,
+  Heart,
+  LayoutDashboard,
+  PiggyBank,
+  Plus,
+  Search,
+  X,
+} from "lucide-react";
 import DialogComponent from "@/components/DialogComponent";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
@@ -19,18 +27,58 @@ export default function Page() {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState({});
   const filterOptions = [
-    { label: "ทั้งหมด", value: {} },
-    { label: "ตั้งครรภ์", value: { is_available: false } },
-    { label: "พร้อมผสม", value: { is_available: true } },
-    { label: "ยังอยู่", value: { is_active: true } },
-    { label: "ไม่อยู่", value: { is_active: false } },
+    {
+      label: (
+        <>
+          <LayoutDashboard />
+          ทั้งหมด
+        </>
+      ),
+      value: {},
+    },
+    {
+      label: (
+        <>
+          <Heart />
+          ตั้งครรภ์
+        </>
+      ),
+      value: { is_available: false },
+    },
+    {
+      label: (
+        <>
+          <PiggyBank />
+          พร้อมผสม
+        </>
+      ),
+      value: { is_available: true },
+    },
+    {
+      label: (
+        <>
+          <Check />
+          ยังอยู่
+        </>
+      ),
+      value: { is_active: true },
+    },
+    {
+      label: (
+        <>
+          <X />
+          ไม่อยู่
+        </>
+      ),
+      value: { is_active: false },
+    },
   ];
 
   const breededSows = sows
     .filter(
       (sow) =>
         !sow.is_available &&
-        sow.breedings.some(
+        sow.breedings?.some(
           (breeding) =>
             new Date(breeding.expected_farrow_date).getTime() - Date.now() <
             30 * 24 * 60 * 60 * 1000
@@ -91,7 +139,7 @@ export default function Page() {
           <DialogComponent
             title="เพิ่มแม่พันธุ์ใหม่"
             dialogTriggerButton={
-              <Button variant={"outline"}>
+              <Button>
                 <Plus /> เพิ่มแม่พันธุ์
               </Button>
             }
