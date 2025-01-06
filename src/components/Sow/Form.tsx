@@ -24,7 +24,7 @@ import DialogComponent from "../DialogComponent";
 import { Check, Loader, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Switch } from "../ui/switch";
-import { useLoadingStore } from "@/stores/useLoadingStore";
+import { useLoading } from "@/stores/useLoading";
 
 const formSchema = z.object({
   name: z.string().nonempty("กรุณากรอกชื่อแม่พันธุ์"),
@@ -33,7 +33,7 @@ const formSchema = z.object({
 
 export default function SowForm({ editingSow, setDialog }: any) {
   const [sow, setSow] = useState<Sow>({} as Sow);
-  const { isLoading, setIsLoading } = useLoadingStore();
+  const { isLoading, setIsLoading } = useLoading();
   const { addSow, updateSow: updateSowState, removeSow } = useSowStore();
   const { toast } = useToast();
   const router = useRouter();

@@ -38,7 +38,7 @@ import { useSowStore } from "@/stores/useSowStore";
 import { useToast } from "@/hooks/use-toast";
 import DialogComponent from "../DialogComponent";
 import { enGB } from "date-fns/locale";
-import { useLoadingStore } from "@/stores/useLoadingStore";
+import { useLoading } from "@/stores/useLoading";
 
 const newFormSchema = z.object({
   sow_id: z.string(),
@@ -63,7 +63,7 @@ export function NewBreedingForm({
   setDialog?: any;
 }) {
   const { sows, setSows } = useSowStore();
-  const { setIsLoading } = useLoadingStore();
+  const { setIsLoading } = useLoading();
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof newFormSchema>>({
@@ -265,7 +265,7 @@ export function FarrowForm({
   breeding: Breeding;
   setDialog?: any;
 }) {
-  const { setIsLoading } = useLoadingStore();
+  const { setIsLoading } = useLoading();
   const { toast } = useToast();
   const form = useForm<z.infer<typeof farrowFormSchema>>({
     resolver: zodResolver(farrowFormSchema),
@@ -516,7 +516,7 @@ export function FarrowForm({
 }
 
 export default function DeleteDialog({ id }: { id: number }) {
-  const { setIsLoading } = useLoadingStore();
+  const { setIsLoading } = useLoading();
   const { toast } = useToast();
   const handleDelete = async () => {
     setIsLoading(true);

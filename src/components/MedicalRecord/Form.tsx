@@ -37,7 +37,7 @@ import { useToast } from "@/hooks/use-toast";
 import DialogComponent from "../DialogComponent";
 import { MedicalRecord } from "@/types/medicalRecord";
 import { Textarea } from "../ui/textarea";
-import { useLoadingStore } from "@/stores/useLoadingStore";
+import { useLoading } from "@/stores/useLoading";
 
 const newFormSchema = z.object({
   sow_id: z.string(),
@@ -56,7 +56,7 @@ export function MedicalRecordForm({
   setDialog?: any;
 }) {
   const { sows, setSows } = useSowStore();
-  const { setIsLoading } = useLoadingStore();
+  const { setIsLoading } = useLoading();
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof newFormSchema>>({
@@ -242,7 +242,7 @@ export function MedicalRecordForm({
 }
 
 export default function DeleteDialog({ id }: { id: number }) {
-  const { setIsLoading } = useLoadingStore();
+  const { setIsLoading } = useLoading();
   const { toast } = useToast();
   const handleDelete = async () => {
     setIsLoading(true);
