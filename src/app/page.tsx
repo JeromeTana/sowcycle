@@ -67,8 +67,7 @@ export default function Page() {
   if (isLoading)
     return (
       <div>
-        <Skeleton className=" w-40 h-8" />
-        <Skeleton className="w-full h-80 mt-4 rounded-xl" />
+        <Skeleton className="w-full h-[40rem] rounded-2xl" />
         <div className="flex justify-between mt-16">
           <Skeleton className=" w-40 h-8" />
           <Skeleton className=" w-32 h-8" />
