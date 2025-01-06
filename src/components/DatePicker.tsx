@@ -13,7 +13,7 @@ export default function DatePicker({ field }: any) {
   const [calendarPop, setCalendarPop] = useState(false);
 
   return (
-    <Popover open={calendarPop} onOpenChange={setCalendarPop}>
+    <Popover modal open={calendarPop} onOpenChange={setCalendarPop}>
       <PopoverTrigger asChild>
         <FormControl>
           <Button
