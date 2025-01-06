@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/card";
 import DialogComponent from "../DialogComponent";
 import { Button } from "../ui/button";
-import { Pen, CalendarHeart, Syringe, Activity } from "lucide-react";
+import { Pen, Syringe, Activity, Calendar } from "lucide-react";
 import { MedicalRecordForm } from "./Form";
 import { MedicalRecord } from "@/types/medicalRecord";
 
@@ -57,7 +57,7 @@ export default function MedicalRecordCard({
             </div>
             <div className="inline-flex items-center gap-2 text-gray-500">
               <div className={"border p-2 rounded-lg bg-gray-50"}>
-                <CalendarHeart size={20} />
+                <Calendar size={20} />
               </div>
               <p className="inline-flex flex-col">
                 <span className="text-xs">ใช้ยาเมื่อ</span>
