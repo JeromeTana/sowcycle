@@ -12,4 +12,5 @@ export interface Sow {
   is_active?: boolean;
   breedings: Breeding[];
   medical_records: MedicalRecord[];
+  user_id: string;
 }
