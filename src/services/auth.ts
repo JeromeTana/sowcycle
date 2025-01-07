@@ -4,22 +4,14 @@ import { redirect } from "next/navigation";
 const supabase = createClient();
 
 export const login = async (email: string, password: string) => {
-  try {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
 
-    if (error) throw new Error(`Failed to login: ${error.message}`);
+  if (error) throw new Error(`Failed to login: ${error.message}`);
 
-    return data;
-  } catch (err) {
-    if (err instanceof Error) {
-      console.error(`Error logging in: ${err.message}`);
-      throw err;
-    }
-    throw new Error("An unexpected error occurred");
-  }
+  return data;
 };
 
 export const signUp = async (email: string, password: string) => {

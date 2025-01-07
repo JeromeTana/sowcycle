@@ -15,11 +15,12 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
-import { authOnChange, login, signUp } from "@/services/auth";
+import { authOnChange, getCurrentUser, login, signUp } from "@/services/auth";
 import { useEffect, useMemo, useState } from "react";
 import { redirect, useRouter } from "next/navigation";
 import { useLoading } from "@/stores/useLoading";
 import TabsComponent from "@/components/TabsComponent";
+import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
   username: z.string().nonempty("กรุณากรอกชื่อผู้ใช้"),
@@ -27,6 +28,7 @@ const formSchema = z.object({
 });
 
 export default function LoginPage() {
+  const router = useRouter();
   const tabOptions = [
     {
       label: "Login",
@@ -44,7 +46,7 @@ export default function LoginPage() {
   useEffect(() => {
     authOnChange((event: any, session: any) => {
       if (session) {
-        redirect("/");
+        router.push("/");
       }
     });
   }, []);
@@ -77,10 +79,13 @@ const LoginForm = () => {
     try {
       await login(values.username, values.password);
     } catch (err) {
-      form.setError("password", {
-        type: "manual",
-        message: "อีเมลล์ หรือ รหัสผ่าน ไม่ถูกต้อง",
-      });
+      if (err instanceof Error) {
+        console.log(err);
+        form.setError("password", {
+          type: "manual",
+          message: "อีเมลล์ หรือ รหัสผ่าน ไม่ถูกต้อง",
+        });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -128,6 +133,7 @@ const LoginForm = () => {
 const SignupForm = () => {
   const [repeatedPassword, setRepeatedPassword] = useState("");
   const { setIsLoading } = useLoading();
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -144,11 +150,18 @@ const SignupForm = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
     try {
-      await signUp(values.username, values.password);
+      let res = await signUp(values.username, values.password);
+      if (res) {
+        toast({
+          title: "Verification email sent",
+          description: "Please check your email to verify your account",
+        });
+      }
     } catch (err) {
       console.error(err);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   return (
