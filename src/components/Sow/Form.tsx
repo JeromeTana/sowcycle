@@ -21,7 +21,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/hooks/use-toast";
 import DialogComponent from "../DialogComponent";
-import { Check, Loader, Trash } from "lucide-react";
+import { Check, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Switch } from "../ui/switch";
 import { useLoading } from "@/stores/useLoading";
@@ -33,7 +33,7 @@ const formSchema = z.object({
 
 export default function SowForm({ editingSow, setDialog }: any) {
   const [sow, setSow] = useState<Sow>({} as Sow);
-  const { isLoading, setIsLoading } = useLoading();
+  const { setIsLoading } = useLoading();
   const { addSow, updateSow: updateSowState, removeSow } = useSowStore();
   const { toast } = useToast();
   const router = useRouter();
