@@ -1,22 +1,23 @@
 import { Sow } from "@/types/sow";
 import { createClient } from "@/utils/supabase/client";
+import { getCurrentUser } from "./auth";
 
 const supabase = createClient();
 
 export const getAllSows = async () => {
+  const user = await getCurrentUser();
   try {
     const { data, error } = (await supabase
       .from("sows")
       .select()
+      .eq("user_id", user.id)
       .order("created_at", { ascending: false })) as {
       data: Sow[];
       error: any;
     };
 
-    if (error) {
-      console.log(error);
-      return;
-    }
+    if (error) throw new Error(`Failed to fetch sows: ${error.message}`);
+
     return data;
   } catch (err) {
     if (err instanceof Error) {
@@ -28,6 +29,7 @@ export const getAllSows = async () => {
 };
 
 export const getAllSowsWithLatestBreeding = async () => {
+  const user = await getCurrentUser();
   try {
     const { data, error } = (await supabase
       .from("sows")
@@ -36,6 +38,7 @@ export const getAllSowsWithLatestBreeding = async () => {
         breedings(*)
         `
       )
+      .eq("user_id", user.id)
       .order("breed_date", { ascending: false, referencedTable: "breedings" })
       .order("created_at", { ascending: false })
       .limit(1, {
@@ -45,10 +48,8 @@ export const getAllSowsWithLatestBreeding = async () => {
       error: any;
     };
 
-    if (error) {
-      console.log(error);
-      return;
-    }
+    if (error) throw new Error(`Failed to fetch sows: ${error.message}`);
+
     return data;
   } catch (err) {
     if (err instanceof Error) {
@@ -80,6 +81,7 @@ export const getSowById = async (id: number) => {
 };
 
 export const getSowByIdWithAllInfo = async (id: number) => {
+  const user = await getCurrentUser();
   try {
     const { data, error } = (await supabase
       .from("sows")
@@ -90,6 +92,7 @@ export const getSowByIdWithAllInfo = async (id: number) => {
         `
       )
       .eq("id", id)
+      .eq("user_id", user.id)
       .order("breed_date", { ascending: false, referencedTable: "breedings" })
       .single()) as { data: Sow; error: any };
 
@@ -106,10 +109,11 @@ export const getSowByIdWithAllInfo = async (id: number) => {
 };
 
 export const createSow = async (sow: Sow) => {
+  const user = await getCurrentUser();
   try {
     const { data, error } = await supabase
       .from("sows")
-      .insert([sow])
+      .insert([{ ...sow, user_id: user.id }])
       .select()
       .single();
 
