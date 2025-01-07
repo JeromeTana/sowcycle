@@ -11,6 +11,7 @@ import {
   Check,
   Heart,
   LayoutDashboard,
+  LogOut,
   PiggyBank,
   Plus,
   Search,
@@ -20,9 +21,13 @@ import DialogComponent from "@/components/DialogComponent";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { signOut } from "@/services/auth";
+import { redirect } from "next/navigation";
+import { useLoading } from "@/stores/useLoading";
 
 export default function Page() {
   const { sows, setSows } = useSowStore();
+  const { setIsLoading: setIsLoadingDialog } = useLoading();
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState({});
@@ -102,6 +107,20 @@ export default function Page() {
       });
   }, [sows, search, filter]);
 
+  const handleLogout = async () => {
+    setIsLoadingDialog(true);
+    try {
+      signOut().then((res) => {
+        if (res) {
+          setIsLoadingDialog(false);
+          redirect("/login");
+        }
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       const sows = await getAllSowsWithLatestBreeding();
@@ -127,7 +146,11 @@ export default function Page() {
 
   return (
     <div className="space-y-16">
-      {sows.some((sow) => !sow.is_available) && (
+      <Button variant={"ghost"} onClick={handleLogout}>
+        <LogOut />
+        Logout
+      </Button>
+      {breededSows.length > 0 && (
         <div className="space-y-4 p-5  border border-pink-300 bg-pink-100 rounded-2xl">
           <h2 className="text-xl font-bold">แม่พันธุ์ใกล้คลอด</h2>
           <SowList sows={breededSows} />
