@@ -386,6 +386,7 @@ export function FarrowForm({
           title: "แก้ไขสำเร็จ",
           description: "แก้ไขประวัติการผสมเรียบร้อย",
         });
+        updateBreedingStore(res);
         setDialog(false);
       }
     } catch (err) {
