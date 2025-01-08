@@ -176,13 +176,13 @@ export default function SowsPage({ params }: any) {
           {sow.is_active ? (
             sow.is_available ? (
               <p className="text-emerald-600 inline-flex items-center gap-1">
-                <PiggyBank size={20} />
+                <PiggyBank size={22} />
                 พร้อมผสม
               </p>
             ) : (
               <div className="flex items-center gap-2">
                 <p className="text-pink-500 inline-flex items-center gap-1">
-                  <Heart size={20} />
+                  <Heart size={22} />
                   ตั้งครรภ์
                 </p>
                 <CountdownBadge date={breedings[0]?.expected_farrow_date} />

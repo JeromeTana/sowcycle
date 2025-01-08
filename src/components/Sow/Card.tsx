@@ -49,13 +49,13 @@ export default function SowCard({ sow }: { sow: Sow }) {
               {sow.is_available ? (
                 <>
                   <p className="text-emerald-600 inline-flex items-center gap-1">
-                    <PiggyBank size={20} />
+                    <PiggyBank size={22} />
                     พร้อมผสม
                   </p>
                   <div className="flex flex-col gap-2 mt-6">
                     <p className="inline-flex items-center gap-1">
                       <span className="border p-2 bg-gray-50 rounded-lg">
-                        <Calendar size={20} className="text-gray-500" />
+                        <Calendar size={22} className="text-gray-500" />
                       </span>
                       {latestBreeding?.actual_farrow_date ? (
                         <span>
@@ -76,7 +76,7 @@ export default function SowCard({ sow }: { sow: Sow }) {
               ) : (
                 <div className="flex items-center gap-2">
                   <p className="text-pink-500 inline-flex items-center gap-1">
-                    <Heart size={20} />
+                    <Heart size={22} />
                     ตั้งครรภ์
                   </p>
                   <CountdownBadge date={latestBreeding.expected_farrow_date} />
@@ -91,7 +91,7 @@ export default function SowCard({ sow }: { sow: Sow }) {
               <div className="flex flex-col gap-2 mt-6">
                 <p className="inline-flex items-center gap-1">
                   <span className="border p-2 bg-gray-50 rounded-lg">
-                    <CalendarHeart size={20} className="text-gray-500" />
+                    <CalendarHeart size={22} className="text-gray-500" />
                   </span>
                   ผสมเมื่อ{" "}
                   {new Date(latestBreeding.breed_date).toLocaleDateString(
@@ -100,7 +100,7 @@ export default function SowCard({ sow }: { sow: Sow }) {
                 </p>
                 <p className="inline-flex items-center gap-1">
                   <span className="border p-2 bg-gray-50 rounded-lg">
-                    <CalendarCheck size={20} className="text-gray-500" />
+                    <CalendarCheck size={22} className="text-gray-500" />
                   </span>
                   กำหนดคลอด{" "}
                   {new Date(

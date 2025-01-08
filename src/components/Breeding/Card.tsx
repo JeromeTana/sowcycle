@@ -44,7 +44,7 @@ export default function BreedingCard({
           )}
         >
           <Heart
-            size={20}
+            size={22}
             className={cn(!breeding.actual_farrow_date && "animate-bounce")}
           />
           ผสมครั้งที่ {index}{" "}
@@ -75,7 +75,7 @@ export default function BreedingCard({
                   "border p-2 rounded-lg"
                 )}
               >
-                <CalendarHeart size={20} />
+                <CalendarHeart size={22} />
               </div>
               <p className="inline-flex flex-col gap-1">
                 <span className="text-xs">ผสมเมื่อ</span>
@@ -87,7 +87,7 @@ export default function BreedingCard({
             {breeding.actual_farrow_date ? (
               <div className="inline-flex items-start gap-2 text-gray-500">
                 <div className="border p-2 bg-gray-50 rounded-lg">
-                  <CalendarCheck size={20} className="text-gray-500" />
+                  <CalendarCheck size={22} className="text-gray-500" />
                 </div>
                 <p className="inline-flex flex-col gap-1">
                   <span className="text-xs">คลอดเมื่อ</span>
@@ -129,7 +129,7 @@ export default function BreedingCard({
             ) : (
               <div className="inline-flex items-start gap-2 text-gray-500">
                 <div className="bg-pink-50 text-pink-400 border-pink-400 border p-2 rounded-lg">
-                  <Calendar size={20} />
+                  <Calendar size={22} />
                 </div>
                 <p className="inline-flex flex-col gap-1">
                   <span className="text-xs">กำหนดคลอด</span>
@@ -146,7 +146,7 @@ export default function BreedingCard({
             <div className="space-y-4 border p-4 bg-gray-50 rounded-lg">
               <div>
                 <p className="inline-flex items-center gap-1">
-                  <PiggyBank size={20} /> จำนวนลูกหมูเกิดรอด{" "}
+                  <PiggyBank size={22} /> จำนวนลูกหมูเกิดรอด{" "}
                   <span className="font-semibold">
                     {breeding.piglets_born_count}
                   </span>
@@ -162,7 +162,7 @@ export default function BreedingCard({
                 </div>
               </div>
               <p className="inline-flex items-center gap-1">
-                <X size={20} />
+                <X size={22} />
                 จำนวนลูกหมูไม่รอด
                 <span className="font-semibold">
                   {breeding.piglets_born_dead}
