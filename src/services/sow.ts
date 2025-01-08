@@ -176,7 +176,15 @@ export const patchSow = async (sow: Partial<Sow>) => {
       .from("sows")
       .update(sow)
       .eq("id", sow.id)
-      .select()
+      .select(
+        `
+      *,
+      breedings(*)`
+      )
+      .order("breed_date", { ascending: false, referencedTable: "breedings" })
+      .limit(1, {
+        foreignTable: "breedings",
+      })
       .single();
 
     if (error) throw new Error(`Failed to patch sow: ${error.message}`);
