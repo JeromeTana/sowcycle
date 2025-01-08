@@ -8,11 +8,13 @@ import { getAllSowsWithLatestBreeding } from "@/services/sow";
 
 import { Button } from "@/components/ui/button";
 import {
-  Check,
-  Heart,
-  LayoutDashboard,
+  ArrowDown,
+  ArrowUp,
+  ArrowUpDown,
+  ChevronDown,
+  ChevronUp,
+  Filter,
   LogOut,
-  PiggyBank,
   Plus,
   Search,
   X,
@@ -24,71 +26,66 @@ import { cn } from "@/lib/utils";
 import { signOut } from "@/services/auth";
 import { redirect } from "next/navigation";
 import { useLoading } from "@/stores/useLoading";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+
+const filterOptions = [
+  {
+    label: "ทั้งหมด",
+    value: {},
+  },
+  {
+    label: "ตั้งครรภ์",
+    value: { is_available: false },
+  },
+  {
+    label: "พร้อมผสม",
+    value: { is_available: true },
+  },
+  {
+    label: "ยังอยู่",
+    value: { is_active: true },
+  },
+  {
+    label: "ไม่อยู่",
+    value: { is_active: false },
+  },
+];
+
+const sortOptions = [
+  {
+    label: "ชื่อ",
+    value: "name",
+  },
+  {
+    label: "วันที่ผสม",
+    value: "breedings[0].breed_date",
+  },
+  {
+    label: "วันที่คลอด",
+    value: "breedings[0].actual_farrow_date",
+  },
+  {
+    label: "จำนวนวันใกล้คลอด",
+    value: "",
+  },
+];
 
 export default function Page() {
   const { sows, setSows } = useSowStore();
   const { setIsLoading: setIsLoadingDialog } = useLoading();
   const [isLoading, setIsLoading] = useState(true);
+
   const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState({});
-  const filterOptions = [
-    {
-      label: (
-        <>
-          <LayoutDashboard />
-          ทั้งหมด
-        </>
-      ),
-      value: {},
-    },
-    {
-      label: (
-        <>
-          <Heart />
-          ตั้งครรภ์
-        </>
-      ),
-      value: { is_available: false },
-    },
-    {
-      label: (
-        <>
-          <PiggyBank />
-          พร้อมผสม
-        </>
-      ),
-      value: { is_available: true },
-    },
-    {
-      label: (
-        <>
-          <Check />
-          ยังอยู่
-        </>
-      ),
-      value: { is_active: true },
-    },
-    {
-      label: (
-        <>
-          <X />
-          ไม่อยู่
-        </>
-      ),
-      value: { is_active: false },
-    },
-  ];
+  const [filter, setFilter] = useState(filterOptions[0]);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const breededSows = sows
-    .filter(
-      (sow) =>
-        !sow.is_available &&
-        sow.breedings?.some(
-          (breeding) =>
-            new Date(breeding.expected_farrow_date).getTime() - Date.now() <
-            30 * 24 * 60 * 60 * 1000
-        )
-    )
+    .filter((sow) => !sow.is_available)
     .sort((a, b) => {
       return (
         new Date(a.breedings[0].breed_date).getTime() -
@@ -100,8 +97,7 @@ export default function Page() {
     return sows
       .filter((sow) => sow.name.includes(search))
       .filter((sow) => {
-        if (!filter) return true;
-        return Object.entries(filter).every(([key, value]) => {
+        return Object.entries(filter.value).every(([key, value]) => {
           return sow[key] === value;
         });
       });
@@ -153,7 +149,17 @@ export default function Page() {
       {breededSows.length > 0 && (
         <div className="space-y-4 p-5  border border-pink-300 bg-pink-100 rounded-2xl">
           <h2 className="text-xl font-bold">แม่พันธุ์ใกล้คลอด</h2>
-          <SowList sows={breededSows} />
+          <SowList sows={isExpanded ? breededSows : breededSows.slice(0, 3)} />
+          {breededSows.length > 3 && (
+            <Button
+              variant={"outline"}
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="flex items-center gap-1 w-full p-8 rounded-xl"
+            >
+              {isExpanded ? <ArrowUp /> : <ArrowDown />}
+              {isExpanded ? "ย่อ" : "ดูทั้งหมด"}
+            </Button>
+          )}
         </div>
       )}
       <div className="space-y-4">
@@ -170,31 +176,47 @@ export default function Page() {
             <SowForm />
           </DialogComponent>
         </div>
-        <Input
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          startIcon={Search}
-          placeholder="ค้นหาชื่อแม่พันธุ์"
-          className="bg-white"
-        />
-        <div className="flex gap-2 overflow-auto">
-          {filterOptions.map((option, index) => (
-            <Button
-              key={index}
-              onClick={() => {
-                setFilter(option.value);
-              }}
-              variant={"outline"}
-              className={cn(
-                JSON.stringify(option.value) === JSON.stringify(filter)
-                  ? "bg-black text-white hover:bg-black hover:text-white"
-                  : "bg-white text-black",
-                "text-sm rounded-full"
-              )}
-            >
-              {option.label}
-            </Button>
-          ))}
+        <div className="flex gap-2">
+          <Input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            startIcon={Search}
+            placeholder="ค้นหาชื่อแม่พันธุ์"
+            className="bg-white"
+          />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant={"outline"}
+                className={cn(
+                  JSON.stringify(filter.value) ===
+                    JSON.stringify(filterOptions[0].value)
+                    ? ""
+                    : "bg-pink-500 hover:bg-pink-600 !text-white"
+                )}
+              >
+                <Filter /> {filter.label} <ChevronDown />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {filterOptions.map((option, key) => (
+                <DropdownMenuItem
+                  key={key}
+                  onSelect={() => {
+                    setFilter(option);
+                  }}
+                  className={cn(
+                    JSON.stringify(option.value) ===
+                      JSON.stringify(filter.value)
+                      ? "bg-black text-white hover:!bg-black hover:!text-white"
+                      : "bg-white text-black"
+                  )}
+                >
+                  {option.label}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
         <SowList sows={filteredSows} />
       </div>
