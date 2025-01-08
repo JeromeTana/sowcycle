@@ -62,7 +62,18 @@ export default function SowCard({ sow }: { sow: Sow }) {
                           คลอดล่าสุด{" "}
                           {new Date(
                             latestBreeding?.actual_farrow_date
-                          ).toLocaleDateString("en-GB")}
+                          ).toLocaleDateString("en-GB")}{" "}
+                          <span className="text-gray-400">
+                            (
+                            {Math.floor(
+                              (new Date().getTime() -
+                                new Date(
+                                  latestBreeding?.actual_farrow_date
+                                ).getTime()) /
+                                (1000 * 60 * 60 * 24)
+                            )}{" "}
+                            วันที่แล้ว)
+                          </span>
                         </span>
                       ) : (
                         <span className="text-gray-400">
