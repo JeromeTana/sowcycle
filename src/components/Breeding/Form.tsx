@@ -33,12 +33,11 @@ import {
   deleteBreeding,
   updateBreeding,
 } from "@/services/breeding";
-import { getAllSows, patchSow, updateSow } from "@/services/sow";
+import { getAllSows, patchSow } from "@/services/sow";
 import { useSowStore } from "@/stores/useSowStore";
 import { useToast } from "@/hooks/use-toast";
 import DialogComponent from "../DialogComponent";
 import { enGB, is } from "date-fns/locale";
-import { useLoading } from "@/stores/useLoading";
 import { useBreedingStore } from "@/stores/useBreedingStore";
 
 const newFormSchema = z.object({
@@ -287,6 +286,7 @@ export function FarrowForm({
 }) {
   const { toast } = useToast();
   const { updateBreeding: updateBreedingStore } = useBreedingStore();
+  const { updateSow } = useSowStore();
   const form = useForm<z.infer<typeof farrowFormSchema>>({
     resolver: zodResolver(farrowFormSchema),
     defaultValues: breeding.actual_farrow_date
