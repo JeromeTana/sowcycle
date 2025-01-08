@@ -176,7 +176,8 @@ export const patchSow = async (sow: Partial<Sow>) => {
       .from("sows")
       .update(sow)
       .eq("id", sow.id)
-      .select();
+      .select()
+      .single();
 
     if (error) throw new Error(`Failed to patch sow: ${error.message}`);
 
