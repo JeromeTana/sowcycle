@@ -25,6 +25,7 @@ import { useToast } from "@/hooks/use-toast";
 const formSchema = z.object({
   username: z.string().nonempty("กรุณากรอกชื่อผู้ใช้"),
   password: z.string().nonempty("กรุณากรอกรหัสผ่าน"),
+  repeatedPassword: z.string().nonempty("กรุณากรอกรหัสผ่านอีกครั้ง"),
 });
 
 export default function LoginPage() {
@@ -53,7 +54,7 @@ export default function LoginPage() {
 
   return (
     <div>
-      <div className="text-4xl text-center w-full bg-gray-300 rounded-lg p-8 mb-8">
+      <div className="text-4xl text-center w-full mb-8">
         <h1>
           Welcome to <span className="font-bold">SowCycle</span>
         </h1>
@@ -131,7 +132,6 @@ const LoginForm = () => {
 };
 
 const SignupForm = () => {
-  const [repeatedPassword, setRepeatedPassword] = useState("");
   const { setIsLoading } = useLoading();
   const { toast } = useToast();
 
@@ -140,12 +140,13 @@ const SignupForm = () => {
     defaultValues: {
       username: "",
       password: "",
+      repeatedPassword: "",
     },
   });
 
   const disabled = useMemo(() => {
-    return repeatedPassword !== form.getValues("password");
-  }, [repeatedPassword, form.getValues("password")]);
+    return form.getValues("repeatedPassword") !== form.getValues("password");
+  }, [form.watch("repeatedPassword"), form.watch("password")]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
@@ -163,6 +164,18 @@ const SignupForm = () => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (form.getValues("password") === form.getValues("repeatedPassword")) {
+      form.clearErrors("repeatedPassword");
+    }
+    if (form.getValues("repeatedPassword") !== form.getValues("password")) {
+      form.setError("repeatedPassword", {
+        type: "manual",
+        message: "รหัสผ่านไม่ตรงกัน",
+      });
+    }
+  }, [form.watch("repeatedPassword")]);
 
   return (
     <Form {...form}>
@@ -198,18 +211,24 @@ const SignupForm = () => {
           )}
         />
 
-        <FormItem>
-          <FormLabel>Repeat password</FormLabel>
-          <FormControl>
-            <Input
-              type="password"
-              placeholder="repeat password again"
-              value={repeatedPassword}
-              onChange={(e) => setRepeatedPassword(e.target.value)}
-            />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
+        <FormField
+          control={form.control}
+          name="repeatedPassword"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Repeated Password</FormLabel>
+              <FormControl>
+                <Input
+                  type="password"
+                  placeholder="repeated password"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <Button disabled={disabled} type="submit">
           Signup
         </Button>
