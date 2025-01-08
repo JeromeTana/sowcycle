@@ -17,14 +17,14 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { authOnChange, getCurrentUser, login, signUp } from "@/services/auth";
 import { useEffect, useMemo, useState } from "react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useLoading } from "@/stores/useLoading";
 import TabsComponent from "@/components/TabsComponent";
 import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
   username: z.string().nonempty("กรุณากรอกชื่อผู้ใช้"),
-  password: z.string().nonempty("กรุณากรอกรหัสผ่าน"),
+  password: z.string().nonempty("กรุณากรอกรหัสผ่าน").min(6 , "รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร"),
   repeatedPassword: z.string().nonempty("กรุณากรอกรหัสผ่านอีกครั้ง"),
 });
 
