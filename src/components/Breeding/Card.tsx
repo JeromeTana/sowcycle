@@ -65,19 +65,6 @@ export default function BreedingCard({
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {/* <div className="inline-flex items-start gap-2 text-gray-500">
-            <div className={"border p-2 rounded-lg bg-gray-50"}>
-              <Activity size={20} />
-            </div>
-            <p className="inline-flex flex-col">
-              <span className="text-xs">อาการ</span>
-              <span className="text-black">
-                {medicalRecord?.symptoms
-                  ? medicalRecord.symptoms
-                  : "ไม่มีข้อมูล"}
-              </span>
-            </p>
-          </div> */}
           <div className="flex flex-col gap-6">
             <div className="inline-flex items-start gap-2 text-gray-500">
               <div
