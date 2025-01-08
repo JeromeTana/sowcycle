@@ -22,9 +22,20 @@ import { useLoading } from "@/stores/useLoading";
 import TabsComponent from "@/components/TabsComponent";
 import { useToast } from "@/hooks/use-toast";
 
-const formSchema = z.object({
+const loginSchema = z.object({
   username: z.string().nonempty("กรุณากรอกชื่อผู้ใช้"),
-  password: z.string().nonempty("กรุณากรอกรหัสผ่าน").min(6 , "รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร"),
+  password: z
+    .string()
+    .nonempty("กรุณากรอกรหัสผ่าน")
+    .min(6, "รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร"),
+});
+
+const signUpSchema = z.object({
+  username: z.string().nonempty("กรุณากรอกชื่อผู้ใช้"),
+  password: z
+    .string()
+    .nonempty("กรุณากรอกรหัสผ่าน")
+    .min(6, "รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร"),
   repeatedPassword: z.string().nonempty("กรุณากรอกรหัสผ่านอีกครั้ง"),
 });
 
@@ -67,15 +78,15 @@ export default function LoginPage() {
 const LoginForm = () => {
   const { setIsLoading } = useLoading();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       username: "",
       password: "",
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof loginSchema>) => {
     setIsLoading(true);
     try {
       await login(values.username, values.password);
@@ -135,8 +146,8 @@ const SignupForm = () => {
   const { setIsLoading } = useLoading();
   const { toast } = useToast();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof signUpSchema>>({
+    resolver: zodResolver(signUpSchema),
     defaultValues: {
       username: "",
       password: "",
@@ -148,7 +159,7 @@ const SignupForm = () => {
     return form.getValues("repeatedPassword") !== form.getValues("password");
   }, [form.watch("repeatedPassword"), form.watch("password")]);
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof signUpSchema>) => {
     setIsLoading(true);
     try {
       let res = await signUp(values.username, values.password);
