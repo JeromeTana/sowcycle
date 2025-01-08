@@ -576,19 +576,21 @@ export default function DeleteDialog({
 
         removeBreeding(res.id);
 
-        let sowPatchResponse = await patchSow({
-          id: breeding.sow_id,
-          is_available: true,
-          updated_at: new Date().toISOString(),
-        });
-
-        if (sowPatchResponse) {
-          toast({
-            title: "เพิ่มสำเร็จ",
-            description: "เพิ่มประวัติการคลอดเรียบร้อย",
+        if (!res.actual_farrow_date) {
+          let sowPatchResponse = await patchSow({
+            id: breeding.sow_id,
+            is_available: true,
+            updated_at: new Date().toISOString(),
           });
-          updateSow(sowPatchResponse);
-          setDialog(false);
+
+          if (sowPatchResponse) {
+            toast({
+              title: "เพิ่มสำเร็จ",
+              description: "เพิ่มประวัติการคลอดเรียบร้อย",
+            });
+            updateSow(sowPatchResponse);
+            setDialog(false);
+          }
         }
       }
     } catch (err) {
