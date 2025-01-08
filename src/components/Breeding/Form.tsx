@@ -250,7 +250,7 @@ export function NewBreedingForm({
           {breeding && (
             <DeleteDialog
               isSubmitting={form.formState.isSubmitting}
-              id={breeding.id!}
+              breeding={breeding}
               setDialog={setDialog}
             />
           )}
@@ -530,7 +530,7 @@ export function FarrowForm({
         <div className="w-full flex justify-between">
           <DeleteDialog
             isSubmitting={form.formState.isSubmitting}
-            id={breeding.id!}
+            breeding={breeding}
             setDialog={setDialog}
           />
           <Button disabled={form.formState.isSubmitting} type="submit">
@@ -553,27 +553,43 @@ export function FarrowForm({
 }
 
 export default function DeleteDialog({
-  id,
+  breeding,
   isSubmitting,
   setDialog,
 }: {
-  id: number;
+  breeding: Breeding;
   isSubmitting: boolean;
   setDialog?: any;
 }) {
   const { toast } = useToast();
   const { removeBreeding } = useBreedingStore();
+  const { updateSow } = useSowStore();
   const handleDelete = async () => {
     try {
-      let res = await deleteBreeding(id);
+      let res = await deleteBreeding(breeding.id!);
 
       if (res) {
         toast({
           title: "ลบสำเร็จ",
           description: "ลบประวัติการผสมเรียบร้อย",
         });
+
         removeBreeding(res.id);
-        setDialog(false);
+
+        let sowPatchResponse = await patchSow({
+          id: breeding.sow_id,
+          is_available: true,
+          updated_at: new Date().toISOString(),
+        });
+
+        if (sowPatchResponse) {
+          toast({
+            title: "เพิ่มสำเร็จ",
+            description: "เพิ่มประวัติการคลอดเรียบร้อย",
+          });
+          updateSow(sowPatchResponse);
+          setDialog(false);
+        }
       }
     } catch (err) {
       console.error(err);
