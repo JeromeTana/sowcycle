@@ -47,11 +47,15 @@ export const updateMedicalRecord = async (medicalRecord: MedicalRecord) => {
 };
 
 export const deleteMedicalRecord = async (id: number) => {
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from("medical_records")
     .delete()
-    .eq("id", id);
+    .eq("id", id)
+    .select()
+    .single();
 
   if (error)
     throw new Error(`Failed to delete medical_record: ${error.message}`);
+
+  return data;
 };

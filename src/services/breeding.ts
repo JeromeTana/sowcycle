@@ -44,7 +44,14 @@ export const updateBreeding = async (breeding: Breeding) => {
 };
 
 export const deleteBreeding = async (id: number) => {
-  const { error } = await supabase.from("breedings").delete().eq("id", id);
+  const { data, error } = await supabase
+    .from("breedings")
+    .delete()
+    .eq("id", id)
+    .select()
+    .single();
 
   if (error) throw new Error(`Failed to delete breeding: ${error.message}`);
+
+  return data;
 };
