@@ -3,9 +3,9 @@ import { create } from "zustand";
 
 interface SowState {
   sows: Sow[];
-  editingSow: Sow | null;
+  sow: Sow;
   setSows: (sows: Sow[]) => void;
-  setEditingSow: (sow: Sow | null) => void;
+  setSow: (sow: Sow) => void;
   updateSow: (sow: Sow) => void;
   addSow: (sow: Sow) => void;
   removeSow: (id: number) => void;
@@ -13,11 +13,12 @@ interface SowState {
 
 export const useSowStore = create<SowState>((set) => ({
   sows: [],
-  editingSow: null,
+  sow: {} as Sow,
   setSows: (sows: Sow[]) => set({ sows }),
-  setEditingSow: (sow: Sow | null) => set({ editingSow: sow }),
+  setSow: (sow: Sow) => set({ sow }),
   updateSow: (sow: Sow) =>
     set((state) => ({
+      sow,
       sows: state.sows.map((s) => (s.id === sow.id ? sow : s)),
     })),
   addSow: (sow: Sow) => set((state) => ({ sows: [sow, ...state.sows] })),
