@@ -24,7 +24,7 @@ import { Input } from "../ui/input";
 import DatePicker from "../DatePicker";
 
 import { cn } from "@/lib/utils";
-import { Check, Syringe, Trash } from "lucide-react";
+import { Check, Loader, Syringe, Trash } from "lucide-react";
 import { useEffect } from "react";
 import {
   createMedicalRecord,
@@ -74,7 +74,6 @@ export function MedicalRecordForm({
   });
 
   const onSubmit = async (values: z.infer<typeof newFormSchema>) => {
-    setIsLoading(true);
     try {
       if (medicalRecord) {
         await handleUpdate(values);
@@ -83,8 +82,6 @@ export function MedicalRecordForm({
       await handleCreate(values);
     } catch (err) {
       console.error(err);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -222,8 +219,13 @@ export function MedicalRecordForm({
           )}
         >
           {medicalRecord && <DeleteDialog id={medicalRecord.id!} />}
-          <Button type="submit">
-            {medicalRecord ? (
+          <Button disabled={form.formState.isSubmitting} type="submit">
+            {form.formState.isSubmitting ? (
+              <>
+                <Loader className="animate-spin" />
+                กำลังบันทึก
+              </>
+            ) : medicalRecord ? (
               <>
                 <Check />
                 บันทึก

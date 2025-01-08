@@ -25,7 +25,7 @@ import DatePicker from "../DatePicker";
 
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { CalendarIcon, Check, Heart, Plus, Trash } from "lucide-react";
+import { CalendarIcon, Check, Heart, Loader, Plus, Trash } from "lucide-react";
 import { useEffect, useMemo } from "react";
 import { Breeding } from "@/types/breeding";
 import {
@@ -37,7 +37,7 @@ import { getAllSows, patchSow } from "@/services/sow";
 import { useSowStore } from "@/stores/useSowStore";
 import { useToast } from "@/hooks/use-toast";
 import DialogComponent from "../DialogComponent";
-import { enGB } from "date-fns/locale";
+import { enGB, is } from "date-fns/locale";
 import { useLoading } from "@/stores/useLoading";
 
 const newFormSchema = z.object({
@@ -63,7 +63,6 @@ export function NewBreedingForm({
   setDialog?: any;
 }) {
   const { sows, setSows } = useSowStore();
-  const { setIsLoading } = useLoading();
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof newFormSchema>>({
@@ -88,7 +87,6 @@ export function NewBreedingForm({
   }, [form.watch("breed_date")]);
 
   const onSubmit = async (values: z.infer<typeof newFormSchema>) => {
-    setIsLoading(true);
     try {
       if (breeding) {
         await handleUpdate(values);
@@ -97,8 +95,6 @@ export function NewBreedingForm({
       await handleCreate(values);
     } catch (err) {
       console.error(err);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -238,9 +234,19 @@ export function NewBreedingForm({
             "w-full flex"
           )}
         >
-          {breeding && <DeleteDialog id={breeding.id!} />}
-          <Button type="submit">
-            {breeding ? (
+          {breeding && (
+            <DeleteDialog
+              isSubmitting={form.formState.isSubmitting}
+              id={breeding.id!}
+            />
+          )}
+          <Button disabled={form.formState.isSubmitting} type="submit">
+            {form.formState.isSubmitting ? (
+              <>
+                <Loader className="animate-spin" />
+                กำลังบันทึก
+              </>
+            ) : breeding ? (
               <>
                 <Check />
                 บันทึก
@@ -265,7 +271,6 @@ export function FarrowForm({
   breeding: Breeding;
   setDialog?: any;
 }) {
-  const { setIsLoading } = useLoading();
   const { toast } = useToast();
   const form = useForm<z.infer<typeof farrowFormSchema>>({
     resolver: zodResolver(farrowFormSchema),
@@ -308,7 +313,6 @@ export function FarrowForm({
       actual_farrow_date: values.actual_farrow_date.toISOString(),
       piglets_born_count: totalBornPiglets,
     };
-    setIsLoading(true);
 
     try {
       if (breeding.actual_farrow_date) {
@@ -319,8 +323,6 @@ export function FarrowForm({
       await handleCreate(formattedBreeding);
     } catch (err) {
       console.error(err);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -507,15 +509,36 @@ export function FarrowForm({
         )}
 
         <div className="w-full flex justify-between">
-          <DeleteDialog id={breeding.id!} />
-          <Button type="submit">บันทึก</Button>
+          <DeleteDialog
+            isSubmitting={form.formState.isSubmitting}
+            id={breeding.id!}
+          />
+          <Button disabled={form.formState.isSubmitting} type="submit">
+            {form.formState.isSubmitting ? (
+              <>
+                <Loader className="animate-spin" />
+                กำลังบันทึก
+              </>
+            ) : (
+              <>
+                <Check />
+                บันทึก
+              </>
+            )}
+          </Button>
         </div>
       </form>
     </Form>
   );
 }
 
-export default function DeleteDialog({ id }: { id: number }) {
+export default function DeleteDialog({
+  id,
+  isSubmitting,
+}: {
+  id: number;
+  isSubmitting: boolean;
+}) {
   const { setIsLoading } = useLoading();
   const { toast } = useToast();
   const handleDelete = async () => {
@@ -542,6 +565,7 @@ export default function DeleteDialog({ id }: { id: number }) {
       title="บันทึกการคลอด"
       dialogTriggerButton={
         <Button
+          disabled={isSubmitting}
           variant={"ghost"}
           className="text-red-500 hover:text-red-500 hover:bg-red-50"
         >

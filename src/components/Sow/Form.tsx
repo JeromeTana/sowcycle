@@ -21,7 +21,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/hooks/use-toast";
 import DialogComponent from "../DialogComponent";
-import { Check, Trash } from "lucide-react";
+import { Check, Loader, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Switch } from "../ui/switch";
 import { useLoading } from "@/stores/useLoading";
@@ -95,18 +95,11 @@ export default function SowForm({ editingSow, setDialog }: any) {
   };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    setIsLoading(true);
-    try {
-      if (editingSow) {
-        await handleUpdateSow(sow, values);
-        return;
-      }
-      await handleCreateSow(sow, values);
-    } catch (err) {
-      console.error(`Error: ${err}`);
-    } finally {
-      setIsLoading(false);
+    if (editingSow) {
+      await handleUpdateSow(sow, values);
+      return;
     }
+    await handleCreateSow(sow, values);
   };
 
   useEffect(() => {
@@ -149,29 +142,42 @@ export default function SowForm({ editingSow, setDialog }: any) {
           )}
         />
         <div className="w-full flex justify-end gap-2">
-          <DialogComponent
-            title="ลบแม่พันธุ์"
-            dialogTriggerButton={
-              <Button
-                variant="ghost"
-                className="text-red-500 hover:text-red-500"
-              >
-                <Trash /> ลบ
-              </Button>
-            }
-          >
-            <p>
-              คุณแน่ใจหรือไม่ที่จะลบแม่พันธุ์{" "}
-              <span className="font-bold">{sow.name}</span>
-            </p>
-            <div className="flex justify-end gap-2">
-              <Button variant="destructive" onClick={() => onDelete(sow.id)}>
-                <Trash /> ลบ
-              </Button>
-            </div>
-          </DialogComponent>
-          <Button type="submit">
-            <Check /> บันทึก
+          {sow.id && (
+            <DialogComponent
+              title="ลบแม่พันธุ์"
+              dialogTriggerButton={
+                <Button
+                  disabled={form.formState.isSubmitting}
+                  variant="ghost"
+                  className="text-red-500 hover:text-red-500"
+                >
+                  <Trash /> ลบ
+                </Button>
+              }
+            >
+              <p>
+                คุณแน่ใจหรือไม่ที่จะลบแม่พันธุ์{" "}
+                <span className="font-bold">{sow.name}</span>
+              </p>
+              <div className="flex justify-end gap-2">
+                <Button variant="destructive" onClick={() => onDelete(sow.id)}>
+                  <Trash /> ลบ
+                </Button>
+              </div>
+            </DialogComponent>
+          )}
+          <Button disabled={form.formState.isSubmitting} type="submit">
+            {form.formState.isSubmitting ? (
+              <>
+                <Loader className="animate-spin" />
+                กำลังบันทึก
+              </>
+            ) : (
+              <>
+                <Check />
+                บันทึก
+              </>
+            )}
           </Button>
         </div>
       </form>

@@ -21,6 +21,7 @@ import { useRouter } from "next/navigation";
 import { useLoading } from "@/stores/useLoading";
 import TabsComponent from "@/components/TabsComponent";
 import { useToast } from "@/hooks/use-toast";
+import { Loader } from "lucide-react";
 
 const loginSchema = z.object({
   username: z.string().nonempty("กรุณากรอกชื่อผู้ใช้"),
@@ -76,8 +77,6 @@ export default function LoginPage() {
 }
 
 const LoginForm = () => {
-  const { setIsLoading } = useLoading();
-
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -87,7 +86,6 @@ const LoginForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof loginSchema>) => {
-    setIsLoading(true);
     try {
       await login(values.username, values.password);
     } catch (err) {
@@ -98,8 +96,6 @@ const LoginForm = () => {
           message: "อีเมลล์ หรือ รหัสผ่าน ไม่ถูกต้อง",
         });
       }
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -136,14 +132,21 @@ const LoginForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Login</Button>
+        <Button disabled={form.formState.isSubmitting} type="submit">
+          {form.formState.isSubmitting ? (
+            <>
+              <Loader className="animate-spin" /> Loggin in
+            </>
+          ) : (
+            "Login"
+          )}
+        </Button>
       </form>
     </Form>
   );
 };
 
 const SignupForm = () => {
-  const { setIsLoading } = useLoading();
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof signUpSchema>>({
@@ -156,11 +159,17 @@ const SignupForm = () => {
   });
 
   const disabled = useMemo(() => {
-    return form.getValues("repeatedPassword") !== form.getValues("password");
-  }, [form.watch("repeatedPassword"), form.watch("password")]);
+    return (
+      form.getValues("repeatedPassword") !== form.getValues("password") ||
+      form.formState.isSubmitting
+    );
+  }, [
+    form.watch("repeatedPassword"),
+    form.watch("password"),
+    form.formState.isSubmitting,
+  ]);
 
   const onSubmit = async (values: z.infer<typeof signUpSchema>) => {
-    setIsLoading(true);
     try {
       let res = await signUp(values.username, values.password);
       if (res) {
@@ -171,8 +180,6 @@ const SignupForm = () => {
       }
     } catch (err) {
       console.error(err);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -241,7 +248,13 @@ const SignupForm = () => {
         />
 
         <Button disabled={disabled} type="submit">
-          Signup
+          {form.formState.isSubmitting ? (
+            <>
+              <Loader className="animate-spin" /> Signing up
+            </>
+          ) : (
+            "Sign Up"
+          )}
         </Button>
       </form>
     </Form>
