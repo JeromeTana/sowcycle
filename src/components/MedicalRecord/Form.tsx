@@ -224,7 +224,9 @@ export function MedicalRecordForm({
             "w-full flex"
           )}
         >
-          {medicalRecord && <DeleteDialog id={medicalRecord.id!} />}
+          {medicalRecord && (
+            <DeleteDialog setDialog={setDialog} id={medicalRecord.id!} />
+          )}
           <Button disabled={form.formState.isSubmitting} type="submit">
             {form.formState.isSubmitting ? (
               <>
@@ -249,25 +251,29 @@ export function MedicalRecordForm({
   );
 }
 
-export default function DeleteDialog({ id }: { id: number }) {
-  const { setIsLoading } = useLoading();
+export default function DeleteDialog({
+  id,
+  setDialog,
+}: {
+  id: number;
+  setDialog: any;
+}) {
   const { toast } = useToast();
+  const { removeMedicalRecord } = useMedicalRecordStore();
   const handleDelete = async () => {
-    setIsLoading(true);
     try {
-      await deleteMedicalRecord(id);
+      let res = await deleteMedicalRecord(id);
 
-      toast({
-        title: "ลบสำเร็จ",
-        description: "ลบประวัติการผสมเรียบร้อย",
-      });
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
+      if (res) {
+        toast({
+          title: "ลบสำเร็จ",
+          description: "ลบประวัติการผสมเรียบร้อย",
+        });
+        removeMedicalRecord(res.id);
+        setDialog(false);
+      }
     } catch (err) {
       console.error(err);
-    } finally {
-      setIsLoading(false);
     }
   };
   return (

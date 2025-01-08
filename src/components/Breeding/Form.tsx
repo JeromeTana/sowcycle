@@ -251,6 +251,7 @@ export function NewBreedingForm({
             <DeleteDialog
               isSubmitting={form.formState.isSubmitting}
               id={breeding.id!}
+              setDialog={setDialog}
             />
           )}
           <Button disabled={form.formState.isSubmitting} type="submit">
@@ -530,6 +531,7 @@ export function FarrowForm({
           <DeleteDialog
             isSubmitting={form.formState.isSubmitting}
             id={breeding.id!}
+            setDialog={setDialog}
           />
           <Button disabled={form.formState.isSubmitting} type="submit">
             {form.formState.isSubmitting ? (
@@ -553,29 +555,28 @@ export function FarrowForm({
 export default function DeleteDialog({
   id,
   isSubmitting,
+  setDialog,
 }: {
   id: number;
   isSubmitting: boolean;
+  setDialog?: any;
 }) {
-  const { setIsLoading } = useLoading();
   const { toast } = useToast();
+  const { removeBreeding } = useBreedingStore();
   const handleDelete = async () => {
-    setIsLoading(true);
-
     try {
-      await deleteBreeding(id);
+      let res = await deleteBreeding(id);
 
-      toast({
-        title: "ลบสำเร็จ",
-        description: "ลบประวัติการผสมเรียบร้อย",
-      });
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
+      if (res) {
+        toast({
+          title: "ลบสำเร็จ",
+          description: "ลบประวัติการผสมเรียบร้อย",
+        });
+        removeBreeding(res.id);
+        setDialog(false);
+      }
     } catch (err) {
       console.error(err);
-    } finally {
-      setIsLoading(false);
     }
   };
   return (
