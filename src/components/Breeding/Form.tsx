@@ -306,7 +306,7 @@ export function FarrowForm({
       ...values,
       breed_date: values.breed_date.toISOString(),
       actual_farrow_date: values.actual_farrow_date.toISOString(),
-      piglets_born_count: totalPiglets,
+      piglets_born_count: totalBornPiglets,
     };
     setIsLoading(true);
 

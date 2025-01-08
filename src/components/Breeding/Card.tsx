@@ -185,7 +185,7 @@ export default function BreedingCard({
               <p className="border p-4 bg-gray-100 rounded">
                 รวมทั้งหมด{" "}
                 <span className="font-semibold">
-                  {breeding.piglets_born_count}
+                  {breeding.piglets_born_count! + breeding.piglets_born_dead!}
                 </span>{" "}
                 ตัว
               </p>
