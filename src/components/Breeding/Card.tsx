@@ -77,7 +77,7 @@ export default function BreedingCard({
               >
                 <CalendarHeart size={20} />
               </div>
-              <p className="inline-flex flex-col">
+              <p className="inline-flex flex-col gap-1">
                 <span className="text-xs">ผสมเมื่อ</span>
                 <span className="text-black">
                   {new Date(breeding.breed_date).toLocaleDateString("en-GB")}
@@ -89,7 +89,7 @@ export default function BreedingCard({
                 <div className="border p-2 bg-gray-50 rounded-lg">
                   <CalendarCheck size={20} className="text-gray-500" />
                 </div>
-                <p className="inline-flex flex-col">
+                <p className="inline-flex flex-col gap-1">
                   <span className="text-xs">คลอดเมื่อ</span>
                   <span className="text-black">
                     {new Date(breeding.actual_farrow_date).toLocaleDateString(
@@ -131,7 +131,7 @@ export default function BreedingCard({
                 <div className="bg-pink-50 text-pink-400 border-pink-400 border p-2 rounded-lg">
                   <Calendar size={20} />
                 </div>
-                <p className="inline-flex flex-col">
+                <p className="inline-flex flex-col gap-1">
                   <span className="text-xs">กำหนดคลอด</span>
                   <span className="text-black">
                     {new Date(breeding.expected_farrow_date).toLocaleDateString(

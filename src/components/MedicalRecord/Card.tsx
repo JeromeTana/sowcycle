@@ -33,7 +33,7 @@ export default function MedicalRecordCard({
               <div className={"border p-2 rounded-lg bg-gray-50"}>
                 <Activity size={20} />
               </div>
-              <p className="inline-flex flex-col">
+              <p className="inline-flex flex-col gap-1">
                 <span className="text-xs">อาการ</span>
                 <span className="text-black">
                   {medicalRecord?.symptoms
@@ -46,7 +46,7 @@ export default function MedicalRecordCard({
               <div className={"border p-2 rounded-lg bg-gray-50"}>
                 <Syringe size={20} />
               </div>
-              <p className="inline-flex flex-col">
+              <p className="inline-flex flex-col gap-1">
                 <span className="text-xs">ยาที่ใช้</span>
                 <span className="text-black">
                   {medicalRecord?.medicine
@@ -59,7 +59,7 @@ export default function MedicalRecordCard({
               <div className={"border p-2 rounded-lg bg-gray-50"}>
                 <Calendar size={20} />
               </div>
-              <p className="inline-flex flex-col">
+              <p className="inline-flex flex-col gap-1">
                 <span className="text-xs">ใช้ยาเมื่อ</span>
                 <span className="text-black">
                   {new Date(medicalRecord.use_at).toLocaleDateString("en-GB")}
