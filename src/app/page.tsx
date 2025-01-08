@@ -156,7 +156,7 @@ export default function Page() {
               onClick={() => setIsExpanded(!isExpanded)}
               className="flex items-center gap-1 w-full p-8 rounded-xl"
             >
-              {isExpanded ? <ArrowUp /> : <ArrowDown />}
+              {isExpanded ? <ChevronUp /> : <ChevronDown />}
               {isExpanded ? "ย่อ" : "ดูทั้งหมด"}
             </Button>
           )}
