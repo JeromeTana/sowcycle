@@ -25,12 +25,16 @@ import TabsComponent from "@/components/TabsComponent";
 import { Breeding } from "@/types/breeding";
 import { MedicalRecordForm } from "@/components/MedicalRecord/Form";
 import { MedicalRecord } from "@/types/medicalRecord";
+import { useBreedingStore } from "@/stores/useBreedingStore";
+import { useMedicalRecordStore } from "@/stores/useMedicalRecordStore";
 
 export default function SowsPage({ params }: any) {
   const [id, setId] = useState<number | null>();
   const [sow, setSow] = useState<Sow>({} as Sow);
+  const { breedings, setBreedings } = useBreedingStore();
+  const { medicalRecords: medical_records, setMedicalRecords } =
+    useMedicalRecordStore();
   const [isLoading, setIsLoading] = useState(true);
-  const { breedings, medical_records } = sow;
 
   const tabOptions = [
     {
@@ -98,6 +102,8 @@ export default function SowsPage({ params }: any) {
       let sow = await getSowByIdWithAllInfo(id);
       if (!sow) return;
       setSow(sow);
+      setBreedings(sow.breedings);
+      setMedicalRecords(sow.medical_records);
       setIsLoading(false);
     };
     fetchData();
