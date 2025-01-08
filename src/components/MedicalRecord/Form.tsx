@@ -38,6 +38,7 @@ import DialogComponent from "../DialogComponent";
 import { MedicalRecord } from "@/types/medicalRecord";
 import { Textarea } from "../ui/textarea";
 import { useLoading } from "@/stores/useLoading";
+import { useMedicalRecordStore } from "@/stores/useMedicalRecordStore";
 
 const newFormSchema = z.object({
   sow_id: z.string(),
@@ -56,7 +57,8 @@ export function MedicalRecordForm({
   setDialog?: any;
 }) {
   const { sows, setSows } = useSowStore();
-  const { setIsLoading } = useLoading();
+  const { addMedicalRecord, updateMedicalRecord: updateMedicalRecordStore } =
+    useMedicalRecordStore();
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof newFormSchema>>({
@@ -70,6 +72,8 @@ export function MedicalRecordForm({
       : {
           sow_id: id,
           use_at: new Date(),
+          symptoms: "",
+          medicine: "",
         },
   });
 
@@ -100,6 +104,7 @@ export function MedicalRecordForm({
           title: "แก้ไขสำเร็จ",
           description: "แก้ไขประวัติการผสมเรียบร้อย",
         });
+        updateMedicalRecordStore(res);
         setDialog(false);
       }
     } catch (err) {
@@ -121,6 +126,7 @@ export function MedicalRecordForm({
           title: "เพิ่มสำเร็จ",
           description: "เพิ่มประวัติการผสมเรียบร้อย",
         });
+        addMedicalRecord(res);
         setDialog(false);
       }
     } catch (err) {

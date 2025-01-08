@@ -33,12 +33,13 @@ import {
   deleteBreeding,
   updateBreeding,
 } from "@/services/breeding";
-import { getAllSows, patchSow } from "@/services/sow";
+import { getAllSows, patchSow, updateSow } from "@/services/sow";
 import { useSowStore } from "@/stores/useSowStore";
 import { useToast } from "@/hooks/use-toast";
 import DialogComponent from "../DialogComponent";
 import { enGB, is } from "date-fns/locale";
 import { useLoading } from "@/stores/useLoading";
+import { useBreedingStore } from "@/stores/useBreedingStore";
 
 const newFormSchema = z.object({
   sow_id: z.string(),
@@ -62,7 +63,9 @@ export function NewBreedingForm({
   breeding?: Breeding;
   setDialog?: any;
 }) {
-  const { sows, setSows } = useSowStore();
+  const { sows, setSows, updateSow } = useSowStore();
+  const { addBreeding, updateBreeding: updateBreedingStore } =
+    useBreedingStore();
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof newFormSchema>>({
@@ -114,6 +117,7 @@ export function NewBreedingForm({
           title: "แก้ไขสำเร็จ",
           description: "แก้ไขประวัติการผสมเรียบร้อย",
         });
+        updateBreedingStore(res);
         setDialog(false);
       }
     } catch (err) {
@@ -123,26 +127,35 @@ export function NewBreedingForm({
 
   const handleCreate = async (values: z.infer<typeof newFormSchema>) => {
     try {
-      let res = await createBreeding({
+      let breedingResponse = await createBreeding({
         sow_id: Number(values.sow_id),
         breed_date: values.breed_date.toISOString(),
         expected_farrow_date: expectedFarrowDate!.toISOString(),
       });
 
-      if (res) {
-        let res = await patchSow({
+      if (breedingResponse) {
+        let sowPatchResponse = await patchSow({
           id: Number(values.sow_id),
           is_available: false,
           updated_at: new Date().toISOString(),
         });
 
-        if (res) {
+        addBreeding(breedingResponse);
+
+        if (sowPatchResponse) {
           toast({
             title: "เพิ่มสำเร็จ",
             description: "เพิ่มประวัติการผสมเรียบร้อย",
           });
           setDialog(false);
         }
+
+        let data = {
+          ...sowPatchResponse,
+          breedings: [breedingResponse],
+        };
+
+        updateSow(data);
       }
     } catch (err) {
       console.error(err);
@@ -272,6 +285,7 @@ export function FarrowForm({
   setDialog?: any;
 }) {
   const { toast } = useToast();
+  const { updateBreeding: updateBreedingStore } = useBreedingStore();
   const form = useForm<z.infer<typeof farrowFormSchema>>({
     resolver: zodResolver(farrowFormSchema),
     defaultValues: breeding.actual_farrow_date
@@ -336,18 +350,22 @@ export function FarrowForm({
 
   const handleCreate = async (breeding: Breeding) => {
     try {
-      let res = await updateBreeding(breeding);
-      if (res) {
-        let res = await patchSow({
+      let updateResponse = await updateBreeding(breeding);
+      if (updateResponse) {
+        let sowPatchResponse = await patchSow({
           id: breeding.sow_id,
           is_available: true,
           updated_at: new Date().toISOString(),
         });
-        if (res) {
+
+        updateBreedingStore(updateResponse);
+
+        if (sowPatchResponse) {
           toast({
             title: "เพิ่มสำเร็จ",
             description: "เพิ่มประวัติการคลอดเรียบร้อย",
           });
+          updateSow(sowPatchResponse);
           setDialog(false);
         }
       }
