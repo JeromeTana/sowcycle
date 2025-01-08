@@ -27,10 +27,12 @@ import { MedicalRecordForm } from "@/components/MedicalRecord/Form";
 import { MedicalRecord } from "@/types/medicalRecord";
 import { useBreedingStore } from "@/stores/useBreedingStore";
 import { useMedicalRecordStore } from "@/stores/useMedicalRecordStore";
+import { useSowStore } from "@/stores/useSowStore";
+import { redirect } from "next/navigation";
 
 export default function SowsPage({ params }: any) {
   const [id, setId] = useState<number | null>();
-  const [sow, setSow] = useState<Sow>({} as Sow);
+  const { sow, setSow } = useSowStore();
   const { breedings, setBreedings } = useBreedingStore();
   const { medicalRecords: medical_records, setMedicalRecords } =
     useMedicalRecordStore();
@@ -72,7 +74,15 @@ export default function SowsPage({ params }: any) {
         </>
       ),
       value: "breeding",
-      content: <NewBreedingForm id={sow?.id?.toString()} />,
+      content: breedings[0]?.actual_farrow_date ? (
+        <NewBreedingForm id={sow?.id?.toString()} />
+      ) : (
+        <div className="text-center text-gray-400 py-20 text-sm">
+          ไม่สามารถเพิ่มประวัติผสม
+          <br />
+          เนื่องจากยังไม่มีการบันทึกวันคลอดของการผสมล่าสุด
+        </div>
+      ),
       default: true,
     },
     {
@@ -99,12 +109,18 @@ export default function SowsPage({ params }: any) {
   useEffect(() => {
     if (!id) return;
     const fetchData = async () => {
-      let sow = await getSowByIdWithAllInfo(id);
-      if (!sow) return;
-      setSow(sow);
-      setBreedings(sow.breedings);
-      setMedicalRecords(sow.medical_records);
-      setIsLoading(false);
+      try {
+        let sow = await getSowByIdWithAllInfo(id);
+
+        if (sow) {
+          setSow(sow);
+          setBreedings(sow.breedings);
+          setMedicalRecords(sow.medical_records);
+          setIsLoading(false);
+        }
+      } catch (error) {
+        if (error) redirect("/404");
+      }
     };
     fetchData();
   }, [id]);
