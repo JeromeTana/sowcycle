@@ -169,7 +169,7 @@ export default function SowsPage({ params }: any) {
                   <Heart size={20} />
                   ตั้งครรภ์
                 </p>
-                <CountdownBadge date={breedings[0].expected_farrow_date} />
+                <CountdownBadge date={breedings[0]?.expected_farrow_date} />
               </div>
             )
           ) : (
