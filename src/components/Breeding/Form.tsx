@@ -113,6 +113,7 @@ export function NewBreedingForm({
         breed_date: values.breed_date.toISOString(),
         expected_farrow_date: expectedFarrowDate!.toISOString(),
         updated_at: new Date().toISOString(),
+        boar_id: values.boar_id ? Number(values.boar_id) : undefined,
       });
 
       if (res) {
@@ -218,10 +219,7 @@ export function NewBreedingForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel>พ่อพันธุ์</FormLabel>
-              <Select
-                onValueChange={field.onChange}
-                disabled={breeding?.id ? true : false}
-              >
+              <Select onValueChange={field.onChange}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="เลือกสายพันธุ์ที่ผสม" />
