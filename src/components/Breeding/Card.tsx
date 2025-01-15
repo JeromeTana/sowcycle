@@ -16,9 +16,11 @@ import {
   CalendarCheck,
   PiggyBank,
   Heart,
+  Dna,
 } from "lucide-react";
 import { FarrowForm, NewBreedingForm } from "./Form";
 import { cn } from "@/lib/utils";
+import InfoIcon from "../InfoIcon";
 
 export default function BreedingCard({
   breeding,
@@ -66,66 +68,62 @@ export default function BreedingCard({
       <CardContent>
         <div className="space-y-4">
           <div className="flex flex-col gap-6">
-            <div className="inline-flex items-start gap-2 text-gray-500">
-              <div
+            <InfoIcon
+              label="ผสมเมื่อ"
+              icon={<CalendarHeart size={22} />}
+              className={cn(
+                breeding.actual_farrow_date
+                  ? "bg-gray-50 text-gray-500"
+                  : "!bg-pink-50 !text-pink-400 border-pink-400"
+              )}
+            >
+              {new Date(breeding.breed_date).toLocaleDateString("en-GB")}
+            </InfoIcon>
+            {breeding.boar_id && (
+              <InfoIcon
+                label="ผสมกับสายพันธุ์"
+                icon={<Dna size={22} />}
                 className={cn(
                   breeding.actual_farrow_date
                     ? "bg-gray-50 text-gray-500"
-                    : "bg-pink-50 text-pink-400 border-pink-400",
-                  "border p-2 rounded-lg"
+                    : "!bg-pink-50 !text-pink-400 border-pink-400"
                 )}
               >
-                <CalendarHeart size={22} />
-              </div>
-              <p className="inline-flex flex-col gap-1">
-                <span className="text-xs">ผสมเมื่อ</span>
-                <span className="text-black">
-                  {new Date(breeding.breed_date).toLocaleDateString("en-GB")}
-                </span>
-              </p>
-            </div>
+                {breeding.boar_id.toString()}
+              </InfoIcon>
+            )}
             {breeding.actual_farrow_date ? (
-              <div className="inline-flex items-start gap-2 text-gray-500">
-                <div className="border p-2 bg-gray-50 rounded-lg">
-                  <CalendarCheck size={22} className="text-gray-500" />
-                </div>
-                <p className="inline-flex flex-col gap-1">
-                  <span className="text-xs">คลอดเมื่อ</span>
-                  <span className="text-black">
-                    {new Date(breeding.actual_farrow_date).toLocaleDateString(
-                      "en-GB"
-                    )}{" "}
-                    <span className="text-gray-400 text-sm">
-                      (
-                      {new Date(breeding.actual_farrow_date) <
-                      new Date(breeding.expected_farrow_date) ? (
-                        <>
-                          ก่อนกำหนด{" "}
-                          {Math.ceil(
-                            (new Date(breeding.expected_farrow_date).getTime() -
-                              new Date(breeding.actual_farrow_date).getTime()) /
-                              (1000 * 60 * 60 * 24)
-                          )}{" "}
-                          วัน
-                        </>
-                      ) : (
-                        <>
-                          หลังกำหนด{" "}
-                          {Math.ceil(
-                            (new Date(breeding.actual_farrow_date).getTime() -
-                              new Date(
-                                breeding.expected_farrow_date
-                              ).getTime()) /
-                              (1000 * 60 * 60 * 24)
-                          )}{" "}
-                          วัน
-                        </>
-                      )}
-                      )
-                    </span>
-                  </span>
-                </p>
-              </div>
+              <InfoIcon label="คลอดเมื่อ" icon={<CalendarCheck size={22} />}>
+                {new Date(breeding.actual_farrow_date).toLocaleDateString(
+                  "en-GB"
+                )}{" "}
+                <span className="text-gray-400 text-sm">
+                  (
+                  {new Date(breeding.actual_farrow_date) <
+                  new Date(breeding.expected_farrow_date) ? (
+                    <>
+                      ก่อนกำหนด{" "}
+                      {Math.ceil(
+                        (new Date(breeding.expected_farrow_date).getTime() -
+                          new Date(breeding.actual_farrow_date).getTime()) /
+                          (1000 * 60 * 60 * 24)
+                      )}{" "}
+                      วัน
+                    </>
+                  ) : (
+                    <>
+                      หลังกำหนด{" "}
+                      {Math.ceil(
+                        (new Date(breeding.actual_farrow_date).getTime() -
+                          new Date(breeding.expected_farrow_date).getTime()) /
+                          (1000 * 60 * 60 * 24)
+                      )}{" "}
+                      วัน
+                    </>
+                  )}
+                  )
+                </span>
+              </InfoIcon>
             ) : (
               <div className="inline-flex items-start gap-2 text-gray-500">
                 <div className="bg-pink-50 text-pink-400 border-pink-400 border p-2 rounded-lg">

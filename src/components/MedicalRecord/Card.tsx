@@ -9,6 +9,7 @@ import { Button } from "../ui/button";
 import { Pen, Syringe, Activity, Calendar } from "lucide-react";
 import { MedicalRecordForm } from "./Form";
 import { MedicalRecord } from "@/types/medicalRecord";
+import InfoIcon from "../InfoIcon";
 
 export default function MedicalRecordCard({
   medicalRecord,
@@ -29,43 +30,15 @@ export default function MedicalRecordCard({
       <CardContent>
         <div className="space-y-4">
           <div className="flex flex-col gap-6">
-            <div className="inline-flex items-start gap-2 text-gray-500">
-              <div className={"border p-2 rounded-lg bg-gray-50"}>
-                <Activity size={22} />
-              </div>
-              <p className="inline-flex flex-col gap-1">
-                <span className="text-xs">อาการ</span>
-                <span className="text-black">
-                  {medicalRecord?.symptoms
-                    ? medicalRecord.symptoms
-                    : "ไม่มีข้อมูล"}
-                </span>
-              </p>
-            </div>
-            <div className="inline-flex items-center gap-2 text-gray-500">
-              <div className={"border p-2 rounded-lg bg-gray-50"}>
-                <Syringe size={22} />
-              </div>
-              <p className="inline-flex flex-col gap-1">
-                <span className="text-xs">ยาที่ใช้</span>
-                <span className="text-black">
-                  {medicalRecord?.medicine
-                    ? medicalRecord.medicine
-                    : "ไม่มีข้อมูล"}
-                </span>
-              </p>
-            </div>
-            <div className="inline-flex items-center gap-2 text-gray-500">
-              <div className={"border p-2 rounded-lg bg-gray-50"}>
-                <Calendar size={22} />
-              </div>
-              <p className="inline-flex flex-col gap-1">
-                <span className="text-xs">ใช้ยาเมื่อ</span>
-                <span className="text-black">
-                  {new Date(medicalRecord.use_at).toLocaleDateString("en-GB")}
-                </span>
-              </p>
-            </div>
+            <InfoIcon label="อาการ" icon={<Activity size={22} />}>
+              {medicalRecord?.symptoms ? medicalRecord.symptoms : "ไม่มีข้อมูล"}
+            </InfoIcon>
+            <InfoIcon label="ยาที่ใช้" icon={<Syringe size={22} />}>
+              {medicalRecord?.medicine ? medicalRecord.medicine : "ไม่มีข้อมูล"}
+            </InfoIcon>
+            <InfoIcon label="ใช้ยาเมื่อ" icon={<Calendar size={22} />}>
+              {new Date(medicalRecord.use_at).toLocaleDateString("en-GB")}
+            </InfoIcon>
           </div>
         </div>
       </CardContent>

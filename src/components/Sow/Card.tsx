@@ -28,6 +28,7 @@ import { FarrowForm, NewBreedingForm } from "../Breeding/Form";
 import DialogComponent from "../DialogComponent";
 import { cn } from "@/lib/utils";
 import CountdownBadge from "../CountdownBadge";
+import InfoIcon from "../InfoIcon";
 
 export default function SowCard({ sow }: { sow: Sow }) {
   const latestBreeding = sow.breedings?.[0];
@@ -48,35 +49,32 @@ export default function SowCard({ sow }: { sow: Sow }) {
                     พร้อมผสม
                   </p>
                   <div className="flex flex-col gap-2 mt-6">
-                    <p className="inline-flex items-center gap-1">
-                      <span className="border p-2 bg-gray-50 rounded-lg">
-                        <Calendar size={22} className="text-gray-500" />
-                      </span>
-                      {latestBreeding?.actual_farrow_date ? (
-                        <span>
-                          คลอดล่าสุด{" "}
-                          {new Date(
-                            latestBreeding?.actual_farrow_date
-                          ).toLocaleDateString("en-GB")}{" "}
-                          <span className="text-gray-400">
-                            (
-                            {Math.floor(
-                              (new Date().getTime() -
-                                new Date(
-                                  latestBreeding?.actual_farrow_date
-                                ).getTime()) /
-                                (1000 * 60 * 60 * 24)
-                            )}{" "}
-                            วันที่แล้ว)
-                          </span>
-                        </span>
-                      ) : (
+                    {latestBreeding?.actual_farrow_date ? (
+                      <InfoIcon
+                        label="คลอดล่าสุด"
+                        icon={<Calendar size={22} />}
+                      >
+                        {new Date(
+                          latestBreeding?.actual_farrow_date
+                        ).toLocaleDateString("en-GB")}{" "}
                         <span className="text-gray-400">
-                          {" "}
-                          ไม่มีประวัติการคลอด
+                          (
+                          {Math.floor(
+                            (new Date().getTime() -
+                              new Date(
+                                latestBreeding?.actual_farrow_date
+                              ).getTime()) /
+                              (1000 * 60 * 60 * 24)
+                          )}{" "}
+                          วันที่แล้ว)
                         </span>
-                      )}
-                    </p>
+                      </InfoIcon>
+                    ) : (
+                      <span className="text-gray-400">
+                        {" "}
+                        ไม่มีประวัติการคลอด
+                      </span>
+                    )}
                   </div>
                 </>
               ) : (
@@ -95,24 +93,16 @@ export default function SowCard({ sow }: { sow: Sow }) {
           {latestBreeding?.breed_date &&
             !latestBreeding?.actual_farrow_date && (
               <div className="flex flex-col gap-2 mt-6">
-                <p className="inline-flex items-center gap-1">
-                  <span className="border p-2 bg-gray-50 rounded-lg">
-                    <CalendarHeart size={22} className="text-gray-500" />
-                  </span>
-                  ผสมเมื่อ{" "}
+                <InfoIcon label="ผสมเมื่อ" icon={<CalendarHeart size={22} />}>
                   {new Date(latestBreeding.breed_date).toLocaleDateString(
                     "en-GB"
                   )}
-                </p>
-                <p className="inline-flex items-center gap-1">
-                  <span className="border p-2 bg-gray-50 rounded-lg">
-                    <CalendarCheck size={22} className="text-gray-500" />
-                  </span>
-                  กำหนดคลอด{" "}
+                </InfoIcon>
+                <InfoIcon label="กำหนดคลอด" icon={<CalendarCheck size={22} />}>
                   {new Date(
                     latestBreeding.expected_farrow_date!
                   ).toLocaleDateString("en-GB")}
-                </p>
+                </InfoIcon>
               </div>
             )}
         </div>
