@@ -36,11 +36,6 @@ export default function SowCard({ sow }: { sow: Sow }) {
     <Card className={cn(sow.is_active ? "" : "opacity-60", "w-full")}>
       <CardHeader>
         <CardTitle>{sow.name}</CardTitle>
-        <CardDescription>
-          {sow.birthdate
-            ? new Date(sow.birthdate).toLocaleDateString("en-GB")
-            : ""}
-        </CardDescription>
       </CardHeader>
       <CardContent>
         <div>

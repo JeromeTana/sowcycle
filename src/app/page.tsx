@@ -8,16 +8,12 @@ import { getAllSowsWithLatestBreeding } from "@/services/sow";
 
 import { Button } from "@/components/ui/button";
 import {
-  ArrowDown,
-  ArrowUp,
-  ArrowUpDown,
   ChevronDown,
   ChevronUp,
   Filter,
   LogOut,
   Plus,
   Search,
-  X,
 } from "lucide-react";
 import DialogComponent from "@/components/DialogComponent";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -32,8 +28,13 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
+import TabsComponent from "@/components/TabsComponent";
+import BoarForm from "@/components/Boar/Form";
+import { useBoarStore } from "@/stores/useBoarStore";
+import BoarList from "@/components/Boar/List";
+import { getAllBoars } from "@/services/boar";
 
-const filterOptions = [
+const filterSowOptions = [
   {
     label: "ทั้งหมด",
     value: {},
@@ -75,13 +76,26 @@ const sortOptions = [
   },
 ];
 
+const tabOptions = [
+  {
+    label: "แม่พันธุ์",
+    value: "sow",
+    content: <SowLayout />,
+    default: true,
+  },
+  {
+    label: "พ่อพันธุ์",
+    value: "boar",
+    content: <BoarLayout />,
+  },
+];
+
 export default function Page() {
   const { sows, setSows } = useSowStore();
+  const { setBoars } = useBoarStore();
   const { setIsLoading: setIsLoadingDialog } = useLoading();
   const [isLoading, setIsLoading] = useState(true);
 
-  const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState(filterOptions[0]);
   const [isExpanded, setIsExpanded] = useState(false);
 
   const breededSows = sows
@@ -92,16 +106,6 @@ export default function Page() {
         new Date(b.breedings[0].breed_date).getTime()
       );
     });
-
-  const filteredSows = useMemo(() => {
-    return sows
-      .filter((sow) => sow.name.includes(search))
-      .filter((sow) => {
-        return Object.entries(filter.value).every(([key, value]) => {
-          return sow[key] === value;
-        });
-      });
-  }, [sows, search, filter]);
 
   const handleLogout = async () => {
     setIsLoadingDialog(true);
@@ -122,6 +126,10 @@ export default function Page() {
       const sows = await getAllSowsWithLatestBreeding();
       if (!sows) return;
       setSows(sows);
+
+      const boars = await getAllBoars();
+      if (!boars) return;
+      setBoars(boars);
       setIsLoading(false);
     };
     fetchData();
@@ -162,64 +170,157 @@ export default function Page() {
           )}
         </div>
       )}
-      <div className="space-y-4">
-        <div className="flex justify-between">
-          <h2 className="text-xl font-bold">แม่พันธุ์ทั้งหมด</h2>
-          <DialogComponent
-            title="เพิ่มแม่พันธุ์ใหม่"
-            dialogTriggerButton={
-              <Button>
-                <Plus /> เพิ่มแม่พันธุ์
-              </Button>
-            }
-          >
-            <SowForm />
-          </DialogComponent>
-        </div>
-        <div className="flex gap-2">
-          <Input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            startIcon={Search}
-            placeholder="ค้นหาชื่อแม่พันธุ์"
-            className="bg-white"
-          />
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant={"outline"}
+      <TabsComponent tabOptions={tabOptions} />
+    </div>
+  );
+}
+
+function SowLayout() {
+  const { sows } = useSowStore();
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState(filterSowOptions[0]);
+
+  const filteredSows = useMemo(() => {
+    return sows
+      .filter((sow) => sow.name.includes(search))
+      .filter((sow) => {
+        return Object.entries(filter.value).every(([key, value]) => {
+          return sow[key] === value;
+        });
+      });
+  }, [sows, search, filter]);
+  return (
+    <div className="space-y-4">
+      <div className="flex justify-between">
+        <h2 className="text-xl font-bold">แม่พันธุ์ทั้งหมด ({sows.length})</h2>
+        <DialogComponent
+          title="เพิ่มแม่พันธุ์ใหม่"
+          dialogTriggerButton={
+            <Button>
+              <Plus /> เพิ่มแม่พันธุ์
+            </Button>
+          }
+        >
+          <SowForm />
+        </DialogComponent>
+      </div>
+      <div className="flex gap-2">
+        <Input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          startIcon={Search}
+          placeholder="ค้นหาชื่อแม่พันธุ์"
+          className="bg-white"
+        />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant={"outline"}
+              className={cn(
+                JSON.stringify(filter.value) ===
+                  JSON.stringify(filterSowOptions[0].value)
+                  ? ""
+                  : "bg-pink-500 hover:bg-pink-600 !text-white"
+              )}
+            >
+              <Filter /> {filter.label} <ChevronDown />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            {filterSowOptions.map((option, key) => (
+              <DropdownMenuItem
+                key={key}
+                onSelect={() => {
+                  setFilter(option);
+                }}
                 className={cn(
-                  JSON.stringify(filter.value) ===
-                    JSON.stringify(filterOptions[0].value)
-                    ? ""
-                    : "bg-pink-500 hover:bg-pink-600 !text-white"
+                  JSON.stringify(option.value) === JSON.stringify(filter.value)
+                    ? "bg-black text-white hover:!bg-black hover:!text-white"
+                    : "bg-white text-black"
                 )}
               >
-                <Filter /> {filter.label} <ChevronDown />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {filterOptions.map((option, key) => (
-                <DropdownMenuItem
-                  key={key}
-                  onSelect={() => {
-                    setFilter(option);
-                  }}
-                  className={cn(
-                    JSON.stringify(option.value) ===
-                      JSON.stringify(filter.value)
-                      ? "bg-black text-white hover:!bg-black hover:!text-white"
-                      : "bg-white text-black"
-                  )}
-                >
-                  {option.label}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-        <SowList sows={filteredSows} />
+                {option.label}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
+      <SowList sows={filteredSows} />
+    </div>
+  );
+}
+
+function BoarLayout() {
+  const { boars } = useBoarStore();
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState(filterSowOptions[0]);
+
+  const filteredBoars = useMemo(() => {
+    return boars
+      .filter((boar) => boar.breed.includes(search))
+      .filter((boar) => {
+        return Object.entries(filter.value).every(([key, value]) => {
+          return boar[key] === value;
+        });
+      });
+  }, [boars, search, filter]);
+  return (
+    <div className="space-y-4">
+      <div className="flex justify-between">
+        <h2 className="text-xl font-bold">พ่อพันธุ์ทั้งหมด ({boars.length})</h2>
+        <DialogComponent
+          title="เพิ่มพ่อพันธุ์ใหม่"
+          dialogTriggerButton={
+            <Button>
+              <Plus /> เพิ่มพ่อพันธุ์
+            </Button>
+          }
+        >
+          <BoarForm />
+        </DialogComponent>
+      </div>
+      <div className="flex gap-2">
+        <Input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          startIcon={Search}
+          placeholder="ค้นหาชื่อพ่อพันธุ์"
+          className="bg-white"
+        />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant={"outline"}
+              className={cn(
+                JSON.stringify(filter.value) ===
+                  JSON.stringify(filterSowOptions[0].value)
+                  ? ""
+                  : "bg-pink-500 hover:bg-pink-600 !text-white"
+              )}
+            >
+              <Filter /> {filter.label} <ChevronDown />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            {filterSowOptions.map((option, key) => (
+              <DropdownMenuItem
+                key={key}
+                onSelect={() => {
+                  setFilter(option);
+                }}
+                className={cn(
+                  JSON.stringify(option.value) === JSON.stringify(filter.value)
+                    ? "bg-black text-white hover:!bg-black hover:!text-white"
+                    : "bg-white text-black"
+                )}
+              >
+                {option.label}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+      <BoarList boars={filteredBoars} />
     </div>
   );
 }

@@ -39,9 +39,12 @@ import { useToast } from "@/hooks/use-toast";
 import DialogComponent from "../DialogComponent";
 import { enGB, is } from "date-fns/locale";
 import { useBreedingStore } from "@/stores/useBreedingStore";
+import { useBoarStore } from "@/stores/useBoarStore";
+import { getAllBoars } from "@/services/boar";
 
 const newFormSchema = z.object({
   sow_id: z.string(),
+  boar_id: z.string().nullable(),
   breed_date: z.date({ required_error: "กรุณาเลือกวันที่" }),
 });
 
@@ -63,6 +66,7 @@ export function NewBreedingForm({
   setDialog?: any;
 }) {
   const { sows, setSows, updateSow } = useSowStore();
+  const { boars, setBoars } = useBoarStore();
   const { addBreeding, updateBreeding: updateBreedingStore } =
     useBreedingStore();
   const { toast } = useToast();
@@ -166,6 +170,10 @@ export function NewBreedingForm({
       const sows = await getAllSows();
       if (!sows) return;
       setSows(sows);
+
+      const boars = await getAllBoars();
+      if (!boars) return;
+      setBoars(boars);
     };
     if (sows.length === 0) fetchData();
   }, []);
@@ -195,6 +203,36 @@ export function NewBreedingForm({
                     {sows.map((sow) => (
                       <SelectItem key={sow.id} value={sow.id.toString()}>
                         {sow.name}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="boar_id"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>พ่อพันธุ์</FormLabel>
+              <Select
+                onValueChange={field.onChange}
+                disabled={breeding?.id ? true : false}
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="เลือกสายพันธุ์ที่ผสม" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>เลือกสายพันธุ์ที่ผสม</SelectLabel>
+                    {boars.map((boar) => (
+                      <SelectItem key={boar.id} value={boar.id.toString()}>
+                        {boar.breed}
                       </SelectItem>
                     ))}
                   </SelectGroup>
