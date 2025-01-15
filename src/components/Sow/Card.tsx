@@ -1,14 +1,10 @@
 "use client";
 
-import { getBreedingsBySowId } from "@/services/breeding";
-import { Breeding } from "@/types/breeding";
 import { Sow } from "@/types/sow";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,

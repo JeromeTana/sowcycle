@@ -14,9 +14,6 @@ export default function InfoIcon({
   icon,
   className,
 }: InfoIconProps) {
-  //  breeding.actual_farrow_date
-  //           ? "bg-gray-50 text-gray-500"
-  //           : "bg-pink-50 text-pink-400 border-pink-400",
   return (
     <div className="inline-flex items-start gap-2 text-gray-500">
       <div
