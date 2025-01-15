@@ -190,7 +190,7 @@ function SowLayout() {
       });
   }, [sows, search, filter]);
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 mt-8">
       <div className="flex justify-between">
         <h2 className="text-xl font-bold">แม่พันธุ์ทั้งหมด ({sows.length})</h2>
         <DialogComponent
@@ -265,7 +265,7 @@ function BoarLayout() {
       });
   }, [boars, search, filter]);
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 mt-8">
       <div className="flex justify-between">
         <h2 className="text-xl font-bold">พ่อพันธุ์ทั้งหมด ({boars.length})</h2>
         <DialogComponent
