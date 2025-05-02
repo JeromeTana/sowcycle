@@ -87,7 +87,7 @@ export const getSowByIdWithAllInfo = async (id: number) => {
       .from("sows")
       .select(
         `*,
-        breedings(*),
+        breedings(*, boars(*)),
         medical_records(*)
         `
       )

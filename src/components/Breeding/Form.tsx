@@ -105,16 +105,20 @@ export function NewBreedingForm({
   };
 
   const handleUpdate = async (values: z.infer<typeof newFormSchema>) => {
+    let requestBody = {
+      ...breeding,
+      ...values,
+      sow_id: Number(values.sow_id),
+      breed_date: values.breed_date.toISOString(),
+      expected_farrow_date: expectedFarrowDate!.toISOString(),
+      updated_at: new Date().toISOString(),
+      boar_id: values.boar_id ? Number(values.boar_id) : undefined,
+    };
+
+    delete requestBody.boars;
+
     try {
-      let res = await updateBreeding({
-        ...breeding,
-        ...values,
-        sow_id: Number(values.sow_id),
-        breed_date: values.breed_date.toISOString(),
-        expected_farrow_date: expectedFarrowDate!.toISOString(),
-        updated_at: new Date().toISOString(),
-        boar_id: values.boar_id ? Number(values.boar_id) : undefined,
-      });
+      let res = await updateBreeding(requestBody);
 
       if (res) {
         toast({
@@ -133,6 +137,7 @@ export function NewBreedingForm({
     try {
       let breedingResponse = await createBreeding({
         sow_id: Number(values.sow_id),
+        boar_id: values.boar_id ? Number(values.boar_id) : undefined,
         breed_date: values.breed_date.toISOString(),
         expected_farrow_date: expectedFarrowDate!.toISOString(),
       });
@@ -386,8 +391,16 @@ export function FarrowForm({
   }, [form.watch("breed_date")]);
 
   const handleCreate = async (breeding: Breeding) => {
+    let requestBody = {
+      ...breeding,
+      boar_id: breeding.boars?.boar_id,
+      updated_at: new Date().toISOString(),
+    };
+
+    delete requestBody.boars;
+
     try {
-      let updateResponse = await updateBreeding(breeding);
+      let updateResponse = await updateBreeding(requestBody);
       if (updateResponse) {
         let sowPatchResponse = await patchSow({
           id: breeding.sow_id,
@@ -412,11 +425,16 @@ export function FarrowForm({
   };
 
   const handleUpdate = async (breeding: Breeding) => {
+    let requestBody = {
+      ...breeding,
+      boar_id: breeding.boars?.boar_id,
+      updated_at: new Date().toISOString(),
+    };
+
+    delete requestBody.boars;
+
     try {
-      let res = await updateBreeding({
-        ...breeding,
-        updated_at: new Date().toISOString(),
-      });
+      let res = await updateBreeding(requestBody);
       if (res) {
         toast({
           title: "แก้ไขสำเร็จ",

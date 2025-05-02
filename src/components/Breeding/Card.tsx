@@ -21,6 +21,7 @@ import {
 import { FarrowForm, NewBreedingForm } from "./Form";
 import { cn } from "@/lib/utils";
 import InfoIcon from "../InfoIcon";
+import Link from "next/link";
 
 export default function BreedingCard({
   breeding,
@@ -33,9 +34,7 @@ export default function BreedingCard({
   return (
     <Card
       className={
-        breeding.actual_farrow_date
-          ? ""
-          : "bg-gradient-to-br from-white to-pink-100 border-pink-300"
+        breeding.actual_farrow_date ? "" : "bg-pink-50 border-pink-300"
       }
     >
       <CardHeader>
@@ -74,24 +73,11 @@ export default function BreedingCard({
               className={cn(
                 breeding.actual_farrow_date
                   ? "bg-gray-50 text-gray-500"
-                  : "!bg-pink-50 !text-pink-400 border-pink-400"
+                  : "!text-pink-400 border-pink-400"
               )}
             >
               {new Date(breeding.breed_date).toLocaleDateString("en-GB")}
             </InfoIcon>
-            {breeding.boar_id && (
-              <InfoIcon
-                label="ผสมกับสายพันธุ์"
-                icon={<Dna size={22} />}
-                className={cn(
-                  breeding.actual_farrow_date
-                    ? "bg-gray-50 text-gray-500"
-                    : "!bg-pink-50 !text-pink-400 border-pink-400"
-                )}
-              >
-                {breeding.boar_id.toString()}
-              </InfoIcon>
-            )}
             {breeding.actual_farrow_date ? (
               <InfoIcon label="คลอดเมื่อ" icon={<CalendarCheck size={22} />}>
                 {new Date(breeding.actual_farrow_date).toLocaleDateString(
@@ -125,48 +111,70 @@ export default function BreedingCard({
                 </span>
               </InfoIcon>
             ) : (
-              <div className="inline-flex items-start gap-2 text-gray-500">
-                <div className="bg-pink-50 text-pink-400 border-pink-400 border p-2 rounded-lg">
-                  <Calendar size={22} />
-                </div>
-                <p className="inline-flex flex-col gap-1">
-                  <span className="text-xs">กำหนดคลอด</span>
-                  <span className="text-black">
-                    {new Date(breeding.expected_farrow_date).toLocaleDateString(
-                      "en-GB"
-                    )}
-                  </span>
-                </p>
-              </div>
+              <InfoIcon
+                label="กำหนดคลอด"
+                icon={<Calendar size={22} />}
+                className={cn(
+                  breeding.actual_farrow_date
+                    ? "bg-gray-50 text-gray-500"
+                    : "!text-pink-400 border-pink-400"
+                )}
+              >
+                {new Date(breeding.expected_farrow_date).toLocaleDateString(
+                  "en-GB"
+                )}
+              </InfoIcon>
+            )}
+            {breeding.boars && (
+              <Link
+                href={`/boars/${breeding.boars.id}`}
+                className={cn(
+                  "p-2 border rounded-lg",
+                  breeding.actual_farrow_date
+                    ? "bg-gray-50"
+                    : "border-pink-300 bg-pink-100"
+                )}
+              >
+                <InfoIcon
+                  label="ผสมกับพ่อพันธุ์"
+                  icon={<Dna size={22} />}
+                  className={cn(
+                    breeding.actual_farrow_date
+                      ? "!bg-white text-gray-500"
+                      : "!text-pink-400 border-pink-400"
+                  )}
+                >
+                  {breeding.boars.breed}
+                </InfoIcon>
+              </Link>
             )}
           </div>
           {breeding.actual_farrow_date && (
             <div className="space-y-4 border p-4 bg-gray-50 rounded-lg">
               <div>
-                <p className="inline-flex items-center gap-1">
-                  <PiggyBank size={22} /> จำนวนลูกหมูเกิดรอด{" "}
-                  <span className="font-semibold">
-                    {breeding.piglets_born_count}
-                  </span>
-                  ตัว
-                </p>
-                <div className="flex gap-1 mt-2">
+                <InfoIcon
+                  label="จำนวนลูกเกิดรอด"
+                  icon={<PiggyBank size={22} />}
+                  className="!bg-white text-gray-500"
+                >
+                  {breeding.piglets_born_count} ตัว
+                </InfoIcon>
+                <div className="flex gap-1 mt-2 ml-10">
                   <p className="text-blue-500 border border-blue-300 p-2 bg-blue-50 rounded">
-                    ตัวผู้ {breeding.piglets_male_born_alive} ตัว
+                    ผู้ {breeding.piglets_male_born_alive}
                   </p>
                   <p className="text-pink-500 border border-pink-300 p-2 bg-pink-50 rounded">
-                    ตัวเมีย {breeding.piglets_female_born_alive} ตัว
+                    เมีย {breeding.piglets_female_born_alive}
                   </p>
                 </div>
               </div>
-              <p className="inline-flex items-center gap-1">
-                <X size={22} />
-                จำนวนลูกหมูไม่รอด
-                <span className="font-semibold">
-                  {breeding.piglets_born_dead}
-                </span>
-                ตัว
-              </p>
+              <InfoIcon
+                label="จำนวนลูกเกิดตาย"
+                icon={<X size={22} />}
+                className="!bg-white text-gray-500"
+              >
+                {breeding.piglets_born_dead} ตัว
+              </InfoIcon>
               <p className="border p-4 bg-gray-100 rounded">
                 รวมทั้งหมด{" "}
                 <span className="font-semibold">

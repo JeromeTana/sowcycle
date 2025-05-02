@@ -22,7 +22,7 @@ export const createBreeding = async (breeding: Breeding) => {
   const { data, error } = await supabase
     .from("breedings")
     .insert([breeding])
-    .select()
+    .select(`*, boars(*)`)
     .single();
 
   if (error) throw new Error(`Failed to create breeding: ${error.message}`);
@@ -35,7 +35,7 @@ export const updateBreeding = async (breeding: Breeding) => {
     .from("breedings")
     .update(breeding)
     .eq("id", breeding.id)
-    .select()
+    .select(`*, boars(*)`)
     .single();
 
   if (error) throw new Error(`Failed to update breeding: ${error.message}`);

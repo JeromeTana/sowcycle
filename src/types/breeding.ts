@@ -1,3 +1,5 @@
+import { Boar } from "./boar";
+
 export interface Breeding {
   id?: number;
   created_at?: string;
@@ -11,4 +13,5 @@ export interface Breeding {
   piglets_female_born_alive?: number;
   piglets_born_dead?: number;
   boar_id?: number;
+  boars?: Boar;
 }
