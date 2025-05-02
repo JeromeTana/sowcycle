@@ -162,7 +162,7 @@ export default function Page() {
             <Button
               variant={"outline"}
               onClick={() => setIsExpanded(!isExpanded)}
-              className="flex items-center gap-1 w-full p-8 rounded-xl"
+              className="flex items-center gap-1 w-full rounded-xl bg-transparent hover:bg-transparent shadow-none"
             >
               {isExpanded ? <ChevronUp /> : <ChevronDown />}
               {isExpanded ? "ย่อ" : "ดูทั้งหมด"}
