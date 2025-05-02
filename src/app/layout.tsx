@@ -28,10 +28,10 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning
       >
         <main
           className="max-w-screen-sm m-auto flex flex-col gap-2 px-2 py-8"
-          suppressHydrationWarning
         >
           {children}
         </main>
