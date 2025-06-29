@@ -6,7 +6,7 @@ import { getBoarById } from "@/services/boar";
 import { useEffect, useState } from "react";
 
 import DialogComponent from "@/components/DialogComponent";
-import { Dna, Pen, PiggyBankIcon } from "lucide-react";
+import { Dna, Pen } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useBoarStore } from "@/stores/useBoarStore";
 import { redirect } from "next/navigation";
@@ -63,7 +63,7 @@ export default function BoarsPage({ params }: any) {
     <div className="space-y-8">
       <div className="flex justify-between mb-4">
         <div className="relative">
-          <h1 className="text-2xl font-bold inline-flex items-center gap-4">
+          <h1 className="text-2xl font-bold inline-flex items-center gap-3">
             <Dna size={32} className="inline" />
             {boar.breed}
           </h1>

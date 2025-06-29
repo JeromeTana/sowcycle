@@ -69,7 +69,7 @@ export default function BoarsPage() {
 
   if (isLoading) {
     return (
-      <div className="space-y-4 mt-8">
+      <div className="space-y-4">
         <div className="flex justify-between">
           <Skeleton className="w-48 h-8" />
         </div>
@@ -85,7 +85,7 @@ export default function BoarsPage() {
   }
 
   return (
-    <div className="space-y-4 mt-8">
+    <div className="space-y-4 mb-20">
       <div className="flex justify-between">
         <h2 className="text-xl">พ่อพันธุ์ทั้งหมด ({boars.length})</h2>
         <DialogComponent

@@ -1,13 +1,15 @@
 "use client";
 
 import React from "react";
-import { Button } from "./ui/button";
-import { LogOut } from "lucide-react";
 import { useLoading } from "@/stores/useLoading";
 import { signOut } from "@/services/auth";
 import { redirect } from "next/navigation";
 
-export default function LogoutButton() {
+interface LogoutButtonProps {
+  children?: React.ReactNode;
+}
+
+export default function LogoutButton({ children }: LogoutButtonProps) {
   const { setIsLoading: setIsLoadingDialog } = useLoading();
   const handleLogout = async () => {
     setIsLoadingDialog(true);
@@ -24,9 +26,8 @@ export default function LogoutButton() {
   };
 
   return (
-    <Button variant={"ghost"} onClick={handleLogout}>
-      <LogOut />
-      Logout
-    </Button>
+    <button onClick={handleLogout}>
+      {children}
+    </button>
   );
 }

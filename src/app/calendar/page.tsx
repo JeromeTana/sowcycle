@@ -134,7 +134,8 @@ export default function CalendarPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
+      <h1 className="text-2xl font-bold mb-4">Calendar</h1>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div>
           <Calendar
@@ -163,16 +164,8 @@ export default function CalendarPage() {
               overdue: "bg-red-500 text-white",
             }}
           />
-          <p className="py-6 font-bold text-lg">
-            {format(selectedDate!, "d MMMM yyyy")}{" "}
-            <span className="text-sm text-muted-foreground font-normal">
-              {selectedDateEvents.length > 0 &&
-                (selectedDateEvents[0].daysUntilFarrow >= 0
-                  ? `(อีก ${selectedDateEvents[0].daysUntilFarrow + 1} วัน)`
-                  : `(ผ่านมา ${Math.abs(
-                      selectedDateEvents[0].daysUntilFarrow
-                    )} วัน)`)}
-            </span>
+          <p className="pt-6 pb-4 font-bold text-lg">
+            กำหนดคลอด {`(${selectedDateEvents.length})`}
           </p>
           {selectedDateEvents.length > 0 ? (
             <div className="space-y-3">

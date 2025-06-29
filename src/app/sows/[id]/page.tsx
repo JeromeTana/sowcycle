@@ -150,7 +150,7 @@ export default function SowsPage({ params }: any) {
     <div className="space-y-8">
       <div className="flex justify-between mb-4">
         <div className="relative">
-          <h1 className="text-2xl inline-flex items-center gap-4">
+          <h1 className="text-2xl inline-flex items-center gap-3">
             <PiggyBankIcon size={32} className="inline" />
             {sow.name}
           </h1>
