@@ -34,6 +34,8 @@ import { useMedicalRecordStore } from "@/stores/useMedicalRecordStore";
 import { useSowStore } from "@/stores/useSowStore";
 import { redirect } from "next/navigation";
 import InfoIcon from "@/components/InfoIcon";
+import { cn } from "@/lib/utils";
+import { kanitFont } from "@/utils/fonts";
 
 export default function SowsPage({ params }: any) {
   const [id, setId] = useState<number | null>();
@@ -151,10 +153,10 @@ export default function SowsPage({ params }: any) {
     <div className="space-y-8">
       <div className="flex justify-between mb-4">
         <div className="relative">
-          <p className="text-2xl font-bold inline-flex items-center gap-4">
+          <h1 className="text-2xl inline-flex items-center gap-4">
             <PiggyBankIcon size={32} className="inline" />
             {sow.name}
-          </p>
+          </h1>
           {sow.is_active && (
             <div className="absolute top-0 -right-3 w-1 h-1 rounded-full bg-green-500 animate-ping" />
           )}
@@ -243,7 +245,7 @@ export default function SowsPage({ params }: any) {
       </Card>
       <div className="space-y-4">
         <div className="flex justify-between">
-          <p className="text-xl font-bold ">ประวัติแม่พันธุ์</p>
+          <h2 className="text-xl">ประวัติแม่พันธุ์</h2>
           <DialogComponent
             title="เพิ่มประวัติใหม่"
             dialogTriggerButton={

@@ -156,7 +156,7 @@ export default function Page() {
       </Button>
       {breededSows.length > 0 && (
         <div className="space-y-4 ">
-          <h2 className="text-xl font-bold">แม่พันธุ์ใกล้คลอด</h2>
+          <h2 className="text-xl">แม่พันธุ์ใกล้คลอด</h2>
           <SowList sows={isExpanded ? breededSows : breededSows.slice(0, 3)} />
           {breededSows.length > 3 && (
             <Button
@@ -192,7 +192,7 @@ function SowLayout() {
   return (
     <div className="space-y-4 mt-8">
       <div className="flex justify-between">
-        <h2 className="text-xl font-bold">แม่พันธุ์ทั้งหมด ({sows.length})</h2>
+        <h2 className="text-xl">แม่พันธุ์ทั้งหมด ({sows.length})</h2>
         <DialogComponent
           title="เพิ่มแม่พันธุ์ใหม่"
           dialogTriggerButton={
@@ -267,7 +267,7 @@ function BoarLayout() {
   return (
     <div className="space-y-4 mt-8">
       <div className="flex justify-between">
-        <h2 className="text-xl font-bold">พ่อพันธุ์ทั้งหมด ({boars.length})</h2>
+        <h2 className="text-xl">พ่อพันธุ์ทั้งหมด ({boars.length})</h2>
         <DialogComponent
           title="เพิ่มพ่อพันธุ์ใหม่"
           dialogTriggerButton={
