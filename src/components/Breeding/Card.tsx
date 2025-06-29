@@ -34,7 +34,7 @@ export default function BreedingCard({
   return (
     <Card
       className={
-        breeding.actual_farrow_date ? "" : "bg-pink-50 border-pink-300"
+        breeding.actual_farrow_date ? "" : "border bg-pink-50 border-pink-200"
       }
     >
       <CardHeader>
@@ -73,7 +73,7 @@ export default function BreedingCard({
               className={cn(
                 breeding.actual_farrow_date
                   ? "bg-gray-50 text-gray-500"
-                  : "!text-pink-400 border-pink-400"
+                  : "!text-pink-400 border-pink-300"
               )}
             >
               {new Date(breeding.breed_date).toLocaleDateString("en-GB")}
@@ -117,7 +117,7 @@ export default function BreedingCard({
                 className={cn(
                   breeding.actual_farrow_date
                     ? "bg-gray-50 text-gray-500"
-                    : "!text-pink-400 border-pink-400"
+                    : "!text-pink-400 border-pink-300"
                 )}
               >
                 {new Date(breeding.expected_farrow_date).toLocaleDateString(
@@ -129,7 +129,7 @@ export default function BreedingCard({
               <Link
                 href={`/boars/${breeding.boars.id}`}
                 className={cn(
-                  "p-2 border rounded-lg",
+                  "p-3 rounded-lg",
                   breeding.actual_farrow_date
                     ? "bg-gray-50"
                     : "border-pink-300 bg-pink-100"
@@ -141,7 +141,7 @@ export default function BreedingCard({
                   className={cn(
                     breeding.actual_farrow_date
                       ? "!bg-white text-gray-500"
-                      : "!text-pink-400 border-pink-400"
+                      : "!text-pink-400 border-pink-300"
                   )}
                 >
                   {breeding.boars.breed}
@@ -150,7 +150,7 @@ export default function BreedingCard({
             )}
           </div>
           {breeding.actual_farrow_date && (
-            <div className="space-y-4 border p-4 bg-gray-50 rounded-lg">
+            <div className="space-y-4 p-3 bg-gray-50 rounded-lg">
               <div>
                 <InfoIcon
                   label="จำนวนลูกเกิดรอด"
@@ -159,7 +159,7 @@ export default function BreedingCard({
                 >
                   {breeding.piglets_born_count} ตัว
                 </InfoIcon>
-                <div className="flex gap-1 mt-2 ml-10">
+                <div className="flex gap-2 mt-2 ml-10">
                   <p className="text-blue-500 border border-blue-300 p-2 bg-blue-50 rounded">
                     ผู้ {breeding.piglets_male_born_alive}
                   </p>
@@ -175,7 +175,7 @@ export default function BreedingCard({
               >
                 {breeding.piglets_born_dead} ตัว
               </InfoIcon>
-              <p className="border p-4 bg-gray-100 rounded">
+              <p className="p-4 bg-white rounded">
                 รวมทั้งหมด{" "}
                 <span className="font-semibold">
                   {breeding.piglets_born_count! + breeding.piglets_born_dead!}

@@ -25,10 +25,13 @@ import { Check, Loader, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Switch } from "../ui/switch";
 import { useLoading } from "@/stores/useLoading";
+import DatePicker from "../DatePicker";
 
 const formSchema = z.object({
   name: z.string().nonempty("กรุณากรอกชื่อแม่พันธุ์"),
   is_active: z.boolean(),
+  birth_date: z.date().optional(),
+  add_date: z.date().optional(),
 });
 
 export default function SowForm({ editingSow, setDialog }: any) {
@@ -43,6 +46,9 @@ export default function SowForm({ editingSow, setDialog }: any) {
     defaultValues: {
       name: editingSow?.name || "",
       is_active: editingSow ? editingSow.is_active : true,
+      birth_date: editingSow?.birth_date
+        ? new Date(editingSow.birth_date)
+        : undefined,
     },
   });
 
@@ -120,6 +126,28 @@ export default function SowForm({ editingSow, setDialog }: any) {
               <FormControl>
                 <Input placeholder="เช่น ทองดี" {...field} />
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="birth_date"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <FormLabel>วันเกิด</FormLabel>
+              <DatePicker field={field} />
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="add_date"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <FormLabel>เพิ่มเมื่อ</FormLabel>
+              <DatePicker field={field} />
               <FormMessage />
             </FormItem>
           )}

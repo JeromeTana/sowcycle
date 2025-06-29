@@ -11,12 +11,16 @@ import { useEffect, useState } from "react";
 import { NewBreedingForm } from "@/components/Breeding/Form";
 import DialogComponent from "@/components/DialogComponent";
 import {
+  Cake,
   Heart,
+  Home,
   Pen,
   PiggyBank,
   PiggyBankIcon,
   Plus,
+  PlusIcon,
   Syringe,
+  X,
 } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -29,6 +33,7 @@ import { useBreedingStore } from "@/stores/useBreedingStore";
 import { useMedicalRecordStore } from "@/stores/useMedicalRecordStore";
 import { useSowStore } from "@/stores/useSowStore";
 import { redirect } from "next/navigation";
+import InfoIcon from "@/components/InfoIcon";
 
 export default function SowsPage({ params }: any) {
   const [id, setId] = useState<number | null>();
@@ -146,7 +151,7 @@ export default function SowsPage({ params }: any) {
     <div className="space-y-8">
       <div className="flex justify-between mb-4">
         <div className="relative">
-          <p className="text-2xl font-bold inline-flex items-center gap-1">
+          <p className="text-2xl font-bold inline-flex items-center gap-4">
             <PiggyBankIcon size={32} className="inline" />
             {sow.name}
           </p>
@@ -168,29 +173,72 @@ export default function SowsPage({ params }: any) {
         </div>
       </div>
 
-      <Card className={sow.is_active ? "" : "opacity-50"}>
+      <Card>
         <CardHeader>
           <p className="font-bold">รายละเอียด</p>
         </CardHeader>
         <CardContent>
-          {sow.is_active ? (
-            sow.is_available ? (
-              <p className="text-emerald-600 inline-flex items-center gap-1">
-                <PiggyBank size={22} />
-                พร้อมผสม
-              </p>
-            ) : (
-              <div className="flex items-center gap-2">
-                <p className="text-pink-500 inline-flex items-center gap-1">
-                  <Heart size={22} />
-                  ตั้งครรภ์
-                </p>
-                <CountdownBadge date={breedings[0]?.expected_farrow_date} />
-              </div>
-            )
-          ) : (
-            <div>แม่พันธุ์ไม่อยู่ในขณะนี้</div>
-          )}
+          <div className="flex flex-col gap-6">
+            <InfoIcon
+              label="สถานะ"
+              icon={
+                sow.is_active ? (
+                  sow.is_available ? (
+                    <PiggyBank size={22} />
+                  ) : (
+                    <Heart size={22} />
+                  )
+                ) : (
+                  <X size={22} />
+                )
+              }
+              className="text-gray-500"
+            >
+              {sow.is_active ? (
+                sow.is_available ? (
+                  <span className="text-emerald-600 inline-flex items-center gap-1">
+                    พร้อมผสม
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-2">
+                    <span className="text-pink-500 inline-flex items-center gap-1">
+                      ตั้งครรภ์
+                    </span>
+                    <CountdownBadge date={breedings[0]?.expected_farrow_date} />
+                  </span>
+                )
+              ) : (
+                <div>ไม่อยู่</div>
+              )}
+            </InfoIcon>
+
+            <InfoIcon
+              label="วันเกิด"
+              icon={<Cake size={22} />}
+              className="text-gray-500"
+            >
+              {sow.birth_date
+                ? new Date(sow.birth_date).toLocaleDateString("th-TH", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })
+                : "-"}
+            </InfoIcon>
+            <InfoIcon
+              label="เพิ่มเมื่อ"
+              icon={<PlusIcon size={22} />}
+              className="text-gray-500"
+            >
+              {sow.add_date
+                ? new Date(sow.add_date).toLocaleDateString("th-TH", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })
+                : "-"}
+            </InfoIcon>
+          </div>
         </CardContent>
       </Card>
       <div className="space-y-4">
@@ -222,7 +270,7 @@ const BreedingRecordContent = ({
   return (
     <div>
       {breedings?.length > 0 ? (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-4">
           {breedings.map((breeding, index) => (
             <BreedingCard
               index={breedings.length - index}
@@ -247,7 +295,7 @@ const MedicalRecordContent = ({
   return (
     <div>
       {medicalRecords?.length > 0 ? (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-4">
           {medicalRecords.map((medicalRecord, index) => (
             <MedicalRecordCard
               index={medicalRecords.length - index}

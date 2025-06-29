@@ -155,14 +155,14 @@ export default function Page() {
         Logout
       </Button>
       {breededSows.length > 0 && (
-        <div className="space-y-4 p-5  border border-pink-300 bg-pink-100 rounded-2xl">
+        <div className="space-y-4 ">
           <h2 className="text-xl font-bold">แม่พันธุ์ใกล้คลอด</h2>
           <SowList sows={isExpanded ? breededSows : breededSows.slice(0, 3)} />
           {breededSows.length > 3 && (
             <Button
               variant={"outline"}
               onClick={() => setIsExpanded(!isExpanded)}
-              className="flex items-center gap-1 w-full rounded-xl bg-transparent hover:bg-transparent shadow-none"
+              className="flex items-center gap-1 w-full border-none rounded-xl bg-transparent hover:bg-transparent shadow-none"
             >
               {isExpanded ? <ChevronUp /> : <ChevronDown />}
               {isExpanded ? "ย่อ" : "ดูทั้งหมด"}

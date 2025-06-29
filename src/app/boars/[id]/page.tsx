@@ -63,14 +63,14 @@ export default function BoarsPage({ params }: any) {
     <div className="space-y-8">
       <div className="flex justify-between mb-4">
         <div className="relative">
-          <p className="text-2xl font-bold inline-flex items-center gap-1">
+          <p className="text-2xl font-bold inline-flex items-center gap-4">
             <PiggyBankIcon size={32} className="inline" />
             {boar.breed}
           </p>
         </div>
         <div className="flex">
           <DialogComponent
-            title="แก้ไขแม่พันธุ์"
+            title="แก้ไขพ่อพันธุ์"
             dialogTriggerButton={
               <Button variant={"ghost"}>
                 <Pen /> แก้ไขพ่อพันธุ์
