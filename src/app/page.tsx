@@ -26,7 +26,7 @@ export default function Page() {
       setSows(sows);
       setIsLoading(false);
     };
-    sows.length === 0 ? fetchData() : null;
+    sows.length === 0 ? fetchData() : setIsLoading(false);
   }, []);
 
   if (isLoading) {

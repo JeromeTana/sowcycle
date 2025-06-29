@@ -12,6 +12,7 @@ import {
   Clock1,
   Check,
   CalendarIcon,
+  PiggyBank,
 } from "lucide-react";
 import {
   format,
@@ -28,6 +29,7 @@ import { Button } from "@/components/ui/button";
 import DialogComponent from "@/components/DialogComponent";
 import { FarrowForm } from "@/components/Breeding/Form";
 import InfoIcon from "@/components/InfoIcon";
+import { cn } from "@/lib/utils";
 
 interface FarrowEvent {
   id: number;
@@ -108,16 +110,6 @@ export default function CalendarPage() {
   // Get overdue events
   const overdueEvents = farrowEvents.filter((event) => event.isOverdue);
 
-  if (loading) {
-    return (
-      <div className="p-6">
-        <div className="flex items-center justify-center h-64">
-          <Loader />
-        </div>
-      </div>
-    );
-  }
-
   if (error) {
     return (
       <div className="p-6">
@@ -140,6 +132,7 @@ export default function CalendarPage() {
         <div>
           <Calendar
             mode="single"
+            disabled={loading}
             numberOfMonths={1}
             selected={selectedDate}
             onSelect={(date) => {
@@ -147,7 +140,10 @@ export default function CalendarPage() {
               setSelectedDate(date);
             }}
             defaultMonth={new Date()}
-            className="rounded-xl bg-white"
+            className={cn(
+              "rounded-xl bg-white",
+              loading && "animate-pulse"
+            )}
             modifiers={{
               hasEvent: (date) =>
                 farrowEvents.some((event) =>
@@ -164,52 +160,57 @@ export default function CalendarPage() {
               overdue: "bg-red-500 text-white",
             }}
           />
-          <p className="pt-6 pb-4 font-bold text-lg">
-            กำหนดคลอด {`(${selectedDateEvents.length})`}
-          </p>
-          {selectedDateEvents.length > 0 ? (
-            <div className="space-y-3">
-              {selectedDateEvents.map((event) => (
-                <div key={event.id} className="p-6 rounded-xl bg-white">
-                  <div className="flex items-center justify-between">
-                    <span className="font-bold">{event.sowName}</span>
-                  </div>
-                  <div className="mt-6">
-                    {event.actualFarrowDate && (
-                      <InfoIcon
-                        label="คลอดจริงเมื่อ"
-                        icon={<CalendarIcon className="h-5 w-5" />}
-                        className="text-muted-foreground"
-                      >
-                        {format(event.actualFarrowDate, "d/M/y")}{" "}
-                        <span className="text-muted-foreground text-sm">
-                          {event.actualFarrowDate < event.expectedDate
-                            ? `(ก่อนกำหนด ${Math.ceil(
-                                (event.expectedDate.getTime() -
-                                  event.actualFarrowDate.getTime()) /
-                                  (1000 * 60 * 60 * 24)
-                              )} วัน)`
-                            : `(หลังกำหนด ${Math.ceil(
-                                (event.actualFarrowDate.getTime() -
-                                  event.expectedDate.getTime()) /
-                                  (1000 * 60 * 60 * 24)
-                              )} วัน)`}
-                        </span>
-                      </InfoIcon>
-                    )}
-                  </div>
-                  <div className="mt-6 flex justify-end items-center gap-2">
-                    <Link href={`/sows/${event.sowId}`}>
-                      <Button variant={"ghost"}>ดูรายละเอียด</Button>
-                    </Link>
-                  </div>
+          {!loading && (
+            <div>
+              <p className="pt-6 pb-4 font-bold text-lg">
+                กำหนดคลอด {`(${selectedDateEvents.length})`}
+              </p>
+              {selectedDateEvents.length > 0 ? (
+                <div className="space-y-3">
+                  {selectedDateEvents.map((event) => (
+                    <div key={event.id} className="p-6 rounded-xl bg-white">
+                      <div className="flex items-center gap-2">
+                        <PiggyBank />
+                        <span className="font-bold">{event.sowName}</span>
+                      </div>
+                      <div className="mt-6">
+                        {event.actualFarrowDate && (
+                          <InfoIcon
+                            label="คลอดจริงเมื่อ"
+                            icon={<CalendarIcon className="h-5 w-5" />}
+                            className="text-muted-foreground"
+                          >
+                            {format(event.actualFarrowDate, "d/M/y")}{" "}
+                            <span className="text-muted-foreground text-sm">
+                              {event.actualFarrowDate < event.expectedDate
+                                ? `(ก่อนกำหนด ${Math.ceil(
+                                    (event.expectedDate.getTime() -
+                                      event.actualFarrowDate.getTime()) /
+                                      (1000 * 60 * 60 * 24)
+                                  )} วัน)`
+                                : `(หลังกำหนด ${Math.ceil(
+                                    (event.actualFarrowDate.getTime() -
+                                      event.expectedDate.getTime()) /
+                                      (1000 * 60 * 60 * 24)
+                                  )} วัน)`}
+                            </span>
+                          </InfoIcon>
+                        )}
+                      </div>
+                      <div className="mt-6 flex justify-end items-center gap-2">
+                        <Link href={`/sows/${event.sowId}`}>
+                          <Button variant={"ghost"}>ดูรายละเอียด</Button>
+                        </Link>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              ) : (
+                <p className="text-muted-foreground text-center py-16">
+                  ไม่มีแม่พันธุ์ที่คาดว่าจะคลอดในวันที่นี้
+                </p>
+              )}
             </div>
-          ) : (
-            <p className="text-muted-foreground text-center py-16">
-              ไม่มีแม่พันธุ์ที่คาดว่าจะคลอดในวันที่นี้
-            </p>
           )}
         </div>
       </div>
