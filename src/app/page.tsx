@@ -156,7 +156,7 @@ export default function Page() {
       </Button>
       {breededSows.length > 0 && (
         <div className="space-y-4 ">
-          <h2 className="text-xl">แม่พันธุ์ใกล้คลอด</h2>
+          <h2 className="text-xl">แม่พันธุ์ใกล้คลอด ({breededSows.length})</h2>
           <SowList sows={isExpanded ? breededSows : breededSows.slice(0, 3)} />
           {breededSows.length > 3 && (
             <Button
@@ -187,7 +187,11 @@ function SowLayout() {
         return Object.entries(filter.value).every(([key, value]) => {
           return sow[key] === value;
         });
-      });
+      })
+      .sort(
+        (a, b) =>
+          new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
+      );
   }, [sows, search, filter]);
   return (
     <div className="space-y-4 mt-8">

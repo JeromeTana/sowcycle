@@ -3,6 +3,24 @@ import { createClient } from "@/utils/supabase/client";
 
 const supabase = createClient();
 
+export const getAllBreedings = async () => {
+  const { data, error } = (await supabase
+    .from("breedings")
+    .select(`
+      *,
+      boars(*),
+      sows!inner(*)
+    `)
+    .order("expected_farrow_date", { ascending: true })) as {
+    data: Breeding[];
+    error: any;
+  };
+
+  if (error) throw new Error(`Failed to fetch breedings: ${error.message}`);
+
+  return data;
+};
+
 export const getBreedingsBySowId = async (sowId: number) => {
   const { data, error } = (await supabase
     .from("breedings")
