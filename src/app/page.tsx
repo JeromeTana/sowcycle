@@ -108,7 +108,7 @@ export default function Page() {
   return (
     <div>
       {breededSows.length > 0 && (
-        <div className="space-y-4 ">
+        <div className="space-y-4 mb-16">
           <h2 className="text-xl">แม่พันธุ์ใกล้คลอด ({breededSows.length})</h2>
           <SowList sows={isExpanded ? breededSows : breededSows.slice(0, 3)} />
           {breededSows.length > 3 && (
