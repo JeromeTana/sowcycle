@@ -29,7 +29,7 @@ export default function RootLayout({
         className={`${kanitFont.variable} ${mitrFont.variable} ${notoSansThaiFont.variable} ${sarabunFont.variable}`}
         suppressHydrationWarning
       >
-        <main className="max-w-screen-sm m-auto flex flex-col gap-2 px-2 py-8">
+        <main className="max-w-screen-sm min-h-screen m-auto flex flex-col gap-2 px-2 py-8">
           <div className="mb-4">
             <LogoutButton />
           </div>
