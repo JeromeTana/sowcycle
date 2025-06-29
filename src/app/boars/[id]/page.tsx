@@ -63,10 +63,10 @@ export default function BoarsPage({ params }: any) {
     <div className="space-y-8">
       <div className="flex justify-between mb-4">
         <div className="relative">
-          <p className="text-2xl font-bold inline-flex items-center gap-4">
+          <h1 className="text-2xl font-bold inline-flex items-center gap-4">
             <Dna size={32} className="inline" />
             {boar.breed}
-          </p>
+          </h1>
         </div>
         <div className="flex">
           <DialogComponent

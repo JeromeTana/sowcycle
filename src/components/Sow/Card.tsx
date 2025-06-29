@@ -32,9 +32,9 @@ export default function SowCard({ sow }: { sow: Sow }) {
   return (
     <Card className={cn("w-full")}>
       <CardHeader>
-        <CardTitle>
-          {sow.name}
-          <span className="text-sm font-normal ml-4">
+        <CardTitle className="flex items-center gap-2">
+          <PiggyBank /> {sow.name}
+          <span className="text-sm font-normal">
             {sow.is_active ? (
               sow.is_available ? (
                 <span className="text-emerald-600 bg-neutral-100 rounded-full p-2">
@@ -71,7 +71,10 @@ export default function SowCard({ sow }: { sow: Sow }) {
                   </span>
                 </InfoIcon>
               ) : (
-                <span className="text-muted-foreground"> ไม่มีประวัติการคลอด</span>
+                <span className="text-muted-foreground">
+                  {" "}
+                  ไม่มีประวัติการคลอด
+                </span>
               )}
             </>
           ) : (

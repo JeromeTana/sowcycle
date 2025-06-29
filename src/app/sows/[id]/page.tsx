@@ -158,7 +158,10 @@ export default function SowsPage({ params }: any) {
             {sow.name}
           </h1>
           {sow.is_active && (
-            <div className="absolute top-0 -right-3 w-1 h-1 rounded-full bg-green-500 animate-ping" />
+            <div>
+              <div className="absolute top-0 -right-3 w-2 h-2 rounded-full bg-green-500 animate-ping" />
+              <div className="absolute top-0 -right-3 w-2 h-2 rounded-full bg-green-500" />
+            </div>
           )}
         </div>
         <div className="flex">
