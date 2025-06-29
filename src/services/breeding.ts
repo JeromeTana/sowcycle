@@ -1,16 +1,22 @@
 import { Breeding } from "@/types/breeding";
 import { createClient } from "@/utils/supabase/client";
+import { getCurrentUser } from "./auth";
 
 const supabase = createClient();
 
 export const getAllBreedings = async () => {
+  const user = await getCurrentUser();
+  // get from sows that owned by current user
   const { data, error } = (await supabase
     .from("breedings")
-    .select(`
+    .select(
+      `
       *,
       boars(*),
       sows!inner(*)
-    `)
+    `
+    )
+    .eq("sows.user_id", user.id)
     .order("expected_farrow_date", { ascending: true })) as {
     data: Breeding[];
     error: any;

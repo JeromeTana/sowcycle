@@ -1,7 +1,15 @@
 "use client";
 
 import React from "react";
-import { Home, Calendar, Heart, Users, PiggyBank } from "lucide-react";
+import {
+  Home,
+  Calendar,
+  Heart,
+  Users,
+  PiggyBank,
+  Dna,
+  User,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -10,38 +18,61 @@ export default function Navigation() {
 
   return (
     <div className="sticky bottom-0 left-0 right-0 w-full z-50 flex items-center justify-center py-2 px-4 bg-white/80 backdrop-blur border-t border-gray-200">
-      <nav className="grid grid-cols-2 gap-8">
-        {/* <Link
-          href="/"
-          className="flex flex-col items-center justify-center text-gray-600 py-2"
-        >
-          <Home size={20} />
-          <span className="text-xs mt-1">Home</span>
-        </Link> */}
+      <nav className="grid grid-cols-5 gap-8">
         <Link
           href="/"
           className={`flex flex-col items-center justify-center py-2 transition-colors ${
-            pathname === "/" ? "text-pink-500" : "text-gray-600 hover:text-pink-500"
+            pathname === "/"
+              ? "text-pink-500"
+              : "text-gray-600 hover:text-pink-500"
+          }`}
+        >
+          <Home size={20} />
+          <span className="text-xs mt-1">Home</span>
+        </Link>
+        <Link
+          href="/sows"
+          className={`flex flex-col items-center justify-center py-2 transition-colors ${
+            pathname === "/sows"
+              ? "text-pink-500"
+              : "text-gray-600 hover:text-pink-500"
           }`}
         >
           <PiggyBank size={22} />
           <span className="text-xs mt-1">Sows</span>
         </Link>
-        {/* <Link
-          href="/breeding"
-          className="flex flex-col items-center justify-center text-gray-600 py-2"
+        <Link
+          href="/boars"
+          className={`flex flex-col items-center justify-center py-2 transition-colors ${
+            pathname === "/boars"
+              ? "text-pink-500"
+              : "text-gray-600 hover:text-pink-500"
+          }`}
         >
-          <Heart size={20} />
-          <span className="text-xs mt-1">Breeding</span>
-        </Link> */}
+          <Dna size={22} />
+          <span className="text-xs mt-1">Boars</span>
+        </Link>
         <Link
           href="/calendar"
           className={`flex flex-col items-center justify-center py-2 transition-colors ${
-            pathname === "/calendar" ? "text-pink-500" : "text-gray-600 hover:text-pink-500"
+            pathname === "/calendar"
+              ? "text-pink-500"
+              : "text-gray-600 hover:text-pink-500"
           }`}
         >
           <Calendar size={22} />
           <span className="text-xs mt-1">Calendar</span>
+        </Link>
+        <Link
+          href="/account"
+          className={`flex flex-col items-center justify-center py-2 transition-colors ${
+            pathname === "/account"
+              ? "text-pink-500"
+              : "text-gray-600 hover:text-pink-500"
+          }`}
+        >
+          <User size={22} />
+          <span className="text-xs mt-1">Account</span>
         </Link>
       </nav>
     </div>

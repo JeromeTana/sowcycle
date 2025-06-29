@@ -13,7 +13,6 @@ import DialogComponent from "@/components/DialogComponent";
 import {
   Cake,
   Heart,
-  Home,
   Pen,
   PiggyBank,
   PiggyBankIcon,
@@ -34,8 +33,6 @@ import { useMedicalRecordStore } from "@/stores/useMedicalRecordStore";
 import { useSowStore } from "@/stores/useSowStore";
 import { redirect } from "next/navigation";
 import InfoIcon from "@/components/InfoIcon";
-import { cn } from "@/lib/utils";
-import { kanitFont } from "@/utils/fonts";
 
 export default function SowsPage({ params }: any) {
   const [id, setId] = useState<number | null>();
@@ -285,7 +282,9 @@ const BreedingRecordContent = ({
           ))}
         </div>
       ) : (
-        <div className="text-center pt-20 text-muted-foreground">ไม่มีประวัติผสม</div>
+        <div className="text-center pt-20 text-muted-foreground">
+          ไม่มีประวัติผสม
+        </div>
       )}
     </div>
   );
@@ -310,7 +309,9 @@ const MedicalRecordContent = ({
           ))}
         </div>
       ) : (
-        <div className="text-center pt-20 text-muted-foreground">ไม่มีประวัติใช้ยา</div>
+        <div className="text-center pt-20 text-muted-foreground">
+          ไม่มีประวัติใช้ยา
+        </div>
       )}
     </div>
   );
