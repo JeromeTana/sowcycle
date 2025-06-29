@@ -44,7 +44,7 @@ export default function SowCard({ sow }: { sow: Sow }) {
                 <CountdownBadge date={latestBreeding?.expected_farrow_date} />
               )
             ) : (
-              <span className="text-gray-500">ไม่อยู่</span>
+              <span className="text-muted-foreground">ไม่อยู่</span>
             )}
           </span>
         </CardTitle>
@@ -71,7 +71,7 @@ export default function SowCard({ sow }: { sow: Sow }) {
                   </span>
                 </InfoIcon>
               ) : (
-                <span className="text-gray-400"> ไม่มีประวัติการคลอด</span>
+                <span className="text-muted-foreground"> ไม่มีประวัติการคลอด</span>
               )}
             </>
           ) : (

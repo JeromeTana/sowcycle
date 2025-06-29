@@ -3,7 +3,16 @@
 import React, { useEffect, useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CalendarDays, Heart, Clock, AlertTriangle } from "lucide-react";
+import {
+  CalendarDays,
+  Heart,
+  Clock,
+  AlertTriangle,
+  CalendarHeart,
+  Clock1,
+  Check,
+  CalendarIcon,
+} from "lucide-react";
 import {
   format,
   isToday,
@@ -14,6 +23,11 @@ import {
 import { getAllBreedings } from "@/services/breeding";
 import { Breeding } from "@/types/breeding";
 import Loader from "@/components/Loader";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import DialogComponent from "@/components/DialogComponent";
+import { FarrowForm } from "@/components/Breeding/Form";
+import InfoIcon from "@/components/InfoIcon";
 
 interface FarrowEvent {
   id: number;
@@ -122,10 +136,10 @@ export default function CalendarPage() {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* Calendar */}
         <div>
           <Calendar
             mode="single"
+            numberOfMonths={1}
             selected={selectedDate}
             onSelect={(date) => {
               if (!date) return;
@@ -134,151 +148,77 @@ export default function CalendarPage() {
             defaultMonth={new Date()}
             className="rounded-xl bg-white"
             modifiers={{
-              eventDay: (date) =>
+              hasEvent: (date) =>
                 farrowEvents.some((event) =>
                   isSameDay(event.expectedDate, date)
                 ),
-              overdueDay: (date) =>
+              overdue: (date) =>
                 farrowEvents.some(
                   (event) =>
                     isSameDay(event.expectedDate, date) && event.isOverdue
                 ),
-              upcomingDay: (date) =>
-                farrowEvents.some(
-                  (event) =>
-                    isSameDay(event.expectedDate, date) &&
-                    event.daysUntilFarrow >= 0 &&
-                    event.daysUntilFarrow <= 7
-                ),
             }}
-            modifiersStyles={{
-              eventDay: {
-                backgroundColor: "#ec4899",
-                color: "#fff",
-              },
-              overdueDay: {
-                backgroundColor: "#ec4899",
-                color: "#fff",
-              },
-              upcomingDay: {
-                backgroundColor: "#ec4899",
-                color: "#fff",
-              },
+            modifiersClassNames={{
+              hasEvent: "bg-pink-500 text-white",
+              overdue: "bg-red-500 text-white",
             }}
           />
-          {format(selectedDate!, "MMMM d, yyyy")}
-
+          <p className="py-6 font-bold text-lg">
+            {format(selectedDate!, "d MMMM yyyy")}{" "}
+            <span className="text-sm text-muted-foreground font-normal">
+              {selectedDateEvents.length > 0 &&
+                (selectedDateEvents[0].daysUntilFarrow >= 0
+                  ? `(อีก ${selectedDateEvents[0].daysUntilFarrow + 1} วัน)`
+                  : `(ผ่านมา ${Math.abs(
+                      selectedDateEvents[0].daysUntilFarrow
+                    )} วัน)`)}
+            </span>
+          </p>
           {selectedDateEvents.length > 0 ? (
             <div className="space-y-3">
               {selectedDateEvents.map((event) => (
-                <div key={event.id} className="p-3 rounded-lg bg-white">
+                <div key={event.id} className="p-6 rounded-xl bg-white">
                   <div className="flex items-center justify-between">
-                    <span className="font-medium">{event.sowName}</span>
-                    {event.isOverdue && (
-                      <span className="px-2 py-1 text-xs bg-red-100 text-red-800 rounded-full">
-                        Overdue
-                      </span>
-                    )}
-                    {event.daysUntilFarrow === 0 && !event.isOverdue && (
-                      <span className="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full">
-                        Today
-                      </span>
+                    <span className="font-bold">{event.sowName}</span>
+                  </div>
+                  <div className="mt-6">
+                    {event.actualFarrowDate && (
+                      <InfoIcon
+                        label="คลอดจริงเมื่อ"
+                        icon={<CalendarIcon className="h-5 w-5" />}
+                        className="text-muted-foreground"
+                      >
+                        {format(event.actualFarrowDate, "d/M/y")}{" "}
+                        <span className="text-muted-foreground text-sm">
+                          {event.actualFarrowDate < event.expectedDate
+                            ? `(ก่อนกำหนด ${Math.ceil(
+                                (event.expectedDate.getTime() -
+                                  event.actualFarrowDate.getTime()) /
+                                  (1000 * 60 * 60 * 24)
+                              )} วัน)`
+                            : `(หลังกำหนด ${Math.ceil(
+                                (event.actualFarrowDate.getTime() -
+                                  event.expectedDate.getTime()) /
+                                  (1000 * 60 * 60 * 24)
+                              )} วัน)`}
+                        </span>
+                      </InfoIcon>
                     )}
                   </div>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Bred: {format(event.breedDate, "MMM d, yyyy")}
-                  </p>
-                  {event.actualFarrowDate && (
-                    <div className="flex items-center gap-1 mt-2">
-                      <Heart className="h-4 w-4 text-green-500" />
-                      <span className="text-sm text-green-600">
-                        Farrowed:{" "}
-                        {format(event.actualFarrowDate, "MMM d, yyyy")}
-                      </span>
-                    </div>
-                  )}
+                  <div className="mt-6 flex justify-end items-center gap-2">
+                    <Link href={`/sows/${event.sowId}`}>
+                      <Button variant={"ghost"}>ดูรายละเอียด</Button>
+                    </Link>
+                  </div>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-muted-foreground text-center py-4">
-              No farrow events on this date
+            <p className="text-muted-foreground text-center py-16">
+              ไม่มีแม่พันธุ์ที่คาดว่าจะคลอดในวันที่นี้
             </p>
           )}
         </div>
-
-        {/* <div className="space-y-6">
-          {overdueEvents.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg text-red-600 flex items-center gap-2">
-                  <AlertTriangle className="h-5 w-5" />
-                  Overdue Farrows
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {overdueEvents.map((event) => (
-                    <div
-                      key={event.id}
-                      className="p-3 border border-red-200 rounded-lg bg-red-50"
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="font-medium">{event.sowName}</span>
-                        <span className="px-2 py-1 text-xs bg-red-100 text-red-800 rounded-full">
-                          {Math.abs(event.daysUntilFarrow)} days overdue
-                        </span>
-                      </div>
-                      <p className="text-sm text-muted-foreground">
-                        Expected: {format(event.expectedDate, "MMM d, yyyy")}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Clock className="h-5 w-5" />
-                Upcoming Farrows
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {upcomingEvents.length > 0 ? (
-                <div className="space-y-3">
-                  {upcomingEvents.map((event) => (
-                    <div key={event.id} className="p-3 border rounded-lg">
-                      <div className="flex items-center justify-between">
-                        <span className="font-medium">{event.sowName}</span>
-                        <span
-                          className={`px-2 py-1 text-xs rounded-full ${
-                            event.daysUntilFarrow === 0
-                              ? "bg-blue-100 text-blue-800"
-                              : "bg-gray-100 text-gray-800"
-                          }`}
-                        >
-                          {event.daysUntilFarrow === 0
-                            ? "Today"
-                            : `${event.daysUntilFarrow} days`}
-                        </span>
-                      </div>
-                      <p className="text-sm text-muted-foreground">
-                        {format(event.expectedDate, "MMM d, yyyy")}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-muted-foreground text-center py-4">
-                  No upcoming farrows in the next 7 days
-                </p>
-              )}
-            </CardContent>
-          </Card>
-        </div> */}
       </div>
     </div>
   );

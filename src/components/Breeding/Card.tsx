@@ -72,7 +72,7 @@ export default function BreedingCard({
               icon={<CalendarHeart size={22} />}
               className={cn(
                 breeding.actual_farrow_date
-                  ? "bg-gray-50 text-gray-500"
+                  ? "bg-gray-50 text-muted-foreground"
                   : "!text-pink-400 border-pink-300"
               )}
             >
@@ -116,7 +116,7 @@ export default function BreedingCard({
                 icon={<Calendar size={22} />}
                 className={cn(
                   breeding.actual_farrow_date
-                    ? "bg-gray-50 text-gray-500"
+                    ? "bg-gray-50 text-muted-foreground"
                     : "!text-pink-400 border-pink-300"
                 )}
               >
@@ -140,7 +140,7 @@ export default function BreedingCard({
                   icon={<Dna size={22} />}
                   className={cn(
                     breeding.actual_farrow_date
-                      ? "!bg-white text-gray-500"
+                      ? "!bg-white text-muted-foreground"
                       : "!text-pink-400 border-pink-300"
                   )}
                 >
@@ -155,7 +155,7 @@ export default function BreedingCard({
                 <InfoIcon
                   label="จำนวนลูกเกิดรอด"
                   icon={<PiggyBank size={22} />}
-                  className="!bg-white text-gray-500"
+                  className="!bg-white text-muted-foreground"
                 >
                   {breeding.piglets_born_count} ตัว
                 </InfoIcon>
@@ -171,7 +171,7 @@ export default function BreedingCard({
               <InfoIcon
                 label="จำนวนลูกเกิดตาย"
                 icon={<X size={22} />}
-                className="!bg-white text-gray-500"
+                className="!bg-white text-muted-foreground"
               >
                 {breeding.piglets_born_dead} ตัว
               </InfoIcon>

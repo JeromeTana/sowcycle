@@ -15,11 +15,11 @@ export default function InfoIcon({
   className,
 }: InfoIconProps) {
   return (
-    <div className="inline-flex items-start gap-2 text-gray-500">
+    <div className="inline-flex items-start gap-2 text-muted-foreground">
       <div
         className={cn(
           className,
-          "bg-gray-50 text-gray-500 border p-2 rounded-lg"
+          "bg-gray-50 text-muted-foreground border p-2 rounded-lg"
         )}
       >
         {icon}

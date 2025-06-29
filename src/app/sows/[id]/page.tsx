@@ -194,7 +194,7 @@ export default function SowsPage({ params }: any) {
                   <X size={22} />
                 )
               }
-              className="text-gray-500"
+              className="text-muted-foreground"
             >
               {sow.is_active ? (
                 sow.is_available ? (
@@ -217,7 +217,7 @@ export default function SowsPage({ params }: any) {
             <InfoIcon
               label="วันเกิด"
               icon={<Cake size={22} />}
-              className="text-gray-500"
+              className="text-muted-foreground"
             >
               {sow.birth_date
                 ? new Date(sow.birth_date).toLocaleDateString("th-TH", {
@@ -230,7 +230,7 @@ export default function SowsPage({ params }: any) {
             <InfoIcon
               label="เพิ่มเมื่อ"
               icon={<PlusIcon size={22} />}
-              className="text-gray-500"
+              className="text-muted-foreground"
             >
               {sow.add_date
                 ? new Date(sow.add_date).toLocaleDateString("th-TH", {
@@ -282,7 +282,7 @@ const BreedingRecordContent = ({
           ))}
         </div>
       ) : (
-        <div className="text-center pt-20 text-gray-400">ไม่มีประวัติผสม</div>
+        <div className="text-center pt-20 text-muted-foreground">ไม่มีประวัติผสม</div>
       )}
     </div>
   );
@@ -307,7 +307,7 @@ const MedicalRecordContent = ({
           ))}
         </div>
       ) : (
-        <div className="text-center pt-20 text-gray-400">ไม่มีประวัติใช้ยา</div>
+        <div className="text-center pt-20 text-muted-foreground">ไม่มีประวัติใช้ยา</div>
       )}
     </div>
   );
