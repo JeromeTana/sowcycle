@@ -34,8 +34,8 @@ export default function RootLayout({
             <LogoutButton />
           </div>
           {children}
-          <Navigation />
         </main>
+        <Navigation />
         <Toaster />
         <Loader />
       </body>
