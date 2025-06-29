@@ -11,6 +11,7 @@ import {
   sarabunFont,
 } from "@/utils/fonts";
 import Navigation from "@/components/Navigation";
+import LogoutButton from "@/components/LogoutButton";
 
 export const metadata: Metadata = {
   title: "Home - SowCycle",
@@ -29,6 +30,9 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <main className="max-w-screen-sm m-auto flex flex-col gap-2 px-2 py-8">
+          <div className="mb-4">
+            <LogoutButton />
+          </div>
           {children}
           <Navigation />
         </main>

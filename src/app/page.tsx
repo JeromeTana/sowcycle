@@ -7,21 +7,12 @@ import { useSowStore } from "@/stores/useSowStore";
 import { getAllSowsWithLatestBreeding } from "@/services/sow";
 
 import { Button } from "@/components/ui/button";
-import {
-  ChevronDown,
-  ChevronUp,
-  Filter,
-  LogOut,
-  Plus,
-  Search,
-} from "lucide-react";
+import { ChevronDown, ChevronUp, Filter, Plus, Search } from "lucide-react";
 import DialogComponent from "@/components/DialogComponent";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { signOut } from "@/services/auth";
-import { redirect } from "next/navigation";
-import { useLoading } from "@/stores/useLoading";
+
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -57,25 +48,6 @@ const filterSowOptions = [
   },
 ];
 
-const sortOptions = [
-  {
-    label: "ชื่อ",
-    value: "name",
-  },
-  {
-    label: "วันที่ผสม",
-    value: "breedings[0].breed_date",
-  },
-  {
-    label: "วันที่คลอด",
-    value: "breedings[0].actual_farrow_date",
-  },
-  {
-    label: "จำนวนวันใกล้คลอด",
-    value: "",
-  },
-];
-
 const tabOptions = [
   {
     label: "แม่พันธุ์",
@@ -93,7 +65,6 @@ const tabOptions = [
 export default function Page() {
   const { sows, setSows } = useSowStore();
   const { setBoars } = useBoarStore();
-  const { setIsLoading: setIsLoadingDialog } = useLoading();
   const [isLoading, setIsLoading] = useState(true);
 
   const [isExpanded, setIsExpanded] = useState(false);
@@ -106,20 +77,6 @@ export default function Page() {
         new Date(b.breedings[0].breed_date).getTime()
       );
     });
-
-  const handleLogout = async () => {
-    setIsLoadingDialog(true);
-    try {
-      signOut().then((res) => {
-        if (res) {
-          setIsLoadingDialog(false);
-          redirect("/login");
-        }
-      });
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -149,11 +106,7 @@ export default function Page() {
     );
 
   return (
-    <div className="space-y-16">
-      <Button variant={"ghost"} onClick={handleLogout}>
-        <LogOut />
-        Logout
-      </Button>
+    <div>
       {breededSows.length > 0 && (
         <div className="space-y-4 ">
           <h2 className="text-xl">แม่พันธุ์ใกล้คลอด ({breededSows.length})</h2>
