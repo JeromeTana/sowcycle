@@ -146,7 +146,7 @@ export default function SowForm({ editingSow, setDialog }: any) {
           name="add_date"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>เพิ่มเมื่อ</FormLabel>
+              <FormLabel>รับเข้าเมื่อ</FormLabel>
               <DatePicker field={field} />
               <FormMessage />
             </FormItem>

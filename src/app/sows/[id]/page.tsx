@@ -12,6 +12,7 @@ import { NewBreedingForm } from "@/components/Breeding/Form";
 import DialogComponent from "@/components/DialogComponent";
 import {
   Cake,
+  HandHeart,
   Heart,
   Pen,
   PiggyBank,
@@ -228,8 +229,8 @@ export default function SowsPage({ params }: any) {
                 : "-"}
             </InfoIcon>
             <InfoIcon
-              label="เพิ่มเมื่อ"
-              icon={<PlusIcon size={22} />}
+              label="รับเข้าเมื่อ"
+              icon={<HandHeart size={22} />}
               className="text-muted-foreground"
             >
               {sow.add_date
