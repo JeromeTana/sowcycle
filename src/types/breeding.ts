@@ -15,4 +15,5 @@ export interface Breeding {
   boar_id?: number;
   boars?: Boar;
   avg_weight?: number;
+  is_aborted?: boolean;
 }

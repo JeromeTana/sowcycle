@@ -33,9 +33,10 @@ export default function BreedingCard({
   if (!breeding) return null;
   return (
     <Card
-      className={
-        breeding.actual_farrow_date ? "" : "border bg-pink-50 border-pink-200"
-      }
+      className={cn(
+        breeding.actual_farrow_date ? "" : "border bg-pink-50 border-pink-200",
+        breeding.is_aborted ? "opacity-50" : ""
+      )}
     >
       {/* <CardHeader>
         <p
@@ -75,8 +76,8 @@ export default function BreedingCard({
             size={22}
             className={cn(!breeding.actual_farrow_date && "animate-bounce")}
           />
-          <h3>
-            ผสมครั้งที่ {index}{" "}
+          <h3 className="text-lg font-semibold">
+            ผสมครั้งที่ {index} {breeding.is_aborted && "(แท้ง)"}
             <span className="font-normal">
               {!breeding.actual_farrow_date && (
                 <>
@@ -93,7 +94,7 @@ export default function BreedingCard({
           </h3>
         </div>
         <div className="space-y-4">
-          <div className="flex flex-col gap-6">
+          <div className="relative flex flex-col gap-6">
             <InfoIcon
               label="ผสมเมื่อ"
               icon={<CalendarHeart size={22} />}
@@ -105,6 +106,12 @@ export default function BreedingCard({
             >
               {formatDate(breeding.breed_date)}
             </InfoIcon>
+            {breeding.actual_farrow_date ? (
+              <div className="w-[0px] border-l-2 -z-0 h-7 absolute top-10 left-5 -translate-x-1/2" />
+            ) : (
+              <div className="w-[0px] border-l-2 border-pink-500 border-dashed -z-0 h-7 absolute top-10 left-5 -translate-x-1/2" />
+            )}
+
             {breeding.actual_farrow_date ? (
               <InfoIcon label="คลอดเมื่อ" icon={<CalendarCheck size={22} />}>
                 {formatDate(breeding.actual_farrow_date)}{" "}

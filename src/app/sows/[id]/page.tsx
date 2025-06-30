@@ -235,7 +235,12 @@ export default function SowsPage({ params }: any) {
               {sow.add_date ? formatDate(sow.add_date) : "-"}
             </InfoIcon>
             <div className="flex flex-col gap-4">
-              {sow.breedings.length > 1 && (
+              {breedings.filter(
+                (breeding) =>
+                  breeding.actual_farrow_date &&
+                  breeding.piglets_born_count !== null &&
+                  !breeding.is_aborted
+              ).length > 1 && (
                 <div className="flex flex-col gap-4 bg-gray-100 p-4 rounded-lg">
                   <div className="flex flex-col gap-2">
                     <p className="text-sm text-muted-foreground">
@@ -248,8 +253,11 @@ export default function SowsPage({ params }: any) {
                             acc + (breeding.piglets_born_count || 0),
                           0
                         ) /
-                          sow.breedings.filter(
-                            (breeding) => breeding.actual_farrow_date !== null
+                          breedings.filter(
+                            (breeding) =>
+                              breeding.actual_farrow_date &&
+                              breeding.piglets_born_count &&
+                              !breeding.is_aborted
                           ).length
                       )}{" "}
                       ตัว

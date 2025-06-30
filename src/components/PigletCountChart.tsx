@@ -22,7 +22,9 @@ export default function PigletCountChart({ breedings }: PigletCountChartProps) {
   const chartData = breedings
     .filter(
       (breeding) =>
-        breeding.actual_farrow_date && breeding.piglets_born_count !== null
+        breeding.actual_farrow_date &&
+        breeding.piglets_born_count !== null &&
+        !breeding.is_aborted
     )
     .sort((a, b) => {
       return (

@@ -42,6 +42,7 @@ import { useBreedingStore } from "@/stores/useBreedingStore";
 import { useBoarStore } from "@/stores/useBoarStore";
 import { getAllBoars } from "@/services/boar";
 import { PREGNANCY_DURATION } from "@/lib/constant";
+import { Switch } from "../ui/switch";
 
 const newFormSchema = z.object({
   sow_id: z.string(),
@@ -56,6 +57,7 @@ const farrowFormSchema = z.object({
   piglets_female_born_alive: z.coerce.number().nonnegative(),
   piglets_born_dead: z.coerce.number().nonnegative(),
   avg_weight: z.coerce.number().nonnegative().optional(),
+  is_aborted: z.boolean(),
 });
 
 export function NewBreedingForm({
@@ -340,6 +342,7 @@ export function FarrowForm({
           piglets_female_born_alive: breeding.piglets_female_born_alive,
           piglets_born_dead: breeding.piglets_born_dead,
           avg_weight: breeding.avg_weight || undefined,
+          is_aborted: breeding.is_aborted,
         }
       : {
           breed_date: new Date(breeding.breed_date),
@@ -348,6 +351,7 @@ export function FarrowForm({
           piglets_female_born_alive: 0,
           piglets_born_dead: 0,
           avg_weight: undefined,
+          is_aborted: false,
         },
   });
 
@@ -598,6 +602,24 @@ export function FarrowForm({
                     <Input type="number" {...field} min={0} />
                   </FormControl>
                   <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="is_aborted"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                  <div className="space-y-0.5">
+                    <FormLabel className="text-base">แท้งลูก</FormLabel>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
                 </FormItem>
               )}
             />

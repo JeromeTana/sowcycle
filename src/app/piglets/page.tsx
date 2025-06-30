@@ -46,7 +46,7 @@ export default function PigletsPage() {
   const breedingsWithPiglets = useMemo(() => {
     // Filter breedings that have actual_farrow_date (piglets have been born)
     const breedingsWithActualFarrow = breedings.filter(
-      (breeding) => breeding.actual_farrow_date
+      (breeding) => breeding.actual_farrow_date && !breeding.is_aborted
     );
 
     // Combine breeding data with sow information
@@ -145,7 +145,10 @@ export default function PigletsPage() {
                 <Fence className="text-blue-500" size={24} />
                 <div>
                   <p className="text-sm text-gray-600">ครอกที่เกิดแล้ว</p>
-                  <p className="text-2xl font-bold">{filteredPiglets.length}</p>
+                  <p className="text-2xl font-bold">
+                    {filteredPiglets.length}{" "}
+                    <span className="text-sm">ตัว</span>
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -162,6 +165,7 @@ export default function PigletsPage() {
                       (total, breeding) => total + getTotalPiglets(breeding),
                       0
                     )}
+                    <span className="text-sm"> ตัว</span>
                   </p>
                 </div>
               </div>
@@ -232,8 +236,16 @@ export default function PigletsPage() {
                         </div>
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                        <InfoIcon icon={<Users size={22} />} label="จำนวน">
-                          {getTotalPiglets(breeding)}
+                        <InfoIcon icon={<PiggyBank size={22} />} label="จำนวน">
+                          {getTotalPiglets(breeding)} ตัว
+                          <span className="ml-2">
+                            <span className="bg-blue-500 font-bold text-white rounded-full px-3 py-1 text-xs">
+                              ผู้ {breeding.piglets_male_born_alive}
+                            </span>{" "}
+                            <span className="bg-pink-500 font-bold text-white rounded-full px-3 py-1 text-xs">
+                              เมีย {breeding.piglets_female_born_alive}
+                            </span>
+                          </span>
                         </InfoIcon>
                         <InfoIcon
                           icon={<Gauge size={22} />}
