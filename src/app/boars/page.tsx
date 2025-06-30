@@ -92,7 +92,7 @@ export default function BoarsPage() {
           title="เพิ่มพ่อพันธุ์ใหม่"
           dialogTriggerButton={
             <div className="flex items-center gap-2 rounded-full bg-primary text-white p-4 cursor-pointer fixed bottom-24 right-4 shadow">
-              <Plus size={22} /> เพิ่มพ่อพันธุ์
+              <Plus size={22} />
             </div>
           }
         >
