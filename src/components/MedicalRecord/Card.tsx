@@ -10,6 +10,7 @@ import { Pen, Syringe, Activity, Calendar } from "lucide-react";
 import { MedicalRecordForm } from "./Form";
 import { MedicalRecord } from "@/types/medicalRecord";
 import InfoIcon from "../InfoIcon";
+import { formatDate } from "@/lib/utils";
 
 export default function MedicalRecordCard({
   medicalRecord,
@@ -37,7 +38,7 @@ export default function MedicalRecordCard({
               {medicalRecord?.medicine ? medicalRecord.medicine : "ไม่มีข้อมูล"}
             </InfoIcon>
             <InfoIcon label="ใช้ยาเมื่อ" icon={<Calendar size={22} />}>
-              {new Date(medicalRecord.use_at).toLocaleDateString("en-GB")}
+              {formatDate(medicalRecord.use_at)}
             </InfoIcon>
           </div>
         </div>

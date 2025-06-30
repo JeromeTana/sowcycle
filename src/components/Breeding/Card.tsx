@@ -19,7 +19,7 @@ import {
   Dna,
 } from "lucide-react";
 import { FarrowForm, NewBreedingForm } from "./Form";
-import { cn } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
 import InfoIcon from "../InfoIcon";
 import Link from "next/link";
 
@@ -72,17 +72,15 @@ export default function BreedingCard({
               icon={<CalendarHeart size={22} />}
               className={cn(
                 breeding.actual_farrow_date
-                  ? "bg-gray-50 text-muted-foreground"
+                  ? "bg-gray-100 text-muted-foreground"
                   : "!text-pink-400 border-pink-300"
               )}
             >
-              {new Date(breeding.breed_date).toLocaleDateString("en-GB")}
+              {formatDate(breeding.breed_date)}
             </InfoIcon>
             {breeding.actual_farrow_date ? (
               <InfoIcon label="คลอดเมื่อ" icon={<CalendarCheck size={22} />}>
-                {new Date(breeding.actual_farrow_date).toLocaleDateString(
-                  "en-GB"
-                )}{" "}
+                {formatDate(breeding.actual_farrow_date)}{" "}
                 <span className="text-gray-400 text-sm">
                   (
                   {new Date(breeding.actual_farrow_date) <
@@ -116,13 +114,11 @@ export default function BreedingCard({
                 icon={<Calendar size={22} />}
                 className={cn(
                   breeding.actual_farrow_date
-                    ? "bg-gray-50 text-muted-foreground"
+                    ? "bg-gray-100 text-muted-foreground"
                     : "!text-pink-400 border-pink-300"
                 )}
               >
-                {new Date(breeding.expected_farrow_date).toLocaleDateString(
-                  "en-GB"
-                )}
+                {formatDate(breeding.expected_farrow_date)}
               </InfoIcon>
             )}
             {breeding.boars && (
@@ -131,7 +127,7 @@ export default function BreedingCard({
                 className={cn(
                   "p-3 rounded-lg",
                   breeding.actual_farrow_date
-                    ? "bg-gray-50"
+                    ? "bg-gray-100"
                     : "border-pink-300 bg-pink-100"
                 )}
               >
@@ -150,7 +146,7 @@ export default function BreedingCard({
             )}
           </div>
           {breeding.actual_farrow_date && (
-            <div className="space-y-4 p-3 bg-gray-50 rounded-lg">
+            <div className="space-y-4 p-3 bg-gray-100 rounded-lg">
               <div>
                 <InfoIcon
                   label="จำนวนลูกเกิดรอด"

@@ -21,6 +21,7 @@ import {
   Gauge,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import { formatDate } from "@/lib/utils";
 
 interface PigletData extends Breeding {
   sow?: Sow;
@@ -98,14 +99,6 @@ export default function PigletsPage() {
       (breeding.piglets_male_born_alive || 0) +
       (breeding.piglets_female_born_alive || 0)
     );
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("th-TH", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
   };
 
   if (isLoading) {
