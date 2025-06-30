@@ -15,7 +15,15 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { getAllSowsWithLatestBreeding } from "@/services/sow";
 import { useSowStore } from "@/stores/useSowStore";
-import { ChevronDown, Filter, Plus, Search } from "lucide-react";
+import {
+  Check,
+  ChevronDown,
+  Filter,
+  Heart,
+  PiggyBank,
+  Plus,
+  Search,
+} from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 const filterSowOptions = [
@@ -47,6 +55,25 @@ export default function SowPage() {
   const [filter, setFilter] = useState(filterSowOptions[0]);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Calculate stats
+  const stats = useMemo(() => {
+    const total = sows.length;
+    const pregnant = sows.filter((sow) => sow.is_available === false).length;
+    const availableForBreeding = sows.filter(
+      (sow) => sow.is_available === true
+    ).length;
+    const active = sows.filter((sow) => sow.is_active === true).length;
+    const inactive = sows.filter((sow) => sow.is_active === false).length;
+
+    return {
+      total,
+      pregnant,
+      availableForBreeding,
+      active,
+      inactive,
+    };
+  }, [sows]);
+
   const filteredSows = useMemo(() => {
     return sows
       .filter((sow) => sow.name.includes(search))
@@ -77,6 +104,12 @@ export default function SowPage() {
         <div className="flex justify-between">
           <Skeleton className="w-48 h-8" />
         </div>
+        {/* Stats Section Skeleton */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <Skeleton className="h-20 col-span-2 w-full" />
+          <Skeleton className="h-20 w-full" />
+          <Skeleton className="h-20 w-full" />
+        </div>
         <div className="flex gap-2">
           <Skeleton className="w-2/3 h-10" />
           <Skeleton className="w-1/3 h-10" />
@@ -89,9 +122,9 @@ export default function SowPage() {
   }
 
   return (
-    <div className="space-y-4 mb-20">
+    <div className="space-y-6 mb-20">
       <div className="flex justify-between">
-        <h2 className="text-xl">แม่พันธุ์ทั้งหมด ({sows.length})</h2>
+        <h2 className="text-xl">แม่พันธุ์</h2>
         <DialogComponent
           title="เพิ่มแม่พันธุ์ใหม่"
           dialogTriggerButton={
@@ -103,6 +136,46 @@ export default function SowPage() {
           <SowForm />
         </DialogComponent>
       </div>
+
+      {/* Stats Section */}
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <div className="flex items-center gap-4 bg-white col-span-2 rounded-lg p-4">
+          <PiggyBank size={24} className="text-blue-500" />
+          <div>
+            <div className="text-sm text-gray-600">ทั้งหมด</div>
+            <div className="text-2xl font-bold">{stats.total}</div>
+          </div>
+        </div>
+        <div className="flex items-center gap-4 bg-white rounded-lg p-4">
+          <Heart size={24} className="text-pink-500" />
+          <div>
+            <div className="text-sm text-gray-600">ตั้งครรภ์</div>
+            <div className="text-2xl font-bold">{stats.pregnant}</div>
+          </div>
+        </div>
+        <div className="flex items-center gap-4 bg-white rounded-lg p-4">
+          <Check size={24} className="text-emerald-500" />
+          <div>
+            <div className="text-sm text-gray-600">พร้อมผสม</div>
+            <div className="text-2xl font-bold">
+              {stats.availableForBreeding}
+            </div>
+          </div>
+        </div>
+        {/* <div className="bg-white rounded-lg p-4">
+          <div className="text-sm text-gray-600">ยังอยู่</div>
+          <div className="text-2xl font-bold text-emerald-600">
+            {stats.active}
+          </div>
+        </div>
+        <div className="bg-white rounded-lg p-4">
+          <div className="text-sm text-gray-600">ไม่อยู่</div>
+          <div className="text-2xl font-bold text-red-600">
+            {stats.inactive}
+          </div>
+        </div> */}
+      </div>
+
       <div className="flex gap-2">
         <Input
           value={search}

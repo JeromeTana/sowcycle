@@ -87,7 +87,7 @@ export default function BoarsPage() {
   return (
     <div className="space-y-4 mb-20">
       <div className="flex justify-between">
-        <h2 className="text-xl">พ่อพันธุ์ทั้งหมด ({boars.length})</h2>
+        <h2 className="text-xl">พ่อพันธุ์ ({boars.length})</h2>
         <DialogComponent
           title="เพิ่มพ่อพันธุ์ใหม่"
           dialogTriggerButton={
