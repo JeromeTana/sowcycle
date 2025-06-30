@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { formatDate } from "@/lib/utils";
+import Link from "next/link";
 
 interface PigletData extends Breeding {
   sow?: Sow;
@@ -225,7 +226,10 @@ export default function PigletsPage() {
                         </div>
                       </div>
                       <div className="flex flex-col gap-4 text-sm text-gray-600">
-                        <div className="grid grid-cols-2 gap-4 rounded-lg p-3 bg-gray-100">
+                        <Link
+                          href={`/sows/${breeding.sow?.id}`}
+                          className="rounded-lg p-3 bg-gray-100"
+                        >
                           <InfoIcon
                             icon={<PiggyBank size={22} />}
                             label="แม่พันธุ์"
@@ -233,17 +237,24 @@ export default function PigletsPage() {
                           >
                             {breeding.sow?.name || "ไม่ระบุ"}
                           </InfoIcon>
-                          <InfoIcon
-                            icon={<Dna size={22} />}
-                            label="พ่อพันธุ์"
-                            className="text-sm !bg-white"
+                        </Link>
+                        {breeding.boars && (
+                          <Link
+                            href={`/boars/${breeding.boars?.id || ""}`}
+                            className="rounded-lg p-3 bg-gray-100"
                           >
-                            {breeding.boars?.name || "ไม่ระบุ"}
-                          </InfoIcon>
-                        </div>
+                            <InfoIcon
+                              icon={<Dna size={22} />}
+                              label="พ่อพันธุ์"
+                              className="text-sm !bg-white"
+                            >
+                              {breeding.boars.breed}
+                            </InfoIcon>
+                          </Link>
+                        )}
                         {breeding.boars?.name && (
                           <Badge variant="outline">
-                            พ่อหมู: {breeding.boars.name}
+                            พ่อหมู: {breeding.boars.breed}
                           </Badge>
                         )}
                         {/* <div className="flex items-center space-x-1">
