@@ -62,10 +62,10 @@ export default function PigletsPage() {
     if (search) {
       filtered = breedingsWithPiglets.filter((breeding) => {
         const sowName = breeding.sow?.name?.toLowerCase() || "";
-        const boarName = breeding.boars?.name?.toLowerCase() || "";
+        const boarBreed = breeding.boars?.breed?.toLowerCase() || "";
         const searchLower = search.toLowerCase();
 
-        return sowName.includes(searchLower) || boarName.includes(searchLower);
+        return sowName.includes(searchLower) || boarBreed.includes(searchLower);
       });
     }
 
@@ -132,7 +132,7 @@ export default function PigletsPage() {
         {/* Header */}
         <div className="space-y-2">
           <h1 className="text-2xl font-bold text-gray-900">ลูกหมู</h1>
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             ข้อมูลลูกหมูที่เกิดแล้วจากการผสมพันธุ์
           </p>
         </div>
@@ -144,7 +144,9 @@ export default function PigletsPage() {
               <div className="flex items-center gap-4">
                 <Fence className="text-blue-500" size={24} />
                 <div>
-                  <p className="text-sm text-gray-600">ครอกที่เกิดแล้ว</p>
+                  <p className="text-sm text-muted-foreground">
+                    ครอกที่เกิดแล้ว
+                  </p>
                   <p className="text-2xl font-bold">
                     {filteredPiglets.length}{" "}
                     <span className="text-sm">ตัว</span>
@@ -159,7 +161,7 @@ export default function PigletsPage() {
               <div className="flex items-center gap-4">
                 <PiggyBank className="text-pink-500" size={24} />
                 <div>
-                  <p className="text-sm text-gray-600">ลูกหมูทั้งหมด</p>
+                  <p className="text-sm text-muted-foreground">ลูกหมูทั้งหมด</p>
                   <p className="text-2xl font-bold">
                     {filteredPiglets.reduce(
                       (total, breeding) => total + getTotalPiglets(breeding),
@@ -193,7 +195,7 @@ export default function PigletsPage() {
         {/* Search */}
         <div className="relative">
           <Input
-            placeholder="ค้นหาด้วยด้วยชื่อแม่พันธุ์ หรือ พ่อพันธุ์..."
+            placeholder="ค้นหาด้วยด้วยชื่อแม่พันธุ์ หรือ สายพันธุ์ของพ่อพันธุ์..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="pl-10"
@@ -213,7 +215,7 @@ export default function PigletsPage() {
                 <h3 className="text-lg font-medium text-gray-900 mb-2">
                   ยังไม่มีข้อมูลลูกหมู
                 </h3>
-                <p className="text-gray-600">
+                <p className="text-muted-foreground">
                   ยังไม่มีการผสมพันธุ์ที่คลอดลูกแล้ว
                 </p>
               </CardContent>
@@ -256,7 +258,7 @@ export default function PigletsPage() {
                             : "ไม่ระบุ"}
                         </InfoIcon>
                       </div>
-                      <div className="flex flex-col gap-4 text-sm text-gray-600">
+                      <div className="flex flex-col gap-4 text-muted-foreground">
                         <Link
                           href={`/sows/${breeding.sow?.id}`}
                           className="rounded-lg p-3 bg-gray-100"
@@ -264,7 +266,7 @@ export default function PigletsPage() {
                           <InfoIcon
                             icon={<PiggyBank size={22} />}
                             label="แม่พันธุ์"
-                            className="text-sm !bg-white"
+                            className="!bg-white"
                           >
                             {breeding.sow?.name || "ไม่ระบุ"}
                           </InfoIcon>
@@ -277,7 +279,7 @@ export default function PigletsPage() {
                             <InfoIcon
                               icon={<Dna size={22} />}
                               label="พ่อพันธุ์"
-                              className="text-sm !bg-white"
+                              className="!bg-white"
                             >
                               {breeding.boars.breed}
                             </InfoIcon>
