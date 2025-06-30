@@ -31,26 +31,32 @@ export default function SowCard({ sow }: { sow: Sow }) {
 
   return (
     <Card className={cn("w-full")}>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <PiggyBank /> {sow.name}
-          <span className="text-sm font-normal">
-            {sow.is_active ? (
-              sow.is_available ? (
-                <span className="text-emerald-600 bg-neutral-100 rounded-full p-2">
-                  พร้อมผสม
-                </span>
+      <CardContent className="p-6">
+        <div className="flex flex-col gap-6">
+          <div className="flex gap-2">
+            <PiggyBank />
+            <h3 className="text-lg font-semibold">{sow.name}</h3>
+            {/* <p className="text-sm text-muted-foreground">
+                {latestBreeding?.actual_farrow_date
+                  ? `คลอดล่าสุดเมื่อ ${formatDate(
+                      latestBreeding.actual_farrow_date!
+                    )}`
+                  : "ไม่มีประวัติการคลอด"}
+              </p> */}
+            <span className="text-sm font-normal">
+              {sow.is_active ? (
+                sow.is_available ? (
+                  <span className="text-emerald-600 bg-neutral-100 rounded-full p-2">
+                    พร้อมผสม
+                  </span>
+                ) : (
+                  <CountdownBadge date={latestBreeding?.expected_farrow_date} />
+                )
               ) : (
-                <CountdownBadge date={latestBreeding?.expected_farrow_date} />
-              )
-            ) : (
-              <span className="text-muted-foreground">ไม่อยู่</span>
-            )}
-          </span>
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div>
+                <span className="text-muted-foreground">ไม่อยู่</span>
+              )}
+            </span>
+          </div>
           {sow.is_available ? (
             <>
               {latestBreeding?.actual_farrow_date ? (

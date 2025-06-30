@@ -105,7 +105,7 @@ export default function Page() {
       
       {/* Dashboard Header */}
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold">แดชบอร์ด</h1>
+        <h1 className="text-3xl font-bold">ยินดีต้อนรับ</h1>
         <p className="text-muted-foreground">
           ภาพรวมฟาร์มสุกรของคุณ -{" "}
           {new Date().toLocaleDateString("th-TH", {
@@ -150,8 +150,8 @@ export default function Page() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">แม่พันธุ์ท้อง</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">แม่พันธุ์ตั้งครรภ์</CardTitle>
+            <Heart className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">

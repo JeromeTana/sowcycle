@@ -124,7 +124,7 @@ export default function SowPage() {
   return (
     <div className="space-y-6 mb-20">
       <div className="flex justify-between">
-        <h2 className="text-xl">แม่พันธุ์</h2>
+        <h2 className="text-2xl">แม่พันธุ์</h2>
         <DialogComponent
           title="เพิ่มแม่พันธุ์ใหม่"
           dialogTriggerButton={

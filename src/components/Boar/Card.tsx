@@ -2,19 +2,19 @@
 
 import { Boar } from "@/types/boar";
 import Link from "next/link";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dna } from "lucide-react";
 
 export default function BoarCard({ boar }: { boar: Boar }) {
   return (
     <Link href={`/boars/${boar.id}`} className="w-full">
       <Card className="shadow">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+        <CardContent className="p-6">
+          <div className="flex gap-2">
             <Dna />
-            {boar.breed}
-          </CardTitle>
-        </CardHeader>
+            <h3 className="text-lg font-semibold">{boar.breed}</h3>
+          </div>
+        </CardContent>
       </Card>
     </Link>
   );
