@@ -64,7 +64,7 @@ export default function BoarsPage() {
       setBoars(boars);
       setIsLoading(false);
     };
-    fetchData();
+    boars.length === 0 ? fetchData() : setIsLoading(false);
   }, []);
 
   if (isLoading) {
