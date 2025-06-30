@@ -19,6 +19,7 @@ import {
   PiggyBank,
   Dna,
   Gauge,
+  Fence,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { formatDate } from "@/lib/utils";
@@ -133,8 +134,8 @@ export default function PigletsPage() {
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           <Card>
             <CardContent className="p-4">
-              <div className="flex items-center space-x-2">
-                <Baby className="text-pink-500" size={24} />
+              <div className="flex items-center gap-4">
+                <Fence className="text-blue-500" size={24} />
                 <div>
                   <p className="text-sm text-gray-600">ครอกที่เกิดแล้ว</p>
                   <p className="text-2xl font-bold">{filteredPiglets.length}</p>
@@ -145,8 +146,8 @@ export default function PigletsPage() {
 
           <Card>
             <CardContent className="p-4">
-              <div className="flex items-center space-x-2">
-                <Users className="text-blue-500" size={24} />
+              <div className="flex items-center gap-4">
+                <PiggyBank className="text-pink-500" size={24} />
                 <div>
                   <p className="text-sm text-gray-600">ลูกหมูทั้งหมด</p>
                   <p className="text-2xl font-bold">
@@ -212,13 +213,16 @@ export default function PigletsPage() {
                 <CardContent className="p-6">
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
                     <div className="space-y-6">
-                      <div className="flex flex-col">
-                        <h3 className="text-lg font-semibold">
-                          ครอกที่ {filteredPiglets.length - index}
-                        </h3>
-                        <p className="text-sm text-muted-foreground">
-                          คลอดเมื่อ {formatDate(breeding.actual_farrow_date!)}
-                        </p>
+                      <div className="flex gap-2">
+                        <Fence />
+                        <div className="flex flex-col ">
+                          <h3 className="text-lg font-semibold">
+                            ครอกที่ {filteredPiglets.length - index}
+                          </h3>
+                          <p className="text-sm text-muted-foreground">
+                            คลอดเมื่อ {formatDate(breeding.actual_farrow_date!)}
+                          </p>
+                        </div>
                       </div>
                       <div className="flex flex-col gap-4 text-sm text-gray-600">
                         <div className="grid grid-cols-2 gap-4 rounded-lg p-3 bg-gray-100">
