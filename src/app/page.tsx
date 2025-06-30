@@ -118,7 +118,7 @@ export default function Page() {
       </div>
 
       {/* Statistics Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+      {/* <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
@@ -183,7 +183,7 @@ export default function Page() {
             </div>
             <p className="text-xs text-muted-foreground">ต้องเตรียมความพร้อม</p>
           </CardContent>
-        </Card>
+        </Card> */}
 
         {/* <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -222,7 +222,7 @@ export default function Page() {
             </p>
           </CardContent>
         </Card> */}
-      </div>
+      {/* </div> */}
 
       {/* Pregnant Sows Section */}
       {breededSows.length > 0 && (

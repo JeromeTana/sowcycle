@@ -82,13 +82,20 @@ export default function SowCard({ sow }: { sow: Sow }) {
               )}
             </>
           ) : (
-            <div className="flex flex-col gap-6">
-              <InfoIcon label="ผสมเมื่อ" icon={<CalendarHeart size={22} />}>
+            <div className="relative flex flex-col gap-6">
+              <InfoIcon
+                label="ผสมเมื่อ"
+                icon={<CalendarHeart size={22} className="z-10" />}
+              >
                 {formatDate(latestBreeding.breed_date)}
               </InfoIcon>
-              <InfoIcon label="กำหนดคลอด" icon={<CalendarCheck size={22} />}>
+              <InfoIcon
+                label="กำหนดคลอด"
+                icon={<CalendarCheck size={22} className="z-10" />}
+              >
                 {formatDate(latestBreeding.expected_farrow_date!)}
               </InfoIcon>
+              <div className="w-[0px] border-l-2 border-dashed -z-0 h-7 absolute top-10 left-5 -translate-x-1/2" />
             </div>
           )}
         </div>

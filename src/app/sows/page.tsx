@@ -139,21 +139,25 @@ export default function SowPage() {
 
       {/* Stats Section */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        <div className="flex items-center gap-4 bg-white col-span-2 rounded-lg p-4">
+        <div className="flex items-center gap-4 bg-white rounded-lg p-4">
           <PiggyBank size={24} className="text-blue-500" />
           <div>
-            <div className="text-sm text-gray-600">ทั้งหมด</div>
-            <div className="text-2xl font-bold">{stats.total}</div>
+            <div className="text-sm text-gray-600">จำนวนทั้งหมด</div>
+            <div className="text-2xl font-bold">
+              {stats.total} <span className="text-sm">ตัว</span>
+            </div>
           </div>
         </div>
         <div className="flex items-center gap-4 bg-white rounded-lg p-4">
           <Heart size={24} className="text-pink-500" />
           <div>
-            <div className="text-sm text-gray-600">ตั้งครรภ์</div>
-            <div className="text-2xl font-bold">{stats.pregnant}</div>
+            <p className="text-sm text-gray-600">กำลังตั้งครรภ์</p>
+            <p className="text-2xl font-bold">
+              {stats.pregnant} <span className="text-sm">ตัว</span>
+            </p>
           </div>
         </div>
-        <div className="flex items-center gap-4 bg-white rounded-lg p-4">
+        {/* <div className="flex items-center gap-4 bg-white rounded-lg p-4">
           <Check size={24} className="text-emerald-500" />
           <div>
             <div className="text-sm text-gray-600">พร้อมผสม</div>
@@ -161,7 +165,7 @@ export default function SowPage() {
               {stats.availableForBreeding}
             </div>
           </div>
-        </div>
+        </div> */}
         {/* <div className="bg-white rounded-lg p-4">
           <div className="text-sm text-gray-600">ยังอยู่</div>
           <div className="text-2xl font-bold text-emerald-600">
