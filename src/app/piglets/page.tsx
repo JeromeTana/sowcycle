@@ -254,7 +254,7 @@ export default function PigletsPage() {
                       </InfoIcon>
                       <InfoIcon
                         icon={<Gauge size={22} />}
-                        label="น้ำหนักเฉลี่ย"
+                        label="น้ำหนักเฉลี่ย (กก.)"
                       >
                         0
                       </InfoIcon>
