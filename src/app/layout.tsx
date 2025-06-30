@@ -25,9 +25,8 @@ export default function RootLayout({
         className={`${notoSansThaiFont.variable} ${sarabunFont.variable}`}
         suppressHydrationWarning
       >
-        <TopBar />
-        
-        <main className="max-w-screen-sm min-h-screen m-auto flex flex-col gap-2 px-2 py-8">
+        <main className="max-w-screen-sm min-h-screen m-auto flex flex-col gap-2 p-2 pb-8">
+          <TopBar />
           {children}
         </main>
         <Navigation />
