@@ -157,16 +157,24 @@ export default function BreedingCard({
                   icon={<PiggyBank size={22} />}
                   className="!bg-white text-muted-foreground"
                 >
-                  {breeding.piglets_born_count} ตัว
+                  {breeding.piglets_born_count} ตัว{" "}
+                  <span className="ml-2">
+                    <span className="bg-blue-500 font-bold text-white rounded-full px-3 py-1 text-xs">
+                      ผู้ {breeding.piglets_male_born_alive}
+                    </span>{" "}
+                    <span className="bg-pink-500 font-bold text-white rounded-full px-3 py-1 text-xs">
+                      เมีย {breeding.piglets_female_born_alive}
+                    </span>
+                  </span>
                 </InfoIcon>
-                <div className="flex gap-2 mt-2 ml-10">
+                {/* <div className="flex gap-2 mt-2 ml-10">
                   <p className="text-blue-500 border border-blue-300 p-2 bg-blue-50 rounded">
                     ผู้ {breeding.piglets_male_born_alive}
                   </p>
                   <p className="text-pink-500 border border-pink-300 p-2 bg-pink-50 rounded">
                     เมีย {breeding.piglets_female_born_alive}
                   </p>
-                </div>
+                </div> */}
               </div>
               <InfoIcon
                 label="จำนวนลูกเกิดตาย"
