@@ -104,7 +104,7 @@ export default function BoarsPage() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           startIcon={Search}
-          placeholder="ค้นหาชื่อพ่อพันธุ์"
+          placeholder="ค้นหาด้วยชื่อพ่อพันธุ์"
           className="bg-white"
         />
         <DropdownMenu>

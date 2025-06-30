@@ -108,7 +108,7 @@ export default function SowPage() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           startIcon={Search}
-          placeholder="ค้นหาชื่อแม่พันธุ์"
+          placeholder="ค้นหาด้วยชื่อแม่พันธุ์"
           className="bg-white"
         />
         <DropdownMenu>
