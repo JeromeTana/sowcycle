@@ -187,7 +187,7 @@ export default function PigletsPage() {
             className="pl-10"
           />
           <Search
-            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
             size={20}
           />
         </div>
@@ -211,14 +211,17 @@ export default function PigletsPage() {
               <Card key={breeding.id} className="transition-shadow">
                 <CardContent className="p-6">
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
-                    <div className="space-y-2">
-                      <div className="flex flex-col gap-2">
+                    <div className="space-y-6">
+                      <div className="flex flex-col">
                         <h3 className="text-lg font-semibold">
                           ครอกที่ {filteredPiglets.length - index}
                         </h3>
+                        <p className="text-sm text-muted-foreground">
+                          คลอดเมื่อ {formatDate(breeding.actual_farrow_date!)}
+                        </p>
                       </div>
                       <div className="flex flex-col gap-4 text-sm text-gray-600">
-                        <div className="grid grid-cols-2 gap-4 p-3 rounded-lg bg-gray-100">
+                        <div className="grid grid-cols-2 gap-4 rounded-lg p-3 bg-gray-100">
                           <InfoIcon
                             icon={<PiggyBank size={22} />}
                             label="แม่พันธุ์"
@@ -239,25 +242,23 @@ export default function PigletsPage() {
                             พ่อหมู: {breeding.boars.name}
                           </Badge>
                         )}
-                        <InfoIcon
-                          icon={<Calendar size={22} />}
-                          label="คลอดเมื่อ"
-                          className="text-sm"
-                        >
-                          {formatDate(breeding.actual_farrow_date!)}
-                        </InfoIcon>
                         {/* <div className="flex items-center space-x-1">
                           <Baby size={16} />
                           <span>อายุ: {Math.floor((new Date().getTime() - new Date(breeding.actual_farrow_date!).getTime()) / (1000 * 60 * 60 * 24))} วัน</span>
                         </div> */}
                       </div>
                     </div>
-                    <InfoIcon icon={<Users size={22} />} label="จำนวน">
-                      {getTotalPiglets(breeding)}
-                    </InfoIcon>
-                    <InfoIcon icon={<Gauge size={22} />} label="น้ำหนักเฉลี่ย">
-                      0
-                    </InfoIcon>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      <InfoIcon icon={<Users size={22} />} label="จำนวน">
+                        {getTotalPiglets(breeding)}
+                      </InfoIcon>
+                      <InfoIcon
+                        icon={<Gauge size={22} />}
+                        label="น้ำหนักเฉลี่ย"
+                      >
+                        0
+                      </InfoIcon>
+                    </div>
                     {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                       <InfoIcon
                         icon={<Baby size={22} className="text-blue-500" />}

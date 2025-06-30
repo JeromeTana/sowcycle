@@ -55,9 +55,7 @@ export default function SowCard({ sow }: { sow: Sow }) {
             <>
               {latestBreeding?.actual_farrow_date ? (
                 <InfoIcon label="คลอดล่าสุด" icon={<Calendar size={22} />}>
-                  {formatDate(
-                    latestBreeding?.actual_farrow_date
-                  )}{" "}
+                  {formatDate(latestBreeding?.actual_farrow_date)}{" "}
                   <span className="text-gray-400">
                     (
                     {Math.floor(
@@ -80,14 +78,10 @@ export default function SowCard({ sow }: { sow: Sow }) {
           ) : (
             <div className="flex flex-col gap-6">
               <InfoIcon label="ผสมเมื่อ" icon={<CalendarHeart size={22} />}>
-                {new Date(latestBreeding.breed_date).toLocaleDateString(
-                  "th-TH"
-                )}
+                {formatDate(latestBreeding.breed_date)}
               </InfoIcon>
               <InfoIcon label="กำหนดคลอด" icon={<CalendarCheck size={22} />}>
-                {new Date(
-                  latestBreeding.expected_farrow_date!
-                ).toLocaleDateString("th-TH")}
+                {formatDate(latestBreeding.expected_farrow_date!)}
               </InfoIcon>
             </div>
           )}
