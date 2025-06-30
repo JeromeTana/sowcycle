@@ -41,6 +41,7 @@ import { enGB, is } from "date-fns/locale";
 import { useBreedingStore } from "@/stores/useBreedingStore";
 import { useBoarStore } from "@/stores/useBoarStore";
 import { getAllBoars } from "@/services/boar";
+import { PREGNANCY_DURATION } from "@/lib/constant";
 
 const newFormSchema = z.object({
   sow_id: z.string(),
@@ -87,7 +88,7 @@ export function NewBreedingForm({
   const expectedFarrowDate = useMemo(() => {
     if (form.watch("breed_date")) {
       const breedDate = new Date(form.watch("breed_date"));
-      breedDate.setDate(breedDate.getDate() + 114);
+      breedDate.setDate(breedDate.getDate() + PREGNANCY_DURATION);
       return breedDate;
     }
   }, [form.watch("breed_date")]);
@@ -385,7 +386,7 @@ export function FarrowForm({
   const expectedFarrowDate = useMemo(() => {
     if (form.watch("breed_date")) {
       const breedDate = new Date(form.watch("breed_date"));
-      breedDate.setDate(breedDate.getDate() + 114);
+      breedDate.setDate(breedDate.getDate() + PREGNANCY_DURATION);
       return breedDate;
     }
   }, [form.watch("breed_date")]);

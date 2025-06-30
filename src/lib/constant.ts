@@ -1,0 +1,1 @@
+export const PREGNANCY_DURATION = 114; // days
