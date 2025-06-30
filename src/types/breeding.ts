@@ -14,4 +14,5 @@ export interface Breeding {
   piglets_born_dead?: number;
   boar_id?: number;
   boars?: Boar;
+  avg_weight?: number;
 }

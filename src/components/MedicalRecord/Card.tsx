@@ -22,13 +22,16 @@ export default function MedicalRecordCard({
   if (!medicalRecord) return null;
   return (
     <Card>
-      <CardHeader>
-        <p className={"font-bold inline-flex items-center gap-1"}>
+      <CardContent className="p-6 space-y-6">
+        <div className="flex gap-2">
           <Syringe size={22} />
-          ใช้ยาครั้งที่ {index}
-        </p>
-      </CardHeader>
-      <CardContent>
+          <div className="flex flex-col">
+            <h3 className="text-lg font-semibold">ใช้ยาครั้งที่ {index}</h3>
+            <p className="text-sm text-muted-foreground">
+              {formatDate(medicalRecord.use_at)}
+            </p>
+          </div>
+        </div>
         <div className="space-y-4">
           <div className="flex flex-col gap-6">
             <InfoIcon label="อาการ" icon={<Activity size={22} />}>
@@ -37,16 +40,13 @@ export default function MedicalRecordCard({
             <InfoIcon label="ยาที่ใช้" icon={<Syringe size={22} />}>
               {medicalRecord?.medicine ? medicalRecord.medicine : "ไม่มีข้อมูล"}
             </InfoIcon>
-            <InfoIcon label="ใช้ยาเมื่อ" icon={<Calendar size={22} />}>
-              {formatDate(medicalRecord.use_at)}
-            </InfoIcon>
           </div>
         </div>
       </CardContent>
       <CardFooter>
         <div className="w-full flex justify-end gap-2">
           <DialogComponent
-            title="แก้ไขประวัติผสม"
+            title="แก้ไขประวัติใช้ยา"
             dialogTriggerButton={
               <Button variant={"ghost"}>
                 <Pen /> แก้ไขประวัติ

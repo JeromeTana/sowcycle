@@ -4,7 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import InfoIcon from "@/components/InfoIcon";
 import { getAllBreedings } from "@/services/breeding";
 import { getAllSows } from "@/services/sow";
@@ -20,22 +26,35 @@ import {
   Dna,
   Gauge,
   Fence,
+  Pen,
+  Check,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { formatDate } from "@/lib/utils";
 import Link from "next/link";
-
-interface PigletData extends Breeding {
-  sow?: Sow;
-}
+import DialogComponent from "@/components/DialogComponent";
+import { FarrowForm } from "@/components/Breeding/Form";
+import { useBreedingStore } from "@/stores/useBreedingStore";
 
 export default function PigletsPage() {
-  const [breedingsWithPiglets, setBreedingsWithPiglets] = useState<
-    PigletData[]
-  >([]);
+  const { breedings, setBreedings } = useBreedingStore();
   const [sows, setSows] = useState<Sow[]>([]);
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+
+  // Derive breedings with piglets from store
+  const breedingsWithPiglets = useMemo(() => {
+    // Filter breedings that have actual_farrow_date (piglets have been born)
+    const breedingsWithActualFarrow = breedings.filter(
+      (breeding) => breeding.actual_farrow_date
+    );
+
+    // Combine breeding data with sow information
+    return breedingsWithActualFarrow.map((breeding) => {
+      const sow = sows.find((sow) => sow.id === breeding.sow_id);
+      return { ...breeding, sow };
+    });
+  }, [breedings, sows]);
 
   const filteredPiglets = useMemo(() => {
     let filtered = breedingsWithPiglets;
@@ -67,20 +86,7 @@ export default function PigletsPage() {
           getAllSows(),
         ]);
 
-        // Filter breedings that have actual_farrow_date (piglets have been born)
-        const breedingsWithActualFarrow = breedingsData.filter(
-          (breeding) => breeding.actual_farrow_date
-        );
-
-        // Combine breeding data with sow information
-        const breedingsWithSowData = breedingsWithActualFarrow.map(
-          (breeding) => {
-            const sow = sowsData.find((sow) => sow.id === breeding.sow_id);
-            return { ...breeding, sow };
-          }
-        );
-
-        setBreedingsWithPiglets(breedingsWithSowData);
+        setBreedings(breedingsData);
         setSows(sowsData);
       } catch (error) {
         console.error("Error fetching piglets data:", error);
@@ -90,7 +96,7 @@ export default function PigletsPage() {
     };
 
     fetchData();
-  }, []);
+  }, [setBreedings]);
 
   const getTotalPiglets = (breeding: Breeding) => {
     return breeding.piglets_born_count || 0;
@@ -225,6 +231,19 @@ export default function PigletsPage() {
                           </p>
                         </div>
                       </div>
+                      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <InfoIcon icon={<Users size={22} />} label="จำนวน">
+                          {getTotalPiglets(breeding)}
+                        </InfoIcon>
+                        <InfoIcon
+                          icon={<Gauge size={22} />}
+                          label="น้ำหนักเฉลี่ย (กก.)"
+                        >
+                          {breeding.avg_weight
+                            ? breeding.avg_weight.toFixed(2)
+                            : "ไม่ระบุ"}
+                        </InfoIcon>
+                      </div>
                       <div className="flex flex-col gap-4 text-sm text-gray-600">
                         <Link
                           href={`/sows/${breeding.sow?.id}`}
@@ -263,17 +282,7 @@ export default function PigletsPage() {
                         </div> */}
                       </div>
                     </div>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                      <InfoIcon icon={<Users size={22} />} label="จำนวน">
-                        {getTotalPiglets(breeding)}
-                      </InfoIcon>
-                      <InfoIcon
-                        icon={<Gauge size={22} />}
-                        label="น้ำหนักเฉลี่ย (กก.)"
-                      >
-                        0
-                      </InfoIcon>
-                    </div>
+
                     {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                       <InfoIcon
                         icon={<Baby size={22} className="text-blue-500" />}
@@ -297,6 +306,34 @@ export default function PigletsPage() {
                     {/* </div> */}
                   </div>
                 </CardContent>
+                <CardFooter>
+                  <div className="w-full flex justify-end gap-2">
+                    <DialogComponent
+                      title={`แก้ไขข้อมูลครอกที่ ${
+                        filteredPiglets.length - index
+                      }`}
+                      dialogTriggerButton={
+                        <Button variant={"ghost"}>
+                          <Pen /> แก้ไขข้อมูล
+                        </Button>
+                      }
+                    >
+                      <FarrowForm breeding={breeding} />
+                    </DialogComponent>
+                    {breeding.actual_farrow_date === null && (
+                      <DialogComponent
+                        title="บันทึกการคลอด"
+                        dialogTriggerButton={
+                          <Button>
+                            <Check /> บันทึกการคลอด
+                          </Button>
+                        }
+                      >
+                        <FarrowForm breeding={breeding} />
+                      </DialogComponent>
+                    )}
+                  </div>
+                </CardFooter>
               </Card>
             ))
           )}

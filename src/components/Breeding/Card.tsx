@@ -37,7 +37,7 @@ export default function BreedingCard({
         breeding.actual_farrow_date ? "" : "border bg-pink-50 border-pink-200"
       }
     >
-      <CardHeader>
+      {/* <CardHeader>
         <p
           className={cn(
             breeding.actual_farrow_date ? "text-black" : "text-pink-500",
@@ -63,8 +63,35 @@ export default function BreedingCard({
             )}
           </span>
         </p>
-      </CardHeader>
-      <CardContent>
+      </CardHeader> */}
+      <CardContent className="p-6 space-y-6">
+        <div
+          className={cn(
+            breeding.actual_farrow_date ? "text-black" : "text-pink-500",
+            "font-bold inline-flex items-center gap-2"
+          )}
+        >
+          <Heart
+            size={22}
+            className={cn(!breeding.actual_farrow_date && "animate-bounce")}
+          />
+          <h3>
+            ผสมครั้งที่ {index}{" "}
+            <span className="font-normal">
+              {!breeding.actual_farrow_date && (
+                <>
+                  (คลอดใน{" "}
+                  {Math.ceil(
+                    (new Date(breeding.expected_farrow_date).getTime() -
+                      new Date().getTime()) /
+                      (1000 * 60 * 60 * 24)
+                  )}{" "}
+                  วัน)
+                </>
+              )}
+            </span>
+          </h3>
+        </div>
         <div className="space-y-4">
           <div className="flex flex-col gap-6">
             <InfoIcon

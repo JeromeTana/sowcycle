@@ -11,9 +11,11 @@ import { useEffect, useState } from "react";
 import { NewBreedingForm } from "@/components/Breeding/Form";
 import DialogComponent from "@/components/DialogComponent";
 import {
+  BarChart3,
   Cake,
   HandHeart,
   Heart,
+  LineChart,
   Pen,
   PiggyBank,
   PiggyBankIcon,
@@ -34,6 +36,9 @@ import { useMedicalRecordStore } from "@/stores/useMedicalRecordStore";
 import { useSowStore } from "@/stores/useSowStore";
 import { redirect } from "next/navigation";
 import InfoIcon from "@/components/InfoIcon";
+import PigletCountChart from "@/components/PigletCountChart";
+import { formatDate } from "@/lib/utils";
+import AvgWeightChart from "@/components/AvgWeightChart";
 
 export default function SowsPage({ params }: any) {
   const [id, setId] = useState<number | null>();
@@ -220,27 +225,63 @@ export default function SowsPage({ params }: any) {
               icon={<Cake size={22} />}
               className="text-muted-foreground"
             >
-              {sow.birth_date
-                ? new Date(sow.birth_date).toLocaleDateString("th-TH", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })
-                : "-"}
+              {sow.birth_date ? formatDate(sow.birth_date) : "-"}
             </InfoIcon>
             <InfoIcon
               label="รับเข้าเมื่อ"
               icon={<HandHeart size={22} />}
               className="text-muted-foreground"
             >
-              {sow.add_date
-                ? new Date(sow.add_date).toLocaleDateString("th-TH", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })
-                : "-"}
+              {sow.add_date ? formatDate(sow.add_date) : "-"}
             </InfoIcon>
+            <div className="flex flex-col gap-4">
+              {sow.breedings.length > 1 && (
+                <div className="flex flex-col gap-4 bg-gray-100 p-4 rounded-lg">
+                  <div className="flex flex-col gap-2">
+                    <p className="text-sm text-muted-foreground">
+                      จำนวนลูกเกิดเฉลี่ย
+                    </p>
+                    <p className="text-xl font-semibold">
+                      {Math.floor(
+                        sow.breedings.reduce(
+                          (acc, breeding) =>
+                            acc + (breeding.piglets_born_count || 0),
+                          0
+                        ) /
+                          sow.breedings.filter(
+                            (breeding) => breeding.actual_farrow_date !== null
+                          ).length
+                      )}{" "}
+                      ตัว
+                    </p>
+                  </div>
+                  <PigletCountChart breedings={breedings} />
+                </div>
+              )}{" "}
+              {sow.breedings.filter((breeding) => breeding.avg_weight! > 0)
+                .length > 1 && (
+                <div className="flex flex-col gap-4 bg-gray-100 p-4 rounded-lg">
+                  <div className="flex flex-col gap-2">
+                    <p className="text-sm text-muted-foreground">
+                      น้ำหนักลูกหมูเฉลี่ย
+                    </p>
+                    <p className="text-xl font-semibold">
+                      {Math.floor(
+                        sow.breedings.reduce(
+                          (acc, breeding) => acc + (breeding.avg_weight || 0),
+                          0
+                        ) /
+                          sow.breedings.filter(
+                            (breeding) => breeding.avg_weight !== null
+                          ).length
+                      )}{" "}
+                      กิโลกรัม
+                    </p>
+                  </div>
+                  <AvgWeightChart breedings={breedings} />
+                </div>
+              )}
+            </div>
           </div>
         </CardContent>
       </Card>

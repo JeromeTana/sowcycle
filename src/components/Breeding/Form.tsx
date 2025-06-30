@@ -55,6 +55,7 @@ const farrowFormSchema = z.object({
   piglets_male_born_alive: z.coerce.number().nonnegative(),
   piglets_female_born_alive: z.coerce.number().nonnegative(),
   piglets_born_dead: z.coerce.number().nonnegative(),
+  avg_weight: z.coerce.number().nonnegative().optional(),
 });
 
 export function NewBreedingForm({
@@ -338,6 +339,7 @@ export function FarrowForm({
           piglets_male_born_alive: breeding.piglets_male_born_alive,
           piglets_female_born_alive: breeding.piglets_female_born_alive,
           piglets_born_dead: breeding.piglets_born_dead,
+          avg_weight: breeding.avg_weight || undefined,
         }
       : {
           breed_date: new Date(breeding.breed_date),
@@ -345,6 +347,7 @@ export function FarrowForm({
           piglets_male_born_alive: 0,
           piglets_female_born_alive: 0,
           piglets_born_dead: 0,
+          avg_weight: undefined,
         },
   });
 
@@ -373,7 +376,7 @@ export function FarrowForm({
 
     try {
       if (breeding.actual_farrow_date) {
-        await handleUpdate(formattedBreeding);
+        let res = await handleUpdate(formattedBreeding);
         return;
       }
 
@@ -430,9 +433,13 @@ export function FarrowForm({
       ...breeding,
       boar_id: breeding.boars?.boar_id,
       updated_at: new Date().toISOString(),
+      sows: undefined,
+      sow: undefined,
     };
 
     delete requestBody.boars;
+    delete requestBody.sows;
+    delete requestBody.sow;
 
     try {
       let res = await updateBreeding(requestBody);
@@ -580,6 +587,20 @@ export function FarrowForm({
               </FormControl>
               <FormMessage />
             </FormItem>
+
+            <FormField
+              control={form.control}
+              name="avg_weight"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>น้ำหนักเฉลี่ย (กก.) (ถ้ามี)</FormLabel>
+                  <FormControl>
+                    <Input type="number" {...field} min={0} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </>
         )}
 
