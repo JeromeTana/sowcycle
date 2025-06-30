@@ -140,10 +140,7 @@ export default function CalendarPage() {
               setSelectedDate(date);
             }}
             defaultMonth={new Date()}
-            className={cn(
-              "rounded-xl bg-white",
-              loading && "animate-pulse"
-            )}
+            className={cn("rounded-xl bg-white", loading && "animate-pulse")}
             modifiers={{
               hasEvent: (date) =>
                 farrowEvents.some((event) =>
@@ -162,52 +159,53 @@ export default function CalendarPage() {
           />
           {!loading && (
             <div>
-              <p className="pt-6 pb-4 font-bold text-lg">
-                กำหนดคลอด {`(${selectedDateEvents.length})`}
-              </p>
               {selectedDateEvents.length > 0 ? (
-                <div className="space-y-3">
-                  {selectedDateEvents.map((event) => (
-                    <div key={event.id} className="p-6 rounded-xl bg-white">
-                      <div className="flex items-center gap-2">
-                        <PiggyBank />
-                        <span className="font-bold">{event.sowName}</span>
-                      </div>
-                      <div className="mt-6">
+                <>
+                  <p className="pt-6 pb-4 font-bold text-lg">
+                    กำหนดคลอด {`(${selectedDateEvents.length})`}
+                  </p>
+                  <div className="space-y-3">
+                    {selectedDateEvents.map((event) => (
+                      <Link
+                        href={`/sows/${event.sowId}`}
+                        key={event.id}
+                        className="p-6 rounded-xl bg-white block shadow"
+                      >
+                        <div className="flex items-center gap-2">
+                          <PiggyBank />
+                          <span className="font-bold">{event.sowName}</span>
+                        </div>
                         {event.actualFarrowDate && (
-                          <InfoIcon
-                            label="คลอดจริงเมื่อ"
-                            icon={<CalendarIcon className="h-5 w-5" />}
-                            className="text-muted-foreground"
-                          >
-                            {format(event.actualFarrowDate, "d/M/y")}{" "}
-                            <span className="text-muted-foreground text-sm">
-                              {event.actualFarrowDate < event.expectedDate
-                                ? `(ก่อนกำหนด ${Math.ceil(
-                                    (event.expectedDate.getTime() -
-                                      event.actualFarrowDate.getTime()) /
-                                      (1000 * 60 * 60 * 24)
-                                  )} วัน)`
-                                : `(หลังกำหนด ${Math.ceil(
-                                    (event.actualFarrowDate.getTime() -
-                                      event.expectedDate.getTime()) /
-                                      (1000 * 60 * 60 * 24)
-                                  )} วัน)`}
-                            </span>
-                          </InfoIcon>
+                          <div className="mt-6">
+                            <InfoIcon
+                              label="คลอดจริงเมื่อ"
+                              icon={<CalendarIcon className="h-5 w-5" />}
+                              className="text-muted-foreground"
+                            >
+                              {format(event.actualFarrowDate, "d/M/y")}{" "}
+                              <span className="text-muted-foreground text-sm">
+                                {event.actualFarrowDate < event.expectedDate
+                                  ? `(ก่อนกำหนด ${Math.ceil(
+                                      (event.expectedDate.getTime() -
+                                        event.actualFarrowDate.getTime()) /
+                                        (1000 * 60 * 60 * 24)
+                                    )} วัน)`
+                                  : `(หลังกำหนด ${Math.ceil(
+                                      (event.actualFarrowDate.getTime() -
+                                        event.expectedDate.getTime()) /
+                                        (1000 * 60 * 60 * 24)
+                                    )} วัน)`}
+                              </span>
+                            </InfoIcon>
+                          </div>
                         )}
-                      </div>
-                      <div className="mt-6 flex justify-end items-center gap-2">
-                        <Link href={`/sows/${event.sowId}`}>
-                          <Button variant={"ghost"}>ดูรายละเอียด</Button>
-                        </Link>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                      </Link>
+                    ))}
+                  </div>
+                </>
               ) : (
-                <p className="text-muted-foreground text-center py-16">
-                  ไม่มีแม่พันธุ์ที่คาดว่าจะคลอดในวันที่นี้
+                <p className="text-muted-foreground text-center py-32">
+                  ไม่มีแม่พันธุ์ที่คาดว่าจะคลอดในวันที่นี้  
                 </p>
               )}
             </div>
