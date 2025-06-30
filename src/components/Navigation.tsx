@@ -6,6 +6,7 @@ import {
   Calendar,
   PiggyBank,
   Dna,
+  Baby,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -15,7 +16,7 @@ export default function Navigation() {
 
   return (
     <div className="sticky bottom-0 left-0 right-0 w-full z-50 flex items-center justify-center py-2 px-4 bg-white/80 backdrop-blur border-t border-gray-200">
-      <nav className="grid grid-cols-4 gap-8">
+      <nav className="grid grid-cols-5 gap-6">
         <Link
           href="/"
           className={`flex flex-col items-center justify-center py-2 transition-colors ${
@@ -48,6 +49,17 @@ export default function Navigation() {
         >
           <Dna size={22} />
           <span className="text-xs mt-1">Boars</span>
+        </Link>
+        <Link
+          href="/piglets"
+          className={`flex flex-col items-center justify-center py-2 transition-colors ${
+            pathname === "/piglets"
+              ? "text-pink-500"
+              : "text-gray-600 hover:text-pink-500"
+          }`}
+        >
+          <Baby size={22} />
+          <span className="text-xs mt-1">Piglets</span>
         </Link>
         <Link
           href="/calendar"
