@@ -7,6 +7,7 @@ import {
   sarabunFont,
 } from "@/utils/fonts";
 import Navigation from "@/components/Navigation";
+import TopBar from "@/components/TopBar";
 
 export const metadata: Metadata = {
   title: "Home - SowCycle",
@@ -24,6 +25,8 @@ export default function RootLayout({
         className={`${notoSansThaiFont.variable} ${sarabunFont.variable}`}
         suppressHydrationWarning
       >
+        <TopBar />
+        
         <main className="max-w-screen-sm min-h-screen m-auto flex flex-col gap-2 px-2 py-8">
           {children}
         </main>
