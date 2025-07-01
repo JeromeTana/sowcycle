@@ -51,15 +51,15 @@ export default function Navigation() {
           <span className="text-xs mt-1">Boars</span>
         </Link>
         <Link
-          href="/piglets"
+          href="/litters"
           className={`flex flex-col items-center justify-center py-2 transition-colors ${
-            pathname === "/piglets"
+            pathname === "/litters"
               ? "text-pink-500"
               : "text-gray-600 hover:text-pink-500"
           }`}
         >
           <Fence size={22} />
-          <span className="text-xs mt-1">Piglets</span>
+          <span className="text-xs mt-1">Litters</span>
         </Link>
         <Link
           href="/calendar"

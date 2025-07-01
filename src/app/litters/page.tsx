@@ -19,15 +19,14 @@ import { Sow } from "@/types/sow";
 import {
   Search,
   Baby,
-  Calendar,
-  Users,
-  Heart,
   PiggyBank,
   Dna,
-  Gauge,
   Fence,
   Pen,
   Check,
+  Cake,
+  Beef,
+  Banknote,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { formatDate } from "@/lib/utils";
@@ -36,15 +35,15 @@ import DialogComponent from "@/components/DialogComponent";
 import { FarrowForm } from "@/components/Breeding/Form";
 import { useBreedingStore } from "@/stores/useBreedingStore";
 
-export default function PigletsPage() {
+export default function LittersPage() {
   const { breedings, setBreedings } = useBreedingStore();
   const [sows, setSows] = useState<Sow[]>([]);
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
-  // Derive breedings with piglets from store
-  const breedingsWithPiglets = useMemo(() => {
-    // Filter breedings that have actual_farrow_date (piglets have been born)
+  // Derive breedings with litters from store
+  const breedingsWithLitters = useMemo(() => {
+    // Filter breedings that have actual_farrow_date (litters have been born)
     const breedingsWithActualFarrow = breedings.filter(
       (breeding) => breeding.actual_farrow_date && !breeding.is_aborted
     );
@@ -56,11 +55,11 @@ export default function PigletsPage() {
     });
   }, [breedings, sows]);
 
-  const filteredPiglets = useMemo(() => {
-    let filtered = breedingsWithPiglets;
+  const filteredLitters = useMemo(() => {
+    let filtered = breedingsWithLitters;
 
     if (search) {
-      filtered = breedingsWithPiglets.filter((breeding) => {
+      filtered = breedingsWithLitters.filter((breeding) => {
         const sowName = breeding.sow?.name?.toLowerCase() || "";
         const boarBreed = breeding.boars?.breed?.toLowerCase() || "";
         const searchLower = search.toLowerCase();
@@ -75,7 +74,7 @@ export default function PigletsPage() {
       const dateB = new Date(b.actual_farrow_date!).getTime();
       return dateB - dateA;
     });
-  }, [breedingsWithPiglets, search]);
+  }, [breedingsWithLitters, search]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -89,7 +88,7 @@ export default function PigletsPage() {
         setBreedings(breedingsData);
         setSows(sowsData);
       } catch (error) {
-        console.error("Error fetching piglets data:", error);
+        console.error("Error fetching litters data:", error);
       } finally {
         setIsLoading(false);
       }
@@ -144,12 +143,10 @@ export default function PigletsPage() {
               <div className="flex items-center gap-4">
                 <Fence className="text-blue-500" size={24} />
                 <div>
-                  <p className="text-sm text-muted-foreground">
-                    ครอกที่เกิดแล้ว
-                  </p>
+                  <p className="text-sm text-muted-foreground">เกิดแล้ว</p>
                   <p className="text-2xl font-bold">
-                    {filteredPiglets.length}{" "}
-                    <span className="text-sm">ตัว</span>
+                    {filteredLitters.length}{" "}
+                    <span className="text-sm">ครอก</span>
                   </p>
                 </div>
               </div>
@@ -161,9 +158,9 @@ export default function PigletsPage() {
               <div className="flex items-center gap-4">
                 <PiggyBank className="text-pink-500" size={24} />
                 <div>
-                  <p className="text-sm text-muted-foreground">ลูกหมูทั้งหมด</p>
+                  <p className="text-sm text-muted-foreground">รวมทั้งหมด</p>
                   <p className="text-2xl font-bold">
-                    {filteredPiglets.reduce(
+                    {filteredLitters.reduce(
                       (total, breeding) => total + getTotalPiglets(breeding),
                       0
                     )}
@@ -181,8 +178,8 @@ export default function PigletsPage() {
                 <div>
                   <p className="text-sm text-gray-600">ลูกหมูที่มีชีวิต</p>
                   <p className="text-2xl font-bold">
-                    {filteredPiglets.reduce(
-                      (total, breeding) => total + getAlivePiglets(breeding),
+                    {filteredLitters.reduce(
+                      (total, breeding) => total + getAliveLitters(breeding),
                       0
                     )}
                   </p>
@@ -206,9 +203,9 @@ export default function PigletsPage() {
           />
         </div>
 
-        {/* Piglets List */}
+        {/* Litters List */}
         <div className="space-y-4">
-          {filteredPiglets.length === 0 ? (
+          {filteredLitters.length === 0 ? (
             <Card>
               <CardContent className="p-8 text-center">
                 <Baby className="mx-auto text-gray-400 mb-4" size={48} />
@@ -221,7 +218,7 @@ export default function PigletsPage() {
               </CardContent>
             </Card>
           ) : (
-            filteredPiglets.map((breeding, index) => (
+            filteredLitters.map((breeding, index) => (
               <Card key={breeding.id} className="transition-shadow">
                 <CardContent className="p-6">
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
@@ -230,11 +227,8 @@ export default function PigletsPage() {
                         <Fence />
                         <div className="flex flex-col ">
                           <h3 className="text-lg font-semibold">
-                            ครอกที่ {filteredPiglets.length - index}
+                            ครอกที่ {filteredLitters.length - index}
                           </h3>
-                          <p className="text-sm text-muted-foreground">
-                            คลอดเมื่อ {formatDate(breeding.actual_farrow_date!)}
-                          </p>
                         </div>
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -249,14 +243,14 @@ export default function PigletsPage() {
                             </span>
                           </span>
                         </InfoIcon>
-                        <InfoIcon
+                        {/* <InfoIcon
                           icon={<Gauge size={22} />}
-                          label="น้ำหนักเฉลี่ย (กก.)"
+                          label="น้ำหนักเฉลี่ย"
                         >
                           {breeding.avg_weight
-                            ? breeding.avg_weight.toFixed(2)
+                            ? breeding.avg_weight.toFixed(2) + " กิโลกรัม"
                             : "ไม่ระบุ"}
-                        </InfoIcon>
+                        </InfoIcon> */}
                       </div>
                       <div className="flex flex-col gap-4 text-muted-foreground">
                         <Link
@@ -295,6 +289,52 @@ export default function PigletsPage() {
                           <span>อายุ: {Math.floor((new Date().getTime() - new Date(breeding.actual_farrow_date!).getTime()) / (1000 * 60 * 60 * 24))} วัน</span>
                         </div> */}
                       </div>
+                      <div className="flex flex-col gap-6 rounded-lg p-3 bg-gray-100">
+                        <div className="relative">
+                          <InfoIcon
+                            icon={<Cake size={22} />}
+                            label="คลอดเมื่อ"
+                            className="bg-white"
+                          >
+                            {formatDate(breeding.actual_farrow_date!)}
+                            <span className="text-muted-foreground">
+                              {` (อายุ 
+                              ${Math.floor(
+                                (new Date().getTime() -
+                                  new Date(
+                                    breeding.actual_farrow_date!
+                                  ).getTime()) /
+                                  (1000 * 60 * 60 * 24)
+                              )} วัน)`}
+                            </span>
+                          </InfoIcon>
+                          <div className="w-[0px] border-l-2 border-gray-300 -z-0 h-7 absolute top-10 left-5 -translate-x-1/2" />
+                        </div>
+                        <div className="relative">
+                          <InfoIcon
+                            icon={<Beef size={22} />}
+                            label="เข้าคอกขุนเมื่อ"
+                            className="bg-white"
+                          >
+                            {formatDate(breeding.actual_farrow_date!)}
+                          </InfoIcon>
+                          <div className="w-[0px] border-l-2 border-gray-300 -z-0 h-7 absolute top-10 left-5 -translate-x-1/2" />
+                        </div>
+                        <InfoIcon
+                          icon={<Banknote size={22} className="bg-white" />}
+                          label="ขายเมื่อ"
+                          className="bg-white"
+                        >
+                          {formatDate(breeding.actual_farrow_date!)}
+                        </InfoIcon>
+                        {/* <InfoIcon
+                          icon={<Banknote size={22} className="bg-white" />}
+                          label="พร้อมขายในช่วง"
+                          className="bg-white"
+                        >
+                          {formatDate(breeding.actual_farrow_date!)}
+                        </InfoIcon> */}
+                      </div>
                     </div>
 
                     {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -324,7 +364,7 @@ export default function PigletsPage() {
                   <div className="w-full flex justify-end gap-2">
                     <DialogComponent
                       title={`แก้ไขข้อมูลครอกที่ ${
-                        filteredPiglets.length - index
+                        filteredLitters.length - index
                       }`}
                       dialogTriggerButton={
                         <Button variant={"ghost"}>
