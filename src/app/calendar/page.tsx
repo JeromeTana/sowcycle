@@ -13,6 +13,9 @@ import {
   Check,
   CalendarIcon,
   PiggyBank,
+  DollarSign,
+  Banknote,
+  Dna,
 } from "lucide-react";
 import {
   format,
@@ -23,13 +26,13 @@ import {
 } from "date-fns";
 import { getAllBreedings } from "@/services/breeding";
 import { Breeding } from "@/types/breeding";
-import Loader from "@/components/Loader";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import DialogComponent from "@/components/DialogComponent";
 import { FarrowForm } from "@/components/Breeding/Form";
 import InfoIcon from "@/components/InfoIcon";
 import { cn } from "@/lib/utils";
+import { getAllLitters } from "@/services/litter";
 
 interface FarrowEvent {
   id: number;
@@ -42,23 +45,37 @@ interface FarrowEvent {
   actualFarrowDate?: Date;
 }
 
+interface SaleableEvent {
+  id: number;
+  litterId: number;
+  sowId: number;
+  sowName: string;
+  saleableDate: Date;
+  daysUntilSaleable: number;
+  isPastDue: boolean;
+  farrowDate: Date;
+  boarBreed: string;
+}
+
 export default function CalendarPage() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(
     new Date()
   );
   const [breedings, setBreedings] = useState<Breeding[]>([]);
   const [farrowEvents, setFarrowEvents] = useState<FarrowEvent[]>([]);
+  const [saleableEvents, setSaleableEvents] = useState<SaleableEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const fetchBreedings = async () => {
     try {
       setLoading(true);
-      const data = await getAllBreedings();
-      setBreedings(data);
+      const breedings = await getAllBreedings();
+      const litters = await getAllLitters();
+      setBreedings(breedings);
 
       // Transform breedings into farrow events
-      const events: FarrowEvent[] = data.map((breeding) => {
+      const events: FarrowEvent[] = breedings.map((breeding) => {
         const expectedDate = parseISO(breeding.expected_farrow_date);
         const breedDate = parseISO(breeding.breed_date);
         const today = new Date();
@@ -78,7 +95,30 @@ export default function CalendarPage() {
         };
       });
 
+      // Transform litters into saleable events
+      const saleableEvents: SaleableEvent[] = litters
+        .filter((litter) => litter.saleable_at)
+        .map((litter) => {
+          const saleableDate = parseISO(litter.saleable_at!);
+          const farrowDate = parseISO(litter.saleable_at!);
+          const today = new Date();
+          const daysUntilSaleable = differenceInDays(saleableDate, today);
+
+          return {
+            id: litter.id!,
+            litterId: litter.id!,
+            sowId: litter.sow_id,
+            sowName: (litter as any).sows?.name || `Sow #${litter.sow_id}`,
+            saleableDate,
+            daysUntilSaleable,
+            isPastDue: daysUntilSaleable < 0,
+            farrowDate,
+            boarBreed: litter.boars?.breed || "Unknown Boar Breed",
+          };
+        });
+
       setFarrowEvents(events);
+      setSaleableEvents(saleableEvents);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Failed to fetch breeding data"
@@ -97,18 +137,9 @@ export default function CalendarPage() {
     (event) => selectedDate && isSameDay(event.expectedDate, selectedDate)
   );
 
-  // Get upcoming events (next 7 days)
-  const upcomingEvents = farrowEvents
-    .filter(
-      (event) =>
-        event.daysUntilFarrow >= 0 &&
-        event.daysUntilFarrow <= 7 &&
-        !event.actualFarrowDate
-    )
-    .sort((a, b) => a.daysUntilFarrow - b.daysUntilFarrow);
-
-  // Get overdue events
-  const overdueEvents = farrowEvents.filter((event) => event.isOverdue);
+  const selectedSaleableEvents = saleableEvents.filter(
+    (event) => selectedDate && isSameDay(event.saleableDate, selectedDate)
+  );
 
   if (error) {
     return (
@@ -151,15 +182,26 @@ export default function CalendarPage() {
                   (event) =>
                     isSameDay(event.expectedDate, date) && event.isOverdue
                 ),
+              hasSaleableEvent: (date) =>
+                saleableEvents.some((event) =>
+                  isSameDay(event.saleableDate, date)
+                ),
+              saleablePastDue: (date) =>
+                saleableEvents.some(
+                  (event) =>
+                    isSameDay(event.saleableDate, date) && event.isPastDue
+                ),
             }}
             modifiersClassNames={{
-              hasEvent: "bg-pink-500 text-white",
-              overdue: "bg-red-500 text-white",
+              hasEvent: "bg-pink-500",
+              overdue: "bg-pink-500",
+              hasSaleableEvent: "bg-green-500",
+              saleablePastDue: "bg-green-500",
             }}
           />
           {!loading && (
             <div>
-              {selectedDateEvents.length > 0 ? (
+              {selectedDateEvents.length > 0 && (
                 <>
                   <p className="pt-6 pb-4 font-bold text-lg">
                     กำหนดคลอด {`(${selectedDateEvents.length})`}
@@ -203,11 +245,59 @@ export default function CalendarPage() {
                     ))}
                   </div>
                 </>
-              ) : (
-                <p className="text-muted-foreground text-center py-32">
-                  ไม่มีแม่พันธุ์ที่คาดว่าจะคลอดในวันที่นี้  
-                </p>
               )}
+
+              {selectedSaleableEvents.length > 0 && (
+                <>
+                  <p className="pt-6 pb-4 font-bold text-lg">
+                    ลูกสุกรพร้อมขาย {`(${selectedSaleableEvents.length})`}
+                  </p>
+                  <div className="space-y-3">
+                    {selectedSaleableEvents.map((event) => (
+                      <Link
+                        href={`/litters/${event.litterId}`}
+                        key={event.id}
+                        className="p-6 rounded-xl bg-white block shadow"
+                      >
+                        <div className="flex items-center gap-2">
+                          <Banknote className="text-green-600" />
+                          <span className="font-bold">{event.sowName}</span>
+                        </div>
+                        <div className="mt-6 space-y-6">
+                          <InfoIcon
+                            label="วันที่คลอด"
+                            icon={<CalendarIcon className="h-5 w-5" />}
+                            className="text-muted-foreground"
+                          >
+                            {format(event.farrowDate, "d/M/y")}
+                          </InfoIcon>
+                          <InfoIcon
+                            label="แม่พันธุ์"
+                            icon={<PiggyBank className="h-5 w-5" />}
+                            className="text-muted-foreground"
+                          >
+                            {event.sowName}
+                          </InfoIcon>
+                          <InfoIcon
+                            label="พ่อพันธุ์"
+                            icon={<Dna className="h-5 w-5" />}
+                            className="text-muted-foreground"
+                          >
+                            {event.boarBreed}
+                          </InfoIcon>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {selectedDateEvents.length === 0 &&
+                selectedSaleableEvents.length === 0 && (
+                  <p className="text-muted-foreground text-center py-32">
+                    ไม่มีรายการในวันที่นี้
+                  </p>
+                )}
             </div>
           )}
         </div>
