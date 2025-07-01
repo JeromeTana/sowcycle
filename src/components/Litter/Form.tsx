@@ -1,0 +1,720 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import DatePicker from "../DatePicker";
+
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { CalendarIcon, Check, Heart, Loader, Plus, Trash } from "lucide-react";
+import { useEffect, useMemo } from "react";
+import { Litter } from "@/types/litter";
+import {
+  createLitter,
+  deleteLitter,
+  updateLitter,
+} from "@/services/litter";
+import { getAllSows, patchSow } from "@/services/sow";
+import { useSowStore } from "@/stores/useSowStore";
+import { useToast } from "@/hooks/use-toast";
+import DialogComponent from "../DialogComponent";
+import { enGB, is } from "date-fns/locale";
+import { useLitterStore } from "@/stores/useLitterStore";
+import { useBoarStore } from "@/stores/useBoarStore";
+import { getAllBoars } from "@/services/boar";
+import { PREGNANCY_DURATION } from "@/lib/constant";
+import { Switch } from "../ui/switch";
+
+const newFormSchema = z.object({
+  sow_id: z.string(),
+  boar_id: z.string().nullable(),
+  breed_date: z.date({ required_error: "กรุณาเลือกวันที่" }),
+});
+
+const farrowFormSchema = z.object({
+  breed_date: z.date({ required_error: "กรุณาเลือกวันที่" }),
+  actual_farrow_date: z.date(),
+  piglets_male_born_alive: z.coerce.number().nonnegative(),
+  piglets_female_born_alive: z.coerce.number().nonnegative(),
+  piglets_born_dead: z.coerce.number().nonnegative(),
+  avg_weight: z.coerce.number().nonnegative().optional(),
+  is_aborted: z.boolean(),
+});
+
+export function NewLitterForm({
+  id,
+  litter,
+  setDialog,
+}: {
+  id?: string;
+  litter?: Litter;
+  setDialog?: any;
+}) {
+  const { sows, setSows, updateSow } = useSowStore();
+  const { boars, setBoars } = useBoarStore();
+  const { addLitter, updateLitter: updateLitterStore } =
+    useLitterStore();
+  const { toast } = useToast();
+
+  const form = useForm<z.infer<typeof newFormSchema>>({
+    resolver: zodResolver(newFormSchema),
+    defaultValues: litter
+      ? {
+          sow_id: litter?.sow_id.toString(),
+          breed_date: new Date(litter.breed_date),
+        }
+      : {
+          sow_id: id,
+          breed_date: new Date(),
+        },
+  });
+
+  const expectedFarrowDate = useMemo(() => {
+    if (form.watch("breed_date")) {
+      const breedDate = new Date(form.watch("breed_date"));
+      breedDate.setDate(breedDate.getDate() + PREGNANCY_DURATION);
+      return breedDate;
+    }
+  }, [form.watch("breed_date")]);
+
+  const onSubmit = async (values: z.infer<typeof newFormSchema>) => {
+    try {
+      if (litter) {
+        await handleUpdate(values);
+        return;
+      }
+      await handleCreate(values);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleUpdate = async (values: z.infer<typeof newFormSchema>) => {
+    let requestBody = {
+      ...litter,
+      ...values,
+      sow_id: Number(values.sow_id),
+      breed_date: values.breed_date.toISOString(),
+      expected_farrow_date: expectedFarrowDate!.toISOString(),
+      updated_at: new Date().toISOString(),
+      boar_id: values.boar_id ? Number(values.boar_id) : undefined,
+    };
+
+    delete requestBody.boars;
+
+    try {
+      let res = await updateLitter(requestBody);
+
+      if (res) {
+        toast({
+          title: "แก้ไขสำเร็จ",
+          description: "แก้ไขประวัติการผสมเรียบร้อย",
+        });
+        updateLitterStore(res);
+        setDialog(false);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleCreate = async (values: z.infer<typeof newFormSchema>) => {
+    try {
+      let litterResponse = await createLitter({
+        sow_id: Number(values.sow_id),
+        boar_id: values.boar_id ? Number(values.boar_id) : undefined,
+        breed_date: values.breed_date.toISOString(),
+        expected_farrow_date: expectedFarrowDate!.toISOString(),
+      });
+
+      if (litterResponse) {
+        let sowPatchResponse = await patchSow({
+          id: Number(values.sow_id),
+          is_available: false,
+          updated_at: new Date().toISOString(),
+        });
+
+        addLitter(litterResponse);
+
+        if (sowPatchResponse) {
+          toast({
+            title: "เพิ่มสำเร็จ",
+            description: "เพิ่มประวัติการผสมเรียบร้อย",
+          });
+          setDialog(false);
+        }
+
+        let data = {
+          ...sowPatchResponse,
+          litters: [litterResponse],
+        };
+
+        updateSow(data);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const sows = await getAllSows();
+      if (!sows) return;
+      setSows(sows);
+
+      const boars = await getAllBoars();
+      if (!boars) return;
+      setBoars(boars);
+    };
+    if (sows.length === 0) fetchData();
+  }, []);
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <FormField
+          control={form.control}
+          name="sow_id"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>แม่พันธุ์</FormLabel>
+              <Select
+                onValueChange={field.onChange}
+                defaultValue={field.value}
+                disabled={litter?.id ? true : false}
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="เลือกแม่พันธุ์" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>เลือกแม่พันธุ์</SelectLabel>
+                    {sows.map((sow) => (
+                      <SelectItem key={sow.id} value={sow.id.toString()}>
+                        {sow.name}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="boar_id"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>พ่อพันธุ์</FormLabel>
+              <Select onValueChange={field.onChange}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="เลือกสายพันธุ์ที่ผสม" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>เลือกสายพันธุ์ที่ผสม</SelectLabel>
+                    {boars.map((boar) => (
+                      <SelectItem key={boar.id} value={boar.id.toString()}>
+                        {boar.breed}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <div className="w-full flex gap-2">
+          <FormField
+            control={form.control}
+            name="breed_date"
+            render={({ field }) => (
+              <FormItem className="w-full flex flex-col">
+                <FormLabel>วันที่ผสม</FormLabel>
+                <DatePicker field={field} />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormItem className="w-full flex flex-col">
+            <FormLabel>กำหนดคลอด</FormLabel>
+            <FormControl>
+              <Button
+                variant={"outline"}
+                disabled
+                className={cn(
+                  "w-full pl-3 text-left font-normal",
+                  !expectedFarrowDate && "text-muted-foreground"
+                )}
+              >
+                {expectedFarrowDate ? (
+                  format(expectedFarrowDate, "P", { locale: enGB })
+                ) : (
+                  <span>เลือกวันที่ผสม</span>
+                )}
+                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+              </Button>
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        </div>
+        <div
+          className={cn(
+            litter ? "justify-between" : "justify-end",
+            "w-full flex"
+          )}
+        >
+          {litter && (
+            <DeleteDialog
+              isSubmitting={form.formState.isSubmitting}
+              litter={litter}
+              setDialog={setDialog}
+            />
+          )}
+          <Button disabled={form.formState.isSubmitting} type="submit">
+            {form.formState.isSubmitting ? (
+              <>
+                <Loader className="animate-spin" />
+                กำลังบันทึก
+              </>
+            ) : litter ? (
+              <>
+                <Check />
+                บันทึก
+              </>
+            ) : (
+              <>
+                <Heart />
+                เพิ่มประวัติผสม
+              </>
+            )}
+          </Button>
+        </div>
+      </form>
+    </Form>
+  );
+}
+
+export function FarrowForm({
+  litter,
+  setDialog,
+}: {
+  litter: Litter;
+  setDialog?: any;
+}) {
+  const { toast } = useToast();
+  const { updateLitter: updateLitterStore } = useLitterStore();
+  const { updateSow } = useSowStore();
+  const form = useForm<z.infer<typeof farrowFormSchema>>({
+    resolver: zodResolver(farrowFormSchema),
+    defaultValues: litter.actual_farrow_date
+      ? {
+          breed_date: new Date(litter.breed_date),
+          actual_farrow_date: new Date(litter.actual_farrow_date),
+          piglets_male_born_alive: litter.piglets_male_born_alive,
+          piglets_female_born_alive: litter.piglets_female_born_alive,
+          piglets_born_dead: litter.piglets_born_dead,
+          avg_weight: litter.avg_weight || undefined,
+          is_aborted: litter.is_aborted,
+        }
+      : {
+          breed_date: new Date(litter.breed_date),
+          actual_farrow_date: new Date(),
+          piglets_male_born_alive: 0,
+          piglets_female_born_alive: 0,
+          piglets_born_dead: 0,
+          avg_weight: undefined,
+          is_aborted: false,
+        },
+  });
+
+  const totalBornPiglets = useMemo(() => {
+    return (
+      Number(form.getValues("piglets_male_born_alive")) +
+      Number(form.getValues("piglets_female_born_alive"))
+    );
+  }, [
+    form.watch("piglets_male_born_alive"),
+    form.watch("piglets_female_born_alive"),
+  ]);
+
+  const totalPiglets = useMemo(() => {
+    return totalBornPiglets + Number(form.getValues("piglets_born_dead"));
+  }, [totalBornPiglets, form.watch("piglets_born_dead")]);
+
+  const onSubmit = async (values: z.infer<typeof farrowFormSchema>) => {
+    let formattedLitter = {
+      ...litter,
+      ...values,
+      breed_date: values.breed_date.toISOString(),
+      actual_farrow_date: values.actual_farrow_date.toISOString(),
+      piglets_born_count: totalBornPiglets,
+    };
+
+    try {
+      if (litter.actual_farrow_date) {
+        let res = await handleUpdate(formattedLitter);
+        return;
+      }
+
+      await handleCreate(formattedLitter);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const expectedFarrowDate = useMemo(() => {
+    if (form.watch("breed_date")) {
+      const breedDate = new Date(form.watch("breed_date"));
+      breedDate.setDate(breedDate.getDate() + PREGNANCY_DURATION);
+      return breedDate;
+    }
+  }, [form.watch("breed_date")]);
+
+  const handleCreate = async (litter: Litter) => {
+    let requestBody = {
+      ...litter,
+      boar_id: litter.boars?.boar_id,
+      updated_at: new Date().toISOString(),
+    };
+
+    delete requestBody.boars;
+
+    try {
+      let updateResponse = await updateLitter(requestBody);
+      if (updateResponse) {
+        let sowPatchResponse = await patchSow({
+          id: litter.sow_id,
+          is_available: true,
+          updated_at: new Date().toISOString(),
+        });
+
+        updateLitterStore(updateResponse);
+
+        if (sowPatchResponse) {
+          toast({
+            title: "เพิ่มสำเร็จ",
+            description: "เพิ่มประวัติการคลอดเรียบร้อย",
+          });
+          updateSow(sowPatchResponse);
+          setDialog(false);
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleUpdate = async (litter: Litter) => {
+    let requestBody = {
+      ...litter,
+      boar_id: litter.boars?.boar_id,
+      updated_at: new Date().toISOString(),
+      sows: undefined,
+      sow: undefined,
+    };
+
+    delete requestBody.boars;
+    delete requestBody.sows;
+    delete requestBody.sow;
+
+    try {
+      let res = await updateLitter(requestBody);
+      if (res) {
+        toast({
+          title: "แก้ไขสำเร็จ",
+          description: "แก้ไขประวัติการผสมเรียบร้อย",
+        });
+        updateLitterStore(res);
+        setDialog(false);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <div className="w-full flex gap-2 bg-gray-50 border p-4 rounded-lg">
+          <FormField
+            control={form.control}
+            name="breed_date"
+            render={({ field }) => (
+              <FormItem className="w-full flex flex-col">
+                <FormLabel>วันที่ผสม</FormLabel>
+                <DatePicker field={field} />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormItem className="w-full flex flex-col">
+            <FormLabel>กำหนดคลอด</FormLabel>
+            <FormControl>
+              <Button
+                variant={"outline"}
+                disabled
+                className={cn(
+                  "w-full pl-3 text-left font-normal",
+                  !expectedFarrowDate && "text-muted-foreground"
+                )}
+              >
+                {expectedFarrowDate ? (
+                  format(expectedFarrowDate, "P", { locale: enGB })
+                ) : (
+                  <span>เลือกวันที่ผสม</span>
+                )}
+                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+              </Button>
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        </div>
+        {litter.breed_date && (
+          <>
+            <FormField
+              control={form.control}
+              name="actual_farrow_date"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>วันที่คลอดจริง</FormLabel>
+                  <DatePicker field={field} />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="space-y-2">
+              <p className="text-sm">จำนวนลูกเกิด</p>
+              <div className="border p-4 rounded-lg space-y-4 bg-gray-50">
+                <div className="flex gap-2">
+                  <FormField
+                    control={form.control}
+                    name="piglets_male_born_alive"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>ตัวผู้</FormLabel>
+                        <FormControl>
+                          <Input
+                            className="bg-white"
+                            type="number"
+                            min={0}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="piglets_female_born_alive"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>ตัวเมีย</FormLabel>
+                        <FormControl>
+                          <Input
+                            className="bg-white"
+                            type="number"
+                            min={0}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <FormItem>
+                  <FormLabel>รวม</FormLabel>
+                  <FormControl>
+                    <Input
+                      className="bg-white"
+                      type="number"
+                      disabled
+                      value={totalBornPiglets}
+                      min={0}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              </div>
+            </div>
+
+            <FormField
+              control={form.control}
+              name="piglets_born_dead"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>จำนวนลูกเกิดตาย</FormLabel>
+                  <FormControl>
+                    <Input type="number" {...field} min={0} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormItem>
+              <FormLabel>รวมทั้งหมด</FormLabel>
+              <FormControl>
+                <Input disabled type="number" value={totalPiglets} min={0} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+
+            <FormField
+              control={form.control}
+              name="avg_weight"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>น้ำหนักเฉลี่ย (กก.) (ถ้ามี)</FormLabel>
+                  <FormControl>
+                    <Input type="number" {...field} min={0} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="is_aborted"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                  <div className="space-y-0.5">
+                    <FormLabel className="text-base">แท้งลูก</FormLabel>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          </>
+        )}
+
+        <div className="w-full flex justify-between">
+          <DeleteDialog
+            isSubmitting={form.formState.isSubmitting}
+            litter={litter}
+            setDialog={setDialog}
+          />
+          <Button disabled={form.formState.isSubmitting} type="submit">
+            {form.formState.isSubmitting ? (
+              <>
+                <Loader className="animate-spin" />
+                กำลังบันทึก
+              </>
+            ) : (
+              <>
+                <Check />
+                บันทึก
+              </>
+            )}
+          </Button>
+        </div>
+      </form>
+    </Form>
+  );
+}
+
+export default function DeleteDialog({
+  litter,
+  isSubmitting,
+  setDialog,
+}: {
+  litter: Litter;
+  isSubmitting: boolean;
+  setDialog?: any;
+}) {
+  const { toast } = useToast();
+  const { removeLitter } = useLitterStore();
+  const { updateSow } = useSowStore();
+  const handleDelete = async () => {
+    try {
+      let res = await deleteLitter(litter.id!);
+
+      if (res) {
+        toast({
+          title: "ลบสำเร็จ",
+          description: "ลบประวัติการผสมเรียบร้อย",
+        });
+
+        removeLitter(res.id);
+
+        if (!res.actual_farrow_date) {
+          let sowPatchResponse = await patchSow({
+            id: litter.sow_id,
+            is_available: true,
+            updated_at: new Date().toISOString(),
+          });
+
+          if (sowPatchResponse) {
+            toast({
+              title: "เพิ่มสำเร็จ",
+              description: "เพิ่มประวัติการคลอดเรียบร้อย",
+            });
+            updateSow(sowPatchResponse);
+            setDialog(false);
+          }
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  return (
+    <DialogComponent
+      title="บันทึกการคลอด"
+      dialogTriggerButton={
+        <Button
+          disabled={isSubmitting}
+          variant={"ghost"}
+          className="text-red-500 hover:text-red-500 hover:bg-red-50"
+        >
+          <Trash /> ลบ
+        </Button>
+      }
+    >
+      <p>ต้องการลบข้อมูลการผสมนี้หรือไม่</p>
+      <div className="flex justify-end gap-2">
+        <Button variant={"destructive"} onClick={handleDelete}>
+          ลบ
+        </Button>
+      </div>
+    </DialogComponent>
+  );
+}

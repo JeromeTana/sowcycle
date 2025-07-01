@@ -12,9 +12,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import InfoIcon from "@/components/InfoIcon";
-import { getAllBreedings } from "@/services/breeding";
+import { getAllLitters } from "@/services/litter";
 import { getAllSows } from "@/services/sow";
-import { Breeding } from "@/types/breeding";
+import { Litter } from "@/types/litter";
 import { Sow } from "@/types/sow";
 import {
   Search,
@@ -32,36 +32,36 @@ import { useEffect, useMemo, useState } from "react";
 import { formatDate } from "@/lib/utils";
 import Link from "next/link";
 import DialogComponent from "@/components/DialogComponent";
-import { FarrowForm } from "@/components/Breeding/Form";
-import { useBreedingStore } from "@/stores/useBreedingStore";
+import { FarrowForm } from "@/components/Litter/Form";
+import { useLitterStore } from "@/stores/useLitterStore";
 
 export default function LittersPage() {
-  const { breedings, setBreedings } = useBreedingStore();
+  const { litters, setLitters } = useLitterStore();
   const [sows, setSows] = useState<Sow[]>([]);
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
-  // Derive breedings with litters from store
-  const breedingsWithLitters = useMemo(() => {
-    // Filter breedings that have actual_farrow_date (litters have been born)
-    const breedingsWithActualFarrow = breedings.filter(
-      (breeding) => breeding.actual_farrow_date && !breeding.is_aborted
+  // Derive litters with litters from store
+  const littersWithLitters = useMemo(() => {
+    // Filter litters that have actual_farrow_date (litters have been born)
+    const littersWithActualFarrow = litters.filter(
+      (litter) => litter.actual_farrow_date && !litter.is_aborted
     );
 
-    // Combine breeding data with sow information
-    return breedingsWithActualFarrow.map((breeding) => {
-      const sow = sows.find((sow) => sow.id === breeding.sow_id);
-      return { ...breeding, sow };
+    // Combine litter data with sow information
+    return littersWithActualFarrow.map((litter) => {
+      const sow = sows.find((sow) => sow.id === litter.sow_id);
+      return { ...litter, sow };
     });
-  }, [breedings, sows]);
+  }, [litters, sows]);
 
   const filteredLitters = useMemo(() => {
-    let filtered = breedingsWithLitters;
+    let filtered = littersWithLitters;
 
     if (search) {
-      filtered = breedingsWithLitters.filter((breeding) => {
-        const sowName = breeding.sow?.name?.toLowerCase() || "";
-        const boarBreed = breeding.boars?.breed?.toLowerCase() || "";
+      filtered = littersWithLitters.filter((litter) => {
+        const sowName = litter.sow?.name?.toLowerCase() || "";
+        const boarBreed = litter.boars?.breed?.toLowerCase() || "";
         const searchLower = search.toLowerCase();
 
         return sowName.includes(searchLower) || boarBreed.includes(searchLower);
@@ -74,18 +74,18 @@ export default function LittersPage() {
       const dateB = new Date(b.actual_farrow_date!).getTime();
       return dateB - dateA;
     });
-  }, [breedingsWithLitters, search]);
+  }, [littersWithLitters, search]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const [breedingsData, sowsData] = await Promise.all([
-          getAllBreedings(),
+        const [littersData, sowsData] = await Promise.all([
+          getAllLitters(),
           getAllSows(),
         ]);
 
-        setBreedings(breedingsData);
+        setLitters(littersData);
         setSows(sowsData);
       } catch (error) {
         console.error("Error fetching litters data:", error);
@@ -95,16 +95,16 @@ export default function LittersPage() {
     };
 
     fetchData();
-  }, [setBreedings]);
+  }, [setLitters]);
 
-  const getTotalPiglets = (breeding: Breeding) => {
-    return breeding.piglets_born_count || 0;
+  const getTotalPiglets = (litter: Litter) => {
+    return litter.piglets_born_count || 0;
   };
 
-  const getAlivePiglets = (breeding: Breeding) => {
+  const getAlivePiglets = (litter: Litter) => {
     return (
-      (breeding.piglets_male_born_alive || 0) +
-      (breeding.piglets_female_born_alive || 0)
+      (litter.piglets_male_born_alive || 0) +
+      (litter.piglets_female_born_alive || 0)
     );
   };
 
@@ -161,7 +161,7 @@ export default function LittersPage() {
                   <p className="text-sm text-muted-foreground">รวมทั้งหมด</p>
                   <p className="text-2xl font-bold">
                     {filteredLitters.reduce(
-                      (total, breeding) => total + getTotalPiglets(breeding),
+                      (total, litter) => total + getTotalPiglets(litter),
                       0
                     )}
                     <span className="text-sm"> ตัว</span>
@@ -179,7 +179,7 @@ export default function LittersPage() {
                   <p className="text-sm text-gray-600">ลูกหมูที่มีชีวิต</p>
                   <p className="text-2xl font-bold">
                     {filteredLitters.reduce(
-                      (total, breeding) => total + getAliveLitters(breeding),
+                      (total, litter) => total + getAliveLitters(litter),
                       0
                     )}
                   </p>
@@ -218,8 +218,8 @@ export default function LittersPage() {
               </CardContent>
             </Card>
           ) : (
-            filteredLitters.map((breeding, index) => (
-              <Card key={breeding.id} className="transition-shadow">
+            filteredLitters.map((litter, index) => (
+              <Card key={litter.id} className="transition-shadow">
                 <CardContent className="p-6">
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
                     <div className="space-y-6">
@@ -233,13 +233,13 @@ export default function LittersPage() {
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                         <InfoIcon icon={<PiggyBank size={22} />} label="จำนวน">
-                          {getTotalPiglets(breeding)} ตัว
+                          {getTotalPiglets(litter)} ตัว
                           <span className="ml-2">
                             <span className="bg-blue-500 font-bold text-white rounded-full px-3 py-1 text-xs">
-                              ผู้ {breeding.piglets_male_born_alive}
+                              ผู้ {litter.piglets_male_born_alive}
                             </span>{" "}
                             <span className="bg-pink-500 font-bold text-white rounded-full px-3 py-1 text-xs">
-                              เมีย {breeding.piglets_female_born_alive}
+                              เมีย {litter.piglets_female_born_alive}
                             </span>
                           </span>
                         </InfoIcon>
@@ -247,14 +247,14 @@ export default function LittersPage() {
                           icon={<Gauge size={22} />}
                           label="น้ำหนักเฉลี่ย"
                         >
-                          {breeding.avg_weight
-                            ? breeding.avg_weight.toFixed(2) + " กิโลกรัม"
+                          {litter.avg_weight
+                            ? litter.avg_weight.toFixed(2) + " กิโลกรัม"
                             : "ไม่ระบุ"}
                         </InfoIcon> */}
                       </div>
                       <div className="flex flex-col gap-4 text-muted-foreground">
                         <Link
-                          href={`/sows/${breeding.sow?.id}`}
+                          href={`/sows/${litter.sow?.id}`}
                           className="rounded-lg p-3 bg-gray-100"
                         >
                           <InfoIcon
@@ -262,12 +262,12 @@ export default function LittersPage() {
                             label="แม่พันธุ์"
                             className="!bg-white"
                           >
-                            {breeding.sow?.name || "ไม่ระบุ"}
+                            {litter.sow?.name || "ไม่ระบุ"}
                           </InfoIcon>
                         </Link>
-                        {breeding.boars && (
+                        {litter.boars && (
                           <Link
-                            href={`/boars/${breeding.boars?.id || ""}`}
+                            href={`/boars/${litter.boars?.id || ""}`}
                             className="rounded-lg p-3 bg-gray-100"
                           >
                             <InfoIcon
@@ -275,18 +275,18 @@ export default function LittersPage() {
                               label="พ่อพันธุ์"
                               className="!bg-white"
                             >
-                              {breeding.boars.breed}
+                              {litter.boars.breed}
                             </InfoIcon>
                           </Link>
                         )}
-                        {breeding.boars?.name && (
+                        {litter.boars?.name && (
                           <Badge variant="outline">
-                            พ่อหมู: {breeding.boars.breed}
+                            พ่อหมู: {litter.boars.breed}
                           </Badge>
                         )}
                         {/* <div className="flex items-center space-x-1">
                           <Baby size={16} />
-                          <span>อายุ: {Math.floor((new Date().getTime() - new Date(breeding.actual_farrow_date!).getTime()) / (1000 * 60 * 60 * 24))} วัน</span>
+                          <span>อายุ: {Math.floor((new Date().getTime() - new Date(litter.actual_farrow_date!).getTime()) / (1000 * 60 * 60 * 24))} วัน</span>
                         </div> */}
                       </div>
                       <div className="flex flex-col gap-6 rounded-lg p-3 bg-gray-100">
@@ -296,13 +296,13 @@ export default function LittersPage() {
                             label="คลอดเมื่อ"
                             className="bg-white"
                           >
-                            {formatDate(breeding.actual_farrow_date!)}
+                            {formatDate(litter.actual_farrow_date!)}
                             <span className="text-muted-foreground">
                               {` (อายุ 
                               ${Math.floor(
                                 (new Date().getTime() -
                                   new Date(
-                                    breeding.actual_farrow_date!
+                                    litter.actual_farrow_date!
                                   ).getTime()) /
                                   (1000 * 60 * 60 * 24)
                               )} วัน)`}
@@ -316,7 +316,7 @@ export default function LittersPage() {
                             label="เข้าคอกขุนเมื่อ"
                             className="bg-white"
                           >
-                            {formatDate(breeding.actual_farrow_date!)}
+                            {formatDate(litter.actual_farrow_date!)}
                           </InfoIcon>
                           <div className="w-[0px] border-l-2 border-gray-300 -z-0 h-7 absolute top-10 left-5 -translate-x-1/2" />
                         </div>
@@ -325,14 +325,14 @@ export default function LittersPage() {
                           label="ขายเมื่อ"
                           className="bg-white"
                         >
-                          {formatDate(breeding.actual_farrow_date!)}
+                          {formatDate(litter.actual_farrow_date!)}
                         </InfoIcon>
                         {/* <InfoIcon
                           icon={<Banknote size={22} className="bg-white" />}
                           label="พร้อมขายในช่วง"
                           className="bg-white"
                         >
-                          {formatDate(breeding.actual_farrow_date!)}
+                          {formatDate(litter.actual_farrow_date!)}
                         </InfoIcon> */}
                       </div>
                     </div>
@@ -342,20 +342,20 @@ export default function LittersPage() {
                         icon={<Baby size={22} className="text-blue-500" />}
                         label="เพศผู้"
                       >
-                        {breeding.piglets_male_born_alive || 0}
+                        {litter.piglets_male_born_alive || 0}
                       </InfoIcon>
                       <InfoIcon
                         icon={<Heart size={22} className="text-pink-500" />}
                         label="เพศเมีย"
                       >
-                        {breeding.piglets_female_born_alive || 0}
+                        {litter.piglets_female_born_alive || 0}
                       </InfoIcon> */}
                     {/* <InfoIcon
                         icon={<Calendar size={22} />}
                         label="ตาย"
                         className="border-red-200 bg-red-50"
                       >
-                        {breeding.piglets_born_dead || 0}
+                        {litter.piglets_born_dead || 0}
                       </InfoIcon> */}
                     {/* </div> */}
                   </div>
@@ -372,9 +372,9 @@ export default function LittersPage() {
                         </Button>
                       }
                     >
-                      <FarrowForm breeding={breeding} />
+                      <FarrowForm litter={litter} />
                     </DialogComponent>
-                    {breeding.actual_farrow_date === null && (
+                    {litter.actual_farrow_date === null && (
                       <DialogComponent
                         title="บันทึกการคลอด"
                         dialogTriggerButton={
@@ -383,7 +383,7 @@ export default function LittersPage() {
                           </Button>
                         }
                       >
-                        <FarrowForm breeding={breeding} />
+                        <FarrowForm litter={litter} />
                       </DialogComponent>
                     )}
                   </div>
