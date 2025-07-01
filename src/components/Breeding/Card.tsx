@@ -35,7 +35,7 @@ export default function BreedingCard({
     <Card
       className={cn(
         breeding.actual_farrow_date ? "" : "border bg-pink-50 border-pink-200",
-        breeding.is_aborted ? "opacity-50" : ""
+        breeding.is_aborted ? "opacity-70" : ""
       )}
     >
       {/* <CardHeader>

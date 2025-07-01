@@ -26,7 +26,7 @@ export default function Navigation() {
           }`}
         >
           <Home size={20} />
-          <span className="text-xs mt-1">Home</span>
+          <span className="text-xs mt-1">หน้าหลัก</span>
         </Link>
         <Link
           href="/sows"
@@ -37,7 +37,7 @@ export default function Navigation() {
           }`}
         >
           <PiggyBank size={22} />
-          <span className="text-xs mt-1">Sows</span>
+          <span className="text-xs mt-1">แม่พันธุ์</span>
         </Link>
         <Link
           href="/boars"
@@ -48,7 +48,7 @@ export default function Navigation() {
           }`}
         >
           <Dna size={22} />
-          <span className="text-xs mt-1">Boars</span>
+          <span className="text-xs mt-1">พ่อพันธุ์</span>
         </Link>
         <Link
           href="/litters"
@@ -59,7 +59,7 @@ export default function Navigation() {
           }`}
         >
           <Fence size={22} />
-          <span className="text-xs mt-1">Litters</span>
+          <span className="text-xs mt-1">ครอก</span>
         </Link>
         <Link
           href="/calendar"
