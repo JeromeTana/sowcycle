@@ -32,7 +32,7 @@ export const getLittersBySowId = async (sowId: number) => {
     .from("litters")
     .select()
     .eq("sow_id", sowId)
-    .order("breed_date", { ascending: false })) as {
+    .order("birth_date", { ascending: false })) as {
     data: Litter[];
     error: any;
   };

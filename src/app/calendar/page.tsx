@@ -193,10 +193,10 @@ export default function CalendarPage() {
                 ),
             }}
             modifiersClassNames={{
-              hasEvent: "bg-pink-500",
-              overdue: "bg-pink-500",
-              hasSaleableEvent: "bg-green-500",
-              saleablePastDue: "bg-green-500",
+              hasEvent: "bg-pink-500 text-white",
+              overdue: "bg-pink-500 text-white",
+              hasSaleableEvent: "bg-green-500 text-white",
+              saleablePastDue: "bg-green-500 text-white",
             }}
           />
           {!loading && (

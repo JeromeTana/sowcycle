@@ -43,7 +43,7 @@ export default function LitterCard({
                 <p className="text-sm">
                   {litter.sold_at && (
                     <>
-                      <span className="text-green-600">ขายแล้ว · </span>
+                      <span className="text-green-700">ขายแล้ว · </span>
                     </>
                   )}
                   {litter.fattening_at && !litter.sold_at && (
