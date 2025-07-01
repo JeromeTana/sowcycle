@@ -6,21 +6,18 @@ import SowForm from "@/components/Sow/Form";
 import { Button } from "@/components/ui/button";
 import { getSowByIdWithAllInfo } from "@/services/sow";
 import { Sow } from "@/types/sow";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { NewBreedingForm } from "@/components/Breeding/Form";
 import DialogComponent from "@/components/DialogComponent";
 import {
-  BarChart3,
   Cake,
   HandHeart,
   Heart,
-  LineChart,
   Pen,
   PiggyBank,
   PiggyBankIcon,
   Plus,
-  PlusIcon,
   Syringe,
   X,
 } from "lucide-react";
@@ -47,6 +44,22 @@ export default function SowsPage({ params }: any) {
   const { medicalRecords: medical_records, setMedicalRecords } =
     useMedicalRecordStore();
   const [isLoading, setIsLoading] = useState(true);
+  const averagePigletsBornCount = useMemo(
+    () =>
+      Math.floor(
+        breedings.reduce(
+          (acc, breeding) => acc + (breeding.piglets_born_count || 0),
+          0
+        ) /
+          breedings.filter(
+            (breeding) =>
+              breeding.actual_farrow_date &&
+              breeding.piglets_born_count !== null &&
+              !breeding.is_aborted
+          ).length
+      ),
+    [breedings]
+  );
 
   const tabOptions = [
     {
@@ -247,20 +260,7 @@ export default function SowsPage({ params }: any) {
                       จำนวนลูกเกิดรอดเฉลี่ย
                     </p>
                     <p className="text-xl font-semibold">
-                      {Math.floor(
-                        sow.breedings.reduce(
-                          (acc, breeding) =>
-                            acc + (breeding.piglets_born_count || 0),
-                          0
-                        ) /
-                          breedings.filter(
-                            (breeding) =>
-                              breeding.actual_farrow_date &&
-                              breeding.piglets_born_count &&
-                              !breeding.is_aborted
-                          ).length
-                      )}{" "}
-                      ตัว
+                      {averagePigletsBornCount} ตัว
                     </p>
                   </div>
                   <PigletCountChart breedings={breedings} />

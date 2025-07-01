@@ -177,16 +177,18 @@ export function NewBreedingForm({
   };
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchSowsData = async () => {
       const sows = await getAllSows();
       if (!sows) return;
       setSows(sows);
+    };
 
+    const fetchBoarsData = async () => {
       const boars = await getAllBoars();
-      if (!boars) return;
       setBoars(boars);
     };
-    if (sows.length === 0) fetchData();
+    if (sows.length === 0) fetchSowsData();
+    fetchBoarsData();
   }, []);
 
   return (
@@ -406,6 +408,7 @@ export function FarrowForm({
       updated_at: new Date().toISOString(),
     };
 
+    let tempBoars = requestBody.boars;
     delete requestBody.boars;
 
     try {
@@ -418,7 +421,7 @@ export function FarrowForm({
             piglets_born_count: totalBornPiglets,
             piglets_male_born_alive: breeding.piglets_male_born_alive,
             piglets_female_born_alive: breeding.piglets_female_born_alive,
-            boar_id: breeding.boars?.boar_id,
+            boar_id: tempBoars?.id,
             avg_weight: breeding.avg_weight,
           };
 
