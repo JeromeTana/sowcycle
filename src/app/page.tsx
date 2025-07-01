@@ -6,10 +6,8 @@ import { useSowStore } from "@/stores/useSowStore";
 import { useBoarStore } from "@/stores/useBoarStore";
 import { getAllSowsWithLatestBreeding } from "@/services/sow";
 import { getAllBoars } from "@/services/boar";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Calendar, Heart, Users, AlertTriangle, TrendingUp, Activity, PiggyBank, Dna } from "lucide-react";
+import { Heart } from "lucide-react";
 import { PREGNANCY_DURATION } from "@/lib/constant";
 
 export default function Page() {
@@ -21,10 +19,12 @@ export default function Page() {
   const dashboardStats = useMemo(() => {
     const totalSows = sows.length;
     const totalBoars = boars.length;
-    const availableSows = sows.filter(sow => sow.is_available).length;
-    const pregnantSows = sows.filter(sow => !sow.is_available && sow.breedings?.length > 0).length;
-    const activeSows = sows.filter(sow => sow.is_active).length;
-    const activeBoars = boars.filter(boar => boar.is_active).length;
+    const availableSows = sows.filter((sow) => sow.is_available).length;
+    const pregnantSows = sows.filter(
+      (sow) => !sow.is_available && sow.breedings?.length > 0
+    ).length;
+    const activeSows = sows.filter((sow) => sow.is_active).length;
+    const activeBoars = boars.filter((boar) => boar.is_active).length;
 
     return {
       totalSows,
@@ -32,7 +32,7 @@ export default function Page() {
       availableSows,
       pregnantSows,
       activeSows,
-      activeBoars
+      activeBoars,
     };
   }, [sows, boars]);
 
@@ -40,8 +40,12 @@ export default function Page() {
     return sows
       .filter((sow) => !sow.is_available && sow.breedings?.length > 0)
       .sort((a, b) => {
-        const aDate = a.breedings[0]?.breed_date ? new Date(a.breedings[0].breed_date) : new Date(0);
-        const bDate = b.breedings[0]?.breed_date ? new Date(b.breedings[0].breed_date) : new Date(0);
+        const aDate = a.breedings[0]?.breed_date
+          ? new Date(a.breedings[0].breed_date)
+          : new Date(0);
+        const bDate = b.breedings[0]?.breed_date
+          ? new Date(b.breedings[0].breed_date)
+          : new Date(0);
         return aDate.getTime() - bDate.getTime();
       });
   }, [sows]);
@@ -49,12 +53,16 @@ export default function Page() {
   // Calculate sows due soon (within next 30 days)
   const sowsDueSoon = useMemo(() => {
     const today = new Date();
-    const thirtyDaysFromNow = new Date(today.getTime() + (30 * 24 * 60 * 60 * 1000));
-    
-    return breededSows.filter(sow => {
+    const thirtyDaysFromNow = new Date(
+      today.getTime() + 30 * 24 * 60 * 60 * 1000
+    );
+
+    return breededSows.filter((sow) => {
       if (!sow.breedings[0]?.breed_date) return false;
       const breedDate = new Date(sow.breedings[0].breed_date);
-      const dueDate = new Date(breedDate.getTime() + (PREGNANCY_DURATION * 24 * 60 * 60 * 1000)); // 114 days gestation
+      const dueDate = new Date(
+        breedDate.getTime() + PREGNANCY_DURATION * 24 * 60 * 60 * 1000
+      ); // 114 days gestation
       return dueDate <= thirtyDaysFromNow && dueDate >= today;
     });
   }, [breededSows]);
@@ -64,13 +72,13 @@ export default function Page() {
       try {
         const [sowsData, boarsData] = await Promise.all([
           getAllSowsWithLatestBreeding(),
-          getAllBoars()
+          getAllBoars(),
         ]);
-        
+
         if (sowsData) setSows(sowsData);
         if (boarsData) setBoars(boarsData);
       } catch (error) {
-        console.error('Error fetching dashboard data:', error);
+        console.error("Error fetching dashboard data:", error);
       } finally {
         setIsLoading(false);
       }
@@ -102,7 +110,6 @@ export default function Page() {
 
   return (
     <div className="space-y-8">
-      
       {/* Dashboard Header */}
       <div className="space-y-2">
         <h1 className="text-3xl font-bold">ยินดีต้อนรับ</h1>
@@ -185,7 +192,7 @@ export default function Page() {
           </CardContent>
         </Card> */}
 
-        {/* <Card>
+      {/* <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               แม่พันธุ์พร้อมผสม
@@ -229,7 +236,9 @@ export default function Page() {
         <div className="space-y-4">
           <div className="flex items-center gap-2">
             <Heart className="h-5 w-5 text-pink-500" />
-            <h2 className="text-xl font-semibold">แม่พันธุ์ตั้งครรภ์ ({breededSows.length})</h2>
+            <h2 className="text-xl font-semibold">
+              แม่พันธุ์ตั้งครรภ์ ({breededSows.length})
+            </h2>
           </div>
           <SowList sows={breededSows} />
         </div>
