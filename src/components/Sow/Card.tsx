@@ -95,7 +95,7 @@ export default function SowCard({ sow }: { sow: Sow }) {
               >
                 {formatDate(latestBreeding.expected_farrow_date!)}
               </InfoIcon>
-              <div className="w-[0px] border-l-2 border-dashed -z-0 h-7 absolute top-10 left-5 -translate-x-1/2" />
+              <div className="w-[0px] border-l-2 border-dashed border-gray-300 -z-0 h-7 absolute top-10 left-5 -translate-x-1/2" />
             </div>
           )}
         </div>

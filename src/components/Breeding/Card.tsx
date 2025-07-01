@@ -107,7 +107,7 @@ export default function BreedingCard({
               {formatDate(breeding.breed_date)}
             </InfoIcon>
             {breeding.actual_farrow_date ? (
-              <div className="w-[0px] border-l-2 -z-0 h-7 absolute top-10 left-5 -translate-x-1/2" />
+              <div className="w-[0px] border-l-2 border-gray-300 -z-0 h-7 absolute top-10 left-5 -translate-x-1/2" />
             ) : (
               <div className="w-[0px] border-l-2 border-pink-500 border-dashed -z-0 h-7 absolute top-10 left-5 -translate-x-1/2" />
             )}

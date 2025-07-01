@@ -244,7 +244,7 @@ export default function SowsPage({ params }: any) {
                 <div className="flex flex-col gap-4 bg-gray-100 p-4 rounded-lg">
                   <div className="flex flex-col gap-2">
                     <p className="text-sm text-muted-foreground">
-                      จำนวนลูกเกิดเฉลี่ย
+                      จำนวนลูกเกิดรอดเฉลี่ย
                     </p>
                     <p className="text-xl font-semibold">
                       {Math.floor(

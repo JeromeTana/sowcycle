@@ -169,7 +169,7 @@ export default function SowForm({ editingSow, setDialog }: any) {
             </FormItem>
           )}
         />
-        <div className="w-full flex justify-end gap-2">
+        <div className="w-full flex justify-between gap-2">
           {sow.id && (
             <DialogComponent
               title="ลบแม่พันธุ์"
