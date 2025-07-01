@@ -17,7 +17,7 @@ export const getAllLitters = async () => {
     `
     )
     .eq("sows.user_id", user.id)
-    .order("expected_farrow_date", { ascending: true })) as {
+    .order("birth_date", { ascending: true })) as {
     data: Litter[];
     error: any;
   };

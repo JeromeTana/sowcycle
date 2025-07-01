@@ -5,20 +5,14 @@ export interface Litter {
   created_at?: string;
   updated_at?: string;
   sow_id: number;
-  breed_date: string;
-  expected_farrow_date: string;
-  actual_farrow_date?: string;
+  birth_date?: string;
   piglets_born_count?: number;
   piglets_male_born_alive?: number;
   piglets_female_born_alive?: number;
-  piglets_born_dead?: number;
   boar_id?: number;
   boars?: Boar;
   avg_weight?: number;
-  is_aborted?: boolean;
-  fattening_at?: string;
-  saleable_at?: string;
-  sold_at?: string;
+  fattening_at?: string | null;
+  saleable_at?: string | null;
+  sold_at?: string | null;
 }
-
-

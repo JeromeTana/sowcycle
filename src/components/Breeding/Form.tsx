@@ -43,6 +43,7 @@ import { useBoarStore } from "@/stores/useBoarStore";
 import { getAllBoars } from "@/services/boar";
 import { PREGNANCY_DURATION } from "@/lib/constant";
 import { Switch } from "../ui/switch";
+import { createLitter } from "@/services/litter";
 
 const newFormSchema = z.object({
   sow_id: z.string(),
@@ -410,12 +411,25 @@ export function FarrowForm({
     try {
       let updateResponse = await updateBreeding(requestBody);
       if (updateResponse) {
+        if (!breeding.is_aborted) {
+          const litterData = {
+            sow_id: breeding.sow_id,
+            birth_date: breeding.actual_farrow_date,
+            piglets_born_count: totalBornPiglets,
+            piglets_male_born_alive: breeding.piglets_male_born_alive,
+            piglets_female_born_alive: breeding.piglets_female_born_alive,
+            boar_id: breeding.boars?.boar_id,
+            avg_weight: breeding.avg_weight,
+          };
+
+          await createLitter(litterData);
+        }
+
         let sowPatchResponse = await patchSow({
           id: breeding.sow_id,
           is_available: true,
           updated_at: new Date().toISOString(),
         });
-
         updateBreedingStore(updateResponse);
 
         if (sowPatchResponse) {
@@ -592,37 +606,25 @@ export function FarrowForm({
               <FormMessage />
             </FormItem>
 
-            <FormField
-              control={form.control}
-              name="avg_weight"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>น้ำหนักเฉลี่ย (กก.) (ถ้ามี)</FormLabel>
-                  <FormControl>
-                    <Input type="number" {...field} min={0} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="is_aborted"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                  <div className="space-y-0.5">
-                    <FormLabel className="text-base">แท้งลูก</FormLabel>
-                  </div>
-                  <FormControl>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+            {!breeding.actual_farrow_date && (
+              <FormField
+                control={form.control}
+                name="is_aborted"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                    <div className="space-y-0.5">
+                      <FormLabel className="text-base">แท้งลูก</FormLabel>
+                    </div>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            )}
           </>
         )}
 
