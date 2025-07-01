@@ -1,7 +1,7 @@
 "use client";
 
 import { formatDate } from "@/lib/utils";
-import { Breeding } from "@/types/breeding";
+import { Litter } from "@/types/litter";
 import {
   LineChart,
   Line,
@@ -14,27 +14,22 @@ import {
 } from "recharts";
 
 interface PigletCountChartProps {
-  breedings: Breeding[];
+  litters: Litter[];
 }
 
-export default function AvgWeightChart({ breedings }: PigletCountChartProps) {
+export default function AvgWeightChart({ litters }: PigletCountChartProps) {
   // Prepare data for the chart
-  const chartData = breedings
-    .filter(
-      (breeding) =>
-        breeding.actual_farrow_date &&
-        breeding.avg_weight! > 0
-    )
+  const chartData = litters
+    .filter((litter) => litter.avg_weight! > 0)
     .sort((a, b) => {
       return (
-        new Date(a.actual_farrow_date!).getTime() -
-        new Date(b.actual_farrow_date!).getTime()
+        new Date(a.birth_date!).getTime() - new Date(b.birth_date!).getTime()
       );
     })
-    .map((breeding, index) => ({
-      breeding: `ครอกที่ ${index + 1}`,
-      avg_weight: breeding.avg_weight || 0,
-      date: formatDate(breeding.actual_farrow_date!),
+    .map((litter, index) => ({
+      litter: `ครอกที่ ${index + 1}`,
+      avg_weight: litter.avg_weight || 0,
+      date: formatDate(litter.birth_date!),
     }));
 
   if (chartData.length === 0) {
@@ -58,7 +53,7 @@ export default function AvgWeightChart({ breedings }: PigletCountChartProps) {
         >
           <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
           <XAxis
-            dataKey="breeding"
+            dataKey="litter"
             tick={{ fontSize: 12 }}
             angle={-45}
             textAnchor="end"

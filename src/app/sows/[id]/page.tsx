@@ -36,11 +36,14 @@ import InfoIcon from "@/components/InfoIcon";
 import PigletCountChart from "@/components/PigletCountChart";
 import { formatDate } from "@/lib/utils";
 import AvgWeightChart from "@/components/AvgWeightChart";
+import { getLittersBySowId } from "@/services/litter";
+import { Litter } from "@/types/litter";
 
 export default function SowsPage({ params }: any) {
   const [id, setId] = useState<number | null>();
   const { sow, setSow } = useSowStore();
   const { breedings, setBreedings } = useBreedingStore();
+  const [litters, setLitters] = useState<Litter[]>([]);
   const { medicalRecords: medical_records, setMedicalRecords } =
     useMedicalRecordStore();
   const [isLoading, setIsLoading] = useState(true);
@@ -59,6 +62,15 @@ export default function SowsPage({ params }: any) {
           ).length
       ),
     [breedings]
+  );
+
+  const averageWeightChart = useMemo(
+    () =>
+      Math.floor(
+        litters.reduce((acc, litter) => acc + (litter.avg_weight || 0), 0) /
+          litters.filter((litter) => litter.avg_weight !== null).length
+      ),
+    []
   );
 
   const tabOptions = [
@@ -134,12 +146,17 @@ export default function SowsPage({ params }: any) {
     const fetchData = async () => {
       try {
         let sow = await getSowByIdWithAllInfo(id);
+        let litters = await getLittersBySowId(id);
 
         if (sow) {
           setSow(sow);
           setBreedings(sow.breedings);
           setMedicalRecords(sow.medical_records);
           setIsLoading(false);
+        }
+
+        if (litters) {
+          setLitters(litters);
         }
       } catch (error) {
         if (error) redirect("/404");
@@ -200,6 +217,7 @@ export default function SowsPage({ params }: any) {
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-6">
+            
             <InfoIcon
               label="สถานะ"
               icon={
@@ -240,6 +258,7 @@ export default function SowsPage({ params }: any) {
             >
               {sow.birth_date ? formatDate(sow.birth_date) : "-"}
             </InfoIcon>
+
             <InfoIcon
               label="รับเข้าเมื่อ"
               icon={<HandHeart size={22} />}
@@ -247,6 +266,7 @@ export default function SowsPage({ params }: any) {
             >
               {sow.add_date ? formatDate(sow.add_date) : "-"}
             </InfoIcon>
+
             <div className="flex flex-col gap-4">
               {breedings.filter(
                 (breeding) =>
@@ -266,33 +286,25 @@ export default function SowsPage({ params }: any) {
                   <PigletCountChart breedings={breedings} />
                 </div>
               )}{" "}
-              {sow.breedings.filter((breeding) => breeding.avg_weight! > 0)
-                .length > 1 && (
+              {litters.filter((breeding) => breeding.avg_weight! > 0).length >
+                1 && (
                 <div className="flex flex-col gap-4 bg-gray-100 p-4 rounded-lg">
                   <div className="flex flex-col gap-2">
                     <p className="text-sm text-muted-foreground">
                       น้ำหนักลูกหมูเฉลี่ย
                     </p>
                     <p className="text-xl font-semibold">
-                      {Math.floor(
-                        sow.breedings.reduce(
-                          (acc, breeding) => acc + (breeding.avg_weight || 0),
-                          0
-                        ) /
-                          sow.breedings.filter(
-                            (breeding) => breeding.avg_weight !== null
-                          ).length
-                      )}{" "}
-                      กิโลกรัม
+                      {averageWeightChart} กิโลกรัม
                     </p>
                   </div>
-                  <AvgWeightChart breedings={breedings} />
+                  <AvgWeightChart litters={litters} />
                 </div>
               )}
             </div>
           </div>
         </CardContent>
       </Card>
+
       <div className="space-y-4">
         <div className="flex justify-between">
           <h2 className="text-xl">ประวัติแม่พันธุ์</h2>
