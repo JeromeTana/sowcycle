@@ -33,7 +33,7 @@ export default function SowCard({ sow }: { sow: Sow }) {
     <Card className={cn("w-full")}>
       <CardContent className="p-6">
         <div className="flex flex-col gap-6">
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
             <PiggyBank />
             <h3 className="text-lg font-semibold">{sow.name}</h3>
             {/* <p className="text-sm text-muted-foreground">
