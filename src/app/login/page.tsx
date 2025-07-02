@@ -2,13 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
 import {
   Form,
@@ -22,10 +16,9 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
-import { authOnChange, getCurrentUser, login, signUp } from "@/services/auth";
+import { authOnChange, login, signUp } from "@/services/auth";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useLoading } from "@/stores/useLoading";
 import { useToast } from "@/hooks/use-toast";
 import { Loader, Eye, EyeOff, Sprout, PiggyBank } from "lucide-react";
 
