@@ -33,7 +33,7 @@ const formSchema = z.object({
   is_active: z.boolean(),
   birth_date: z.date().optional(),
   add_date: z.date().optional(),
-  boar_ids: z.array(z.string()).optional(),
+  breed_ids: z.array(z.number()).optional(),
 });
 
 export default function SowForm({ editingSow, setDialog }: any) {
@@ -51,6 +51,10 @@ export default function SowForm({ editingSow, setDialog }: any) {
       birth_date: editingSow?.birth_date
         ? new Date(editingSow.birth_date)
         : undefined,
+      add_date: editingSow?.add_date
+        ? new Date(editingSow.add_date)
+        : undefined,
+      breed_ids: editingSow?.breed_ids || [],
     },
   });
 
@@ -135,7 +139,7 @@ export default function SowForm({ editingSow, setDialog }: any) {
 
         <FormField
           control={form.control}
-          name="boar_ids"
+          name="breed_ids"
           render={({ field }) => (
             <FormItem>
               <FormLabel>สายพันธุ์</FormLabel>

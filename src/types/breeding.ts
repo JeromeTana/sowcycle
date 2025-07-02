@@ -12,7 +12,7 @@ export interface Breeding {
   piglets_male_born_alive?: number;
   piglets_female_born_alive?: number;
   piglets_born_dead?: number;
-  boar_id?: number;
+  boar_id: number | null;
   boars?: Boar;
   avg_weight?: number;
   is_aborted?: boolean;

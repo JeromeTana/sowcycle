@@ -39,15 +39,26 @@ import { formatDate } from "@/lib/utils";
 import AvgWeightChart from "@/components/AvgWeightChart";
 import { getLittersBySowId } from "@/services/litter";
 import { Litter } from "@/types/litter";
+import { useBoarStore } from "@/stores/useBoarStore";
+import { getAllBoars } from "@/services/boar";
 
 export default function SowsPage({ params }: any) {
   const [id, setId] = useState<number | null>();
   const { sow, setSow } = useSowStore();
   const { breedings, setBreedings } = useBreedingStore();
+  const { boars, setBoars } = useBoarStore();
   const [litters, setLitters] = useState<Litter[]>([]);
   const { medicalRecords: medical_records, setMedicalRecords } =
     useMedicalRecordStore();
   const [isLoading, setIsLoading] = useState(true);
+
+  const sowBreeds = useMemo(() => {
+    if (!sow?.breed_ids || !boars.length) return [];
+    return sow.breed_ids
+      .map((breedId) => boars.find((boar) => boar.id === breedId))
+      .filter(Boolean);
+  }, [sow?.breed_ids, boars]);
+
   const averagePigletsBornCount = useMemo(
     () =>
       Math.floor(
@@ -153,6 +164,12 @@ export default function SowsPage({ params }: any) {
           setSow(sow);
           setBreedings(sow.breedings);
           setMedicalRecords(sow.medical_records);
+
+          if (sow.breed_ids?.length && !boars.length) {
+            const data = await getAllBoars();
+            setBoars(data);
+          }
+
           setIsLoading(false);
         }
 
@@ -281,24 +298,32 @@ export default function SowsPage({ params }: any) {
               {sow.add_date ? formatDate(sow.add_date) : "-"}
             </InfoIcon>
             <div className="flex flex-col gap-4">
-              <div className="flex flex-col gap-4 bg-gray-100 p-3 rounded-lg">
-                <InfoIcon
-                  label="สายพันธุ์"
-                  icon={<Dna size={22} />}
-                  className="text-muted-foreground !bg-white"
-                >
-                  แลนด์เรด
-                </InfoIcon>
-              </div>
-              <div className="flex flex-col gap-4 bg-gray-100 p-3 rounded-lg">
-                <InfoIcon
-                  label="สายพันธุ์"
-                  icon={<Dna size={22} />}
-                  className="text-muted-foreground !bg-white"
-                >
-                  ลาร์จไวท์
-                </InfoIcon>
-              </div>
+              {sowBreeds.length > 0 ? (
+                sowBreeds.map((breed, index) => (
+                  <div
+                    key={breed?.id || index}
+                    className="flex flex-col gap-4 bg-gray-100 p-3 rounded-lg"
+                  >
+                    <InfoIcon
+                      label="สายพันธุ์"
+                      icon={<Dna size={22} />}
+                      className="text-muted-foreground !bg-white"
+                    >
+                      {breed?.breed || "ไม่ระบุ"}
+                    </InfoIcon>
+                  </div>
+                ))
+              ) : (
+                <div className="flex flex-col gap-4 bg-gray-100 p-3 rounded-lg">
+                  <InfoIcon
+                    label="สายพันธุ์"
+                    icon={<Dna size={22} />}
+                    className="text-muted-foreground !bg-white"
+                  >
+                    ไม่ระบุ
+                  </InfoIcon>
+                </div>
+              )}
             </div>
             {breedings.filter(
               (breeding) =>

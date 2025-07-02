@@ -125,7 +125,7 @@ export default function BoarForm({ editingBoar, setDialog }: any) {
             </FormItem>
           )}
         />
-        <div className="w-full flex justify-end gap-2">
+        <div className="w-full flex justify-between gap-2">
           {boar.id && (
             <DialogComponent
               title="ลบพ่อพันธุ์"
