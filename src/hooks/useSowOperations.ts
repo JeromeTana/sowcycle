@@ -1,26 +1,52 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSowStore } from "@/stores/useSowStore";
-import { getAllSows } from "@/services/sow";
+import { getAllSows, getAllSowsWithLatestBreeding } from "@/services/sow";
 
-export function useSowOperations() {
+interface UseSowOperationsOptions {
+  includeBreeding?: boolean;
+  autoFetch?: boolean;
+}
+
+export function useSowOperations(options: UseSowOperationsOptions = {}) {
+  const { includeBreeding = false, autoFetch = true } = options;
   const { sows, setSows } = useSowStore();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchSows = async () => {
+    if (isLoading) return;
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const sowsData = includeBreeding
+        ? await getAllSowsWithLatestBreeding()
+        : await getAllSows();
+
+      if (sowsData) {
+        setSows(sowsData);
+      }
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to fetch sows";
+      setError(errorMessage);
+      console.error("Failed to fetch sows:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchSowsData = async () => {
-      try {
-        const sowsData = await getAllSows();
-        if (sowsData) {
-          setSows(sowsData);
-        }
-      } catch (error) {
-        console.error("Failed to fetch sows:", error);
-      }
-    };
-
-    if (sows.length === 0) {
-      fetchSowsData();
+    if (autoFetch && sows.length === 0) {
+      fetchSows();
     }
-  }, [sows.length, setSows]);
+  }, [autoFetch, includeBreeding]);
 
-  return { sows };
+  return {
+    sows,
+    isLoading,
+    error,
+    refetch: fetchSows,
+  };
 }
