@@ -59,7 +59,7 @@ function LitterStats({ litters }: { litters: any[] }) {
       />
       <StatCard
         icon={<PiggyBank className="text-pink-500" size={24} />}
-        label="รวมทั้งหมด"
+        label="กำลังเลี้ยง"
         value={totalPiglets}
         unit="ตัว"
       />
