@@ -8,33 +8,11 @@ import { getAllSowsWithLatestBreeding } from "@/services/sow";
 import { getAllBoars } from "@/services/boar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Heart } from "lucide-react";
-import { PREGNANCY_DURATION } from "@/lib/constant";
 
 export default function Page() {
   const { sows, setSows } = useSowStore();
   const { boars, setBoars } = useBoarStore();
   const [isLoading, setIsLoading] = useState(true);
-
-  // Calculate dashboard statistics
-  const dashboardStats = useMemo(() => {
-    const totalSows = sows.length;
-    const totalBoars = boars.length;
-    const availableSows = sows.filter((sow) => sow.is_available).length;
-    const pregnantSows = sows.filter(
-      (sow) => !sow.is_available && sow.breedings?.length > 0
-    ).length;
-    const activeSows = sows.filter((sow) => sow.is_active).length;
-    const activeBoars = boars.filter((boar) => boar.is_active).length;
-
-    return {
-      totalSows,
-      totalBoars,
-      availableSows,
-      pregnantSows,
-      activeSows,
-      activeBoars,
-    };
-  }, [sows, boars]);
 
   const breededSows = useMemo(() => {
     return sows
@@ -49,23 +27,6 @@ export default function Page() {
         return aDate.getTime() - bDate.getTime();
       });
   }, [sows]);
-
-  // Calculate sows due soon (within next 30 days)
-  const sowsDueSoon = useMemo(() => {
-    const today = new Date();
-    const thirtyDaysFromNow = new Date(
-      today.getTime() + 30 * 24 * 60 * 60 * 1000
-    );
-
-    return breededSows.filter((sow) => {
-      if (!sow.breedings[0]?.breed_date) return false;
-      const breedDate = new Date(sow.breedings[0].breed_date);
-      const dueDate = new Date(
-        breedDate.getTime() + PREGNANCY_DURATION * 24 * 60 * 60 * 1000
-      ); // 114 days gestation
-      return dueDate <= thirtyDaysFromNow && dueDate >= today;
-    });
-  }, [breededSows]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -123,113 +84,6 @@ export default function Page() {
           })}
         </p>
       </div>
-
-      {/* Statistics Cards */}
-      {/* <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              แม่พันธุ์ทั้งหมด
-            </CardTitle>
-            <PiggyBank className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{dashboardStats.totalSows}</div>
-            <p className="text-xs text-muted-foreground">
-              พร้อมผสม {dashboardStats.availableSows} ตัว
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              พ่อพันธุ์ทั้งหมด
-            </CardTitle>
-            <Dna className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {dashboardStats.totalBoars}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">แม่พันธุ์ตั้งครรภ์</CardTitle>
-            <Heart className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {dashboardStats.pregnantSows}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              คิดเป็น{" "}
-              {dashboardStats.totalSows > 0
-                ? Math.round(
-                    (dashboardStats.pregnantSows / dashboardStats.totalSows) *
-                      100
-                  )
-                : 0}
-              % ของทั้งหมด
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              ใกล้คลอด (30 วัน)
-            </CardTitle>
-            <AlertTriangle className="h-4 w-4 text-amber-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-amber-600">
-              {sowsDueSoon.length}
-            </div>
-            <p className="text-xs text-muted-foreground">ต้องเตรียมความพร้อม</p>
-          </CardContent>
-        </Card> */}
-
-      {/* <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              แม่พันธุ์พร้อมผสม
-            </CardTitle>
-            <Activity className="h-4 w-4 text-green-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-600">
-              {dashboardStats.availableSows}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              พร้อมสำหรับการผสมพันธุ์
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">อัตราการท้อง</CardTitle>
-            <Calendar className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {dashboardStats.totalSows > 0
-                ? Math.round(
-                    (dashboardStats.pregnantSows / dashboardStats.totalSows) *
-                      100
-                  )
-                : 0}
-              %
-            </div>
-            <p className="text-xs text-muted-foreground">
-              ประสิทธิภาพการผสมพันธุ์
-            </p>
-          </CardContent>
-        </Card> */}
-      {/* </div> */}
 
       {/* Pregnant Sows Section */}
       {breededSows.length > 0 && (
