@@ -70,10 +70,10 @@ export default function BoarsPage({ params }: any) {
         </div>
         <div className="flex">
           <DialogComponent
-            title="แก้ไขพ่อพันธุ์"
+            title="แก้ไขสายพันธุ์"
             dialogTriggerButton={
               <Button variant={"ghost"}>
-                <Pen /> แก้ไขพ่อพันธุ์
+                <Pen /> แก้ไขสายพันธุ์
               </Button>
             }
           >

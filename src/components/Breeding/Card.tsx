@@ -161,11 +161,23 @@ export default function BreedingCard({
               <DialogComponent
                 title={breeding.boars.breed}
                 dialogTriggerButton={
-                  <div className="flex flex-col gap-4 bg-gray-100 p-3 rounded-lg cursor-pointer">
+                  <div
+                    className={cn(
+                      "flex flex-col gap-4 p-3 rounded-lg cursor-pointer",
+                      breeding.actual_farrow_date
+                        ? "bg-gray-100 text-muted-foreground"
+                        : "!bg-pink-100 border !text-pink-400 border-pink-200"
+                    )}
+                  >
                     <InfoIcon
                       icon={<Dna size={22} />}
                       label="พ่อพันธุ์"
-                      className="!bg-white"
+                      className={cn(
+                        breeding.actual_farrow_date
+                          ? "bg-gray-100 text-muted-foreground"
+                          : "!text-pink-400 border-pink-300",
+                        "!bg-white"
+                      )}
                     >
                       {breeding.boars.breed}{" "}
                     </InfoIcon>
