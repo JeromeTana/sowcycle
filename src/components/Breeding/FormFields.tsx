@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import DatePicker from "@/components/DatePicker";
-import BreedDropdown from "@/components/BreedDropdown";
+import BreedDropdown from "@/components/Boar/Dropdown";
 import { cn, formatDate } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { useSowOperations } from "@/hooks/useSowOperations";

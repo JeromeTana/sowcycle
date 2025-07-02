@@ -26,7 +26,7 @@ import { useRouter } from "next/navigation";
 import { Switch } from "../ui/switch";
 import { useLoading } from "@/stores/useLoading";
 import DatePicker from "../DatePicker";
-import { MultiBreedDropdown } from "../BreedDropdown";
+import { MultiBreedDropdown } from "../Boar/Dropdown";
 
 const formSchema = z.object({
   name: z.string().nonempty("กรุณากรอกชื่อแม่พันธุ์"),
