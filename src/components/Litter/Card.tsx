@@ -224,11 +224,11 @@ export default function LitterCard({ litter, index }: LitterCardProps) {
                 />
               </InfoIcon>
 
-              {litter.avg_weight && (
+              {litter.avg_weight ? (
                 <InfoIcon icon={<Gauge size={22} />} label="น้ำหนักเฉลี่ย">
-                  {litter.avg_weight.toFixed(2)} กิโลกรัม
+                  {litter.avg_weight?.toFixed(2)} กิโลกรัม
                 </InfoIcon>
-              )}
+              ) : null}
             </div>
 
             {/* Parent Information */}
