@@ -33,7 +33,7 @@ export const SaleableEventList: React.FC<SaleableEventListProps> = ({ events }) 
           <Link
             href={`/litters/${event.litterId}`}
             key={event.id}
-            className="p-6 rounded-xl bg-white block shadow hover:shadow-md transition-shadow"
+            className="p-6 rounded-xl bg-white block hover:shadow-md transition-shadow"
           >
             <div className="flex items-center gap-2">
               <Banknote className="text-green-600" />

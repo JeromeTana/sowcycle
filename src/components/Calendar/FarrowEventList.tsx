@@ -32,7 +32,7 @@ export const FarrowEventList: React.FC<FarrowEventListProps> = ({ events }) => {
           <Link
             href={`/sows/${event.sowId}`}
             key={event.id}
-            className="p-6 rounded-xl bg-white block shadow hover:shadow-md transition-shadow"
+            className="p-6 rounded-xl bg-white block hover:shadow-md transition-shadow"
           >
             <div className="flex items-center gap-2">
               <PiggyBank />
