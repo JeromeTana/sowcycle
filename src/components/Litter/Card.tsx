@@ -19,6 +19,7 @@ import Link from "next/link";
 import { Badge } from "../ui/badge";
 import { Sow } from "@/types/sow";
 import { useMemo } from "react";
+import BoarDetailsCard from "../Boar/DetailsCard";
 
 interface ExtendedLitter extends Litter {
   sow: Sow | undefined;
@@ -105,14 +106,22 @@ const SowInfo = ({ sow }: { sow: Sow | undefined }) => (
 
 // Helper component for boar information
 const BoarInfo = ({ boars }: { boars: any }) => (
-  <Link
-    href={`/boars/${boars?.id || ""}`}
-    className="rounded-lg p-3 bg-gray-100"
+  <DialogComponent
+    title={boars.breed}
+    dialogTriggerButton={
+      <div className="flex flex-col gap-4 bg-gray-100 p-3 rounded-lg cursor-pointer">
+        <InfoIcon
+          icon={<Dna size={22} />}
+          label="พ่อพันธุ์"
+          className="!bg-white"
+        >
+          {boars.breed}
+        </InfoIcon>
+      </div>
+    }
   >
-    <InfoIcon icon={<Dna size={22} />} label="พ่อพันธุ์" className="!bg-white">
-      {boars.breed}
-    </InfoIcon>
-  </Link>
+    <BoarDetailsCard boar={boars} />
+  </DialogComponent>
 );
 
 // Main timeline component

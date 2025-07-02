@@ -7,14 +7,9 @@ import { formatDate } from "@/lib/utils";
 import { Sow } from "@/types/sow";
 import { Breeding } from "@/types/breeding";
 import { Litter } from "@/types/litter";
-import {
-  Cake,
-  Dna,
-  HandHeart,
-  Heart,
-  PiggyBank,
-  X,
-} from "lucide-react";
+import { Cake, Dna, HandHeart, Heart, PiggyBank, X } from "lucide-react";
+import DialogComponent from "../DialogComponent";
+import BoarDetailsCard from "../Boar/DetailsCard";
 
 interface SowDetailsCardProps {
   sow: Sow;
@@ -31,7 +26,7 @@ export default function SowDetailsCard({
   breedings,
   litters,
   averagePigletsBornCount,
-  averageWeightChart
+  averageWeightChart,
 }: SowDetailsCardProps) {
   const validBreedingsCount = breedings.filter(
     (breeding) =>
@@ -80,7 +75,7 @@ export default function SowDetailsCard({
                 </span>
               )
             ) : (
-              <div>ไม่อยู่</div>
+              <span>ไม่อยู่</span>
             )}
           </InfoIcon>
 
@@ -119,18 +114,23 @@ export default function SowDetailsCard({
           <div className="flex flex-col gap-4">
             {sowBreeds.length > 0 ? (
               sowBreeds.map((breed, index) => (
-                <div
+                <DialogComponent
                   key={breed?.id || index}
-                  className="flex flex-col gap-4 bg-gray-100 p-3 rounded-lg"
+                  title={breed.breed}
+                  dialogTriggerButton={
+                    <div className="flex flex-col gap-4 bg-gray-100 p-3 rounded-lg cursor-pointer">
+                      <InfoIcon
+                        label="สายพันธุ์"
+                        icon={<Dna size={22} />}
+                        className="text-muted-foreground !bg-white"
+                      >
+                        {breed?.breed || "ไม่ระบุ"}
+                      </InfoIcon>
+                    </div>
+                  }
                 >
-                  <InfoIcon
-                    label="สายพันธุ์"
-                    icon={<Dna size={22} />}
-                    className="text-muted-foreground !bg-white"
-                  >
-                    {breed?.breed || "ไม่ระบุ"}
-                  </InfoIcon>
-                </div>
+                  <BoarDetailsCard boar={breed} />
+                </DialogComponent>
               ))
             ) : (
               <div className="flex flex-col gap-4 bg-gray-100 p-3 rounded-lg">
