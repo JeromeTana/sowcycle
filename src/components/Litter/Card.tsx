@@ -112,10 +112,6 @@ export default function LitterCard({
               {litter.boars?.name && (
                 <Badge variant="outline">พ่อหมู: {litter.boars.breed}</Badge>
               )}
-              {/* <div className="flex items-center space-x-1">
-                          <Baby size={16} />
-                          <span>อายุ: {Math.floor((new Date().getTime() - new Date(litter.birth_date!).getTime()) / (1000 * 60 * 60 * 24))} วัน</span>
-                        </div> */}
             </div>
             <div className="flex flex-col gap-6">
               <div className="relative">

@@ -70,7 +70,7 @@ export default function SowsPage({ params }: any) {
         litters.reduce((acc, litter) => acc + (litter.avg_weight || 0), 0) /
           litters.filter((litter) => litter.avg_weight !== null).length
       ),
-    []
+    [breedings]
   );
 
   const tabOptions = [
@@ -217,7 +217,6 @@ export default function SowsPage({ params }: any) {
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-6">
-            
             <InfoIcon
               label="สถานะ"
               icon={
@@ -256,7 +255,23 @@ export default function SowsPage({ params }: any) {
               icon={<Cake size={22} />}
               className="text-muted-foreground"
             >
-              {sow.birth_date ? formatDate(sow.birth_date) : "-"}
+              {sow.birth_date ? (
+                <>
+                  {formatDate(sow.birth_date)}{" "}
+                  <span className="text-muted-foreground">
+                    (
+                    {`อายุ 
+                  ${Math.floor(
+                    (new Date().getTime() -
+                      new Date(sow.birth_date!).getTime()) /
+                      (1000 * 60 * 60 * 24)
+                  )} วัน`}
+                    )
+                  </span>
+                </>
+              ) : (
+                "-"
+              )}{" "}
             </InfoIcon>
 
             <InfoIcon
