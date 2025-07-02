@@ -22,6 +22,7 @@ import { FarrowForm, NewBreedingForm } from "./Form";
 import { cn, formatDate } from "@/lib/utils";
 import InfoIcon from "../InfoIcon";
 import Link from "next/link";
+import BoarDetailsCard from "../Boar/DetailsCard";
 
 export default function BreedingCard({
   breeding,
@@ -157,28 +158,22 @@ export default function BreedingCard({
               </InfoIcon>
             )}
             {breeding.boars && (
-              <Link
-                href={`/boars/${breeding.boars.id}`}
-                className={cn(
-                  "p-3 rounded-lg",
-                  breeding.actual_farrow_date
-                    ? "bg-gray-100"
-                    : "border-pink-300 bg-pink-100"
-                )}
+              <DialogComponent
+                title={breeding.boars.breed}
+                dialogTriggerButton={
+                  <div className="flex flex-col gap-4 bg-gray-100 p-3 rounded-lg cursor-pointer">
+                    <InfoIcon
+                      icon={<Dna size={22} />}
+                      label="พ่อพันธุ์"
+                      className="!bg-white"
+                    >
+                      {breeding.boars.breed}{" "}
+                    </InfoIcon>
+                  </div>
+                }
               >
-                <InfoIcon
-                  label="ผสมกับพ่อพันธุ์"
-                  icon={<Dna size={22} />}
-                  className={cn(
-                    breeding.actual_farrow_date
-                      ? "text-muted-foreground"
-                      : "!text-pink-400 border-pink-300",
-                    "!bg-white"
-                  )}
-                >
-                  {breeding.boars.breed}
-                </InfoIcon>
-              </Link>
+                <BoarDetailsCard boar={breeding.boars} />
+              </DialogComponent>
             )}
           </div>
           {breeding.actual_farrow_date && (
