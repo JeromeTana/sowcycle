@@ -27,6 +27,7 @@ import { useLoading } from "@/stores/useLoading";
 
 const formSchema = z.object({
   breed: z.string().nonempty("กรุณากรอกสายพันธุ์"),
+  description: z.string().optional(),
 });
 
 export default function BoarForm({ editingBoar, setDialog }: any) {
@@ -40,6 +41,7 @@ export default function BoarForm({ editingBoar, setDialog }: any) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       breed: editingBoar?.breed || "",
+      description: editingBoar?.description || "",
     },
   });
 
@@ -125,6 +127,21 @@ export default function BoarForm({ editingBoar, setDialog }: any) {
             </FormItem>
           )}
         />
+
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>คำอธิบาย</FormLabel>
+              <FormControl>
+                <Input placeholder="เขียนอธิบายสายพันธุ์" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <div className="w-full flex justify-between gap-2">
           {boar.id && (
             <DialogComponent

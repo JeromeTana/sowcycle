@@ -5,4 +5,5 @@ export interface Boar {
   updated_at?: string;
   breed: string;
   user_id: string;
+  description: string;
 }
