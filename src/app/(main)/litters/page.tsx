@@ -3,17 +3,60 @@
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent } from "@/components/ui/card";
-import { Search, Baby, PiggyBank, Fence } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Search,
+  Baby,
+  PiggyBank,
+  Fence,
+  Filter,
+  ChevronDown,
+} from "lucide-react";
 import { useState } from "react";
 import LitterCard from "@/components/Litter/Card";
 import { useLitterData } from "@/hooks/useLitterData";
 import { useLitterFilters } from "@/hooks/useLitterFilters";
 import { Litter } from "@/types/litter";
+import { cn } from "@/lib/utils";
+
+// Types
+interface FilterOption {
+  label: string;
+  value: Record<string, any>;
+}
+
+// Constants
+const FILTER_OPTIONS: FilterOption[] = [
+  { label: "ทั้งหมด", value: {} },
+  { label: "ยังไม่ขุน", value: { fattening_at: "null" } },
+  { label: "กำลังขุน", value: { fattening_at: "not_null", sold_at: "null" } },
+  { label: "ขายแล้ว", value: { sold_at: "not_null" } },
+];
 
 export default function LittersPage() {
   const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState<FilterOption>(FILTER_OPTIONS[0]);
   const { littersWithBreeds, isLoading, error } = useLitterData();
-  const filteredLitters = useLitterFilters(littersWithBreeds, search);
+
+  // Apply filters to litters
+  const filteredLitters = useLitterFilters(littersWithBreeds, search).filter(
+    (litter) => {
+      return Object.entries(filter.value).every(([key, value]) => {
+        if (value === "null") {
+          return litter[key] === null;
+        } else if (value === "not_null") {
+          return litter[key] !== null;
+        }
+        return litter[key] === value;
+      });
+    }
+  );
 
   if (error) {
     return <ErrorState />;
@@ -28,7 +71,12 @@ export default function LittersPage() {
       <div className="max-w-4xl mx-auto space-y-6">
         <PageHeader />
         <LitterStats litters={littersWithBreeds} />
-        <SearchInput search={search} onSearchChange={setSearch} />
+        <FilterControls
+          search={search}
+          setSearch={setSearch}
+          filter={filter}
+          setFilter={setFilter}
+        />
         <LittersList litters={filteredLitters} />
       </div>
     </div>
@@ -95,25 +143,68 @@ function StatCard({
   );
 }
 
-function SearchInput({
+function FilterControls({
   search,
-  onSearchChange,
+  setSearch,
+  filter,
+  setFilter,
 }: {
   search: string;
-  onSearchChange: (value: string) => void;
+  setSearch: (value: string) => void;
+  filter: FilterOption;
+  setFilter: (value: FilterOption) => void;
 }) {
+  const isFilterActive =
+    JSON.stringify(filter.value) !== JSON.stringify(FILTER_OPTIONS[0].value);
+
   return (
-    <div className="relative">
-      <Input
-        placeholder="ค้นหาด้วยชื่อแม่พันธุ์ หรือ สายพันธุ์ของพ่อพันธุ์..."
-        value={search}
-        onChange={(e) => onSearchChange(e.target.value)}
-        className="pl-10"
-      />
-      <Search
-        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
-        size={20}
-      />
+    <div className="flex gap-2">
+      <div className="relative flex-1">
+        <Input
+          placeholder="ค้นหาด้วยชื่อแม่พันธุ์ หรือ สายพันธุ์ของพ่อพันธุ์..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="pl-10"
+        />
+        <Search
+          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
+          size={20}
+        />
+      </div>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="outline"
+            className={cn(
+              "flex items-center gap-2",
+              isFilterActive && "bg-pink-500 hover:bg-pink-600 !text-white"
+            )}
+          >
+            <Filter size={16} />
+            {filter.label}
+            <ChevronDown size={16} />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          {FILTER_OPTIONS.map((option, index) => {
+            const isSelected =
+              JSON.stringify(option.value) === JSON.stringify(filter.value);
+            return (
+              <DropdownMenuItem
+                key={index}
+                onSelect={() => setFilter(option)}
+                className={cn(
+                  isSelected
+                    ? "bg-black text-white hover:!bg-black hover:!text-white"
+                    : "bg-white text-black"
+                )}
+              >
+                {option.label}
+              </DropdownMenuItem>
+            );
+          })}
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 }
