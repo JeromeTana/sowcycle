@@ -7,8 +7,6 @@ interface PregnantSowsSectionProps {
 }
 
 export function PregnantSowsSection({ sows }: PregnantSowsSectionProps) {
-  if (sows.length === 0) return null;
-
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2">
@@ -17,7 +15,20 @@ export function PregnantSowsSection({ sows }: PregnantSowsSectionProps) {
           แม่พันธุ์ตั้งครรภ์ ({sows.length})
         </h2>
       </div>
-      <SowList sows={sows} />
+
+      {sows.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-32 text-center">
+          <Heart className="h-12 w-12 text-gray-300 mb-3" />
+          <p className="text-gray-500 text-lg font-medium mb-1">
+            ไม่มีแม่พันธุ์ตั้งครรภ์
+          </p>
+          <p className="text-gray-400 text-sm">
+            ข้อมูลจะปรากฏที่นี่เมื่อมีแม่พันธุ์ตั้งครรภ์
+          </p>
+        </div>
+      ) : (
+        <SowList sows={sows} />
+      )}
     </div>
   );
 }

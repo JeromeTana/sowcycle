@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-export function LoadingSkeleton() {
+export function LoadingListSkeleton() {
   return (
     <div className="space-y-4">
       <div className="flex justify-between">
@@ -17,6 +17,24 @@ export function LoadingSkeleton() {
       {[...Array(3)].map((_, i) => (
         <Skeleton key={i} className="h-48 w-full" />
       ))}
+    </div>
+  );
+}
+
+export function LoadingPageSkeleton() {
+  return (
+    <div>
+      <div className="flex justify-between">
+        <Skeleton className=" w-40 h-8" />
+        <Skeleton className=" w-32 h-8" />
+      </div>
+      <Skeleton className="w-full h-32 mt-4 rounded-xl" />
+      <div className="flex justify-between mt-8">
+        <Skeleton className=" w-40 h-8" />
+        <Skeleton className=" w-32 h-8" />
+      </div>
+      <Skeleton className="w-full h-80 mt-4 rounded-xl" />
+      <Skeleton className="w-full h-80 mt-2 rounded-xl" />
     </div>
   );
 }

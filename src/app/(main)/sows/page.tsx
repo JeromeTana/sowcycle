@@ -7,7 +7,7 @@ import { SowPageHeader } from "@/components/Sow/SowPageHeader";
 import { SowStats } from "@/components/Sow/SowStats";
 import { SowFilters } from "@/components/Sow/SowFilters";
 import SowList from "@/components/Sow/List";
-import { LoadingSkeleton } from "@/components/Sow/LoadingSkeleton";
+import { LoadingListSkeleton } from "@/components/Sow/LoadingSkeleton";
 
 export default function SowPage() {
   const { sows, isLoading, error } = useSowOperations({
@@ -20,7 +20,7 @@ export default function SowPage() {
   const stats = useSowStats(sows);
 
   if (isLoading) {
-    return <LoadingSkeleton />;
+    return <LoadingListSkeleton />;
   }
 
   if (error) {
