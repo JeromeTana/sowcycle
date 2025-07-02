@@ -1,8 +1,8 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import InfoIcon from "@/components/InfoIcon";
 import CountdownBadge from "@/components/CountdownBadge";
-import PigletCountChart from "@/components/PigletCountChart";
-import AvgWeightChart from "@/components/AvgWeightChart";
+import PigletCountChart from "@/components/Sow/PigletCountChart";
+import AvgWeightChart from "@/components/Sow/AvgWeightChart";
 import { formatDate } from "@/lib/utils";
 import { Sow } from "@/types/sow";
 import { Breeding } from "@/types/breeding";
