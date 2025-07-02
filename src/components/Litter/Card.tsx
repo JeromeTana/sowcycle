@@ -92,7 +92,23 @@ export default function LitterCard({
                   label="แม่พันธุ์"
                   className="!bg-white"
                 >
-                  {litter.sow?.name || "ไม่ระบุ"}
+                  {litter.sow?.name ? (
+                    <span className="flex flex-col gap-2">
+                      {litter.sow?.name}{" "}
+                      <span className="flex gap-1 flex-wrap">
+                        <span className="flex items-center gap-1 px-2 py-0.5 border bg-white rounded-full text-xs text-muted-foreground">
+                          <Dna size={12} />
+                          <span>แลนด์เรด</span>
+                        </span>
+                        <span className="flex items-center gap-1 px-2 py-0.5 border bg-white rounded-full text-xs text-muted-foreground">
+                          <Dna size={12} />
+                          <span>ลาร์จไวท์</span>
+                        </span>
+                      </span>
+                    </span>
+                  ) : (
+                    "ไม่ระบุ"
+                  )}
                 </InfoIcon>
               </Link>
               {litter.boars && (

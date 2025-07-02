@@ -12,6 +12,7 @@ import { NewBreedingForm } from "@/components/Breeding/Form";
 import DialogComponent from "@/components/DialogComponent";
 import {
   Cake,
+  Dna,
   HandHeart,
   Heart,
   Pen,
@@ -68,7 +69,7 @@ export default function SowsPage({ params }: any) {
     () =>
       Math.floor(
         litters.reduce((acc, litter) => acc + (litter.avg_weight || 0), 0) /
-          litters.filter((litter) => litter.avg_weight !== null).length
+          litters.filter((litter) => litter.avg_weight! > 0).length
       ),
     [breedings]
   );
@@ -249,7 +250,6 @@ export default function SowsPage({ params }: any) {
                 <div>ไม่อยู่</div>
               )}
             </InfoIcon>
-
             <InfoIcon
               label="วันเกิด"
               icon={<Cake size={22} />}
@@ -273,7 +273,6 @@ export default function SowsPage({ params }: any) {
                 "-"
               )}{" "}
             </InfoIcon>
-
             <InfoIcon
               label="รับเข้าเมื่อ"
               icon={<HandHeart size={22} />}
@@ -281,41 +280,58 @@ export default function SowsPage({ params }: any) {
             >
               {sow.add_date ? formatDate(sow.add_date) : "-"}
             </InfoIcon>
-
             <div className="flex flex-col gap-4">
-              {breedings.filter(
-                (breeding) =>
-                  breeding.actual_farrow_date &&
-                  breeding.piglets_born_count !== null &&
-                  !breeding.is_aborted
-              ).length > 1 && (
-                <div className="flex flex-col gap-4 bg-gray-100 p-4 rounded-lg">
-                  <div className="flex flex-col gap-2">
-                    <p className="text-sm text-muted-foreground">
-                      จำนวนลูกเกิดรอดเฉลี่ย
-                    </p>
-                    <p className="text-xl font-semibold">
-                      {averagePigletsBornCount} ตัว
-                    </p>
-                  </div>
-                  <PigletCountChart breedings={breedings} />
-                </div>
-              )}{" "}
-              {litters.filter((breeding) => breeding.avg_weight! > 0).length >
-                1 && (
-                <div className="flex flex-col gap-4 bg-gray-100 p-4 rounded-lg">
-                  <div className="flex flex-col gap-2">
-                    <p className="text-sm text-muted-foreground">
-                      น้ำหนักลูกหมูเฉลี่ย
-                    </p>
-                    <p className="text-xl font-semibold">
-                      {averageWeightChart} กิโลกรัม
-                    </p>
-                  </div>
-                  <AvgWeightChart litters={litters} />
-                </div>
-              )}
+              <div className="flex flex-col gap-4 bg-gray-100 p-3 rounded-lg">
+                <InfoIcon
+                  label="สายพันธุ์"
+                  icon={<Dna size={22} />}
+                  className="text-muted-foreground !bg-white"
+                >
+                  แลนด์เรด
+                </InfoIcon>
+              </div>
+              <div className="flex flex-col gap-4 bg-gray-100 p-3 rounded-lg">
+                <InfoIcon
+                  label="สายพันธุ์"
+                  icon={<Dna size={22} />}
+                  className="text-muted-foreground !bg-white"
+                >
+                  ลาร์จไวท์
+                </InfoIcon>
+              </div>
             </div>
+            {breedings.filter(
+              (breeding) =>
+                breeding.actual_farrow_date &&
+                breeding.piglets_born_count !== null &&
+                !breeding.is_aborted
+            ).length > 1 && (
+              <div className="flex flex-col gap-4 bg-gray-100 p-4 rounded-lg">
+                <div className="flex flex-col gap-2">
+                  <p className="text-sm text-muted-foreground">
+                    จำนวนลูกเกิดรอดเฉลี่ย
+                  </p>
+                  <p className="text-xl font-semibold">
+                    {averagePigletsBornCount} ตัว
+                  </p>
+                </div>
+                <PigletCountChart breedings={breedings} />
+              </div>
+            )}{" "}
+            {litters.filter((breeding) => breeding.avg_weight! > 0).length >
+              1 && (
+              <div className="flex flex-col gap-4 bg-gray-100 p-4 rounded-lg">
+                <div className="flex flex-col gap-2">
+                  <p className="text-sm text-muted-foreground">
+                    น้ำหนักลูกหมูเฉลี่ย
+                  </p>
+                  <p className="text-xl font-semibold">
+                    {averageWeightChart} กิโลกรัม
+                  </p>
+                </div>
+                <AvgWeightChart litters={litters} />
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>

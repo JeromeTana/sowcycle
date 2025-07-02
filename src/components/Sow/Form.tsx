@@ -26,12 +26,14 @@ import { useRouter } from "next/navigation";
 import { Switch } from "../ui/switch";
 import { useLoading } from "@/stores/useLoading";
 import DatePicker from "../DatePicker";
+import { MultiBreedDropdown } from "../BreedDropdown";
 
 const formSchema = z.object({
   name: z.string().nonempty("กรุณากรอกชื่อแม่พันธุ์"),
   is_active: z.boolean(),
   birth_date: z.date().optional(),
   add_date: z.date().optional(),
+  boar_ids: z.array(z.string()).optional(),
 });
 
 export default function SowForm({ editingSow, setDialog }: any) {
@@ -130,6 +132,25 @@ export default function SowForm({ editingSow, setDialog }: any) {
             </FormItem>
           )}
         />
+
+        <FormField
+          control={form.control}
+          name="boar_ids"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>สายพันธุ์</FormLabel>
+              <FormControl>
+                <MultiBreedDropdown
+                  value={field.value || []}
+                  onValueChange={field.onChange}
+                  disabled={form.formState.isSubmitting}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name="birth_date"
