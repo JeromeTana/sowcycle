@@ -37,7 +37,6 @@ export default function BreedDropdown({
   const { boars: breeds, setBoars: setBreeds } = useBoarStore();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const fetchBreeds = async () => {
