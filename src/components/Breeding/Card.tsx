@@ -101,7 +101,7 @@ export default function BreedingCard({
               className={cn(
                 breeding.actual_farrow_date
                   ? "bg-gray-100 text-muted-foreground"
-                  : "!text-pink-400 border-pink-300"
+                  : "!bg-white !text-pink-400 border-pink-300"
               )}
             >
               {formatDate(breeding.breed_date)}
@@ -149,7 +149,8 @@ export default function BreedingCard({
                 className={cn(
                   breeding.actual_farrow_date
                     ? "bg-gray-100 text-muted-foreground"
-                    : "!text-pink-400 border-pink-300"
+                    : "!text-pink-400 border-pink-300",
+                  "!bg-white"
                 )}
               >
                 {formatDate(breeding.expected_farrow_date)}
@@ -170,8 +171,9 @@ export default function BreedingCard({
                   icon={<Dna size={22} />}
                   className={cn(
                     breeding.actual_farrow_date
-                      ? "!bg-white text-muted-foreground"
-                      : "!text-pink-400 border-pink-300"
+                      ? "text-muted-foreground"
+                      : "!text-pink-400 border-pink-300",
+                    "!bg-white"
                   )}
                 >
                   {breeding.boars.breed}
