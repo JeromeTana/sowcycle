@@ -153,7 +153,7 @@ export default function LitterCard({
                   label="พร้อมขายประมาณ"
                   className="bg-white"
                 >
-                  {formatDate(litter.birth_date!)}
+                  {formatDate(litter.saleable_at!)}
                 </InfoIcon>
               )}
               {litter.sold_at && (

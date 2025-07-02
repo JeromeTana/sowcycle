@@ -14,7 +14,7 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import DatePicker from "../DatePicker";
 
-import { cn } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon, Check, Loader, Trash } from "lucide-react";
 import { useMemo } from "react";
@@ -221,7 +221,7 @@ export function LitterForm({
           />
 
           <FormItem className="w-full flex flex-col">
-            <FormLabel>จะพร้อมขายในช่วง</FormLabel>
+            <FormLabel>จะพร้อมขายประมาณ</FormLabel>
             <FormControl>
               <Button
                 variant={"outline"}
@@ -232,7 +232,7 @@ export function LitterForm({
                 )}
               >
                 {calculatedSaleableDate ? (
-                  format(calculatedSaleableDate, "P", { locale: enGB })
+                  formatDate(calculatedSaleableDate.toISOString())
                 ) : (
                   <span>เลือกวันที่เริ่มขุน</span>
                 )}
