@@ -11,27 +11,43 @@ import { Search, Baby, PiggyBank, Fence } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useLitterStore } from "@/stores/useLitterStore";
 import LitterCard from "@/components/Litter/Card";
+import { useBoarStore } from "@/stores/useBoarStore";
+import { getAllBoars } from "@/services/boar";
 
 export default function LittersPage() {
   const { litters, setLitters } = useLitterStore();
   const [sows, setSows] = useState<Sow[]>([]);
+  const { boars: breeds, setBoars: setBreeds } = useBoarStore();
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   // Derive litters with litters from store
   const littersWithSow = useMemo(() => {
-    // Combine litter data with sow information
+    // Combine litter data with sow and sow's breed information
     return litters.map((litter) => {
       const sow = sows.find((sow) => sow.id === litter.sow_id);
       return { ...litter, sow };
     });
   }, [litters, sows]);
 
+  const litterWithSowWithBreeds = useMemo(() => {
+    // Combine litter data with sow and it's breed names
+    return littersWithSow.map((litter) => {
+      const sowBreedNames = litter.sow?.breed_ids
+        ? litter.sow.breed_ids.map((breedId) => {
+            const breed = breeds.find((b) => b.id === breedId);
+            return breed ? breed.breed : "";
+          })
+        : [];
+      return { ...litter, sow: { ...litter.sow, breeds: sowBreedNames } };
+    });
+  }, [littersWithSow, breeds]);
+
   const filteredLitters = useMemo(() => {
-    let filtered = littersWithSow;
+    let filtered = litterWithSowWithBreeds;
 
     if (search) {
-      filtered = littersWithSow.filter((litter) => {
+      filtered = litterWithSowWithBreeds.filter((litter) => {
         const sowName = litter.sow?.name?.toLowerCase() || "";
         const boarBreed = litter.boars?.breed?.toLowerCase() || "";
         const searchLower = search.toLowerCase();
@@ -57,6 +73,11 @@ export default function LittersPage() {
           getAllSows(),
         ]);
 
+        if (!breeds.length) {
+          const data = await getAllBoars();
+          setBreeds(data);
+        }
+
         setLitters(littersData);
         setSows(sowsData);
       } catch (error) {
@@ -68,10 +89,6 @@ export default function LittersPage() {
 
     fetchData();
   }, [setLitters]);
-
-  const getTotalPiglets = (litter: Litter) => {
-    return litter.piglets_born_count || 0;
-  };
 
   if (isLoading) {
     return (
@@ -110,8 +127,7 @@ export default function LittersPage() {
                 <div>
                   <p className="text-sm text-muted-foreground">เกิดแล้ว</p>
                   <p className="text-2xl font-bold">
-                    {litters.length}{" "}
-                    <span className="text-sm">ครอก</span>
+                    {litters.length} <span className="text-sm">ครอก</span>
                   </p>
                 </div>
               </div>
@@ -172,7 +188,7 @@ export default function LittersPage() {
             filteredLitters.map((litter, index) => (
               <LitterCard
                 key={litter.id}
-                litter={litter}
+                litter={litter as any}
                 index={filteredLitters.length - index}
               />
             ))

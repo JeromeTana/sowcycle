@@ -23,8 +23,7 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import DatePicker from "../DatePicker";
 
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
+import { cn, formatDate } from "@/lib/utils";
 import { CalendarIcon, Check, Heart, Loader, Plus, Trash } from "lucide-react";
 import { useEffect, useMemo } from "react";
 import { Breeding } from "@/types/breeding";
@@ -37,17 +36,15 @@ import { getAllSows, patchSow } from "@/services/sow";
 import { useSowStore } from "@/stores/useSowStore";
 import { useToast } from "@/hooks/use-toast";
 import DialogComponent from "../DialogComponent";
-import { enGB, is } from "date-fns/locale";
 import { useBreedingStore } from "@/stores/useBreedingStore";
-import { useBoarStore } from "@/stores/useBoarStore";
-import { getAllBoars } from "@/services/boar";
 import { PREGNANCY_DURATION } from "@/lib/constant";
 import { Switch } from "../ui/switch";
 import { createLitter } from "@/services/litter";
+import BreedDropdown from "../BreedDropdown";
 
 const newFormSchema = z.object({
   sow_id: z.string(),
-  boar_id: z.string().nullable(),
+  boar_id: z.number().nullable(),
   breed_date: z.date({ required_error: "กรุณาเลือกวันที่" }),
 });
 
@@ -71,7 +68,6 @@ export function NewBreedingForm({
   setDialog?: any;
 }) {
   const { sows, setSows, updateSow } = useSowStore();
-  const { boars, setBoars } = useBoarStore();
   const { addBreeding, updateBreeding: updateBreedingStore } =
     useBreedingStore();
   const { toast } = useToast();
@@ -81,10 +77,12 @@ export function NewBreedingForm({
     defaultValues: breeding
       ? {
           sow_id: breeding?.sow_id.toString(),
+          boar_id: breeding?.boars?.id || null,
           breed_date: new Date(breeding.breed_date),
         }
       : {
           sow_id: id,
+          boar_id: null,
           breed_date: new Date(),
         },
   });
@@ -117,7 +115,7 @@ export function NewBreedingForm({
       breed_date: values.breed_date.toISOString(),
       expected_farrow_date: expectedFarrowDate!.toISOString(),
       updated_at: new Date().toISOString(),
-      boar_id: values.boar_id ? Number(values.boar_id) : undefined,
+      boar_id: values.boar_id,
     };
 
     delete requestBody.boars;
@@ -142,7 +140,7 @@ export function NewBreedingForm({
     try {
       let breedingResponse = await createBreeding({
         sow_id: Number(values.sow_id),
-        boar_id: values.boar_id ? Number(values.boar_id) : undefined,
+        boar_id: values.boar_id,
         breed_date: values.breed_date.toISOString(),
         expected_farrow_date: expectedFarrowDate!.toISOString(),
       });
@@ -183,12 +181,7 @@ export function NewBreedingForm({
       setSows(sows);
     };
 
-    const fetchBoarsData = async () => {
-      const boars = await getAllBoars();
-      setBoars(boars);
-    };
     if (sows.length === 0) fetchSowsData();
-    fetchBoarsData();
   }, []);
 
   return (
@@ -231,23 +224,11 @@ export function NewBreedingForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel>พ่อพันธุ์</FormLabel>
-              <Select onValueChange={field.onChange}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="เลือกสายพันธุ์ที่ผสม" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>เลือกสายพันธุ์ที่ผสม</SelectLabel>
-                    {boars.map((boar) => (
-                      <SelectItem key={boar.id} value={boar.id.toString()}>
-                        {boar.breed}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+              <BreedDropdown
+                value={field.value}
+                onValueChange={field.onChange}
+                disabled={form.formState.isSubmitting}
+              />
               <FormMessage />
             </FormItem>
           )}
@@ -278,7 +259,7 @@ export function NewBreedingForm({
                 )}
               >
                 {expectedFarrowDate ? (
-                  format(expectedFarrowDate, "P", { locale: enGB })
+                  formatDate(expectedFarrowDate.toISOString())
                 ) : (
                   <span>เลือกวันที่ผสม</span>
                 )}
@@ -505,7 +486,7 @@ export function FarrowForm({
                 )}
               >
                 {expectedFarrowDate ? (
-                  format(expectedFarrowDate, "P", { locale: enGB })
+                  formatDate(expectedFarrowDate.toISOString())
                 ) : (
                   <span>เลือกวันที่ผสม</span>
                 )}
