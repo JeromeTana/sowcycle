@@ -121,15 +121,16 @@ export default function SowsPage({ params }: any) {
         </>
       ),
       value: "breeding",
-      content: breedings[0]?.actual_farrow_date ? (
-        <NewBreedingForm id={sow?.id?.toString()} />
-      ) : (
-        <div className="text-center text-gray-400 py-20 text-sm">
-          ไม่สามารถเพิ่มประวัติผสม
-          <br />
-          เนื่องจากยังไม่มีการบันทึกวันคลอดของการผสมล่าสุด
-        </div>
-      ),
+      content:
+        breedings.length === 0 || breedings[0]?.actual_farrow_date ? (
+          <NewBreedingForm id={sow?.id?.toString()} />
+        ) : (
+          <div className="text-center text-gray-400 py-20 text-sm">
+            ไม่สามารถเพิ่มประวัติผสม
+            <br />
+            เนื่องจากยังไม่มีการบันทึกวันคลอดของการผสมล่าสุด
+          </div>
+        ),
       default: true,
     },
     {
