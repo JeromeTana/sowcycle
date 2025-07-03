@@ -253,7 +253,7 @@ export default function LitterCard({ litter, index }: LitterCardProps) {
           <DialogComponent
             title={`แก้ไขข้อมูลครอกที่ ${index}`}
             dialogTriggerButton={
-              <Button variant="ghost">
+              <Button variant="outline">
                 <Pen /> แก้ไขข้อมูล
               </Button>
             }
