@@ -7,7 +7,7 @@ import { formatDate } from "@/lib/utils";
 import { Sow } from "@/types/sow";
 import { Breeding } from "@/types/breeding";
 import { Litter } from "@/types/litter";
-import { Cake, Dna, HandHeart, Heart, PiggyBank, X } from "lucide-react";
+import { Cake, Dna, HandHeart, Heart, Milk, PiggyBank, X } from "lucide-react";
 import DialogComponent from "../DialogComponent";
 import BoarDetailsCard from "../Boar/DetailsCard";
 
@@ -77,6 +77,14 @@ export default function SowDetailsCard({
             ) : (
               <span>ไม่อยู่</span>
             )}
+          </InfoIcon>
+
+          <InfoIcon
+            label="จำนวนเต้านม"
+            icon={<Milk size={22} />}
+            className="text-muted-foreground"
+          >
+            {sow.breasts_count ? sow.breasts_count : "-"}
           </InfoIcon>
 
           <InfoIcon

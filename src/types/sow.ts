@@ -13,5 +13,6 @@ export interface Sow {
   breedings: Breeding[];
   medical_records: MedicalRecord[];
   user_id: string;
-  breed_ids?:  number[]
+  breed_ids?: number[];
+  breasts_count: number;
 }

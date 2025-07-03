@@ -34,6 +34,7 @@ const formSchema = z.object({
   birth_date: z.date().optional(),
   add_date: z.date().optional(),
   breed_ids: z.array(z.number()).optional(),
+  breasts_count: z.coerce.number().optional(),
 });
 
 export default function SowForm({ editingSow, setDialog }: any) {
@@ -55,6 +56,7 @@ export default function SowForm({ editingSow, setDialog }: any) {
         ? new Date(editingSow.add_date)
         : undefined,
       breed_ids: editingSow?.breed_ids || [],
+      breasts_count: editingSow?.breasts_count || 0,
     },
   });
 
@@ -139,15 +141,16 @@ export default function SowForm({ editingSow, setDialog }: any) {
 
         <FormField
           control={form.control}
-          name="breed_ids"
+          name="breasts_count"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>สายพันธุ์</FormLabel>
+              <FormLabel>จำนวนเต้านม</FormLabel>
               <FormControl>
-                <MultiBreedDropdown
-                  value={field.value || []}
-                  onValueChange={field.onChange}
-                  disabled={form.formState.isSubmitting}
+                <Input
+                  type="number"
+                  {...field}
+                  min={0}
+                  placeholder="กรอกจำนวนเต้านม"
                 />
               </FormControl>
               <FormMessage />
@@ -177,6 +180,25 @@ export default function SowForm({ editingSow, setDialog }: any) {
             </FormItem>
           )}
         />
+
+        <FormField
+          control={form.control}
+          name="breed_ids"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>สายพันธุ์</FormLabel>
+              <FormControl>
+                <MultiBreedDropdown
+                  value={field.value || []}
+                  onValueChange={field.onChange}
+                  disabled={form.formState.isSubmitting}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name="is_active"
