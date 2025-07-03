@@ -1,8 +1,8 @@
 import React from "react";
 import Link from "next/link";
-import { format } from "date-fns";
 import { Banknote, CalendarIcon, PiggyBank, Dna } from "lucide-react";
 import InfoIcon from "@/components/InfoIcon";
+import { formatDate } from "@/lib/utils";
 
 interface SaleableEvent {
   id: number;
@@ -20,7 +20,9 @@ interface SaleableEventListProps {
   events: SaleableEvent[];
 }
 
-export const SaleableEventList: React.FC<SaleableEventListProps> = ({ events }) => {
+export const SaleableEventList: React.FC<SaleableEventListProps> = ({
+  events,
+}) => {
   if (events.length === 0) return null;
 
   return (
@@ -41,11 +43,11 @@ export const SaleableEventList: React.FC<SaleableEventListProps> = ({ events }) 
             </div>
             <div className="flex flex-col mt-6 gap-6">
               <InfoIcon
-                label="วันที่คลอด"
+                label="วันที่พร้อมขาย"
                 icon={<CalendarIcon className="h-5 w-5" />}
                 className="text-muted-foreground"
               >
-                {format(event.farrowDate, "d/M/y")}
+                {formatDate(event.farrowDate.toISOString())}
               </InfoIcon>
               <InfoIcon
                 label="แม่พันธุ์"
@@ -59,7 +61,7 @@ export const SaleableEventList: React.FC<SaleableEventListProps> = ({ events }) 
                 icon={<Dna className="h-5 w-5" />}
                 className="text-muted-foreground"
               >
-                {event.boarBreed}
+                {event.boarBreed || "ไม่ระบุ"}
               </InfoIcon>
             </div>
           </Link>

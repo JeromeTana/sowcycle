@@ -10,8 +10,8 @@ interface BoarDetailsCardProps {
 
 export default function BoarDetailsCard({ boar }: BoarDetailsCardProps) {
   return (
-    <div className="flex flex-col gap-4">
-      <div>{boar.description}</div>
+    <div className="flex flex-col gap-6 mt-4">
+      <p>{boar.description}</p>
       <div className="flex justify-end">
         <DialogComponent
           title="แก้ไขสายพันธุ์"

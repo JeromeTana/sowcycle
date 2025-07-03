@@ -14,13 +14,13 @@ export default function BoarCard({ boar }: { boar: Boar }) {
       dialogTriggerButton={
         <div className="w-full cursor-pointer">
           <Card>
-            <CardContent className="p-6 space-y-6">
+            <CardContent className="p-6">
               <div className="flex gap-2">
                 <Dna />
                 <h3 className="text-lg font-semibold">{boar.breed}</h3>
               </div>
-              <p className="text-muted-foreground">{boar.description || ""}</p>
-              <div className="w-full flex gap-2 justify-end">
+              <p className="text-muted-foreground mt-4">{boar.description || ""}</p>
+              <div className="w-full flex gap-2 justify-end mt-6">
                 <Button variant={"outline"}>ดูรายละเอียด</Button>
               </div>
             </CardContent>

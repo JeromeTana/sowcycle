@@ -24,6 +24,7 @@ import DialogComponent from "../DialogComponent";
 import { Check, Loader, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useLoading } from "@/stores/useLoading";
+import { Textarea } from "../ui/textarea";
 
 const formSchema = z.object({
   breed: z.string().nonempty("กรุณากรอกสายพันธุ์"),
@@ -135,7 +136,7 @@ export default function BoarForm({ editingBoar, setDialog }: any) {
             <FormItem>
               <FormLabel>คำอธิบาย</FormLabel>
               <FormControl>
-                <Input placeholder="เขียนอธิบายสายพันธุ์" {...field} />
+                <Textarea rows={5} placeholder="เขียนอธิบายสายพันธุ์" className="bg-white resize-none" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

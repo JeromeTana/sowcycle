@@ -95,7 +95,7 @@ const useCalendarData = () => {
             daysUntilSaleable,
             isPastDue: daysUntilSaleable < 0,
             farrowDate,
-            boarBreed: litter.boars?.breed || "Unknown Boar Breed",
+            boarBreed: litter.boars?.breed || "",
           };
         });
     },
