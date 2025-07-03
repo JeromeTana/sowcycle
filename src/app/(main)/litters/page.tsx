@@ -161,7 +161,7 @@ function FilterControls({
     <div className="flex gap-2">
       <div className="relative flex-1">
         <Input
-          placeholder="ค้นหาด้วยชื่อแม่พันธุ์ หรือ สายพันธุ์ของพ่อพันธุ์..."
+          placeholder="ค้นหาด้วยชื่อแม่พันธุ์ หรือ สายพันธุ์"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="pl-10"

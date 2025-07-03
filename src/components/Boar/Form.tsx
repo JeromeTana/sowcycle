@@ -55,7 +55,7 @@ export default function BoarForm({ editingBoar, setDialog }: any) {
       form.reset();
       toast({
         title: "เพิ่มข้อมูลเรียบร้อย",
-        description: "ข้อมูลของพ่อพันธุ์ถูกเพิ่มเรียบร้อยแล้ว",
+        description: "ข้อมูลของสายพันธุ์ถูกเพิ่มเรียบร้อยแล้ว",
       });
       setDialog(false);
     }
@@ -77,7 +77,7 @@ export default function BoarForm({ editingBoar, setDialog }: any) {
       updateBoarState(res);
       toast({
         title: "แก้ไขข้อมูลเรียบร้อย",
-        description: "ข้อมูลของพ่อพันธุ์ถูกแก้ไขเรียบร้อยแล้ว",
+        description: "ข้อมูลของสายพันธุ์ถูกแก้ไขเรียบร้อยแล้ว",
       });
       setDialog(false);
     }
@@ -145,7 +145,7 @@ export default function BoarForm({ editingBoar, setDialog }: any) {
         <div className="w-full flex justify-between gap-2">
           {boar.id && (
             <DialogComponent
-              title="ลบพ่อพันธุ์"
+              title="ลบสายพันธุ์"
               dialogTriggerButton={
                 <Button
                   disabled={form.formState.isSubmitting}
@@ -157,7 +157,7 @@ export default function BoarForm({ editingBoar, setDialog }: any) {
               }
             >
               <p>
-                คุณแน่ใจหรือไม่ที่จะลบพ่อพันธุ์{" "}
+                คุณแน่ใจหรือไม่ที่จะลบสายพันธุ์{" "}
                 <span className="font-bold">{boar.name}</span>
               </p>
               <div className="flex justify-end gap-2">

@@ -48,7 +48,7 @@ export default function Navigation() {
           }`}
         >
           <Dna size={22} />
-          <span className="text-xs mt-1">พ่อพันธุ์</span>
+          <span className="text-xs mt-1">สายพันธุ์</span>
         </Link>
         <Link
           href="/litters"

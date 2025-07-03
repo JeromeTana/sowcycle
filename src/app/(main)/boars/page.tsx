@@ -87,9 +87,9 @@ export default function BoarsPage() {
   return (
     <div className="space-y-4 mb-20">
       <div className="flex justify-between">
-        <h2 className="text-2xl">พ่อพันธุ์</h2>
+        <h2 className="text-2xl">สายพันธุ์</h2>
         <DialogComponent
-          title="เพิ่มพ่อพันธุ์ใหม่"
+          title="เพิ่มสายพันธุ์ใหม่"
           dialogTriggerButton={
             <div className="flex items-center gap-2 rounded-full bg-primary text-white p-4 cursor-pointer fixed bottom-24 right-4 shadow">
               <Plus size={22} />
@@ -104,7 +104,7 @@ export default function BoarsPage() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           startIcon={Search}
-          placeholder="ค้นหาด้วยชื่อพ่อพันธุ์"
+          placeholder="ค้นหาด้วยชื่อสายพันธุ์"
           className="bg-white"
         />
         <DropdownMenu>
