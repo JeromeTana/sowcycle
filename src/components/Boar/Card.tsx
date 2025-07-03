@@ -6,7 +6,6 @@ import { Dna } from "lucide-react";
 import DialogComponent from "../DialogComponent";
 import BoarDetailsCard from "./DetailsCard";
 import { Button } from "../ui/button";
-import Link from "next/link";
 
 export default function BoarCard({ boar }: { boar: Boar }) {
   return (
