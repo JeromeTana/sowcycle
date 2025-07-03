@@ -63,7 +63,7 @@ export default function SowCard({ sow }: { sow: Sow }) {
                       {Math.floor(
                         (new Date().getTime() -
                           new Date(
-                            latestBreeding?.actual_farrow_date
+                            latestBreeding.actual_farrow_date
                           ).getTime()) /
                           (1000 * 60 * 60 * 24)
                       )}{" "}
@@ -100,9 +100,9 @@ export default function SowCard({ sow }: { sow: Sow }) {
 
       <CardFooter>
         <div className="w-full flex gap-2 justify-end">
-          {/* <Link href={`/sows/${sow.id}`}>
-            <Button variant={"ghost"}>ดูรายละเอียด</Button>
-          </Link> */}
+          <Link href={`/sows/${sow.id}`}>
+            <Button variant={"outline"}>ดูรายละเอียด</Button>
+          </Link>
           {latestBreeding?.actual_farrow_date === null ? (
             <DialogComponent
               title="บันทึกการคลอด"
