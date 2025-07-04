@@ -84,7 +84,7 @@ export default function SowDetailsCard({
             icon={<Milk size={22} />}
             className="text-muted-foreground"
           >
-            {sow.breasts_count ? sow.breasts_count : "-"}
+            {sow.breasts_count ? sow.breasts_count+ " เต้า" : "-"}
           </InfoIcon>
 
           <InfoIcon

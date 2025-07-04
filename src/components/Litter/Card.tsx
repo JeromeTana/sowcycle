@@ -11,6 +11,7 @@ import {
   Beef,
   Banknote,
   Gauge,
+  Milk,
 } from "lucide-react";
 import { LitterForm } from "./Form";
 import { cn, formatDate } from "@/lib/utils";
@@ -49,8 +50,20 @@ const PigletCountBadges = ({
 );
 
 // Helper component for breed display
-const BreedBadges = ({ breeds }: { breeds: string[] }) => (
+const BreedBadges = ({
+  breasts_count,
+  breeds,
+}: {
+  breasts_count: number;
+  breeds: string[];
+}) => (
   <span className="flex gap-1 flex-wrap">
+    {breasts_count > 0 ? (
+      <span className="flex items-center gap-1 px-2 py-0.5 border bg-white rounded-full text-xs text-muted-foreground">
+        <Milk size={12} />
+        <span>{breasts_count} เต้า</span>
+      </span>
+    ) : null}
     {breeds.map((breed: string, i: number) => (
       <span
         key={i}
@@ -95,7 +108,12 @@ const SowInfo = ({ sow }: { sow: Sow | undefined }) => (
       {sow?.name ? (
         <span className="flex flex-col gap-2">
           {sow.name}
-          {sow.breeds && <BreedBadges breeds={sow.breeds} />}
+          {sow.breeds && (
+            <BreedBadges
+              breasts_count={sow.breasts_count}
+              breeds={sow.breeds}
+            />
+          )}
         </span>
       ) : (
         "ไม่ระบุ"
