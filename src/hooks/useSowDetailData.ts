@@ -4,7 +4,6 @@ import { useBreedingStore } from "@/stores/useBreedingStore";
 import { useMedicalRecordStore } from "@/stores/useMedicalRecordStore";
 import { useBoarStore } from "@/stores/useBoarStore";
 import { getSowByIdWithAllInfo } from "@/services/sow";
-import { getLittersBySowId } from "@/services/litter";
 import { getAllBoars } from "@/services/boar";
 import { Litter } from "@/types/litter";
 
@@ -13,7 +12,7 @@ export function useSowDetailData(id: number | null) {
   const { breedings, setBreedings } = useBreedingStore();
   const { medicalRecords, setMedicalRecords } = useMedicalRecordStore();
   const { boars, setBoars } = useBoarStore();
-  
+
   const [litters, setLitters] = useState<Litter[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -27,30 +26,24 @@ export function useSowDetailData(id: number | null) {
 
   useEffect(() => {
     if (!id) return;
-    
+
     const fetchData = async () => {
       try {
         setIsLoading(true);
         setError(null);
 
-        const [sowData, littersData] = await Promise.all([
-          getSowByIdWithAllInfo(id),
-          getLittersBySowId(id)
-        ]);
+        const sowData = await getSowByIdWithAllInfo(id);
 
         if (sowData) {
           setSow(sowData);
           setBreedings(sowData.breedings);
           setMedicalRecords(sowData.medical_records);
+          setLitters(sowData.litters);
 
           if (sowData.breed_ids?.length && !boars.length) {
             const boarsData = await getAllBoars();
             setBoars(boarsData);
           }
-        }
-
-        if (littersData) {
-          setLitters(littersData);
         }
       } catch (err) {
         console.error("Error fetching sow data:", err);
@@ -70,6 +63,6 @@ export function useSowDetailData(id: number | null) {
     medicalRecords,
     sowBreeds,
     isLoading,
-    error
+    error,
   };
 }
