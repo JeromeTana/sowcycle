@@ -48,12 +48,12 @@ export const FarrowEventList: React.FC<FarrowEventListProps> = ({ events }) => {
                   {format(event.actualFarrowDate, "d/M/y")}{" "}
                   <span className="text-muted-foreground text-sm">
                     {event.actualFarrowDate < event.expectedDate
-                      ? `(ก่อนกำหนด ${Math.ceil(
+                      ? `(ก่อนกำหนด ${Math.floor(
                           (event.expectedDate.getTime() -
                             event.actualFarrowDate.getTime()) /
                             (1000 * 60 * 60 * 24)
                         )} วัน)`
-                      : `(หลังกำหนด ${Math.ceil(
+                      : `(หลังกำหนด ${Math.floor(
                           (event.actualFarrowDate.getTime() -
                             event.expectedDate.getTime()) /
                             (1000 * 60 * 60 * 24)

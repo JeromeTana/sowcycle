@@ -39,33 +39,6 @@ export default function BreedingCard({
         breeding.is_aborted ? "opacity-70" : ""
       )}
     >
-      {/* <CardHeader>
-        <p
-          className={cn(
-            breeding.actual_farrow_date ? "text-black" : "text-pink-500",
-            "font-bold inline-flex items-center gap-1"
-          )}
-        >
-          <Heart
-            size={22}
-            className={cn(!breeding.actual_farrow_date && "animate-bounce")}
-          />
-          ผสมครั้งที่ {index}{" "}
-          <span className="font-normal">
-            {!breeding.actual_farrow_date && (
-              <>
-                (คลอดใน{" "}
-                {Math.ceil(
-                  (new Date(breeding.expected_farrow_date).getTime() -
-                    new Date().getTime()) /
-                    (1000 * 60 * 60 * 24)
-                )}{" "}
-                วัน)
-              </>
-            )}
-          </span>
-        </p>
-      </CardHeader> */}
       <CardContent className="p-6 space-y-6">
         <div
           className={cn(
@@ -83,7 +56,7 @@ export default function BreedingCard({
               {!breeding.actual_farrow_date && (
                 <>
                   (คลอดใน{" "}
-                  {Math.ceil(
+                  {Math.floor(
                     (new Date(breeding.expected_farrow_date).getTime() -
                       new Date().getTime()) /
                       (1000 * 60 * 60 * 24)
@@ -118,11 +91,14 @@ export default function BreedingCard({
                 {formatDate(breeding.actual_farrow_date)}{" "}
                 <span className="text-gray-400 text-sm">
                   (
-                  {new Date(breeding.actual_farrow_date) <
-                  new Date(breeding.expected_farrow_date) ? (
+                  {new Date(breeding.actual_farrow_date).toDateString() ===
+                  new Date(breeding.expected_farrow_date).toDateString() ? (
+                    <>ตรงตามกำหนด</>
+                  ) : new Date(breeding.actual_farrow_date) <
+                    new Date(breeding.expected_farrow_date) ? (
                     <>
                       ก่อนกำหนด{" "}
-                      {Math.ceil(
+                      {Math.floor(
                         (new Date(breeding.expected_farrow_date).getTime() -
                           new Date(breeding.actual_farrow_date).getTime()) /
                           (1000 * 60 * 60 * 24)
@@ -132,7 +108,7 @@ export default function BreedingCard({
                   ) : (
                     <>
                       หลังกำหนด{" "}
-                      {Math.ceil(
+                      {Math.floor(
                         (new Date(breeding.actual_farrow_date).getTime() -
                           new Date(breeding.expected_farrow_date).getTime()) /
                           (1000 * 60 * 60 * 24)
@@ -206,14 +182,6 @@ export default function BreedingCard({
                     </span>
                   </span>
                 </InfoIcon>
-                {/* <div className="flex gap-2 mt-2 ml-10">
-                  <p className="text-blue-500 border border-blue-300 p-2 bg-blue-50 rounded">
-                    ผู้ {breeding.piglets_male_born_alive}
-                  </p>
-                  <p className="text-pink-500 border border-pink-300 p-2 bg-pink-50 rounded">
-                    เมีย {breeding.piglets_female_born_alive}
-                  </p>
-                </div> */}
               </div>
               <InfoIcon
                 label="จำนวนลูกเกิดตาย"
