@@ -2,7 +2,6 @@ import { useEffect, useState, useMemo } from "react";
 import { useLitterStore } from "@/stores/useLitterStore";
 import { useBoarStore } from "@/stores/useBoarStore";
 import { getAllLitters } from "@/services/litter";
-import { getAllSows } from "@/services/sow";
 import { getAllBoars } from "@/services/boar";
 import { Sow } from "@/types/sow";
 
@@ -18,7 +17,7 @@ export function useLitterData() {
 
   useEffect(() => {
     fetchLitterData();
-  }, [setLitters, setBreeds, breeds.length]);
+  }, [setLitters, setBreeds]);
 
   async function fetchLitterData() {
     try {
