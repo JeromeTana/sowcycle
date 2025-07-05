@@ -9,17 +9,12 @@ import { Sow } from "@/types/sow";
 export function useLitterData() {
   const { litters, setLitters } = useLitterStore();
   const { boars: breeds, setBoars: setBreeds } = useBoarStore();
-  const [sows, setSows] = useState<Sow[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const littersWithSow = useMemo(() => {
-    return combineLittersWithSows(litters, sows);
-  }, [litters, sows]);
-
   const littersWithBreeds = useMemo(() => {
-    return addBreedNamesToLitters(littersWithSow, breeds);
-  }, [littersWithSow, breeds]);
+    return addBreedNamesToLitters(litters, breeds);
+  }, [litters, breeds]);
 
   useEffect(() => {
     fetchLitterData();
@@ -29,11 +24,8 @@ export function useLitterData() {
     try {
       setIsLoading(true);
       setError(null);
-      
-      const [littersData, sowsData] = await Promise.all([
-        getAllLitters(),
-        getAllSows(),
-      ]);
+
+      const littersData = await getAllLitters();
 
       if (!breeds.length) {
         const breedsData = await getAllBoars();
@@ -41,7 +33,6 @@ export function useLitterData() {
       }
 
       setLitters(littersData);
-      setSows(sowsData);
     } catch (error) {
       console.error("Error fetching litters data:", error);
       setError("Failed to fetch litters data");
@@ -57,29 +48,22 @@ export function useLitterData() {
   };
 }
 
-function combineLittersWithSows(litters: any[], sows: Sow[]) {
+function addBreedNamesToLitters(litters: any[], breeds: any[]) {
   return litters.map((litter) => {
-    const sow = sows.find((sow) => sow.id === litter.sow_id);
-    return { ...litter, sow };
-  });
-}
-
-function addBreedNamesToLitters(littersWithSow: any[], breeds: any[]) {
-  return littersWithSow.map((litter) => {
-    const sowBreedNames = getSowBreedNames(litter.sow, breeds);
-    return { 
-      ...litter, 
-      sow: { 
-        ...litter.sow, 
-        breeds: sowBreedNames 
-      } 
+    const sowBreedNames = getSowBreedNames(litter.sows, breeds);
+    return {
+      ...litter,
+      sows: {
+        ...litter.sows,
+        breeds: sowBreedNames,
+      },
     };
   });
 }
 
 function getSowBreedNames(sow: Sow | undefined, breeds: any[]): string[] {
   if (!sow?.breed_ids) return [];
-  
+
   return sow.breed_ids
     .map((breedId) => {
       const breed = breeds.find((b) => b.id === breedId);

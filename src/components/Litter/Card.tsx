@@ -23,7 +23,7 @@ import { useMemo } from "react";
 import BoarDetailsCard from "../Boar/DetailsCard";
 
 interface ExtendedLitter extends Litter {
-  sow: Sow | undefined;
+  sows: Sow | undefined;
 }
 
 interface LitterCardProps {
@@ -251,7 +251,7 @@ export default function LitterCard({ litter, index }: LitterCardProps) {
 
             {/* Parent Information */}
             <div className="flex flex-col gap-4 text-muted-foreground">
-              <SowInfo sow={litter.sow} />
+              <SowInfo sow={litter.sows} />
 
               {litter.boars && <BoarInfo boars={litter.boars} />}
 
