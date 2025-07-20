@@ -80,9 +80,14 @@ export default function SowForm({ editingSow, setDialog }: any) {
     sow: Sow,
     values: z.infer<typeof formSchema>
   ) => {
-    let data: any = { ...sow, ...values, updated_at: new Date().toISOString() };
-    delete data.breedings;
-    delete data.medical_records;
+    let data: any = {
+      ...sow,
+      ...values,
+      updated_at: new Date().toISOString(),
+      breedings: undefined,
+      medical_records: undefined,
+      litters: undefined,
+    };
     let res = await updateSow(data);
     if (res) {
       updateSowState(res);
