@@ -60,7 +60,7 @@ export default function BreedingCard({
                     (new Date(breeding.expected_farrow_date).getTime() -
                       new Date().getTime()) /
                       (1000 * 60 * 60 * 24)
-                  )}{" "}
+                  ) + 1}{" "}
                   วัน)
                 </>
               )}

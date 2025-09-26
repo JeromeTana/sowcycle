@@ -7,7 +7,7 @@ export default function CountdownBadge({ date }: { date: any }) {
       {Math.floor(
         (new Date(date).getTime() - new Date().getTime()) /
           (1000 * 60 * 60 * 24)
-      )}{" "}
+      ) + 1}{" "}
       วัน
     </span>
   );
