@@ -23,7 +23,7 @@ export function AddToCalendarButton({
   className,
 }: AddToCalendarButtonProps) {
   const generateGoogleCalendarUrl = () => {
-    const baseUrl = "https://calendar.google.com/calendar/r/eventedit";
+    const baseUrl = "https://www.google.com/calendar/render";
 
     let startStr = "";
     let endStr = "";
