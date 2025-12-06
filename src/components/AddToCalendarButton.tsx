@@ -66,7 +66,15 @@ export function AddToCalendarButton({
         e.preventDefault();
         e.stopPropagation();
         const url = generateGoogleCalendarUrl();
-        window.open(url, "_blank");
+        const isMobile =
+          typeof navigator !== "undefined" &&
+          /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+        if (isMobile) {
+          window.location.href = url;
+        } else {
+          window.open(url, "_blank");
+        }
       }}
     >
       <LogosGoogleCalendar className="mr-2" />
