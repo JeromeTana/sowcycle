@@ -10,7 +10,7 @@ interface StatsCardProps {
 
 function StatsCard({ icon: Icon, title, value, iconColor }: StatsCardProps) {
   return (
-    <div className="flex items-center gap-4 bg-white rounded-lg p-4">
+    <div className="flex items-center gap-4 bg-white rounded-xl p-4">
       <Icon size={24} className={iconColor} />
       <div>
         <div className="text-sm text-gray-600">{title}</div>

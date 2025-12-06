@@ -55,7 +55,7 @@ export default function LittersPage() {
         }
         return litter[key] === value;
       });
-    }
+    },
   );
 
   if (error) {
@@ -164,7 +164,7 @@ function FilterControls({
           placeholder="ค้นหาด้วยชื่อแม่พันธุ์ หรือ สายพันธุ์"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="pl-10"
+          className="pl-10 rounded-full"
         />
         <Search
           className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
@@ -176,8 +176,8 @@ function FilterControls({
           <Button
             variant="outline"
             className={cn(
-              "flex items-center gap-2",
-              isFilterActive && "bg-pink-500 hover:bg-pink-600 !text-white"
+              "flex items-center gap-2 rounded-full",
+              isFilterActive && "bg-pink-500 hover:bg-pink-600 !text-white",
             )}
           >
             <Filter size={16} />
@@ -196,7 +196,7 @@ function FilterControls({
                 className={cn(
                   isSelected
                     ? "bg-black text-white hover:!bg-black hover:!text-white"
-                    : "bg-white text-black"
+                    : "bg-white text-black",
                 )}
               >
                 {option.label}

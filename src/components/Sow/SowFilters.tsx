@@ -33,14 +33,15 @@ export function SowFilters({
         onChange={(e) => setSearch(e.target.value)}
         startIcon={Search}
         placeholder="ค้นหาด้วยชื่อแม่พันธุ์"
-        className="bg-white"
+        className="bg-white rounded-full"
       />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
             variant="outline"
             className={cn(
-              isFilterActive && "bg-pink-500 hover:bg-pink-600 !text-white"
+              isFilterActive && "bg-pink-500 hover:bg-pink-600 !text-white",
+              "rounded-full",
             )}
           >
             <Filter /> {filter.label} <ChevronDown />
@@ -57,7 +58,7 @@ export function SowFilters({
                 className={cn(
                   isSelected
                     ? "bg-black text-white hover:!bg-black hover:!text-white"
-                    : "bg-white text-black"
+                    : "bg-white text-black",
                 )}
               >
                 {option.label}

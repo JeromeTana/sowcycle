@@ -239,7 +239,7 @@ export default function CalendarPage() {
 
               {selectedDateEvents.farrow.length === 0 &&
                 selectedDateEvents.saleable.length === 0 && (
-                  <div className="flex flex-col items-center justify-center h-64 bg-white rounded-xl border-gray-200">
+                  <div className="flex flex-col items-center justify-center h-64 rounded-xl border-gray-200">
                     <p className="text-muted-foreground">
                       ไม่มีรายการในวันที่นี้
                     </p>

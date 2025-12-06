@@ -105,7 +105,7 @@ export default function BoarsPage() {
           onChange={(e) => setSearch(e.target.value)}
           startIcon={Search}
           placeholder="ค้นหาด้วยชื่อสายพันธุ์"
-          className="bg-white"
+          className="bg-white rounded-full"
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -116,6 +116,7 @@ export default function BoarsPage() {
                   JSON.stringify(filterSowOptions[0].value)
                   ? ""
                   : "bg-pink-500 hover:bg-pink-600 !text-white",
+                "rounded-full",
               )}
             >
               <Filter /> {filter.label} <ChevronDown />

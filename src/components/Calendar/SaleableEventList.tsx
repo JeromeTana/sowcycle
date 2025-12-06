@@ -27,7 +27,7 @@ export const SaleableEventList: React.FC<SaleableEventListProps> = ({
 
   return (
     <>
-      <p className="pt-6 pb-4 font-bold text-lg">
+      <p className="pb-4 font-bold text-lg">
         ลูกสุกรพร้อมขาย {`(${events.length})`}
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
