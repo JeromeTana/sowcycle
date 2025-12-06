@@ -23,7 +23,7 @@ export function AddToCalendarButton({
   className,
 }: AddToCalendarButtonProps) {
   const generateGoogleCalendarUrl = () => {
-    const baseUrl = "https://calendar.google.com/calendar/render";
+    const baseUrl = "https://calendar.google.com/calendar/r/eventedit";
 
     let startStr = "";
     let endStr = "";
@@ -47,7 +47,6 @@ export function AddToCalendarButton({
     }
 
     const params = new URLSearchParams({
-      action: "TEMPLATE",
       text: title,
       details: description,
       location,
@@ -64,7 +63,11 @@ export function AddToCalendarButton({
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
-        window.open(generateGoogleCalendarUrl(), "_blank");
+        const url = generateGoogleCalendarUrl();
+        const isMobile =
+          typeof navigator !== "undefined" &&
+          /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        window.open(url, isMobile ? "_self" : "_blank");
       }}
     >
       <LogosGoogleCalendar className="mr-2" />
