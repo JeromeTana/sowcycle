@@ -80,7 +80,7 @@ export default function CalendarPage() {
       <div className="space-y-4">
         <div className="grid grid-cols-1 gap-8">
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-xl shadow-sm p-1">
+            <div className="bg-white rounded-xl p-1">
               <Calendar
                 mode="single"
                 disabled={loading}
@@ -137,7 +137,7 @@ export default function CalendarPage() {
                 )}
                 {selectedDateEvents.farrow.length === 0 &&
                   selectedDateEvents.saleable.length === 0 && (
-                    <div className="flex flex-col items-center justify-center h-64 rounded-xl border-gray-200">
+                    <div className="flex flex-col items-center justify-center h-64 border-gray-200">
                       <p className="text-muted-foreground">
                         ไม่มีรายการในวันที่นี้
                       </p>

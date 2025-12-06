@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { CalendarPlus } from "lucide-react";
 import { format, addDays } from "date-fns";
+import { LogosGoogleCalendar } from "./GoogleCalendarIcon";
 
 interface AddToCalendarButtonProps {
   title: string;
@@ -59,7 +60,6 @@ export function AddToCalendarButton({
   return (
     <Button
       variant="outline"
-      size="sm"
       className={className}
       onClick={(e) => {
         e.preventDefault();
@@ -67,7 +67,7 @@ export function AddToCalendarButton({
         window.open(generateGoogleCalendarUrl(), "_blank");
       }}
     >
-      <CalendarPlus className="w-4 h-4 mr-2" />
+      <LogosGoogleCalendar className="mr-2" />
       Add to Calendar
     </Button>
   );

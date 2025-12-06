@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
 import { ChevronLeft, LogOut, Settings, User } from "lucide-react";
 import {
   Popover,
@@ -17,7 +18,12 @@ export default function TopBar({
   hasBack?: boolean;
 }) {
   return (
-    <div className="grid grid-cols-3 w-full items-center mb-4">
+    <motion.div
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className="grid grid-cols-3 w-full items-center mb-4"
+    >
       <div className="flex">
         {hasBack && (
           <button
@@ -66,6 +72,6 @@ export default function TopBar({
           </PopoverContent>
         </Popover>
       </div>
-    </div>
+    </motion.div>
   );
 }

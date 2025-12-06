@@ -1,6 +1,10 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import React from "react";
 import { Area, AreaChart, ResponsiveContainer } from "recharts";
+import { CountUp } from "./animations/CountUp";
+import { motion } from "framer-motion";
 
 interface StatsCardProps {
   icon: React.ComponentType<{ size?: number; className?: string }>;
@@ -24,7 +28,8 @@ export function StatsCard({
   trendColor = "#ec4899",
 }: StatsCardProps) {
   return (
-    <div
+    <motion.div
+      whileHover={{ y: -5 }}
       className={cn(
         "flex flex-col bg-white rounded-xl p-4 overflow-hidden relative",
         className,
@@ -64,6 +69,6 @@ export function StatsCard({
           </div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }
