@@ -29,11 +29,7 @@ export const SaleableEventList: React.FC<SaleableEventListProps> = ({
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {events.map((event) => (
-          <Link
-            href={`/litters/${event.litterId}`}
-            key={event.id}
-            className="p-6 rounded-xl bg-white"
-          >
+          <div key={event.id} className="p-6 rounded-xl bg-white">
             <div className="flex items-center gap-2">
               <Banknote className="text-green-600" />
               <span className="font-bold">ลูกขุนแม่{event.sowName}</span>
@@ -61,7 +57,7 @@ export const SaleableEventList: React.FC<SaleableEventListProps> = ({
                 {event.boarBreed || "ไม่ระบุ"}
               </InfoIcon>
             </div>
-          </Link>
+          </div>
         ))}
       </div>
     </>
