@@ -27,12 +27,12 @@ export const FarrowEventList: React.FC<FarrowEventListProps> = ({ events }) => {
       <p className="pt-6 pb-4 font-bold text-lg">
         กำหนดคลอด {`(${events.length})`}
       </p>
-      <div className="space-y-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {events.map((event) => (
           <Link
             href={`/sows/${event.sowId}`}
             key={event.id}
-            className="p-6 rounded-xl bg-white block hover:shadow-md transition-shadow"
+            className="p-6 rounded-xl bg-white block transition-shadow border border-gray-100"
           >
             <div className="flex items-center gap-2">
               <PiggyBank />
@@ -51,12 +51,12 @@ export const FarrowEventList: React.FC<FarrowEventListProps> = ({ events }) => {
                       ? `(ก่อนกำหนด ${Math.floor(
                           (event.expectedDate.getTime() -
                             event.actualFarrowDate.getTime()) /
-                            (1000 * 60 * 60 * 24)
+                            (1000 * 60 * 60 * 24),
                         )} วัน)`
                       : `(หลังกำหนด ${Math.floor(
                           (event.actualFarrowDate.getTime() -
                             event.expectedDate.getTime()) /
-                            (1000 * 60 * 60 * 24)
+                            (1000 * 60 * 60 * 24),
                         )} วัน)`}
                   </span>
                 </InfoIcon>

@@ -9,7 +9,7 @@ export function SowPageHeader() {
       <DialogComponent
         title="เพิ่มแม่พันธุ์ใหม่"
         dialogTriggerButton={
-          <div className="flex items-center gap-2 rounded-full bg-primary text-white p-4 cursor-pointer fixed bottom-24 right-4 shadow">
+          <div className="flex items-center gap-2 rounded-full bg-primary text-white p-4 cursor-pointer fixed z-10 bottom-24 right-4 shadow">
             <Plus size={22} />
           </div>
         }

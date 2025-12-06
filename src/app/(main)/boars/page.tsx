@@ -91,7 +91,7 @@ export default function BoarsPage() {
         <DialogComponent
           title="เพิ่มสายพันธุ์ใหม่"
           dialogTriggerButton={
-            <div className="flex items-center gap-2 rounded-full bg-primary text-white p-4 cursor-pointer fixed bottom-24 right-4 shadow">
+            <div className="flex items-center gap-2 rounded-full bg-primary text-white p-4 cursor-pointer fixed z-10 bottom-24 right-4 shadow">
               <Plus size={22} />
             </div>
           }
@@ -115,7 +115,7 @@ export default function BoarsPage() {
                 JSON.stringify(filter.value) ===
                   JSON.stringify(filterSowOptions[0].value)
                   ? ""
-                  : "bg-pink-500 hover:bg-pink-600 !text-white"
+                  : "bg-pink-500 hover:bg-pink-600 !text-white",
               )}
             >
               <Filter /> {filter.label} <ChevronDown />
@@ -131,7 +131,7 @@ export default function BoarsPage() {
                 className={cn(
                   JSON.stringify(option.value) === JSON.stringify(filter.value)
                     ? "bg-black text-white hover:!bg-black hover:!text-white"
-                    : "bg-white text-black"
+                    : "bg-white text-black",
                 )}
               >
                 {option.label}
