@@ -3,7 +3,6 @@
 import { cn } from "@/lib/utils";
 import React from "react";
 import { Area, AreaChart, ResponsiveContainer } from "recharts";
-import { CountUp } from "./animations/CountUp";
 import { motion } from "framer-motion";
 
 interface StatsCardProps {
