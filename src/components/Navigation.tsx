@@ -37,28 +37,24 @@ export default function Navigation() {
   const pathname = usePathname();
 
   return (
-    <div className="p-4 w-full">
-      <div className="rounded-full z-50 flex items-center justify-center py-2 px-8 bg-white backdrop-blur border border-gray-200">
-        <nav className="grid grid-cols-5 gap-6">
-          {navItems.map((item) => {
-            const isActive = pathname === item.href;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex flex-col items-center justify-center py-2 transition-colors ${
-                  isActive
-                    ? "text-pink-500"
-                    : "text-gray-600 hover:text-pink-500"
-                }`}
-              >
-                <item.icon size={24} />
-                <span className="text-xs mt-1">{item.label}</span>
-              </Link>
-            );
-          })}
-        </nav>
-      </div>
+    <div className="z-50 flex items-center justify-center pt-2 p-4 bg-white">
+      <nav className="grid grid-cols-5 gap-6">
+        {navItems.map((item) => {
+          const isActive = pathname === item.href;
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`flex flex-col items-center justify-center py-2 transition-colors ${
+                isActive ? "text-pink-500" : "text-gray-600 hover:text-pink-500"
+              }`}
+            >
+              <item.icon size={24} />
+              <span className="text-xs mt-1">{item.label}</span>
+            </Link>
+          );
+        })}
+      </nav>
     </div>
   );
 }

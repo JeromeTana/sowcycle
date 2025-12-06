@@ -11,11 +11,14 @@ import LogoutButton from "@/components/LogoutButton";
 
 export default function TopBar() {
   return (
-    <div className="flex justify-end items-center">
+    <div className="flex justify-end items-center mb-2">
       <Popover>
         <PopoverTrigger asChild>
           <button className="flex items-center justify-center p-2 rounded-full hover:bg-gray-100 transition-colors">
-            <User size={32} className="text-gray-600 bg-gray-200 rounded-full p-1.5" />
+            <User
+              size={32}
+              className="text-gray-600 bg-gray-200 rounded-full p-1.5"
+            />
           </button>
         </PopoverTrigger>
         <PopoverContent align="end" className="w-48">

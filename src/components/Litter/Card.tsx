@@ -92,7 +92,7 @@ const TimelineConnector = ({ type }: { type: "solid" | "dashed" }) => (
   <div
     className={cn(
       "w-[0px] border-l-2 border-gray-300 -z-0 h-7 absolute top-10 left-5 -translate-x-1/2",
-      type === "dashed" && "border-dashed"
+      type === "dashed" && "border-dashed",
     )}
   />
 );
@@ -181,7 +181,7 @@ const LitterTimeline = ({ litter }: { litter: ExtendedLitter }) => {
       {litter.fattening_at && !litter.sold_at && (
         <InfoIcon
           icon={<Banknote size={22} className="bg-white" />}
-          label="พร้อมขายประมาณ"
+          label="พร้อมขายช่วง"
           className="bg-white"
         >
           {formatDate(litter.saleable_at!)}
@@ -207,7 +207,7 @@ export default function LitterCard({ litter, index }: LitterCardProps) {
     const endDate = litter.sold_at ? new Date(litter.sold_at) : new Date();
     const birthDate = new Date(litter.birth_date!);
     return Math.floor(
-      (endDate.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24)
+      (endDate.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24),
     );
   }, [litter.birth_date, litter.sold_at]);
 

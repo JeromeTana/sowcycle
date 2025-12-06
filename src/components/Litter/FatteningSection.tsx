@@ -17,7 +17,10 @@ interface FatteningSectionProps {
   calculatedSaleableDate?: Date;
 }
 
-export function FatteningSection({ form, calculatedSaleableDate }: FatteningSectionProps) {
+export function FatteningSection({
+  form,
+  calculatedSaleableDate,
+}: FatteningSectionProps) {
   return (
     <div className="flex gap-2">
       <FormField
@@ -33,14 +36,14 @@ export function FatteningSection({ form, calculatedSaleableDate }: FatteningSect
       />
 
       <FormItem className="w-full flex flex-col">
-        <FormLabel>จะพร้อมขายประมาณ</FormLabel>
+        <FormLabel>จะพร้อมขายช่วง</FormLabel>
         <FormControl>
           <Button
             variant={"outline"}
             disabled
             className={cn(
               "w-full pl-3 text-left font-normal",
-              !calculatedSaleableDate && "text-muted-foreground"
+              !calculatedSaleableDate && "text-muted-foreground",
             )}
           >
             {calculatedSaleableDate ? (

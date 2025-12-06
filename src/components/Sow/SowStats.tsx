@@ -8,12 +8,17 @@ interface StatsCardProps {
   iconColor: string;
 }
 
-function StatsCard({ icon: Icon, title, value, iconColor }: StatsCardProps) {
+export function StatsCard({
+  icon: Icon,
+  title,
+  value,
+  iconColor,
+}: StatsCardProps) {
   return (
     <div className="flex items-center gap-4 bg-white rounded-xl p-4">
       <Icon size={24} className={iconColor} />
       <div>
-        <div className="text-sm text-gray-600">{title}</div>
+        <div className="text-sm text-muted-foreground">{title}</div>
         <div className="text-2xl font-bold">
           {value} <span className="text-sm">ตัว</span>
         </div>

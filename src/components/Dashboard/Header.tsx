@@ -4,23 +4,26 @@ interface DashboardHeaderProps {
 }
 
 export function DashboardHeader({
-  title = "ยินดีต้อนรับ",
+  title = new Date().toLocaleDateString("th-TH", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }),
   subtitle,
 }: DashboardHeaderProps) {
-  const defaultSubtitle = `ภาพรวมฟาร์มสุกรของคุณ - ${new Date().toLocaleDateString(
-    "th-TH",
-    {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    },
-  )}`;
+  const date = new Date();
 
   return (
     <div className="space-y-2">
-      <h1 className="text-3xl font-bold">{title}</h1>
-      <p className="text-muted-foreground">{subtitle || defaultSubtitle}</p>
+      <div className="inline-flex gap-2 items-end">
+        <p className="text-4xl font-bold">{date.getDate()}</p>
+        <p className="text-2xl font-bold text-muted-foreground">
+          {date.toLocaleDateString("th-TH", {
+            month: "long",
+          })}
+        </p>
+      </div>
+      <p className="text-muted-foreground">{}</p>
     </div>
   );
 }

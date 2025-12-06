@@ -27,21 +27,18 @@ export const SaleableEventList: React.FC<SaleableEventListProps> = ({
 
   return (
     <>
-      <p className="pb-4 font-bold text-lg">
-        ลูกสุกรพร้อมขาย {`(${events.length})`}
-      </p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {events.map((event) => (
           <Link
             href={`/litters/${event.litterId}`}
             key={event.id}
-            className="p-6 rounded-xl bg-white block hover:shadow-md transition-shadow border border-gray-100"
+            className="p-6 rounded-xl bg-white block transition-shadow border border-gray-100"
           >
             <div className="flex items-center gap-2">
               <Banknote className="text-green-600" />
-              <span className="font-bold">{event.sowName}</span>
+              <span className="font-bold">ลูกขุนแม่{event.sowName}</span>
             </div>
-            <div className="flex flex-col mt-6 gap-6">
+            <div className="grid grid-cols-2 mt-6 gap-6">
               <InfoIcon
                 label="วันที่พร้อมขาย"
                 icon={<CalendarIcon className="h-5 w-5" />}
@@ -49,13 +46,13 @@ export const SaleableEventList: React.FC<SaleableEventListProps> = ({
               >
                 {formatDate(event.farrowDate.toISOString())}
               </InfoIcon>
-              <InfoIcon
+              {/*<InfoIcon
                 label="แม่พันธุ์"
                 icon={<PiggyBank className="h-5 w-5" />}
                 className="text-muted-foreground"
               >
                 {event.sowName}
-              </InfoIcon>
+              </InfoIcon>*/}
               <InfoIcon
                 label="พ่อพันธุ์"
                 icon={<Dna className="h-5 w-5" />}

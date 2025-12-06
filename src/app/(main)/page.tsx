@@ -4,10 +4,13 @@ import { useDashboardData } from "@/hooks/useDashboardData";
 import { DashboardLoadingSkeleton } from "@/components/Dashboard/LoadingSkeleton";
 import { DashboardHeader } from "@/components/Dashboard/Header";
 import { PregnantSowsSection } from "@/components/Dashboard/PregnantSowsSection";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { UpcomingEvents } from "@/components/Dashboard/UpcomingEvents";
+import { StatsCard } from "@/components/Sow/SowStats";
+import { Heart, PawPrint, PiggyBank } from "lucide-react";
 
 export default function Page() {
-  const { breededSows, isLoading, error } = useDashboardData();
+  const { breededSows, pregnantSowsCount, pigletsCount, isLoading, error } =
+    useDashboardData();
 
   if (isLoading) {
     return <DashboardLoadingSkeleton />;
@@ -28,34 +31,20 @@ export default function Page() {
     <div className="space-y-8">
       <DashboardHeader />
       <div className="grid grid-cols-2 gap-4">
-        <div className="col-span-2 flex items-center gap-4 bg-white rounded-xl p-4">
-          {/*<Icon size={24} className={iconColor} />*/}
-          <div>
-            <div className="text-sm text-gray-600">เทส</div>
-            <div className="text-2xl font-bold">
-              2 <span className="text-sm">ตัว</span>
-            </div>
-          </div>
-        </div>
-        <div className="flex items-center gap-4 bg-white rounded-xl p-4">
-          {/*<Icon size={24} className={iconColor} />*/}
-          <div>
-            <div className="text-sm text-gray-600">เทส</div>
-            <div className="text-2xl font-bold">
-              2 <span className="text-sm">ตัว</span>
-            </div>
-          </div>
-        </div>
-        <div className="flex items-center gap-4 bg-white rounded-xl p-4">
-          {/*<Icon size={24} className={iconColor} />*/}
-          <div>
-            <div className="text-sm text-gray-600">เทส</div>
-            <div className="text-2xl font-bold">
-              2 <span className="text-sm">ตัว</span>
-            </div>
-          </div>
-        </div>
+        <StatsCard
+          icon={Heart}
+          title="แม่พันธุ์ตั้งครรภ์"
+          value={pregnantSowsCount}
+          iconColor="text-pink-500"
+        />
+        <StatsCard
+          icon={PiggyBank}
+          title="ลูกสุกรขุน"
+          value={pigletsCount}
+          iconColor="text-pink-500"
+        />
       </div>
+      <UpcomingEvents />
       <PregnantSowsSection sows={breededSows} />
     </div>
   );
