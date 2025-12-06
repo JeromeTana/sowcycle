@@ -25,6 +25,7 @@ import { useLitterFilters } from "@/hooks/useLitterFilters";
 import { Litter } from "@/types/litter";
 import { cn } from "@/lib/utils";
 import TopBar from "@/components/TopBar";
+import { StatsCard } from "@/components/StatsCard";
 
 // Types
 interface FilterOption {
@@ -87,63 +88,26 @@ export default function LittersPage() {
   );
 }
 
-function PageHeader() {
-  return (
-    <div className="space-y-2">
-      <h1 className="text-2xl font-bold text-gray-900">ลูกหมู</h1>
-      <p className="text-muted-foreground">
-        ข้อมูลลูกหมูที่เกิดแล้วจากการผสมพันธุ์
-      </p>
-    </div>
-  );
-}
-
 function LitterStats({ litters }: { litters: any[] }) {
   const totalPiglets = calculateTotalPiglets(litters);
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-      <StatCard
-        icon={<Fence className="text-blue-500" size={24} />}
-        label="เกิดแล้ว"
+      <StatsCard
+        icon={Fence}
+        title="เกิดแล้วทั้งหมด"
         value={litters.length}
+        iconColor="text-blue-500"
         unit="ครอก"
       />
-      <StatCard
-        icon={<PiggyBank className="text-pink-500" size={24} />}
-        label="กำลังเลี้ยง"
+      <StatsCard
+        icon={PiggyBank}
+        title="กำลังขุน"
         value={totalPiglets}
+        iconColor="text-pink-500"
         unit="ตัว"
       />
     </div>
-  );
-}
-
-function StatCard({
-  icon,
-  label,
-  value,
-  unit,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value: number;
-  unit: string;
-}) {
-  return (
-    <Card>
-      <CardContent className="p-4">
-        <div className="flex items-center gap-4">
-          {icon}
-          <div>
-            <p className="text-sm text-muted-foreground">{label}</p>
-            <p className="text-2xl font-bold">
-              {value} <span className="text-sm">{unit}</span>
-            </p>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
   );
 }
 

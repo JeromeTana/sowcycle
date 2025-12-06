@@ -12,6 +12,7 @@ import {
   Banknote,
   Gauge,
   Milk,
+  Plus,
 } from "lucide-react";
 import { LitterForm } from "./Form";
 import { cn, formatDate } from "@/lib/utils";
@@ -143,7 +144,13 @@ const BoarInfo = ({ boars }: { boars: any }) => (
 );
 
 // Main timeline component
-const LitterTimeline = ({ litter }: { litter: ExtendedLitter }) => {
+const LitterTimeline = ({
+  litter,
+  index,
+}: {
+  litter: ExtendedLitter;
+  index: number;
+}) => {
   const showFatteningConnector = litter.fattening_at;
   const showSaleConnector = litter.fattening_at && !litter.sold_at;
   const showSoldConnector = litter.sold_at;
@@ -163,7 +170,7 @@ const LitterTimeline = ({ litter }: { litter: ExtendedLitter }) => {
       </div>
 
       {/* Fattening Date */}
-      {litter.fattening_at && (
+      {litter.fattening_at ? (
         <div className="relative">
           <InfoIcon
             icon={<Beef size={22} />}
@@ -175,6 +182,20 @@ const LitterTimeline = ({ litter }: { litter: ExtendedLitter }) => {
           {showSaleConnector && <TimelineConnector type="dashed" />}
           {showSoldConnector && <TimelineConnector type="solid" />}
         </div>
+      ) : (
+        <DialogComponent
+          title={`แก้ไขข้อมูลครอกที่ ${index}`}
+          dialogTriggerButton={
+            <div className="inline-flex items-center gap-2 text-pink-500 cursor-pointer hover:opacity-80 transition-opacity">
+              <div className={cn("border p-2 rounded-lg bg-white")}>
+                <Plus />
+              </div>
+              <p className="inline-flex font-medium">เพิ่มวันเข้าคอกขุน</p>
+            </div>
+          }
+        >
+          <LitterForm litter={litter} />
+        </DialogComponent>
       )}
 
       {/* Sale Information */}
@@ -243,7 +264,7 @@ export default function LitterCard({ litter, index }: LitterCardProps) {
               </InfoIcon>
 
               {litter.avg_weight ? (
-                <InfoIcon icon={<Gauge size={22} />} label="น้ำหนักเฉลี่ย">
+                <InfoIcon icon={<Gauge size={22} />} label="น้ำหนักขายเฉลี่ย">
                   {litter.avg_weight?.toFixed(2)} กิโลกรัม
                 </InfoIcon>
               ) : null}
@@ -261,7 +282,7 @@ export default function LitterCard({ litter, index }: LitterCardProps) {
             </div>
 
             {/* Timeline */}
-            <LitterTimeline litter={litter} />
+            <LitterTimeline litter={litter} index={index} />
           </div>
         </div>
       </CardContent>

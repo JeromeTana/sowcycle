@@ -143,7 +143,7 @@ export function LitterForm({ litter, setDialog }: LitterFormProps) {
           name="avg_weight"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>น้ำหนักเฉลี่ย (ถ้ามี)</FormLabel>
+              <FormLabel>น้ำหนักขายเฉลี่ย (ถ้ามี)</FormLabel>
               <FormControl>
                 <Input
                   type="number"

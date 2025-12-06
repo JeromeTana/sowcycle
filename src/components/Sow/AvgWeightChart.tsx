@@ -66,7 +66,7 @@ export default function AvgWeightChart({ litters }: PigletCountChartProps) {
             domain={[0, "dataMax"]}
           />
           <Tooltip
-            formatter={(value, name) => [value, "น้ำหนักเฉลี่ย"]}
+            formatter={(value, name) => [value, "น้ำหนักขายเฉลี่ย"]}
             labelFormatter={(label, payload) => {
               const data = payload?.[0]?.payload;
               return `${label} (${data?.date})`;

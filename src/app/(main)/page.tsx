@@ -5,7 +5,7 @@ import { DashboardLoadingSkeleton } from "@/components/Dashboard/LoadingSkeleton
 import { DashboardHeader } from "@/components/Dashboard/Header";
 import { PregnantSowsSection } from "@/components/Dashboard/PregnantSowsSection";
 import { UpcomingEvents } from "@/components/Dashboard/UpcomingEvents";
-import { StatsCard } from "@/components/Sow/SowStats";
+import { StatsCard } from "@/components/StatsCard";
 import { Heart, PawPrint, PiggyBank } from "lucide-react";
 import TopBar from "@/components/TopBar";
 
@@ -45,6 +45,20 @@ export default function Page() {
             title="ลูกสุกรขุน"
             value={pigletsCount}
             iconColor="text-pink-500"
+          />
+          <StatsCard
+            icon={Heart}
+            title="น้ำหนักขายเฉลี่ย"
+            value={pigletsCount}
+            iconColor="text-pink-500"
+            className="col-span-2"
+          />
+          <StatsCard
+            icon={Heart}
+            title="จำนวนลูกเกิดเฉลี่ย"
+            value={pigletsCount}
+            iconColor="text-pink-500"
+            className="col-span-2"
           />
         </div>
         <UpcomingEvents />

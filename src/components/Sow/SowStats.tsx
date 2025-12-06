@@ -1,33 +1,8 @@
 import { Heart, PiggyBank } from "lucide-react";
 import { SowStats as SowStatsType } from "@/hooks/useSowStats";
+import { StatsCard } from "@/components/StatsCard";
 
-interface StatsCardProps {
-  icon: React.ComponentType<{ size?: number; className?: string }>;
-  title: string;
-  value: number;
-  iconColor: string;
-}
-
-export function StatsCard({
-  icon: Icon,
-  title,
-  value,
-  iconColor,
-}: StatsCardProps) {
-  return (
-    <div className="flex flex-col bg-white rounded-xl p-4">
-      <div className="flex justify-between">
-        <div className="text-sm text-muted-foreground">{title}</div>
-        <div className="p-2 bg-gray-100 rounded-full">
-          <Icon size={20} className={iconColor} />
-        </div>
-      </div>
-      <div className="text-2xl font-bold">
-        {value} <span className="text-sm">ตัว</span>
-      </div>
-    </div>
-  );
-}
+export { StatsCard };
 
 interface SowStatsProps {
   stats: SowStatsType;
