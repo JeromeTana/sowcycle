@@ -144,10 +144,6 @@ export default function SettingPage() {
     <>
       <TopBar title="การตั้งค่า" hasBack />
       <div className="container mx-auto max-w-2xl">
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold">การตั้งค่า</h1>
-        </div>
-
         <Card className="mb-6">
           <CardHeader>
             <CardTitle>Google Calendar Sync</CardTitle>

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ChevronLeft, Settings, User } from "lucide-react";
+import { ChevronLeft, LogOut, Settings, User } from "lucide-react";
 import {
   Popover,
   PopoverContent,
@@ -43,20 +43,23 @@ export default function TopBar({
               />
             </button>
           </PopoverTrigger>
-          <PopoverContent align="end" className="w-48">
-            <div className="space-y-2">
-              <div className="text-sm font-medium text-gray-900 border-b pb-2">
-                Account
+          <PopoverContent align="end" className="w-56 p-2">
+            <div className="grid gap-1">
+              <div className="px-2 py-1.5 text-sm font-semibold text-gray-900">
+                บัญชีผู้ใช้
               </div>
+              <div className="h-px bg-gray-100 my-1" />
               <a
                 href="/setting"
-                className="text-sm font-medium text-gray-900 border-b pb-2"
+                className="flex items-center gap-2 px-2 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 transition-colors"
               >
-                Settings
+                <Settings size={16} />
+                <span>ตั้งค่า</span>
               </a>
               <LogoutButton>
-                <div className="w-full text-left text-sm text-red-500 hover:text-red-700 py-1 transition-colors">
-                  Logout
+                <div className="flex items-center gap-2 px-2 py-2 w-full text-left text-sm text-red-600 rounded-md hover:bg-red-50 transition-colors">
+                  <LogOut size={16} />
+                  <span>ออกจากระบบ</span>
                 </div>
               </LogoutButton>
             </div>
