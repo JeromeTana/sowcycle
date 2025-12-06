@@ -3,6 +3,7 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { PiggyBank, CalendarIcon } from "lucide-react";
 import InfoIcon from "@/components/InfoIcon";
+import { AddToCalendarButton } from "@/components/AddToCalendarButton";
 
 interface FarrowEvent {
   id: number;
@@ -31,9 +32,21 @@ export const FarrowEventList: React.FC<FarrowEventListProps> = ({ events }) => {
             key={event.id}
             className="p-6 rounded-xl bg-white block transition-shadow border border-gray-100"
           >
-            <div className="flex items-center gap-2">
-              <PiggyBank />
-              <span className="font-bold">{event.sowName}</span>
+            <div className="flex justify-between items-start">
+              <div className="flex items-center gap-2">
+                <PiggyBank />
+                <span className="font-bold">{event.sowName}</span>
+              </div>
+              {!event.actualFarrowDate && (
+                <AddToCalendarButton
+                  title={`กำหนดคลอด ${event.sowName}`}
+                  description={`แม่พันธุ์: ${event.sowName}\nวันที่ผสม: ${format(
+                    event.breedDate,
+                    "dd/MM/yyyy",
+                  )}`}
+                  startDate={event.expectedDate}
+                />
+              )}
             </div>
             {event.actualFarrowDate && (
               <div className="mt-6">

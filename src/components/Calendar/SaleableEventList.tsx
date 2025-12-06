@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Banknote, CalendarIcon, PiggyBank, Dna } from "lucide-react";
 import InfoIcon from "@/components/InfoIcon";
 import { formatDate } from "@/lib/utils";
+import { AddToCalendarButton } from "@/components/AddToCalendarButton";
 
 interface SaleableEvent {
   id: number;
@@ -30,9 +31,18 @@ export const SaleableEventList: React.FC<SaleableEventListProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {events.map((event) => (
           <div key={event.id} className="p-6 rounded-xl bg-white">
-            <div className="flex items-center gap-2">
-              <Banknote className="text-green-600" />
-              <span className="font-bold">ลูกขุนแม่{event.sowName}</span>
+            <div className="flex justify-between items-start">
+              <div className="flex items-center gap-2">
+                <Banknote className="text-green-600" />
+                <span className="font-bold">ลูกขุนแม่{event.sowName}</span>
+              </div>
+              <AddToCalendarButton
+                title={`ลูกขุนพร้อมขาย แม่${event.sowName}`}
+                description={`แม่พันธุ์: ${event.sowName}\nพ่อพันธุ์: ${
+                  event.boarBreed || "ไม่ระบุ"
+                }`}
+                startDate={event.saleableDate}
+              />
             </div>
             <div className="grid grid-cols-2 mt-6 gap-6">
               <InfoIcon
