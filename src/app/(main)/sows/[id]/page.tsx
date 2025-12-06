@@ -9,6 +9,7 @@ import SowHeader from "@/components/Sow/SowHeader";
 import SowDetailsCard from "@/components/Sow/SowDetailsCard";
 import SowHistorySection from "@/components/Sow/SowHistorySection";
 import { LoadingPageSkeleton } from "@/components/Sow/LoadingSkeleton";
+import TopBar from "@/components/TopBar";
 
 interface SowPageProps {
   params: Promise<{ id: string }>;
@@ -53,23 +54,26 @@ export default function SowPage({ params }: SowPageProps) {
   }
 
   return (
-    <div className="space-y-8">
-      <SowHeader sow={sow} />
+    <>
+      <TopBar title="แม่พันธุ์" hasBack />
+      <div className="space-y-8">
+        <SowHeader sow={sow} />
 
-      <SowDetailsCard
-        sow={sow}
-        sowBreeds={sowBreeds}
-        breedings={breedings}
-        litters={litters}
-        averagePigletsBornCount={averagePigletsBornCount}
-        averageWeightChart={averageWeightChart}
-      />
+        <SowDetailsCard
+          sow={sow}
+          sowBreeds={sowBreeds}
+          breedings={breedings}
+          litters={litters}
+          averagePigletsBornCount={averagePigletsBornCount}
+          averageWeightChart={averageWeightChart}
+        />
 
-      <SowHistorySection
-        sow={sow}
-        breedings={breedings}
-        medicalRecords={medicalRecords}
-      />
-    </div>
+        <SowHistorySection
+          sow={sow}
+          breedings={breedings}
+          medicalRecords={medicalRecords}
+        />
+      </div>
+    </>
   );
 }

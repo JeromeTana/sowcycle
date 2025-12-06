@@ -23,7 +23,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Save, RotateCcw } from "lucide-react";
+import { Save, RotateCcw, Check } from "lucide-react";
+import TopBar from "@/components/TopBar";
 
 const settingsSchema = z.object({
   pregnancyDuration: z.number().min(100).max(130),
@@ -97,96 +98,105 @@ export default function SettingPage() {
   };
 
   return (
-    <div className="container mx-auto max-w-2xl">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold">การตั้งค่า</h1>
-      </div>
+    <>
+      <TopBar title="การตั้งค่า" hasBack />
+      <div className="container mx-auto max-w-2xl">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold">การตั้งค่า</h1>
+        </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>การตั้งค่าระยะเวลา</CardTitle>
-          <CardDescription>
-            กำหนดระยะเวลาที่ใช้ในการคำนวณต่างๆ ในระบบ
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <FormField
-                control={form.control}
-                name="pregnancyDuration"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>ระยะเวลาการตั้งครรภ์ (วัน)</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        min="100"
-                        max="130"
-                        {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      ระยะเวลาการตั้งครรภ์ของแม่สุกร (ปกติ 114 วัน)
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="fatteningDuration"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>ระยะเวลาการเลี้ยงขุน (วัน)</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        min="120"
-                        max="180"
-                        {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      ระยะเวลาการเลี้ยงขุนลูกสุกร (ปกติ 145 วัน)
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <div className="flex gap-3 pt-4">
-                <Button type="submit" disabled={isLoading} className="flex-1">
-                  {isLoading ? (
-                    <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
-                      กำลังบันทึก...
-                    </>
-                  ) : (
-                    <>
-                      <Save className="w-4 h-4 mr-2" />
-                      บันทึกการตั้งค่า
-                    </>
+        <Card>
+          <CardHeader>
+            <CardTitle>การตั้งค่าระยะเวลา</CardTitle>
+            <CardDescription>
+              กำหนดระยะเวลาที่ใช้ในการคำนวณต่างๆ ในระบบ
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-6"
+              >
+                <FormField
+                  control={form.control}
+                  name="pregnancyDuration"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>ระยะเวลาการตั้งครรภ์ (วัน)</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          min="100"
+                          max="130"
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        ระยะเวลาการตั้งครรภ์ของแม่สุกร (ปกติ 114 วัน)
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
                   )}
-                </Button>
+                />
 
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={resetToDefaults}
-                  disabled={isLoading}
-                >
-                  <RotateCcw className="w-4 h-4 mr-2" />
-                  รีเซ็ต
-                </Button>
-              </div>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
-    </div>
+                <FormField
+                  control={form.control}
+                  name="fatteningDuration"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>ระยะเวลาการเลี้ยงขุน (วัน)</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          min="120"
+                          max="180"
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        ระยะเวลาการเลี้ยงขุนลูกสุกร (ปกติ 145 วัน)
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <div className="flex gap-3 pt-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={resetToDefaults}
+                    disabled={isLoading}
+                  >
+                    <RotateCcw className="w-4 h-4 mr-2" />
+                    รีเซ็ต
+                  </Button>
+                  <Button type="submit" disabled={isLoading} className="flex-1">
+                    {isLoading ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                        กำลังบันทึก...
+                      </>
+                    ) : (
+                      <>
+                        <Check className="w-4 h-4 mr-2" />
+                        บันทึก
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </form>
+            </Form>
+          </CardContent>
+        </Card>
+      </div>
+    </>
   );
 }

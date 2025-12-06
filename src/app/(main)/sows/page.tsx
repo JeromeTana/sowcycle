@@ -8,6 +8,7 @@ import { SowStats } from "@/components/Sow/SowStats";
 import { SowFilters } from "@/components/Sow/SowFilters";
 import SowList from "@/components/Sow/List";
 import { LoadingListSkeleton } from "@/components/Sow/LoadingSkeleton";
+import TopBar from "@/components/TopBar";
 
 export default function SowPage() {
   const { sows, isLoading, error } = useSowOperations({
@@ -32,16 +33,19 @@ export default function SowPage() {
   }
 
   return (
-    <div className="space-y-6 mb-20">
+    <>
+      <TopBar title="แม่พันธุ์" />
       <SowPageHeader />
-      <SowStats stats={stats} />
-      <SowFilters
-        search={search}
-        setSearch={setSearch}
-        filter={filter}
-        setFilter={setFilter}
-      />
-      <SowList sows={filteredSows} />
-    </div>
+      <div className="space-y-6 mb-20">
+        <SowStats stats={stats} />
+        <SowFilters
+          search={search}
+          setSearch={setSearch}
+          filter={filter}
+          setFilter={setFilter}
+        />
+        <SowList sows={filteredSows} />
+      </div>
+    </>
   );
 }

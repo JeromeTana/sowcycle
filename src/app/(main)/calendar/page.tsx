@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { FarrowEventList } from "@/components/Calendar/FarrowEventList";
 import { SaleableEventList } from "@/components/Calendar/SaleableEventList";
 import { useCalendarData } from "@/hooks/useCalendarData";
+import TopBar from "@/components/TopBar";
 
 // Main component
 export default function CalendarPage() {
@@ -73,65 +74,68 @@ export default function CalendarPage() {
   }
 
   return (
-    <div className="space-y-4">
-      <h1 className="text-2xl font-bold mb-4">Calendar</h1>
-
-      <div className="grid grid-cols-1 gap-8">
-        <div className="lg:col-span-1">
-          <div className="bg-white rounded-xl shadow-sm p-1">
-            <Calendar
-              mode="single"
-              disabled={loading}
-              numberOfMonths={1}
-              selected={selectedDate}
-              onSelect={handleDateSelect}
-              defaultMonth={new Date()}
-              className={cn(
-                "w-full flex justify-center",
-                loading && "animate-pulse",
-              )}
-              modifiers={calendarModifiers}
-              modifiersClassNames={{
-                hasEvent:
-                  "bg-pink-500 text-white hover:bg-pink-600 hover:text-white",
-                overdue:
-                  "bg-pink-500 text-white hover:bg-pink-600 hover:text-white",
-                hasSaleableEvent:
-                  "bg-green-500 text-white hover:bg-green-600 hover:text-white",
-                saleablePastDue:
-                  "bg-green-500 text-white hover:bg-green-600 hover:text-white",
-              }}
-            />
+    <>
+      <TopBar title="Calendar" />
+      <div className="space-y-4">
+        <div className="grid grid-cols-1 gap-8">
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-xl shadow-sm p-1">
+              <Calendar
+                mode="single"
+                disabled={loading}
+                numberOfMonths={1}
+                selected={selectedDate}
+                onSelect={handleDateSelect}
+                defaultMonth={new Date()}
+                className={cn(
+                  "w-full flex justify-center",
+                  loading && "animate-pulse",
+                )}
+                modifiers={calendarModifiers}
+                modifiersClassNames={{
+                  hasEvent:
+                    "bg-pink-500 text-white hover:bg-pink-600 hover:text-white",
+                  overdue:
+                    "bg-pink-500 text-white hover:bg-pink-600 hover:text-white",
+                  hasSaleableEvent:
+                    "bg-green-500 text-white hover:bg-green-600 hover:text-white",
+                  saleablePastDue:
+                    "bg-green-500 text-white hover:bg-green-600 hover:text-white",
+                }}
+              />
+            </div>
           </div>
-        </div>
 
-        <div className="lg:col-span-2">
-          {!loading && (
-            <div className="space-y-8">
-              {selectedDateEvents.farrow.length > 0 && (
-                <div>
-                  <h2 className="pb-4 font-bold text-xl">กำหนดคลอด</h2>
-                  <FarrowEventList events={selectedDateEvents.farrow} />
-                </div>
-              )}
-              {selectedDateEvents.saleable.length > 0 && (
-                <div>
-                  <h2 className="pb-4 font-semibold text-xl">ลูกขุนพร้อมขาย</h2>
-                  <SaleableEventList events={selectedDateEvents.saleable} />
-                </div>
-              )}
-              {selectedDateEvents.farrow.length === 0 &&
-                selectedDateEvents.saleable.length === 0 && (
-                  <div className="flex flex-col items-center justify-center h-64 rounded-xl border-gray-200">
-                    <p className="text-muted-foreground">
-                      ไม่มีรายการในวันที่นี้
-                    </p>
+          <div className="lg:col-span-2">
+            {!loading && (
+              <div className="space-y-8">
+                {selectedDateEvents.farrow.length > 0 && (
+                  <div>
+                    <h2 className="pb-4 font-bold text-xl">กำหนดคลอด</h2>
+                    <FarrowEventList events={selectedDateEvents.farrow} />
                   </div>
                 )}
-            </div>
-          )}
+                {selectedDateEvents.saleable.length > 0 && (
+                  <div>
+                    <h2 className="pb-4 font-semibold text-xl">
+                      ลูกขุนพร้อมขาย
+                    </h2>
+                    <SaleableEventList events={selectedDateEvents.saleable} />
+                  </div>
+                )}
+                {selectedDateEvents.farrow.length === 0 &&
+                  selectedDateEvents.saleable.length === 0 && (
+                    <div className="flex flex-col items-center justify-center h-64 rounded-xl border-gray-200">
+                      <p className="text-muted-foreground">
+                        ไม่มีรายการในวันที่นี้
+                      </p>
+                    </div>
+                  )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

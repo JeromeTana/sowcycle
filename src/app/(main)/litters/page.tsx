@@ -24,6 +24,7 @@ import { useLitterData } from "@/hooks/useLitterData";
 import { useLitterFilters } from "@/hooks/useLitterFilters";
 import { Litter } from "@/types/litter";
 import { cn } from "@/lib/utils";
+import TopBar from "@/components/TopBar";
 
 // Types
 interface FilterOption {
@@ -67,19 +68,22 @@ export default function LittersPage() {
   }
 
   return (
-    <div className="min-h-screen">
-      <div className="max-w-4xl mx-auto space-y-6">
-        <PageHeader />
-        <LitterStats litters={littersWithBreeds} />
-        <FilterControls
-          search={search}
-          setSearch={setSearch}
-          filter={filter}
-          setFilter={setFilter}
-        />
-        <LittersList litters={filteredLitters} />
+    <>
+      <TopBar title="ครอกลูกหมู" />
+      <div className="min-h-screen">
+        <div className="max-w-4xl mx-auto space-y-6">
+          {/*<PageHeader />*/}
+          <LitterStats litters={littersWithBreeds} />
+          <FilterControls
+            search={search}
+            setSearch={setSearch}
+            filter={filter}
+            setFilter={setFilter}
+          />
+          <LittersList litters={filteredLitters} />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

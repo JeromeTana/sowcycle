@@ -7,6 +7,7 @@ import { PregnantSowsSection } from "@/components/Dashboard/PregnantSowsSection"
 import { UpcomingEvents } from "@/components/Dashboard/UpcomingEvents";
 import { StatsCard } from "@/components/Sow/SowStats";
 import { Heart, PawPrint, PiggyBank } from "lucide-react";
+import TopBar from "@/components/TopBar";
 
 export default function Page() {
   const { breededSows, pregnantSowsCount, pigletsCount, isLoading, error } =
@@ -28,24 +29,27 @@ export default function Page() {
   }
 
   return (
-    <div className="space-y-8">
-      <DashboardHeader />
-      <div className="grid grid-cols-2 gap-4">
-        <StatsCard
-          icon={Heart}
-          title="แม่พันธุ์ตั้งครรภ์"
-          value={pregnantSowsCount}
-          iconColor="text-pink-500"
-        />
-        <StatsCard
-          icon={PiggyBank}
-          title="ลูกสุกรขุน"
-          value={pigletsCount}
-          iconColor="text-pink-500"
-        />
+    <>
+      <TopBar title="หน้าหลัก" />
+      <div className="space-y-8">
+        {/*<DashboardHeader />*/}
+        <div className="grid grid-cols-2 gap-4">
+          <StatsCard
+            icon={Heart}
+            title="แม่พันธุ์ตั้งครรภ์"
+            value={pregnantSowsCount}
+            iconColor="text-pink-500"
+          />
+          <StatsCard
+            icon={PiggyBank}
+            title="ลูกสุกรขุน"
+            value={pigletsCount}
+            iconColor="text-pink-500"
+          />
+        </div>
+        <UpcomingEvents />
+        <PregnantSowsSection sows={breededSows} />
       </div>
-      <UpcomingEvents />
-      <PregnantSowsSection sows={breededSows} />
-    </div>
+    </>
   );
 }

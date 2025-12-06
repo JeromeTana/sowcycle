@@ -34,7 +34,6 @@ export default function RootLayout({
           </div>
           <main className="flex-1 md:pl-64">
             <div className="max-w-screen-sm md:max-w-5xl min-h-screen mx-auto flex flex-col  p-4 md:pb-8 md:p-8">
-              <TopBar />
               {children}
             </div>
           </main>

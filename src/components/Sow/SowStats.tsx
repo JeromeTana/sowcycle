@@ -15,13 +15,15 @@ export function StatsCard({
   iconColor,
 }: StatsCardProps) {
   return (
-    <div className="flex items-center gap-4 bg-white rounded-xl p-4">
-      <Icon size={24} className={iconColor} />
-      <div>
+    <div className="flex flex-col bg-white rounded-xl p-4">
+      <div className="flex justify-between">
         <div className="text-sm text-muted-foreground">{title}</div>
-        <div className="text-2xl font-bold">
-          {value} <span className="text-sm">ตัว</span>
+        <div className="p-2 bg-gray-100 rounded-full">
+          <Icon size={20} className={iconColor} />
         </div>
+      </div>
+      <div className="text-2xl font-bold">
+        {value} <span className="text-sm">ตัว</span>
       </div>
     </div>
   );
