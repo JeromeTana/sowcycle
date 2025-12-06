@@ -59,6 +59,7 @@ export function AddToCalendarButton({
   return (
     <Button
       variant="outline"
+      size="lg"
       className={className}
       onClick={(e) => {
         e.preventDefault();
