@@ -6,12 +6,21 @@ import { DashboardHeader } from "@/components/Dashboard/Header";
 import { PregnantSowsSection } from "@/components/Dashboard/PregnantSowsSection";
 import { UpcomingEvents } from "@/components/Dashboard/UpcomingEvents";
 import { StatsCard } from "@/components/StatsCard";
-import { Heart, PawPrint, PiggyBank } from "lucide-react";
+import { Heart, PawPrint, Scale, Baby, Gauge, PiggyBank } from "lucide-react";
 import TopBar from "@/components/TopBar";
 
 export default function Page() {
-  const { breededSows, pregnantSowsCount, pigletsCount, isLoading, error } =
-    useDashboardData();
+  const {
+    breededSows,
+    pregnantSowsCount,
+    pigletsCount,
+    avgWeight,
+    avgPigletsBorn,
+    weightTrend,
+    pigletsTrend,
+    isLoading,
+    error,
+  } = useDashboardData();
 
   if (isLoading) {
     return <DashboardLoadingSkeleton />;
@@ -44,21 +53,27 @@ export default function Page() {
             icon={PiggyBank}
             title="ลูกสุกรขุน"
             value={pigletsCount}
-            iconColor="text-pink-500"
+            iconColor="text-orange-500"
           />
           <StatsCard
-            icon={Heart}
+            icon={Gauge}
             title="น้ำหนักขายเฉลี่ย"
-            value={pigletsCount}
-            iconColor="text-pink-500"
+            value={avgWeight}
+            unit="กก."
+            iconColor="text-blue-500"
             className="col-span-2"
+            trendData={weightTrend}
+            trendColor="#3b82f6"
           />
           <StatsCard
-            icon={Heart}
+            icon={Baby}
             title="จำนวนลูกเกิดเฉลี่ย"
-            value={pigletsCount}
-            iconColor="text-pink-500"
+            value={avgPigletsBorn}
+            unit="ตัว/ครอก"
+            iconColor="text-green-500"
             className="col-span-2"
+            trendData={pigletsTrend}
+            trendColor="#22c55e"
           />
         </div>
         <UpcomingEvents />

@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import React from "react";
+import { Area, AreaChart, ResponsiveContainer } from "recharts";
 
 interface StatsCardProps {
   icon: React.ComponentType<{ size?: number; className?: string }>;
@@ -8,6 +9,8 @@ interface StatsCardProps {
   iconColor: string;
   unit?: string;
   className?: string;
+  trendData?: { value: number }[];
+  trendColor?: string;
 }
 
 export function StatsCard({
@@ -17,17 +20,49 @@ export function StatsCard({
   iconColor,
   unit = "ตัว",
   className,
+  trendData,
+  trendColor = "#ec4899",
 }: StatsCardProps) {
   return (
-    <div className={cn("flex flex-col bg-white rounded-xl p-4", className)}>
-      <div className="flex justify-between">
-        <div className="text-sm text-muted-foreground">{title}</div>
-        <div className="p-2 bg-gray-100 rounded-full">
+    <div
+      className={cn(
+        "flex flex-col bg-white rounded-xl p-4 overflow-hidden relative",
+        className,
+      )}
+    >
+      <div className="flex justify-between items-start z-10">
+        <div className="text-sm text-muted-foreground font-medium">{title}</div>
+        <div className="p-2 bg-gray-50 rounded-full">
           <Icon size={20} className={iconColor} />
         </div>
       </div>
-      <div className="text-2xl font-bold">
-        {value} <span className="text-sm">{unit}</span>
+
+      <div className="flex gap-4">
+        <div className="mt-2 z-10">
+          <div className="text-2xl font-bold">
+            {value}{" "}
+            <span className="text-sm font-normal text-muted-foreground">
+              {unit}
+            </span>
+          </div>
+        </div>
+
+        {trendData && trendData.length > 0 && (
+          <div className="h-12 pointer-events-none flex-1">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={trendData}>
+                <Area
+                  type="monotone"
+                  dataKey="value"
+                  stroke={trendColor}
+                  fill="none"
+                  strokeWidth={2}
+                  isAnimationActive={false}
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        )}
       </div>
     </div>
   );

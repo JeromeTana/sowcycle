@@ -48,6 +48,55 @@ export function useDashboardData() {
       }, 0);
   }, [litters]);
 
+  const avgWeight = useMemo(() => {
+    const validLitters = litters.filter(
+      (l) => l.avg_weight !== undefined && l.avg_weight > 0,
+    );
+    if (validLitters.length === 0) return 0;
+    const total = validLitters.reduce((sum, l) => sum + (l.avg_weight || 0), 0);
+    return Number((total / validLitters.length).toFixed(2));
+  }, [litters]);
+
+  const avgPigletsBorn = useMemo(() => {
+    const validLitters = litters.filter(
+      (l) => l.piglets_born_count !== undefined && l.piglets_born_count > 0,
+    );
+    if (validLitters.length === 0) return 0;
+    const total = validLitters.reduce(
+      (sum, l) => sum + (l.piglets_born_count || 0),
+      0,
+    );
+    return Number((total / validLitters.length).toFixed(1));
+  }, [litters]);
+
+  const weightTrend = useMemo(() => {
+    return litters
+      .filter((l) => l.avg_weight && l.avg_weight > 0 && l.sold_at)
+      .sort(
+        (a, b) =>
+          new Date(a.sold_at!).getTime() - new Date(b.sold_at!).getTime(),
+      )
+      .slice(-6) // Last 6 records
+      .map((l) => ({
+        date: l.sold_at,
+        value: l.avg_weight,
+      }));
+  }, [litters]);
+
+  const pigletsTrend = useMemo(() => {
+    return litters
+      .filter((l) => l.piglets_born_count && l.birth_date)
+      .sort(
+        (a, b) =>
+          new Date(a.birth_date!).getTime() - new Date(b.birth_date!).getTime(),
+      )
+      .slice(-6)
+      .map((l) => ({
+        date: l.birth_date,
+        value: l.piglets_born_count,
+      }));
+  }, [litters]);
+
   const isLoading = sowsLoading || boarsLoading || littersLoading;
   const error = sowsError || boarsError || littersError;
 
@@ -58,6 +107,10 @@ export function useDashboardData() {
     breededSows,
     pregnantSowsCount,
     pigletsCount,
+    avgWeight,
+    avgPigletsBorn,
+    weightTrend,
+    pigletsTrend,
     isLoading,
     error,
   };

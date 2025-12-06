@@ -21,6 +21,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { Loader, Eye, EyeOff, Sprout, PiggyBank } from "lucide-react";
+import Image from "next/image";
 
 const loginSchema = z.object({
   username: z
@@ -60,23 +61,8 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-8">
-        {/* Logo and Title */}
-        <div className="text-center space-y-4">
-          <div className="flex justify-center">
-            <div className="w-16 h-16 bg-pink-500 rounded-full flex items-center justify-center">
-              <PiggyBank className="w-8 h-8 text-white" />
-            </div>
-          </div>
-          <div>
-            <h1 className="text-3xl font-bold">Welcome to SowCycle</h1>
-            <p className="text-muted-foreground mt-2">
-              Note everything about your sows
-            </p>
-          </div>
-        </div>
-
         {/* Auth Card */}
-        <Card className="border-0 bg-white/80 backdrop-blur-sm">
+        <div className="border-0 bg-white rounded-3xl">
           {/* <CardHeader className="space-y-1 pb-4">
             <CardTitle className="text-center text-gray-800">
               {isSignUp ? "Create Account" : "Welcome Back"}
@@ -87,11 +73,33 @@ export default function LoginPage() {
                 : "Sign in to your account to continue"}
             </CardDescription>
           </CardHeader> */}
-          <CardContent className="p-6">
+          <CardContent className="py-8 px-4">
+            {/* Logo and Title */}
+            <div className="text-center space-y-6 mb-8">
+              <div className="flex justify-center">
+                <Image
+                  src="/logo.svg"
+                  alt="SowCycle Logo"
+                  width={64}
+                  height={64}
+                  className="rounded-2xl"
+                />
+              </div>
+              <div>
+                {isSignUp ? (
+                  <h1 className="text-3xl font-bold">Create Account</h1>
+                ) : (
+                  <h1 className="text-3xl font-bold">Login to SowCycle</h1>
+                )}
+                {/*<p className="text-muted-foreground mt-2"an>
+                  Note everything about your sows
+                </p>*/}
+              </div>
+            </div>
             {isSignUp ? <SignupForm /> : <LoginForm />}
 
             {/* Toggle between login and signup */}
-            <div className="mt-6 text-center">
+            {/*<div className="mt-6 text-center">
               <p className="text-sm text-gray-600">
                 {isSignUp
                   ? "Already have an account?"
@@ -101,15 +109,23 @@ export default function LoginPage() {
                   onClick={() => setIsSignUp(!isSignUp)}
                   className="text-pink-500 hover:text-pink-600 font-medium underline"
                 >
-                  {isSignUp ? "Sign in" : "Sign up"}
+                  {isSignUp ? "Login" : "Create an account"}
                 </button>
               </p>
-            </div>
+            </div>*/}
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setIsSignUp(!isSignUp)}
+              className="w-full rounded-full h-11 mt-2 text-pink-500 border border-pink-500 hover:text-pink-600 font-medium"
+            >
+              {isSignUp ? "Login" : "Create an account"}
+            </Button>
           </CardContent>
-        </Card>
+        </div>
 
         {/* Footer */}
-        <div className="text-center text-sm text-pink-100">
+        <div className="text-center text-sm text-muted-foreground">
           <p>
             By continuing, you agree to our Terms of Service and Privacy Policy
           </p>
@@ -152,14 +168,14 @@ const LoginForm = () => {
           name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-gray-700 font-medium">
+              <FormLabel className="text-muted-foreground font-medium">
                 Email Address
               </FormLabel>
               <FormControl>
                 <Input
                   type="email"
                   placeholder="yourname@example.com"
-                  className="h-11 border-gray-200 focus:border-pink-500 focus:ring-pink-500"
+                  className="h-11 rounded-xl border-gray-200 focus:border-pink-500 focus:ring-pink-500"
                   {...field}
                 />
               </FormControl>
@@ -173,7 +189,7 @@ const LoginForm = () => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-gray-700 font-medium">
+              <FormLabel className="text-muted-foreground font-medium">
                 Password
               </FormLabel>
               <FormControl>
@@ -181,7 +197,7 @@ const LoginForm = () => {
                   <Input
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
-                    className="h-11 border-gray-200 focus:border-pink-500 focus:ring-pink-500 pr-10"
+                    className="h-11 rounded-xl border-gray-200 focus:border-pink-500 focus:ring-pink-500 pr-10"
                     {...field}
                   />
                   <button
@@ -215,7 +231,7 @@ const LoginForm = () => {
         <Button
           disabled={form.formState.isSubmitting}
           type="submit"
-          className="w-full h-11 bg-pink-500 hover:bg-pink-600 text-white font-medium"
+          className="w-full rounded-full h-11 bg-pink-500 hover:bg-pink-600 text-white font-medium"
         >
           {form.formState.isSubmitting ? (
             <>
@@ -223,7 +239,7 @@ const LoginForm = () => {
               Signing in...
             </>
           ) : (
-            "Sign In"
+            "Login"
           )}
         </Button>
       </form>
@@ -290,14 +306,14 @@ const SignupForm = () => {
           name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-gray-700 font-medium">
+              <FormLabel className="text-muted-foreground font-medium">
                 Email Address
               </FormLabel>
               <FormControl>
                 <Input
                   type="email"
                   placeholder="yourname@example.com"
-                  className="h-11 border-gray-200 focus:border-pink-500 focus:ring-pink-500"
+                  className="h-11 rounded-xl border-gray-200 focus:border-pink-500 focus:ring-pink-500"
                   {...field}
                 />
               </FormControl>
@@ -311,7 +327,7 @@ const SignupForm = () => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-gray-700 font-medium">
+              <FormLabel className="text-muted-foreground font-medium">
                 Password
               </FormLabel>
               <FormControl>
@@ -319,7 +335,7 @@ const SignupForm = () => {
                   <Input
                     type={showPassword ? "text" : "password"}
                     placeholder="Create a strong password"
-                    className="h-11 border-gray-200 focus:border-pink-500 focus:ring-pink-500 pr-10"
+                    className="h-11 rounded-xl border-gray-200 focus:border-pink-500 focus:ring-pink-500 pr-10"
                     {...field}
                   />
                   <button
@@ -345,7 +361,7 @@ const SignupForm = () => {
           name="repeatedPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-gray-700 font-medium">
+              <FormLabel className="text-muted-foreground font-medium">
                 Confirm Password
               </FormLabel>
               <FormControl>
@@ -353,7 +369,7 @@ const SignupForm = () => {
                   <Input
                     type={showRepeatPassword ? "text" : "password"}
                     placeholder="Repeat your password"
-                    className="h-11 border-gray-200 focus:border-pink-500 focus:ring-pink-500 pr-10"
+                    className="h-11 rounded-xl border-gray-200 focus:border-pink-500 focus:ring-pink-500 pr-10"
                     {...field}
                   />
                   <button
@@ -385,7 +401,7 @@ const SignupForm = () => {
         <Button
           disabled={disabled}
           type="submit"
-          className="w-full h-11 bg-pink-500 hover:bg-pink-600 text-white font-medium"
+          className="w-full rounded-full h-11 bg-pink-500 hover:bg-pink-600 text-white font-medium"
         >
           {form.formState.isSubmitting ? (
             <>
@@ -393,7 +409,7 @@ const SignupForm = () => {
               Creating account...
             </>
           ) : (
-            "Create Account"
+            "Create an account"
           )}
         </Button>
       </form>
