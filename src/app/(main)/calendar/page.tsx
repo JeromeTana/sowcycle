@@ -3,6 +3,7 @@
 import React, { useState, useMemo, useCallback } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { AlertTriangle } from "lucide-react";
 import { isSameDay } from "date-fns";
 import { cn } from "@/lib/utils";
@@ -107,7 +108,18 @@ export default function CalendarPage() {
           </div>
 
           <div className="lg:col-span-2">
-            {!loading && (
+            {loading ? (
+              <div className="space-y-8">
+                <div className="space-y-4">
+                  <Skeleton className="h-8 w-48" />
+                  <Skeleton className="h-32 w-full rounded-xl" />
+                </div>
+                <div className="space-y-4">
+                  <Skeleton className="h-8 w-48" />
+                  <Skeleton className="h-32 w-full rounded-xl" />
+                </div>
+              </div>
+            ) : (
               <div className="space-y-8">
                 {selectedDateEvents.farrow.length > 0 && (
                   <div>

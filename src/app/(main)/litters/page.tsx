@@ -213,22 +213,41 @@ function EmptyState() {
 
 function LoadingState() {
   return (
-    <div className="min-h-screen">
-      <div className="max-w-4xl mx-auto space-y-4">
-        <div className="space-y-2">
-          <Skeleton className="h-8 w-48" />
-          <Skeleton className="h-4 w-64" />
+    <>
+      {/* TopBar Skeleton */}
+      <div className="grid grid-cols-3 w-full items-center mb-4">
+        <div className="flex"></div>
+        <div className="flex justify-center">
+          <Skeleton className="h-7 w-24" />
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          <Skeleton className="h-20 w-full" />
-          <Skeleton className="h-20 w-full" />
+        <div className="flex justify-end">
+          <Skeleton className="h-10 w-10 rounded-full" />
         </div>
-        <Skeleton className="h-10 w-full" />
-        {Array.from({ length: 5 }).map((_, i) => (
-          <Skeleton key={i} className="h-32 w-full" />
-        ))}
       </div>
-    </div>
+
+      <div className="min-h-screen">
+        <div className="max-w-4xl mx-auto space-y-6">
+          {/* LitterStats Skeleton */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <Skeleton className="h-[140px] rounded-xl" />
+            <Skeleton className="h-[140px] rounded-xl" />
+          </div>
+
+          {/* FilterControls Skeleton */}
+          <div className="flex gap-2">
+            <Skeleton className="h-10 w-full rounded-full" />
+            <Skeleton className="h-10 w-32 rounded-full" />
+          </div>
+
+          {/* LittersList Skeleton */}
+          <div className="space-y-4">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <Skeleton key={i} className="h-48 w-full rounded-xl" />
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 

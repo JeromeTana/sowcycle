@@ -60,7 +60,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="w-full max-w-md space-y-8">
+      <div className="w-full max-w-md space-y-6">
         {/* Auth Card */}
         <div className="border-0 bg-white rounded-3xl">
           {/* <CardHeader className="space-y-1 pb-4">
@@ -115,9 +115,9 @@ export default function LoginPage() {
             </div>*/}
             <Button
               type="button"
-              variant="outline"
+              variant="ghost"
               onClick={() => setIsSignUp(!isSignUp)}
-              className="w-full rounded-full h-11 mt-2 text-pink-500 border border-pink-500 hover:text-pink-600 font-medium"
+              className="w-full rounded-full h-11 mt-2 text-pink-500 hover:text-pink-600 font-medium"
             >
               {isSignUp ? "Login" : "Create an account"}
             </Button>
@@ -236,7 +236,7 @@ const LoginForm = () => {
           {form.formState.isSubmitting ? (
             <>
               <Loader className="animate-spin w-4 h-4 mr-2" />
-              Signing in...
+              Logging in
             </>
           ) : (
             "Login"

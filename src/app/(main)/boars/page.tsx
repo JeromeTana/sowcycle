@@ -70,18 +70,36 @@ export default function BoarsPage() {
 
   if (isLoading) {
     return (
-      <div className="space-y-4">
-        <div className="flex justify-between">
-          <Skeleton className="w-48 h-8" />
+      <>
+        {/* TopBar Skeleton */}
+        <div className="grid grid-cols-3 w-full items-center mb-4">
+          <div className="flex"></div>
+          <div className="flex justify-center">
+            <Skeleton className="h-7 w-24" />
+          </div>
+          <div className="flex justify-end">
+            <Skeleton className="h-10 w-10 rounded-full" />
+          </div>
         </div>
-        <div className="flex gap-2">
-          <Skeleton className="w-2/3 h-10" />
-          <Skeleton className="w-1/3 h-10" />
+
+        <div className="space-y-4 mb-20">
+          {/* Search and Filter Skeleton */}
+          <div className="flex gap-2">
+            <Skeleton className="h-10 w-full rounded-full" />
+            <Skeleton className="h-10 w-32 rounded-full" />
+          </div>
+
+          {/* BoarList Skeleton */}
+          <div className="space-y-4">
+            {[...Array(3)].map((_, i) => (
+              <Skeleton key={i} className="h-32 w-full rounded-xl" />
+            ))}
+          </div>
         </div>
-        <Skeleton className="h-32 w-full" />
-        <Skeleton className="h-32 w-full" />
-        <Skeleton className="h-32 w-full" />
-      </div>
+
+        {/* FAB Skeleton */}
+        <Skeleton className="h-14 w-14 rounded-full fixed bottom-24 right-4" />
+      </>
     );
   }
 
