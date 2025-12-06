@@ -1,13 +1,7 @@
 "use client";
 
 import React from "react";
-import {
-  Home,
-  Calendar,
-  PiggyBank,
-  Dna,
-  Fence,
-} from "lucide-react";
+import { Home, Calendar, PiggyBank, Dna, Fence } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -15,7 +9,7 @@ export default function Navigation() {
   const pathname = usePathname();
 
   return (
-    <div className="sticky bottom-0 left-0 right-0 w-full z-50 flex items-center justify-center py-2 px-4 bg-white/80 backdrop-blur border-t border-gray-200">
+    <div className="fixed bottom-0 left-0 right-0 w-full z-50 flex items-center justify-center py-2 px-4 bg-white/80 backdrop-blur border-t border-gray-200">
       <nav className="grid grid-cols-5 gap-6">
         <Link
           href="/"

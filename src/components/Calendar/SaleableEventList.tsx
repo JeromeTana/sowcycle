@@ -30,12 +30,12 @@ export const SaleableEventList: React.FC<SaleableEventListProps> = ({
       <p className="pt-6 pb-4 font-bold text-lg">
         ลูกสุกรพร้อมขาย {`(${events.length})`}
       </p>
-      <div className="space-y-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {events.map((event) => (
           <Link
             href={`/litters/${event.litterId}`}
             key={event.id}
-            className="p-6 rounded-xl bg-white block hover:shadow-md transition-shadow"
+            className="p-6 rounded-xl bg-white block hover:shadow-md transition-shadow border border-gray-100"
           >
             <div className="flex items-center gap-2">
               <Banknote className="text-green-600" />

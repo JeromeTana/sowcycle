@@ -2,12 +2,10 @@ import type { Metadata } from "next";
 import "../globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import Loader from "@/components/Loader";
-import {
-  notoSansThaiFont,
-  sarabunFont,
-} from "@/utils/fonts";
+import { notoSansThaiFont, sarabunFont } from "@/utils/fonts";
 import Navigation from "@/components/Navigation";
 import TopBar from "@/components/TopBar";
+import Sidebar from "@/components/Sidebar";
 
 export const metadata: Metadata = {
   title: "Home - SowCycle",
@@ -25,11 +23,20 @@ export default function RootLayout({
         className={`${notoSansThaiFont.variable} ${sarabunFont.variable}`}
         suppressHydrationWarning
       >
-        <main className="max-w-screen-sm min-h-screen m-auto flex flex-col gap-2 p-2 pb-8">
-          <TopBar />
-          {children}
-        </main>
-        <Navigation />
+        <div className="flex min-h-screen bg-gray-50/50">
+          <div className="hidden md:block fixed inset-y-0 z-50 w-64">
+            <Sidebar />
+          </div>
+          <main className="flex-1 md:pl-64">
+            <div className="max-w-screen-sm md:max-w-5xl min-h-screen mx-auto flex flex-col gap-4 p-4 pb-24 md:pb-8 md:p-8">
+              <TopBar />
+              {children}
+            </div>
+          </main>
+        </div>
+        <div className="md:hidden fixed bottom-0 left-0 right-0">
+          <Navigation />
+        </div>
         <Toaster />
         <Loader />
       </body>
