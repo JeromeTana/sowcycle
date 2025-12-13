@@ -24,10 +24,17 @@ export function useLitterData() {
       setIsLoading(true);
       setError(null);
 
-      const littersData = await getAllLitters();
+      const littersPromise = getAllLitters();
+      const breedsPromise = !breeds.length
+        ? getAllBoars()
+        : Promise.resolve(null);
 
-      if (!breeds.length) {
-        const breedsData = await getAllBoars();
+      const [littersData, breedsData] = await Promise.all([
+        littersPromise,
+        breedsPromise,
+      ]);
+
+      if (breedsData) {
         setBreeds(breedsData);
       }
 

@@ -46,7 +46,9 @@ export default function Navigation() {
               key={item.href}
               href={item.href}
               className={`flex flex-col items-center justify-center py-2 transition-colors ${
-                isActive ? "text-pink-500" : "text-gray-600 hover:text-pink-500"
+                isActive
+                  ? "text-pink-500"
+                  : "text-gray-600 md:hover:text-pink-500"
               }`}
             >
               <item.icon size={24} />

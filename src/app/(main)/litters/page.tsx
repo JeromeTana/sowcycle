@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import LitterCard from "@/components/Litter/Card";
+import { FadeIn } from "@/components/animations/FadeIn";
 import { useLitterData } from "@/hooks/useLitterData";
 import { useLitterFilters } from "@/hooks/useLitterFilters";
 import { Litter } from "@/types/litter";
@@ -185,11 +186,9 @@ function LittersList({ litters }: { litters: any[] }) {
   return (
     <div className="space-y-4">
       {litters.map((litter, index) => (
-        <LitterCard
-          key={litter.id}
-          litter={litter}
-          index={litters.length - index}
-        />
+        <FadeIn key={litter.id} delay={index * 0.1}>
+          <LitterCard litter={litter} index={litters.length - index} />
+        </FadeIn>
       ))}
     </div>
   );
