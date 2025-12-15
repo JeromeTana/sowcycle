@@ -7,9 +7,11 @@ import { Button } from "../ui/button";
 import {
   Check,
   ChevronRight,
+  Heart,
   Milk,
   PiggyBank,
   Plus,
+  X,
 } from "lucide-react";
 
 import { FarrowForm, NewBreedingForm } from "../Breeding/Form";
@@ -44,9 +46,16 @@ export default function SowCard({ sow }: { sow: Sow }) {
         <CardContent className="p-4 pb-2">
           {/* Header */}
           <div className="flex items-center justify-between mb-4">
-            <h3 className={cn("text-xl font-bold", 
-              sow.is_available ? "text-black" : " text-pink-500"
-            )}>
+            <h3
+              className={cn(
+                "text-xl font-bold",
+                !sow.is_active
+                  ? "text-gray-400"
+                  : isPregnant
+                  ? " text-pink-500"
+                  : "text-black"
+              )}
+            >
               {sow.name}
             </h3>
             <ChevronRight size={20} className="text-gray-300" />
@@ -63,29 +72,38 @@ export default function SowCard({ sow }: { sow: Sow }) {
           </div> */}
 
           {/* Status Info */}
-          <div className="flex items-start gap-5 mb-4">
+          <div className="flex items-start gap-4">
             <div
               className={cn(
                 "p-2 rounded-2xl flex items-center justify-center w-12 h-12 bg-gray-100",
                 isPregnant ? " text-pink-500" : " text-gray-400"
               )}
             >
-              <PiggyBank size={24} strokeWidth={1.5} />
+              {!sow.is_active ? (
+                <X size={24} />
+              ) : isPregnant ? (
+                <Heart size={24} />
+              ) : (
+                <PiggyBank size={24} />
+              )}
             </div>
-            <div className="flex flex-col justify-center h-16">
+            <div className="flex flex-col justify-center">
               <p className="text-gray-400 text-sm mb-0.5">
-                กำหนดคลอด
+                {isPregnant ? "กำหนดคลอด" : "คลอดล่าสุด"}
               </p>
               <div className="flex flex-wrap items-baseline gap-2">
                 <span className="font-semibold text-gray-900">
                   {isPregnant
                     ? formatDateDisplay(latestBreeding.expected_farrow_date!)
-                    : (latestBreeding?.actual_farrow_date ? formatDateDisplay(latestBreeding.actual_farrow_date) : "พร้อมผสม")}
+                    : latestBreeding?.actual_farrow_date
+                    ? formatDateDisplay(latestBreeding.actual_farrow_date)
+                    : "ไม่มีประวัติคลอด"}
                 </span>
-                
+
                 {isPregnant && latestBreeding?.expected_farrow_date && (
                   <span className="text-sm font-medium text-pink-500">
-                    ภายใน {getDaysRemaining(latestBreeding.expected_farrow_date)} วัน
+                    ภายใน{" "}
+                    {getDaysRemaining(latestBreeding.expected_farrow_date)} วัน
                   </span>
                 )}
 
@@ -106,7 +124,10 @@ export default function SowCard({ sow }: { sow: Sow }) {
             <DialogComponent
               title="บันทึกการคลอด"
               dialogTriggerButton={
-                <Button size="lg" className="w-full h-12 text-base font-medium text-white bg-pink-500 rounded-full shadow-none hover:bg-pink-600">
+                <Button
+                  size="lg"
+                  className="w-full h-12 text-base font-medium text-white bg-pink-500 rounded-full shadow-none hover:bg-pink-600"
+                >
                   <Check className="w-5 h-5 mr-2" /> บันทึกการคลอด
                 </Button>
               }
@@ -122,7 +143,7 @@ export default function SowCard({ sow }: { sow: Sow }) {
           </div>
         ) : (
           <div className="w-full">
-             <DialogComponent
+            <DialogComponent
               title="เพิ่มประวัติผสม"
               dialogTriggerButton={
                 <Button
@@ -131,7 +152,7 @@ export default function SowCard({ sow }: { sow: Sow }) {
                   variant="secondary"
                   className="w-full h-12 text-base font-medium text-gray-900 bg-gray-100 rounded-full shadow-none hover:bg-gray-200"
                 >
-                  <Plus className="w-5 h-5 mr-2" /> เพิ่มประวัติ
+                  <Plus className="w-5 h-5 mr-2" /> เพิ่มประวัติผสม
                 </Button>
               }
             >

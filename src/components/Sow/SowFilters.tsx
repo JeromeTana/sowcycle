@@ -41,7 +41,7 @@ export function SowFilters({
             variant="outline"
             size="icon"
             className={cn(
-              isFilterActive && "bg-pink-500 hover:bg-pink-600 !text-white"
+              isFilterActive && "bg-pink-500 hover:bg-pink-600 !text-white", "p-6"
             )}
           >
             <ListFilter />

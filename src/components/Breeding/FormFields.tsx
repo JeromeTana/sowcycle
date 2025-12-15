@@ -78,7 +78,7 @@ export function BreedDateField({ form }: { form: any }) {
       control={form.control}
       name="breed_date"
       render={({ field }) => (
-        <FormItem className="w-full flex flex-col">
+        <FormItem className="flex flex-col w-full">
           <FormLabel>วันที่ผสม</FormLabel>
           <DatePicker field={field} />
           <FormMessage />
@@ -90,14 +90,15 @@ export function BreedDateField({ form }: { form: any }) {
 
 export function ExpectedFarrowDateField({ expectedDate }: { expectedDate?: Date }) {
   return (
-    <FormItem className="w-full flex flex-col">
+    <FormItem className="flex flex-col w-full">
       <FormLabel>กำหนดคลอด</FormLabel>
       <FormControl>
         <Button
+          size="lg"
           variant="outline"
           disabled
           className={cn(
-            "w-full pl-3 text-left font-normal",
+            "w-full px-4 text-left font-normal",
             !expectedDate && "text-muted-foreground"
           )}
         >
@@ -106,7 +107,7 @@ export function ExpectedFarrowDateField({ expectedDate }: { expectedDate?: Date 
           ) : (
             <span>เลือกวันที่ผสม</span>
           )}
-          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+          <CalendarIcon className="w-4 h-4 ml-auto opacity-50" />
         </Button>
       </FormControl>
       <FormMessage />
@@ -139,7 +140,7 @@ export function PigletCountFields({ form, totalBornPiglets, totalPiglets }: {
     <>
       <div className="space-y-2">
         <p className="text-sm">จำนวนลูกเกิด</p>
-        <div className="border p-4 rounded-lg space-y-4 bg-gray-50">
+        <div className="p-4 space-y-4 border rounded-lg bg-gray-50">
           <div className="flex gap-2">
             <FormField
               control={form.control}
@@ -229,7 +230,7 @@ export function AbortionToggle({ form, show }: { form: any; show: boolean }) {
       control={form.control}
       name="is_aborted"
       render={({ field }) => (
-        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+        <FormItem className="flex flex-row items-center justify-between p-4 border rounded-lg">
           <div className="space-y-0.5">
             <FormLabel className="text-base">แท้งลูก</FormLabel>
           </div>
