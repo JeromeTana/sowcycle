@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { ChevronDown, Filter, Search } from "lucide-react";
+import { ChevronDown, Filter, ListFilter, Search } from "lucide-react";
 import { FilterOption, FILTER_OPTIONS } from "@/hooks/useSowFilters";
 
 interface SowFiltersProps {
@@ -39,12 +39,13 @@ export function SowFilters({
         <DropdownMenuTrigger asChild>
           <Button
             variant="outline"
+            size="icon"
             className={cn(
-              isFilterActive && "bg-pink-500 hover:bg-pink-600 !text-white",
-              "rounded-full",
+              isFilterActive && "bg-pink-500 hover:bg-pink-600 !text-white"
             )}
           >
-            <Filter /> {filter.label} <ChevronDown />
+            <ListFilter />
+            {/* {filter.label} <ChevronDown /> */}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
@@ -58,7 +59,7 @@ export function SowFilters({
                 className={cn(
                   isSelected
                     ? "bg-black text-white hover:!bg-black hover:!text-white"
-                    : "bg-white text-black",
+                    : "bg-white text-black"
                 )}
               >
                 {option.label}

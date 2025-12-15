@@ -26,7 +26,7 @@ export default function SowPage() {
 
   if (error) {
     return (
-      <div className="text-center text-red-500 p-8">
+      <div className="p-8 text-center text-red-500">
         เกิดข้อผิดพลาด: {error}
       </div>
     );
@@ -36,8 +36,8 @@ export default function SowPage() {
     <>
       <TopBar title="แม่พันธุ์" />
       <SowPageHeader />
-      <div className="space-y-6 mb-20">
-        <SowStats stats={stats} />
+      <div className="mb-20 space-y-6">
+        {/* <SowStats stats={stats} /> */}
         <SowFilters
           search={search}
           setSearch={setSearch}
