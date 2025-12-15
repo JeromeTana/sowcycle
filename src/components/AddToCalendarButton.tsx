@@ -59,7 +59,7 @@ export function AddToCalendarButton({
 
   return (
     <Button
-      variant="outline"
+      variant="secondary"
       size="lg"
       className={className}
       onClick={(e) => {
