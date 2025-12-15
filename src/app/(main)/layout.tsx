@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "../globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import Loader from "@/components/Loader";
-import { notoSansThaiFont, sarabunFont } from "@/utils/fonts";
+import { notoSansThaiFont, sarabunFont, interFont } from "@/utils/fonts";
 import Navigation from "@/components/Navigation";
 import TopBar from "@/components/TopBar";
 import Sidebar from "@/components/Sidebar";
@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${notoSansThaiFont.variable} ${sarabunFont.variable}`}
+        className={`${notoSansThaiFont.variable} ${sarabunFont.variable} ${interFont.variable}`}
         suppressHydrationWarning
       >
         <div className="flex min-h-screen bg-gray-50/50">

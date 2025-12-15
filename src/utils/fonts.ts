@@ -1,4 +1,10 @@
-import { IBM_Plex_Sans_Thai, IBM_Plex_Sans_Thai_Looped, Kanit, Mitr, Sarabun } from "next/font/google";
+import { IBM_Plex_Sans_Thai, IBM_Plex_Sans_Thai_Looped, Kanit, Mitr, Sarabun, Inter } from "next/font/google";
+
+export const interFont = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 export const kanitFont = Kanit({
   subsets: ["latin"],
