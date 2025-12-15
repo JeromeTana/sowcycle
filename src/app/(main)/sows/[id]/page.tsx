@@ -55,9 +55,9 @@ export default function SowPage({ params }: SowPageProps) {
 
   return (
     <>
-      <TopBar title="แม่พันธุ์" hasBack />
+      <TopBar title={sow.name} hasBack />
       <div className="space-y-8">
-        <SowHeader sow={sow} />
+        {/* <SowHeader sow={sow} /> */}
 
         <SowDetailsCard
           sow={sow}

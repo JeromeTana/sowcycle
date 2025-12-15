@@ -7,6 +7,7 @@ import { Button } from "../ui/button";
 import {
   Check,
   ChevronRight,
+  Dna,
   Heart,
   Milk,
   PiggyBank,
@@ -61,15 +62,25 @@ export default function SowCard({ sow }: { sow: Sow }) {
             <ChevronRight size={20} className="text-gray-300" />
           </div>
 
-          {/* Tags
-          <div className="flex flex-wrap gap-2 mb-8">
+          {/* Tags */}
+          <div className="flex flex-wrap gap-2">
             {sow.breasts_count > 0 && (
-              <div className="flex items-center gap-2 px-4 py-1.5 bg-gray-100 rounded-full text-gray-500 text-sm font-medium">
+              <div className="flex mb-8 items-center gap-2 px-4 py-1.5 bg-secondary rounded-full text-gray-500 text-sm font-medium">
                 <Milk size={16} />
                 <span>{sow.breasts_count} เต้า</span>
               </div>
             )}
-          </div> */}
+            {sow.breed_ids &&
+              sow.breed_ids.map((breed) => (
+                <div
+                  key={breed}
+                  className="flex mb-8 items-center gap-2 px-4 py-1.5 bg-accent rounded-full text-gray-500 text-sm font-medium"
+                >
+                  <Dna size={16} />
+                  <span>{breed}</span>
+                </div>
+              ))}
+          </div>
 
           {/* Status Info */}
           <div className="flex items-start gap-4">

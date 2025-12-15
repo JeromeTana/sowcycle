@@ -42,7 +42,7 @@ export default function SowDetailsCard({
   return (
     <Card>
       <CardHeader>
-        <p className="font-bold">รายละเอียด</p>
+        {/* <p className="font-bold">รายละเอียด</p> */}
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-6">
@@ -63,12 +63,12 @@ export default function SowDetailsCard({
           >
             {sow.is_active ? (
               sow.is_available ? (
-                <span className="text-emerald-600 inline-flex items-center gap-1">
+                <span className="inline-flex items-center gap-1 text-emerald-600">
                   พร้อมผสม
                 </span>
               ) : (
                 <span className="flex items-center gap-2">
-                  <span className="text-pink-500 inline-flex items-center gap-1">
+                  <span className="inline-flex items-center gap-1 text-pink-500">
                     ตั้งครรภ์
                   </span>
                   <CountdownBadge date={breedings[0]?.expected_farrow_date} />
@@ -126,7 +126,7 @@ export default function SowDetailsCard({
                   key={breed?.id || index}
                   title={breed.breed}
                   dialogTriggerButton={
-                    <div className="flex flex-col gap-4 bg-gray-100 p-3 rounded-lg cursor-pointer">
+                    <div className="flex flex-col gap-4 p-3 bg-gray-100 rounded-lg cursor-pointer">
                       <InfoIcon
                         label="สายพันธุ์"
                         icon={<Dna size={22} />}
@@ -141,7 +141,7 @@ export default function SowDetailsCard({
                 </DialogComponent>
               ))
             ) : (
-              <div className="flex flex-col gap-4 bg-gray-100 p-3 rounded-lg">
+              <div className="flex flex-col gap-4 p-3 bg-gray-100 rounded-lg">
                 <InfoIcon
                   label="สายพันธุ์"
                   icon={<Dna size={22} />}
@@ -154,7 +154,7 @@ export default function SowDetailsCard({
           </div>
 
           {validBreedingsCount > 1 && (
-            <div className="flex flex-col gap-4 bg-gray-100 p-4 rounded-lg">
+            <div className="flex flex-col gap-4 p-4 bg-gray-100 rounded-lg">
               <div className="flex flex-col gap-2">
                 <p className="text-sm text-muted-foreground">
                   จำนวนลูกเกิดรอดเฉลี่ย
@@ -168,7 +168,7 @@ export default function SowDetailsCard({
           )}
 
           {validLittersCount > 1 && (
-            <div className="flex flex-col gap-4 bg-gray-100 p-4 rounded-lg">
+            <div className="flex flex-col gap-4 p-4 bg-gray-100 rounded-lg">
               <div className="flex flex-col gap-2">
                 <p className="text-sm text-muted-foreground">
                   น้ำหนักลูกหมูเฉลี่ย

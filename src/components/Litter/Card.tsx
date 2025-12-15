@@ -51,7 +51,7 @@ const PigletCountBadges = ({
 );
 
 // Helper component for breed display
-const BreedBadges = ({
+export const BreedBadges = ({
   breasts_count,
   breeds,
 }: {

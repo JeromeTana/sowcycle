@@ -16,7 +16,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="relative w-full">
         {StartIcon && (
-          <div className="absolute left-1.5 top-1/2 transform -translate-y-1/2">
+          <div className="absolute transform -translate-y-1/2 left-4 top-1/2">
             <StartIcon size={18} className="text-muted-foreground" />
           </div>
         )}
@@ -24,8 +24,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           type={type}
           className={cn(
             "flex h-12 w-full rounded-full border border-input bg-background py-2 px-4 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50",
-            startIcon ? "pl-8" : "",
-            endIcon ? "pr-8" : "",
+            startIcon ? "pl-10" : "",
+            endIcon ? "pr-10" : "",
             className,
           )}
           ref={ref}
