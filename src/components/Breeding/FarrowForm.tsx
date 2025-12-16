@@ -96,7 +96,7 @@ export function FarrowForm({ breeding, setDialog }: FarrowFormProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <div className="w-full flex gap-2 bg-gray-50 border p-4 rounded-lg">
+        <div className="flex w-full gap-2 p-4 border rounded-lg bg-gray-50">
           <BreedDateField form={form} />
           <ExpectedFarrowDateField expectedDate={expectedFarrowDate} />
         </div>
@@ -113,13 +113,13 @@ export function FarrowForm({ breeding, setDialog }: FarrowFormProps) {
           </>
         )}
 
-        <div className="w-full flex justify-between">
-          <DeleteDialog
+        <div className="flex justify-between w-full">
+          {/* <DeleteDialog
             isSubmitting={form.formState.isSubmitting}
             breeding={breeding}
             setDialog={setDialog}
-          />
-          <Button disabled={form.formState.isSubmitting} type="submit">
+          /> */}
+          <Button disabled={form.formState.isSubmitting} size="lg" type="submit" className="w-full">
             {form.formState.isSubmitting ? (
               <>
                 <Loader className="animate-spin" />

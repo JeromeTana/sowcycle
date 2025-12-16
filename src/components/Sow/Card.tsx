@@ -51,7 +51,7 @@ export default function SowCard({ sow }: { sow: Sow }) {
               className={cn(
                 "text-xl font-bold",
                 !sow.is_active
-                  ? "text-gray-400"
+                  ? "text-muted-foreground"
                   : isPregnant
                   ? " text-pink-500"
                   : "text-black"
@@ -59,7 +59,7 @@ export default function SowCard({ sow }: { sow: Sow }) {
             >
               {sow.name}
             </h3>
-            <ChevronRight size={20} className="text-gray-300" />
+            <ChevronRight size={20} className="text-muted-foreground" />
           </div>
 
           {/* Tags */}
@@ -87,7 +87,7 @@ export default function SowCard({ sow }: { sow: Sow }) {
             <div
               className={cn(
                 "p-2 rounded-2xl flex items-center justify-center w-12 h-12 bg-gray-100",
-                isPregnant ? " text-pink-500" : " text-gray-400"
+                isPregnant ? " text-pink-500" : " text-muted-foreground"
               )}
             >
               {!sow.is_active ? (
@@ -99,7 +99,7 @@ export default function SowCard({ sow }: { sow: Sow }) {
               )}
             </div>
             <div className="flex flex-col justify-center">
-              <p className="text-gray-400 text-sm mb-0.5">
+              <p className="text-muted-foreground text-sm mb-0.5">
                 {isPregnant ? "กำหนดคลอด" : "คลอดล่าสุด"}
               </p>
               <div className="flex flex-wrap items-baseline gap-2">
@@ -119,7 +119,7 @@ export default function SowCard({ sow }: { sow: Sow }) {
                 )}
 
                 {!isPregnant && latestBreeding?.actual_farrow_date && (
-                  <span className="text-sm text-gray-400">
+                  <span className="text-sm text-muted-foreground">
                     {getDaysDiff(latestBreeding.actual_farrow_date)} วันที่แล้ว
                   </span>
                 )}

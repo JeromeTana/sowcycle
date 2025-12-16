@@ -1,5 +1,19 @@
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
@@ -30,7 +44,7 @@ export function SowSelectField({ form, disabled }: FormFieldProps) {
             disabled={disabled}
           >
             <FormControl>
-              <SelectTrigger>
+              <SelectTrigger className="w-full h-12 rounded-full">
                 <SelectValue placeholder="เลือกแม่พันธุ์" />
               </SelectTrigger>
             </FormControl>
@@ -88,7 +102,11 @@ export function BreedDateField({ form }: { form: any }) {
   );
 }
 
-export function ExpectedFarrowDateField({ expectedDate }: { expectedDate?: Date }) {
+export function ExpectedFarrowDateField({
+  expectedDate,
+}: {
+  expectedDate?: Date;
+}) {
   return (
     <FormItem className="flex flex-col w-full">
       <FormLabel>กำหนดคลอด</FormLabel>
@@ -131,7 +149,11 @@ export function ActualFarrowDateField({ form }: { form: any }) {
   );
 }
 
-export function PigletCountFields({ form, totalBornPiglets, totalPiglets }: {
+export function PigletCountFields({
+  form,
+  totalBornPiglets,
+  totalPiglets,
+}: {
   form: any;
   totalBornPiglets: number;
   totalPiglets: number;
@@ -235,10 +257,7 @@ export function AbortionToggle({ form, show }: { form: any; show: boolean }) {
             <FormLabel className="text-base">แท้งลูก</FormLabel>
           </div>
           <FormControl>
-            <Switch
-              checked={field.value}
-              onCheckedChange={field.onChange}
-            />
+            <Switch checked={field.value} onCheckedChange={field.onChange} />
           </FormControl>
         </FormItem>
       )}

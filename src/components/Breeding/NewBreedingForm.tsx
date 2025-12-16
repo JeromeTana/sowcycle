@@ -77,7 +77,7 @@ export function NewBreedingForm({ id, breeding, setDialog }: NewBreedingFormProp
         <SowSelectField form={form} disabled={!!breeding?.id} />
         <BoarSelectField form={form} disabled={form.formState.isSubmitting} />
 
-        <div className="w-full flex gap-2">
+        <div className="flex w-full gap-2">
           <BreedDateField form={form} />
           <ExpectedFarrowDateField expectedDate={expectedFarrowDate} />
         </div>
@@ -93,7 +93,7 @@ export function NewBreedingForm({ id, breeding, setDialog }: NewBreedingFormProp
               setDialog={setDialog}
             />
           )}
-          <Button disabled={form.formState.isSubmitting} type="submit">
+          <Button disabled={form.formState.isSubmitting} size="lg" className="w-full" type="submit">
             {form.formState.isSubmitting ? (
               <>
                 <Loader className="animate-spin" />

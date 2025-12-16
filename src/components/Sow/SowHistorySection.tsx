@@ -59,7 +59,7 @@ export default function SowHistorySection({
         breedings.length === 0 || breedings[0]?.actual_farrow_date ? (
           <NewBreedingForm id={sow?.id?.toString()} />
         ) : (
-          <div className="text-center text-gray-400 py-20 text-sm">
+          <div className="py-20 text-sm text-center text-gray-400">
             ไม่สามารถเพิ่มประวัติผสม
             <br />
             เนื่องจากยังไม่มีการบันทึกวันคลอดของการผสมล่าสุด
@@ -103,7 +103,7 @@ const BreedingRecordContent = ({ breedings }: { breedings: Breeding[] }) => {
   return (
     <div>
       {breedings?.length > 0 ? (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
           {breedings.map((breeding, index) => (
             <BreedingCard
               index={breedings.length - index}
@@ -113,7 +113,7 @@ const BreedingRecordContent = ({ breedings }: { breedings: Breeding[] }) => {
           ))}
         </div>
       ) : (
-        <div className="text-center pt-20 text-muted-foreground">
+        <div className="pt-20 text-center text-muted-foreground">
           ไม่มีประวัติผสม
         </div>
       )}
@@ -135,7 +135,7 @@ const MedicalRecordContent = ({ medicalRecords }: { medicalRecords: MedicalRecor
           ))}
         </div>
       ) : (
-        <div className="text-center pt-20 text-muted-foreground">
+        <div className="pt-20 text-center text-muted-foreground">
           ไม่มีประวัติใช้ยา
         </div>
       )}

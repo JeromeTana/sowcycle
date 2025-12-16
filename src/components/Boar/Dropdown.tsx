@@ -65,9 +65,9 @@ export default function BreedDropdown({
 
   if (loading) {
     return (
-      <Button variant="outline" className="w-full justify-between" disabled>
+      <Button variant="outline" size="lg" className="justify-between w-full" disabled>
         กำลังโหลด...
-        <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        <ChevronDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
       </Button>
     );
   }
@@ -76,11 +76,12 @@ export default function BreedDropdown({
     return (
       <Button
         variant="outline"
-        className="w-full justify-between text-red-500"
+        size="lg" 
+        className="justify-between w-full text-red-500 rounded-full"
         disabled
       >
         {error}
-        <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        <ChevronDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
       </Button>
     );
   }
@@ -91,7 +92,7 @@ export default function BreedDropdown({
       onValueChange={handleValueChange}
       disabled={disabled}
     >
-      <SelectTrigger className="w-full">
+      <SelectTrigger className="w-full h-12 rounded-full">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
@@ -166,7 +167,7 @@ export function MultiBreedDropdown({
 
   if (loading) {
     return (
-      <div className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm">
+      <div className="flex items-center justify-between w-full h-10 px-3 py-2 text-sm border rounded-full border-input bg-background">
         <div className="flex items-center gap-2">กำลังโหลด...</div>
       </div>
     );
@@ -174,7 +175,7 @@ export function MultiBreedDropdown({
 
   if (error) {
     return (
-      <div className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm text-red-500">
+      <div className="flex items-center justify-between w-full h-10 px-3 py-2 text-sm text-red-500 border rounded-full border-input bg-background">
         {error}
       </div>
     );
@@ -186,6 +187,7 @@ export function MultiBreedDropdown({
         <PopoverTrigger asChild>
           <Button
             variant="outline"
+            size="lg"
             role="combobox"
             aria-expanded={open}
             className={cn(
@@ -195,13 +197,13 @@ export function MultiBreedDropdown({
             disabled={disabled}
           >
             {getSelectedBreedsText()}
-            <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            <ChevronDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-full p-0" align="start">
-          <div className="max-h-60 overflow-auto">
+          <div className="overflow-auto max-h-60">
             {breeds.length === 0 ? (
-              <div className="p-4 text-center text-sm text-muted-foreground">
+              <div className="p-4 text-sm text-center text-muted-foreground">
                 ไม่มีข้อมูลสายพันธุ์
               </div>
             ) : (
@@ -209,7 +211,7 @@ export function MultiBreedDropdown({
                 {breeds.map((breed) => (
                   <div
                     key={breed.id}
-                    className="flex items-center space-x-2 rounded-sm px-2 py-1.5 hover:bg-accent cursor-pointer"
+                    className="flex items-center space-x-2 rounded-full px-2 py-1.5 hover:bg-accent cursor-pointer"
                     onClick={() => handleToggleBreed(breed.id)}
                   >
                     <Checkbox
@@ -237,11 +239,11 @@ export function MultiBreedDropdown({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="ml-1 h-auto p-0 text-muted-foreground hover:text-foreground"
+                  className="h-auto p-0 ml-1 text-muted-foreground hover:text-foreground"
                   onClick={() => handleRemoveBreed(breedId)}
                   disabled={disabled}
                 >
-                  <X className="h-3 w-3" />
+                  <X className="w-3 h-3" />
                 </Button>
               </Badge>
             );
