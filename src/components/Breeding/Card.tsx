@@ -62,7 +62,7 @@ export default function BreedingCard({
               <div className="flex flex-wrap items-center gap-2">
                 <h3
                   className={cn(
-                    "text-xl font-semibold",
+                    "text-lg font-semibold",
                     isPregnant ? "text-pink-500" : "text-black"
                   )}
                 >

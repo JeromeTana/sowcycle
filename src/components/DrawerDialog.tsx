@@ -64,7 +64,7 @@ export default function DialogComponent({
       <DrawerContent>
         <DrawerHeader className="text-left">
           <DrawerTitle>
-            <p className="font-bold">{title}</p>
+            <p className="text-lg font-semibold">{title}</p>
           </DrawerTitle>
         </DrawerHeader>
         <div className="max-h-[80vh] overflow-auto px-4 pb-4">{enhancedChildren}</div>

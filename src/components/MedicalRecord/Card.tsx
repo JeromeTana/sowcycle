@@ -22,7 +22,7 @@ export default function MedicalRecordCard({
           <CardContent className="p-4 space-y-6">
             <div className="flex justify-between">
               <div className="flex flex-col">
-                <h3 className="text-xl font-semibold">ใช้ยาครั้งที่ {index}</h3>
+                <h3 className="text-lg font-semibold">ใช้ยาครั้งที่ {index}</h3>
                 <p className="text-sm text-muted-foreground">
                   {formatDate(medicalRecord.use_at)}
                 </p>
