@@ -23,7 +23,7 @@ type FilterType = "all" | "breeding" | "medical";
 export default function SowHistorySection({
   sow,
   breedings,
-  medicalRecords
+  medicalRecords,
 }: SowHistorySectionProps) {
   const [filter, setFilter] = useState<FilterType>("all");
 
@@ -38,7 +38,9 @@ export default function SowHistorySection({
       value: "breeding",
       content:
         breedings.length === 0 || breedings[0]?.actual_farrow_date ? (
-          <NewBreedingForm id={sow?.id?.toString()} />
+          <div className="mt-2">
+            <NewBreedingForm id={sow?.id?.toString()} />
+          </div>
         ) : (
           <div className="py-20 text-sm text-center text-gray-400">
             ไม่สามารถเพิ่มประวัติผสม
@@ -56,7 +58,11 @@ export default function SowHistorySection({
         </>
       ),
       value: "medical",
-      content: <MedicalRecordForm id={sow?.id?.toString()} />,
+      content: (
+        <div className="mt-4">
+          <MedicalRecordForm id={sow?.id?.toString()} />
+        </div>
+      ),
     },
   ];
 
@@ -157,6 +163,16 @@ export default function SowHistorySection({
           </div>
         )}
       </div>
+      <DialogComponent
+        title=""
+        dialogTriggerButton={
+          <div className="fixed z-10 flex items-center gap-2 p-4 text-white rounded-full shadow cursor-pointer bg-primary bottom-24 right-4">
+            <Plus size={22} />
+          </div>
+        }
+      >
+        <TabsComponent tabOptions={tabFormOptions} />
+      </DialogComponent>
     </div>
   );
 }

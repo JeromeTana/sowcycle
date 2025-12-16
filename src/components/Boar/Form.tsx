@@ -168,7 +168,7 @@ export default function BoarForm({ editingBoar, setDialog }: any) {
               </div>
             </DialogComponent>
           )}
-          <Button disabled={form.formState.isSubmitting} type="submit">
+          <Button disabled={form.formState.isSubmitting}  size="lg" className="w-full" type="submit">
             {form.formState.isSubmitting ? (
               <>
                 <Loader className="animate-spin" />

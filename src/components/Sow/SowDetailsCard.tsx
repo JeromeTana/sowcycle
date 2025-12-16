@@ -7,10 +7,21 @@ import { formatDate } from "@/lib/utils";
 import { Sow } from "@/types/sow";
 import { Breeding } from "@/types/breeding";
 import { Litter } from "@/types/litter";
-import { ArrowDown, Cake, Dna, HandHeart, Heart, Milk, PiggyBank, X } from "lucide-react";
+import {
+  ArrowDown,
+  Cake,
+  Dna,
+  HandHeart,
+  Heart,
+  Milk,
+  Pen,
+  PiggyBank,
+  X,
+} from "lucide-react";
 import DialogComponent from "../DrawerDialog";
 import BoarDetailsCard from "../Boar/DetailsCard";
 import { Button } from "../ui/button";
+import SowForm from "./Form";
 
 interface SowDetailsCardProps {
   sow: Sow;
@@ -130,7 +141,7 @@ export default function SowDetailsCard({
                         <InfoIcon
                           label="สายพันธุ์"
                           icon={<Dna size={22} />}
-                          className="text-muted-foreground !bg-white"
+                          className="text-secondary !bg-white"
                         >
                           {breed?.breed || "ไม่ระบุ"}
                         </InfoIcon>
@@ -152,8 +163,17 @@ export default function SowDetailsCard({
                 </div>
               )}
             </div>
+            <DialogComponent
+              title="แก้ไขแม่พันธุ์"
+              dialogTriggerButton={
+                <Button size="lg" variant={"secondary"} className="w-full">
+                  <Pen /> แก้ไขแม่พันธุ์
+                </Button>
+              }
+            >
+              <SowForm editingSow={sow} />
+            </DialogComponent>
           </div>
-          <Button></Button>
         </CardContent>
       </Card>
       {validBreedingsCount > 1 && (

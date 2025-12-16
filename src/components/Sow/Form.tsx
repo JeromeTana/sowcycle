@@ -208,7 +208,7 @@ export default function SowForm({ editingSow, setDialog }: any) {
           control={form.control}
           name="is_active"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+            <FormItem className="flex flex-row items-center justify-between p-4 border rounded-lg">
               <div className="space-y-0.5">
                 <FormLabel className="text-base">ยังอยู่</FormLabel>
               </div>
@@ -221,7 +221,7 @@ export default function SowForm({ editingSow, setDialog }: any) {
             </FormItem>
           )}
         />
-        <div className="w-full flex justify-between gap-2">
+        <div className="flex justify-between w-full gap-2">
           {sow.id && (
             <DialogComponent
               title="ลบแม่พันธุ์"
@@ -246,7 +246,7 @@ export default function SowForm({ editingSow, setDialog }: any) {
               </div>
             </DialogComponent>
           )}
-          <Button disabled={form.formState.isSubmitting} type="submit">
+          <Button disabled={form.formState.isSubmitting} type="submit" size="lg" className="w-full">
             {form.formState.isSubmitting ? (
               <>
                 <Loader className="animate-spin" />

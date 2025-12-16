@@ -157,13 +157,13 @@ export function LitterForm({ litter, setDialog }: LitterFormProps) {
           )}
         />
 
-        <div className="w-full flex justify-between">
+        <div className="flex justify-between w-full">
           <DeleteDialog
             isSubmitting={form.formState.isSubmitting}
             litter={litter}
             setDialog={setDialog}
           />
-          <Button disabled={form.formState.isSubmitting} type="submit">
+          <Button disabled={form.formState.isSubmitting}  size="lg" className="w-full" type="submit">
             {form.formState.isSubmitting ? (
               <>
                 <Loader className="animate-spin" />

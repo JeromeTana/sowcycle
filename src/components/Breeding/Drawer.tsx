@@ -51,7 +51,7 @@ export default function BreedingDrawer({
   };
 
   return (
-    <div className="pb-4 space-y-6">
+    <div className="space-y-4">
       {/* Header Title */}
       {/* <div className="flex flex-wrap items-center gap-2">
         <h3
@@ -199,7 +199,7 @@ export default function BreedingDrawer({
       </div>
 
       {/* Actions */}
-      <div className="flex flex-col gap-2 pt-2">
+      <div className="flex flex-col gap-2">
         {isPregnant && (
           <>
             <DialogComponent
@@ -235,7 +235,7 @@ export default function BreedingDrawer({
             </Button>
           }
         >
-          <NewBreedingForm breeding={breeding} />
+          <FarrowForm breeding={breeding} />
         </DialogComponent>
       </div>
     </div>

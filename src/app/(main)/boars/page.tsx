@@ -72,33 +72,33 @@ export default function BoarsPage() {
     return (
       <>
         {/* TopBar Skeleton */}
-        <div className="grid grid-cols-3 w-full items-center mb-4">
+        <div className="grid items-center w-full grid-cols-3 mb-4">
           <div className="flex"></div>
           <div className="flex justify-center">
-            <Skeleton className="h-7 w-24" />
+            <Skeleton className="w-24 h-7" />
           </div>
           <div className="flex justify-end">
-            <Skeleton className="h-10 w-10 rounded-full" />
+            <Skeleton className="w-10 h-10 rounded-full" />
           </div>
         </div>
 
-        <div className="space-y-4 mb-20">
+        <div className="space-y-4">
           {/* Search and Filter Skeleton */}
           <div className="flex gap-2">
-            <Skeleton className="h-10 w-full rounded-full" />
-            <Skeleton className="h-10 w-32 rounded-full" />
+            <Skeleton className="w-full h-10 rounded-full" />
+            <Skeleton className="w-32 h-10 rounded-full" />
           </div>
 
           {/* BoarList Skeleton */}
           <div className="space-y-4">
             {[...Array(3)].map((_, i) => (
-              <Skeleton key={i} className="h-32 w-full rounded-xl" />
+              <Skeleton key={i} className="w-full h-32 rounded-xl" />
             ))}
           </div>
         </div>
 
         {/* FAB Skeleton */}
-        <Skeleton className="h-14 w-14 rounded-full fixed bottom-24 right-4" />
+        <Skeleton className="fixed rounded-full h-14 w-14 bottom-24 right-4" />
       </>
     );
   }
@@ -109,14 +109,14 @@ export default function BoarsPage() {
       <DialogComponent
         title="เพิ่มสายพันธุ์ใหม่"
         dialogTriggerButton={
-          <div className="flex items-center gap-2 rounded-full bg-primary text-white p-4 cursor-pointer fixed z-10 bottom-24 right-4 shadow">
+          <div className="fixed z-10 flex items-center gap-2 p-4 text-white rounded-full shadow cursor-pointer bg-primary bottom-24 right-4">
             <Plus size={22} />
           </div>
         }
       >
         <BoarForm />
       </DialogComponent>
-      <div className="space-y-4 mb-20">
+      <div className="space-y-4">
         <div className="flex gap-2">
           <Input
             value={search}
