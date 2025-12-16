@@ -55,14 +55,14 @@ export default function BreedingCard({
     <DialogComponent
       title={`ผสมครั้งที่ ${index}`}
       dialogTriggerButton={
-        <Card className="w-full overflow-hidden text-left transition-all bg-white border-none shadow-none cursor-pointer rounded-2xl hover:bg-gray-50">
+        <Card className="w-full overflow-hidden text-left transition-all bg-white border-none shadow-none cursor-pointer rounded-2xl md:hover:bg-gray-50">
           <CardContent className="p-4 pb-2">
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
               <div className="flex flex-wrap items-center gap-2">
                 <h3
                   className={cn(
-                    "text-xl font-bold",
+                    "text-xl font-semibold",
                     isPregnant ? "text-pink-500" : "text-black"
                   )}
                 >
@@ -166,11 +166,11 @@ export default function BreedingCard({
 
               {/* Piglets Info (Only if completed) */}
               {isCompleted && (
-                <div className="flex items-start gap-4 p-4 !mb-2 bg-gray-50 rounded-xl">
+                <div className="flex items-start gap-4 p-4 !mb-2 bg-secondary rounded-xl">
                   <div className="flex items-center justify-center w-12 h-12 p-2 bg-white text-muted-foreground rounded-2xl">
                     <PiggyBank size={24} />
                   </div>
-                  <div className="flex flex-col justify-center w-full">
+                  <div className="flex flex-col justify-center">
                     <p className="text-muted-foreground text-sm mb-0.5">จำนวนลูกเกิดรอด</p>
                     <div className="flex items-center gap-2">
                       <span className="text-lg font-semibold text-gray-900">
@@ -199,7 +199,7 @@ export default function BreedingCard({
                   dialogTriggerButton={
                     <Button
                       size="lg"
-                      className="w-full h-12 text-base font-medium text-white bg-pink-500 rounded-full shadow-none hover:bg-pink-600"
+                      className="w-full h-12 text-base font-medium text-white bg-pink-500 rounded-full shadow-none md:hover:bg-pink-600"
                     >
                       <Check className="w-5 h-5 mr-2" /> บันทึกการคลอด
                     </Button>
@@ -213,7 +213,7 @@ export default function BreedingCard({
                 <AddToCalendarButton
                   title={`กำหนดคลอด`}
                   startDate={new Date(breeding.expected_farrow_date)}
-                  className="w-full h-12 text-base font-medium text-gray-900 bg-gray-100 border-none rounded-full shadow-none hover:bg-gray-200"
+                  className="w-full h-12 text-base font-medium text-gray-900 bg-gray-100 border-none rounded-full shadow-none md:hover:bg-gray-200"
                 />
               </div>
             </CardFooter>
