@@ -10,6 +10,7 @@ import SowDetailsCard from "@/components/Sow/SowDetailsCard";
 import SowHistorySection from "@/components/Sow/SowHistorySection";
 import { LoadingPageSkeleton } from "@/components/Sow/LoadingSkeleton";
 import TopBar from "@/components/TopBar";
+import TabsComponent from "@/components/TabsComponent";
 
 interface SowPageProps {
   params: Promise<{ id: string }>;
@@ -57,21 +58,35 @@ export default function SowPage({ params }: SowPageProps) {
     <>
       <TopBar title={sow.name} hasBack />
       <div className="space-y-8">
-        {/* <SowHeader sow={sow} /> */}
-
-        <SowDetailsCard
-          sow={sow}
-          sowBreeds={sowBreeds}
-          breedings={breedings}
-          litters={litters}
-          averagePigletsBornCount={averagePigletsBornCount}
-          averageWeightChart={averageWeightChart}
-        />
-
-        <SowHistorySection
-          sow={sow}
-          breedings={breedings}
-          medicalRecords={medicalRecords}
+        <TabsComponent
+          tabOptions={[
+            {
+              label: "รายละเอียด",
+              value: "details",
+              content: (
+                <SowDetailsCard
+                  sow={sow}
+                  sowBreeds={sowBreeds}
+                  breedings={breedings}
+                  litters={litters}
+                  averagePigletsBornCount={averagePigletsBornCount}
+                  averageWeightChart={averageWeightChart}
+                />
+              ),
+              default: true,
+            },
+            {
+              label: "บันทึกประวัติ",
+              value: "history",
+              content: (
+                <SowHistorySection
+                  sow={sow}
+                  breedings={breedings}
+                  medicalRecords={medicalRecords}
+                />
+              ),
+            },
+          ]}
         />
       </div>
     </>
