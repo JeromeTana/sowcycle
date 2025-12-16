@@ -2,13 +2,15 @@
 
 import { Dna, Milk } from "lucide-react";
 import { useBoarStore } from "@/stores/useBoarStore";
+import { cn } from "@/lib/utils";
 
 interface BreedTagsProps {
   breedIds?: number[];
   breastsCount?: number;
+  className?: string;
 }
 
-export function BreedTags({ breedIds, breastsCount }: BreedTagsProps) {
+export function SowTags({ breedIds, breastsCount, className }: BreedTagsProps) {
   const { boars } = useBoarStore();
 
   const hasBreeds = breedIds && breedIds.length > 0;
@@ -19,7 +21,12 @@ export function BreedTags({ breedIds, breastsCount }: BreedTagsProps) {
   return (
     <>
       {hasBreasts && (
-        <div className="flex items-center gap-2 px-2 py-1 text-xs font-medium bg-white rounded-full text-muted-foreground">
+        <div
+          className={cn(
+            "flex items-center gap-2 px-2 py-1 text-xs font-medium bg-white rounded-full text-muted-foreground",
+            className
+          )}
+        >
           <Milk size={14} />
           <span>{`${breastsCount} เต้า`}</span>
         </div>
@@ -32,7 +39,10 @@ export function BreedTags({ breedIds, breastsCount }: BreedTagsProps) {
           return (
             <div
               key={breedId}
-              className="flex items-center gap-2 px-2 py-1 text-xs font-medium bg-white rounded-full text-muted-foreground"
+              className={cn(
+                "flex items-center gap-2 px-2 py-1 text-xs font-medium bg-white rounded-full text-muted-foreground",
+                className
+              )}
             >
               <Dna size={16} />
               <span>{breedName}</span>

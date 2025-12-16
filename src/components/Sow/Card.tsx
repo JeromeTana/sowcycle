@@ -19,7 +19,7 @@ import { FarrowForm, NewBreedingForm } from "../Breeding/Form";
 import DialogComponent from "../DrawerDialog";
 import { cn } from "@/lib/utils";
 import { AddToCalendarButton } from "../AddToCalendarButton";
-import { BreedTags } from "./BreedTags";
+import { SowTags } from "./SowTags";
 
 export default function SowCard({ sow }: { sow: Sow }) {
   const latestBreeding = sow.breedings?.[0];
@@ -64,14 +64,12 @@ export default function SowCard({ sow }: { sow: Sow }) {
           </div>
 
           {/* Tags */}
-          <div className="flex flex-wrap gap-2">
-            {sow.breasts_count > 0 && (
-              <div className="flex mb-8 items-center gap-2 px-4 py-1.5 bg-secondary rounded-full text-gray-500 text-sm font-medium">
-                <Milk size={16} />
-                <span>{sow.breasts_count} เต้า</span>
-              </div>
-            )}
-            <BreedTags breedIds={sow.breed_ids} />
+          <div className="flex flex-wrap gap-2 mb-4">
+            <SowTags
+              breedIds={sow.breed_ids}
+              breastsCount={sow.breasts_count}
+              className="bg-secondary px-4 py-1.5 text-sm"
+            />
           </div>
 
           {/* Status Info */}

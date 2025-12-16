@@ -22,7 +22,7 @@ import { AddToCalendarButton } from "../AddToCalendarButton";
 import BoarDetailsCard from "../Boar/DetailsCard";
 import { DeleteDialog } from "./DeleteDialog";
 import { useMemo } from "react";
-import { BreedTags } from "../Sow/BreedTags";
+import { SowTags } from "../Sow/SowTags";
 
 interface ExtendedLitter extends Litter {
   sows: Sow | undefined;
@@ -112,7 +112,7 @@ export default function LitterDrawer({ litter, index }: LitterDrawerProps) {
                   {litter.sows.name}
                 </span>
                 <div className="flex flex-wrap gap-2 mt-2">
-                  <BreedTags
+                  <SowTags
                     breedIds={litter.sows.breed_ids}
                     breastsCount={litter.sows.breasts_count}
                   />
