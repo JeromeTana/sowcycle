@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import DialogComponent from "@/components/DialogComponent";
+import DialogComponent from "@/components/DrawerDialog";
 import TabsComponent from "@/components/TabsComponent";
 import BreedingCard from "@/components/Breeding/Card";
 import MedicalRecordCard from "@/components/MedicalRecord/Card";

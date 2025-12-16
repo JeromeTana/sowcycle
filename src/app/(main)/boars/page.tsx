@@ -2,7 +2,7 @@
 
 import BoarForm from "@/components/Boar/Form";
 import BoarList from "@/components/Boar/List";
-import DialogComponent from "@/components/DialogComponent";
+import DialogComponent from "@/components/DrawerDialog";
 import TopBar from "@/components/TopBar";
 import { Button } from "@/components/ui/button";
 import {

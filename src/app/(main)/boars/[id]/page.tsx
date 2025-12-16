@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { getBoarById } from "@/services/boar";
 import { useEffect, useState } from "react";
 
-import DialogComponent from "@/components/DialogComponent";
+import DialogComponent from "@/components/DrawerDialog";
 import { Dna, Pen } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useBoarStore } from "@/stores/useBoarStore";

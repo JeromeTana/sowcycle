@@ -1,6 +1,6 @@
 import { Boar } from "@/types/boar";
 import { Pen } from "lucide-react";
-import DialogComponent from "../DialogComponent";
+import DialogComponent from "../DrawerDialog";
 import { Button } from "../ui/button";
 import BoarForm from "./Form";
 

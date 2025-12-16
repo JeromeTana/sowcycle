@@ -3,7 +3,7 @@
 import { Boar } from "@/types/boar";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Dna } from "lucide-react";
-import DialogComponent from "../DialogComponent";
+import DialogComponent from "../DrawerDialog";
 import BoarDetailsCard from "./DetailsCard";
 import { Button } from "../ui/button";
 

@@ -4,7 +4,7 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import DialogComponent from "../DialogComponent";
+import DialogComponent from "../DrawerDialog";
 import { Button } from "../ui/button";
 import { Pen, Syringe, Activity, Calendar } from "lucide-react";
 import { MedicalRecordForm } from "./Form";

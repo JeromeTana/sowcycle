@@ -1,6 +1,6 @@
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Litter } from "@/types/litter";
-import DialogComponent from "../DialogComponent";
+import DialogComponent from "../DrawerDialog";
 import { Button } from "../ui/button";
 import {
   PiggyBank,

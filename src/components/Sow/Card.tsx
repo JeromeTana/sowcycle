@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 
 import { FarrowForm, NewBreedingForm } from "../Breeding/Form";
-import DialogComponent from "../DialogComponent";
+import DialogComponent from "../DrawerDialog";
 import { cn } from "@/lib/utils";
 import { AddToCalendarButton } from "../AddToCalendarButton";
 

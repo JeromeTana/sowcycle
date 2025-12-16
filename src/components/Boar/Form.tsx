@@ -20,7 +20,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/hooks/use-toast";
-import DialogComponent from "../DialogComponent";
+import DialogComponent from "../DrawerDialog";
 import { Check, Loader, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useLoading } from "@/stores/useLoading";

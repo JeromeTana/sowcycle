@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import DialogComponent from "@/components/DialogComponent";
+import DialogComponent from "@/components/DrawerDialog";
 import { useLitterStore } from "@/stores/useLitterStore";
 import { useSowStore } from "@/stores/useSowStore";
 import { deleteLitter } from "@/services/litter";

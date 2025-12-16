@@ -8,7 +8,7 @@ import { Sow } from "@/types/sow";
 import { Breeding } from "@/types/breeding";
 import { Litter } from "@/types/litter";
 import { Cake, Dna, HandHeart, Heart, Milk, PiggyBank, X } from "lucide-react";
-import DialogComponent from "../DialogComponent";
+import DialogComponent from "../DrawerDialog";
 import BoarDetailsCard from "../Boar/DetailsCard";
 
 interface SowDetailsCardProps {

@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Breeding } from "@/types/breeding";
-import DialogComponent from "../DialogComponent";
+import DialogComponent from "../DrawerDialog";
 import { Button } from "../ui/button";
 import {
   Check,

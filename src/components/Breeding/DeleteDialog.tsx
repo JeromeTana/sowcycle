@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import DialogComponent from "@/components/DialogComponent";
+import DialogComponent from "@/components/DrawerDialog";
 import { Trash } from "lucide-react";
 import { useBreedingOperations } from "@/hooks/useBreedingOperations";
 import { Breeding } from "@/types/breeding";
