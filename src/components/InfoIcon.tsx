@@ -19,7 +19,7 @@ export default function InfoIcon({
       <div
         className={cn(
           className,
-          "bg-gray-50 text-muted-foreground border p-2 rounded-lg"
+          "bg-muted text-muted-foreground p-3 rounded-xl"
         )}
       >
         {icon}

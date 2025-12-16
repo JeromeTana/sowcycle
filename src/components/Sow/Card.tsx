@@ -105,7 +105,8 @@ export default function SowCard({ sow }: { sow: Sow }) {
               <div className="flex flex-wrap items-baseline gap-2">
                 <span className="font-semibold text-gray-900">
                   {isPregnant
-                    ? formatDateDisplay(latestBreeding.expected_farrow_date!)
+                    ? latestBreeding.expected_farrow_date &&
+                      formatDateDisplay(latestBreeding.expected_farrow_date)
                     : latestBreeding?.actual_farrow_date
                     ? formatDateDisplay(latestBreeding.actual_farrow_date)
                     : "ไม่มีประวัติคลอด"}
