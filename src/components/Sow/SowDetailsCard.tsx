@@ -54,8 +54,8 @@ export default function SowDetailsCard({
   return (
     <div className="!mt-4 space-y-2">
       <Card>
-        <CardHeader>{/* <p className="font-bold">รายละเอียด</p> */}</CardHeader>
-        <CardContent>
+        {/* <CardHeader><p className="font-bold">รายละเอียด</p></CardHeader> */}
+        <CardContent className="pt-4">
           <div className="flex flex-col gap-6">
             <InfoIcon
               label="สถานะ"
