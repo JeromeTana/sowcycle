@@ -210,7 +210,7 @@ export function MedicalRecordForm({
           control={form.control}
           name="use_at"
           render={({ field }) => (
-            <FormItem className="w-full flex flex-col">
+            <FormItem className="flex flex-col w-full">
               <FormLabel>วันที่ใช้ยา</FormLabel>
               <DatePicker field={field} />
               <FormMessage />
@@ -227,7 +227,7 @@ export function MedicalRecordForm({
           {medicalRecord && (
             <DeleteDialog setDialog={setDialog} id={medicalRecord.id!} />
           )}
-          <Button disabled={form.formState.isSubmitting} type="submit">
+          <Button disabled={form.formState.isSubmitting} size="lg" className="w-full" type="submit">
             {form.formState.isSubmitting ? (
               <>
                 <Loader className="animate-spin" />

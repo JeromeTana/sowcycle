@@ -10,6 +10,7 @@ import { Litter } from "@/types/litter";
 import { ArrowDown, Cake, Dna, HandHeart, Heart, Milk, PiggyBank, X } from "lucide-react";
 import DialogComponent from "../DrawerDialog";
 import BoarDetailsCard from "../Boar/DetailsCard";
+import { Button } from "../ui/button";
 
 interface SowDetailsCardProps {
   sow: Sow;
@@ -152,6 +153,7 @@ export default function SowDetailsCard({
               )}
             </div>
           </div>
+          <Button></Button>
         </CardContent>
       </Card>
       {validBreedingsCount > 1 && (

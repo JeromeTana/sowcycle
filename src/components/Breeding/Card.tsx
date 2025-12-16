@@ -58,7 +58,7 @@ export default function BreedingCard({
         <Card className="w-full overflow-hidden text-left transition-all bg-white border-none shadow-none cursor-pointer rounded-2xl md:hover:bg-gray-50">
           <CardContent className="p-4 pb-2">
             {/* Header */}
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex justify-between mb-4">
               <div className="flex flex-wrap items-center gap-2">
                 <h3
                   className={cn(
