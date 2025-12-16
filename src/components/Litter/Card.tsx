@@ -91,10 +91,10 @@ export default function LitterCard({ litter, index }: LitterCardProps) {
                       {litter.piglets_born_count} ตัว
                     </span>
                     <div className="flex gap-1">
-                      <span className="bg-blue-500 text-white text-[10px] px-1.5 py-0.5 rounded-full">
+                      <span className="px-2 py-1 text-xs font-semibold text-white bg-blue-500 rounded-full">
                         ผู้ {litter.piglets_male_born_alive}
                       </span>
-                      <span className="bg-pink-500 text-white text-[10px] px-1.5 py-0.5 rounded-full">
+                      <span className="px-2 py-1 text-xs font-semibold text-white bg-pink-500 rounded-full">
                         เมีย {litter.piglets_female_born_alive}
                       </span>
                     </div>

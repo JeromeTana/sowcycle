@@ -15,7 +15,6 @@ import {
   Dna,
   Pencil,
   Trash2,
-  Milk,
 } from "lucide-react";
 import DialogComponent from "../DrawerDialog";
 import { LitterForm } from "./Form";
@@ -23,6 +22,7 @@ import { AddToCalendarButton } from "../AddToCalendarButton";
 import BoarDetailsCard from "../Boar/DetailsCard";
 import { DeleteDialog } from "./DeleteDialog";
 import { useMemo } from "react";
+import { BreedTags } from "../Sow/BreedTags";
 
 interface ExtendedLitter extends Litter {
   sows: Sow | undefined;
@@ -111,22 +111,11 @@ export default function LitterDrawer({ litter, index }: LitterDrawerProps) {
                 <span className="font-semibold text-gray-900">
                   {litter.sows.name}
                 </span>
-                <div className="flex gap-2 mt-2">
-                  <p className="inline-flex items-center gap-1 px-2 bg-white rounded-full">
-                    <Milk size={14} />
-                    {litter.sows.breasts_count
-                      ? `${litter.sows.breasts_count} เต้า`
-                      : "ไม่ระบุ"}
-                  </p>
-                  {litter.sows.breed_ids?.map((breedID, index) => (
-                    <p
-                      key={index}
-                      className="inline-flex items-center gap-1 px-2 bg-white rounded-full"
-                    >
-                      <Dna size={14} />
-                      {breedID}
-                    </p>
-                  ))}
+                <div className="flex flex-wrap gap-2 mt-2">
+                  <BreedTags
+                    breedIds={litter.sows.breed_ids}
+                    breastsCount={litter.sows.breasts_count}
+                  />
                 </div>
               </div>
             </div>
