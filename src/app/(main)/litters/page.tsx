@@ -73,9 +73,9 @@ export default function LittersPage() {
     <>
       <TopBar title="ครอกลูกหมู" />
       <div className="min-h-screen">
-        <div className="max-w-4xl mx-auto space-y-6">
+        <div className="max-w-4xl mx-auto space-y-4">
           {/*<PageHeader />*/}
-          <LitterStats litters={littersWithBreeds} />
+          {/* <LitterStats litters={littersWithBreeds} /> */}
           <FilterControls
             search={search}
             setSearch={setSearch}
@@ -93,7 +93,7 @@ function LitterStats({ litters }: { litters: any[] }) {
   const totalPiglets = calculateTotalPiglets(litters);
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+    <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
       <StatsCard
         icon={Fence}
         title="เกิดแล้วทั้งหมด"
@@ -136,7 +136,7 @@ function FilterControls({
           className="pl-10 rounded-full"
         />
         <Search
-          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
+          className="absolute transform -translate-y-1/2 left-3 top-1/2 text-muted-foreground"
           size={20}
         />
       </div>
@@ -184,7 +184,7 @@ function LittersList({ litters }: { litters: any[] }) {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       {litters.map((litter, index) => (
         <FadeIn key={litter.id} delay={index * 0.1}>
           <LitterCard litter={litter} index={litters.length - index} />
@@ -198,8 +198,8 @@ function EmptyState() {
   return (
     <Card>
       <CardContent className="p-8 text-center">
-        <Baby className="mx-auto text-gray-400 mb-4" size={48} />
-        <h3 className="text-lg font-medium text-gray-900 mb-2">
+        <Baby className="mx-auto mb-4 text-gray-400" size={48} />
+        <h3 className="mb-2 text-lg font-medium text-gray-900">
           ยังไม่มีข้อมูลลูกหมู
         </h3>
         <p className="text-muted-foreground">
@@ -214,34 +214,34 @@ function LoadingState() {
   return (
     <>
       {/* TopBar Skeleton */}
-      <div className="grid grid-cols-3 w-full items-center mb-4">
+      <div className="grid items-center w-full grid-cols-3 mb-4">
         <div className="flex"></div>
         <div className="flex justify-center">
-          <Skeleton className="h-7 w-24" />
+          <Skeleton className="w-24 h-7" />
         </div>
         <div className="flex justify-end">
-          <Skeleton className="h-10 w-10 rounded-full" />
+          <Skeleton className="w-10 h-10 rounded-full" />
         </div>
       </div>
 
       <div className="min-h-screen">
         <div className="max-w-4xl mx-auto space-y-6">
           {/* LitterStats Skeleton */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
             <Skeleton className="h-[140px] rounded-xl" />
             <Skeleton className="h-[140px] rounded-xl" />
           </div>
 
           {/* FilterControls Skeleton */}
           <div className="flex gap-2">
-            <Skeleton className="h-10 w-full rounded-full" />
-            <Skeleton className="h-10 w-32 rounded-full" />
+            <Skeleton className="w-full h-10 rounded-full" />
+            <Skeleton className="w-32 h-10 rounded-full" />
           </div>
 
           {/* LittersList Skeleton */}
           <div className="space-y-4">
             {Array.from({ length: 5 }).map((_, i) => (
-              <Skeleton key={i} className="h-48 w-full rounded-xl" />
+              <Skeleton key={i} className="w-full h-48 rounded-xl" />
             ))}
           </div>
         </div>
@@ -252,7 +252,7 @@ function LoadingState() {
 
 function ErrorState() {
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="flex items-center justify-center min-h-screen">
       <Card>
         <CardContent className="p-8 text-center">
           <p className="text-red-500">เกิดข้อผิดพลาดในการโหลดข้อมูล</p>

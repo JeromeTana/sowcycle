@@ -49,7 +49,7 @@ export default function SowCard({ sow }: { sow: Sow }) {
           <div className="flex items-center justify-between mb-4">
             <h3
               className={cn(
-                "text-xl font-bold",
+                "text-lg font-semibold",
                 !sow.is_active
                   ? "text-muted-foreground"
                   : isPregnant
