@@ -4,7 +4,7 @@ import { FadeIn } from "@/components/animations/FadeIn";
 
 export default function BoarList({ boars }: { boars: Boar[] }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-4">
+    <div className="flex flex-col items-center justify-center gap-2">
       {boars.length > 0 ? (
         boars.map((boar, index) => (
           <FadeIn key={index} delay={index * 0.1} className="w-full">

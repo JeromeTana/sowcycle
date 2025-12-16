@@ -2,10 +2,11 @@
 
 import { Boar } from "@/types/boar";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Dna } from "lucide-react";
+import { ChevronRight, Dna } from "lucide-react";
 import DialogComponent from "../DrawerDialog";
 import BoarDetailsCard from "./DetailsCard";
 import { Button } from "../ui/button";
+import BoarForm from "./Form";
 
 export default function BoarCard({ boar }: { boar: Boar }) {
   return (
@@ -14,21 +15,20 @@ export default function BoarCard({ boar }: { boar: Boar }) {
       dialogTriggerButton={
         <div className="w-full cursor-pointer">
           <Card>
-            <CardContent className="p-6">
-              <div className="flex gap-2">
-                <Dna />
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold">{boar.breed}</h3>
+                <ChevronRight size={20} className="text-muted-foreground" />
               </div>
-              <p className="text-muted-foreground mt-4">{boar.description || ""}</p>
-              <div className="w-full flex gap-2 justify-end mt-6">
-                <Button variant={"outline"}>ดูรายละเอียด</Button>
-              </div>
+              <p className="mt-4 text-muted-foreground">
+                {boar.description || "ไม่มีคำอธิบาย"}
+              </p>
             </CardContent>
           </Card>
         </div>
       }
     >
-      <BoarDetailsCard boar={boar} />
+      <BoarForm editingBoar={boar} />
     </DialogComponent>
   );
 }

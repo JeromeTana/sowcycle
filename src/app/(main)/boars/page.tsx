@@ -16,7 +16,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { getAllBoars } from "@/services/boar";
 import { useBoarStore } from "@/stores/useBoarStore";
-import { ChevronDown, Filter, Plus, Search } from "lucide-react";
+import { ChevronDown, Filter, ListFilter, Plus, Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 const filterSowOptions = [
@@ -125,19 +125,20 @@ export default function BoarsPage() {
             placeholder="ค้นหาด้วยชื่อสายพันธุ์"
             className="bg-white rounded-full"
           />
-          <DropdownMenu>
+          {/* <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant={"outline"}
+                size="icon"
                 className={cn(
                   JSON.stringify(filter.value) ===
                     JSON.stringify(filterSowOptions[0].value)
                     ? ""
                     : "bg-pink-500 hover:bg-pink-600 !text-white",
-                  "rounded-full",
+                  "size-12 rounded-full p-4",
                 )}
               >
-                <Filter /> {filter.label} <ChevronDown />
+                <ListFilter />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
@@ -158,7 +159,7 @@ export default function BoarsPage() {
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
-          </DropdownMenu>
+          </DropdownMenu> */}
         </div>
         <BoarList boars={filteredBoars} />
       </div>
