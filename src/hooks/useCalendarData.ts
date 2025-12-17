@@ -13,6 +13,8 @@ export interface FarrowEvent {
   daysUntilFarrow: number;
   isOverdue: boolean;
   actualFarrowDate?: Date;
+  boarBreed?: string;
+  sowBreasts?: number;
 }
 
 export interface SaleableEvent {
@@ -25,6 +27,9 @@ export interface SaleableEvent {
   isPastDue: boolean;
   farrowDate: Date;
   boarBreed: string;
+  pigletCount: number;
+  maleCount: number;
+  femaleCount: number;
 }
 
 export interface CalendarData {
@@ -61,6 +66,8 @@ export const useCalendarData = () => {
           actualFarrowDate: breeding.actual_farrow_date
             ? parseISO(breeding.actual_farrow_date)
             : undefined,
+          boarBreed: breeding.boars?.breed,
+          sowBreasts: (breeding as any).sows?.breasts_count,
         };
       });
     },
@@ -87,6 +94,9 @@ export const useCalendarData = () => {
             isPastDue: daysUntilSaleable < 0,
             farrowDate,
             boarBreed: litter.boars?.breed || "",
+            pigletCount: litter.piglets_born_count || 0,
+            maleCount: litter.piglets_male_born_alive || 0,
+            femaleCount: litter.piglets_female_born_alive || 0,
           };
         });
     },

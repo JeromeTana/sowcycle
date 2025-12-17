@@ -250,7 +250,7 @@ export default function LitterDrawer({ litter, index }: LitterDrawerProps) {
           title="แก้ไขข้อมูล"
           dialogTriggerButton={
             <Button
-              variant="outline"
+              variant="secondary"
               className="w-full h-12 text-base font-medium border-gray-200 rounded-full"
             >
               <Pencil className="w-4 h-4 mr-2" /> แก้ไขข้อมูล

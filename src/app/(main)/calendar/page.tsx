@@ -15,7 +15,7 @@ import TopBar from "@/components/TopBar";
 // Main component
 export default function CalendarPage() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(
-    new Date(),
+    new Date()
   );
   const { data, loading, error } = useCalendarData();
   const { farrowEvents, saleableEvents } = data;
@@ -26,10 +26,10 @@ export default function CalendarPage() {
 
     return {
       farrow: farrowEvents.filter((event) =>
-        isSameDay(event.expectedDate, selectedDate),
+        isSameDay(event.expectedDate, selectedDate)
       ),
       saleable: saleableEvents.filter((event) =>
-        isSameDay(event.saleableDate, selectedDate),
+        isSameDay(event.saleableDate, selectedDate)
       ),
     };
   }, [selectedDate, farrowEvents, saleableEvents]);
@@ -41,16 +41,16 @@ export default function CalendarPage() {
         farrowEvents.some((event) => isSameDay(event.expectedDate, date)),
       overdue: (date: Date) =>
         farrowEvents.some(
-          (event) => isSameDay(event.expectedDate, date) && event.isOverdue,
+          (event) => isSameDay(event.expectedDate, date) && event.isOverdue
         ),
       hasSaleableEvent: (date: Date) =>
         saleableEvents.some((event) => isSameDay(event.saleableDate, date)),
       saleablePastDue: (date: Date) =>
         saleableEvents.some(
-          (event) => isSameDay(event.saleableDate, date) && event.isPastDue,
+          (event) => isSameDay(event.saleableDate, date) && event.isPastDue
         ),
     }),
-    [farrowEvents, saleableEvents],
+    [farrowEvents, saleableEvents]
   );
 
   const handleDateSelect = useCallback((date: Date | undefined) => {
@@ -65,7 +65,7 @@ export default function CalendarPage() {
         <Card>
           <CardContent className="flex items-center justify-center h-64">
             <div className="text-center">
-              <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+              <AlertTriangle className="w-12 h-12 mx-auto mb-4 text-red-500" />
               <p className="text-red-600">{error}</p>
             </div>
           </CardContent>
@@ -80,7 +80,7 @@ export default function CalendarPage() {
       <div className="space-y-4">
         <div className="grid grid-cols-1 gap-8">
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-xl p-1">
+            <div className="p-1 bg-white rounded-xl">
               <Calendar
                 mode="single"
                 disabled={loading}
@@ -90,7 +90,7 @@ export default function CalendarPage() {
                 defaultMonth={new Date()}
                 className={cn(
                   "w-full flex justify-center",
-                  loading && "animate-pulse",
+                  loading && "animate-pulse"
                 )}
                 modifiers={calendarModifiers}
                 modifiersClassNames={{
@@ -99,9 +99,9 @@ export default function CalendarPage() {
                   overdue:
                     "bg-pink-500 text-white hover:bg-pink-600 hover:text-white",
                   hasSaleableEvent:
-                    "bg-green-500 text-white hover:bg-green-600 hover:text-white",
+                    "bg-lime-500 text-white hover:bg-lime-600 hover:text-white",
                   saleablePastDue:
-                    "bg-green-500 text-white hover:bg-green-600 hover:text-white",
+                    "bg-lime-500 text-white hover:bg-lime-600 hover:text-white",
                 }}
               />
             </div>
@@ -111,27 +111,30 @@ export default function CalendarPage() {
             {loading ? (
               <div className="space-y-8">
                 <div className="space-y-4">
-                  <Skeleton className="h-8 w-48" />
-                  <Skeleton className="h-32 w-full rounded-xl" />
+                  <Skeleton className="w-48 h-8" />
+                  <Skeleton className="w-full h-32 rounded-xl" />
                 </div>
                 <div className="space-y-4">
-                  <Skeleton className="h-8 w-48" />
-                  <Skeleton className="h-32 w-full rounded-xl" />
+                  <Skeleton className="w-48 h-8" />
+                  <Skeleton className="w-full h-32 rounded-xl" />
                 </div>
               </div>
             ) : (
-              <div className="space-y-8">
+              <div className="space-y-4">
+                <h2 className="text-xl font-bold">
+                  {selectedDate?.toLocaleDateString("th-TH", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </h2>
                 {selectedDateEvents.farrow.length > 0 && (
                   <div>
-                    <h2 className="pb-4 font-bold text-xl">กำหนดคลอด</h2>
                     <FarrowEventList events={selectedDateEvents.farrow} />
                   </div>
                 )}
                 {selectedDateEvents.saleable.length > 0 && (
                   <div>
-                    <h2 className="pb-4 font-semibold text-xl">
-                      ลูกขุนพร้อมขาย
-                    </h2>
                     <SaleableEventList events={selectedDateEvents.saleable} />
                   </div>
                 )}
