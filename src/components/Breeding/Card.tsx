@@ -93,7 +93,9 @@ export default function BreedingCard({
                   <Heart size={24} />
                 </div>
                 <div className="flex flex-col justify-center">
-                  <p className="text-muted-foreground text-sm mb-0.5">ผสมเมื่อ</p>
+                  <p className="text-muted-foreground text-sm mb-0.5">
+                    ผสมเมื่อ
+                  </p>
                   <span className="font-semibold text-gray-900">
                     {formatDateDisplay(breeding.breed_date)}
                   </span>
@@ -171,7 +173,9 @@ export default function BreedingCard({
                     <PiggyBank size={24} />
                   </div>
                   <div className="flex flex-col justify-center">
-                    <p className="text-muted-foreground text-sm mb-0.5">จำนวนลูกเกิดรอด</p>
+                    <p className="text-muted-foreground text-sm mb-0.5">
+                      จำนวนลูกเกิดรอด
+                    </p>
                     <div className="flex items-center gap-2">
                       <span className="text-lg font-semibold text-gray-900">
                         {breeding.piglets_born_count} ตัว
@@ -199,7 +203,7 @@ export default function BreedingCard({
                   dialogTriggerButton={
                     <Button
                       size="lg"
-                      className="w-full h-12 text-base font-medium text-white bg-pink-500 rounded-full shadow-none md:hover:bg-pink-600"
+                      className="w-full h-12 bg-pink-500 shadow-none md:hover:bg-pink-600"
                     >
                       <Check className="w-5 h-5 mr-2" /> บันทึกการคลอด
                     </Button>
@@ -213,7 +217,7 @@ export default function BreedingCard({
                 <AddToCalendarButton
                   title={`กำหนดคลอด`}
                   startDate={new Date(breeding.expected_farrow_date)}
-                  className="w-full h-12 text-base font-medium text-gray-900 bg-gray-100 border-none rounded-full shadow-none md:hover:bg-gray-200"
+                  className="w-full h-12 font-medium"
                 />
               </div>
             </CardFooter>

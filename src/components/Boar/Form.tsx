@@ -114,7 +114,7 @@ export default function BoarForm({ editingBoar, setDialog }: any) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 ">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
           name="breed"
@@ -136,14 +136,19 @@ export default function BoarForm({ editingBoar, setDialog }: any) {
             <FormItem>
               <FormLabel>คำอธิบาย</FormLabel>
               <FormControl>
-                <Textarea rows={5} placeholder="เขียนอธิบายสายพันธุ์" className="bg-white resize-none" {...field} />
+                <Textarea
+                  rows={5}
+                  placeholder="เขียนอธิบายสายพันธุ์"
+                  className="bg-white resize-none"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <div className="w-full flex justify-between gap-2">
+        <div className="flex justify-between w-full gap-2">
           {boar.id && (
             <DialogComponent
               title="ลบสายพันธุ์"
@@ -151,6 +156,7 @@ export default function BoarForm({ editingBoar, setDialog }: any) {
                 <Button
                   disabled={form.formState.isSubmitting}
                   variant="ghost"
+                  size="lg"
                   className="text-red-500 hover:text-red-500"
                 >
                   <Trash /> ลบ
@@ -162,13 +168,22 @@ export default function BoarForm({ editingBoar, setDialog }: any) {
                 <span className="font-bold">{boar.name}</span>
               </p>
               <div className="flex justify-end gap-2">
-                <Button variant="destructive" onClick={() => onDelete(boar.id)}>
+                <Button
+                  variant="destructive"
+                  size="lg"
+                  onClick={() => onDelete(boar.id)}
+                >
                   <Trash /> ลบ
                 </Button>
               </div>
             </DialogComponent>
           )}
-          <Button disabled={form.formState.isSubmitting}  size="lg" className="w-full" type="submit">
+          <Button
+            disabled={form.formState.isSubmitting}
+            size="lg"
+            className="w-full"
+            type="submit"
+          >
             {form.formState.isSubmitting ? (
               <>
                 <Loader className="animate-spin" />

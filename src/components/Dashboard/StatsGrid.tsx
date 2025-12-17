@@ -20,7 +20,7 @@ export function StatsGrid({
   pigletsTrend,
 }: StatsGridProps) {
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-2 gap-2">
       <FadeIn delay={0.1}>
         <StatsCard
           icon={Heart}

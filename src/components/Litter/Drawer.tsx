@@ -16,7 +16,7 @@ import {
   Pencil,
   Trash2,
 } from "lucide-react";
-import DialogComponent from "../DrawerDialog";
+import DrawerDialog from "../DrawerDialog";
 import { LitterForm } from "./Form";
 import { AddToCalendarButton } from "../AddToCalendarButton";
 import BoarDetailsCard from "../Boar/DetailsCard";
@@ -125,7 +125,7 @@ export default function LitterDrawer({ litter, index }: LitterDrawerProps) {
 
         {/* Boar */}
         {litter.boars && (
-          <DialogComponent
+          <DrawerDialog
             title={litter.boars.breed}
             dialogTriggerButton={
               <div className="flex justify-between w-full p-3 cursor-pointer bg-secondary rounded-xl">
@@ -145,7 +145,7 @@ export default function LitterDrawer({ litter, index }: LitterDrawerProps) {
             }
           >
             <BoarDetailsCard boar={litter.boars} />
-          </DialogComponent>
+          </DrawerDialog>
         )}
 
         {/* Timeline */}
@@ -210,21 +210,21 @@ export default function LitterDrawer({ litter, index }: LitterDrawerProps) {
       <div className="flex flex-col gap-2">
         {/* Add Fattening Button */}
         {isBorn && (
-          <DialogComponent
+          <DrawerDialog
             title="เพิ่มวันเริ่มขุน"
             dialogTriggerButton={
-              <Button className="w-full h-12 text-base font-medium text-gray-900 bg-gray-100 rounded-full shadow-none hover:bg-gray-200">
+              <Button variant="secondary" size="lg" className="w-full text-base font-medium">
                 <Plus className="w-5 h-5 mr-2" /> เพิ่มวันเริ่มขุน
               </Button>
             }
           >
             <LitterForm litter={litter} />
-          </DialogComponent>
+          </DrawerDialog>
         )}
 
         {/* Record Sale Button */}
         {isFattening && (
-          <DialogComponent
+          <DrawerDialog
             title="บันทึกวันขาย"
             dialogTriggerButton={
               <Button className="w-full h-12 text-base font-medium text-white bg-lime-500 rounded-full shadow-none hover:bg-[#65a30d]">
@@ -233,7 +233,7 @@ export default function LitterDrawer({ litter, index }: LitterDrawerProps) {
             }
           >
             <LitterForm litter={litter} />
-          </DialogComponent>
+          </DrawerDialog>
         )}
 
         {/* Add to Calendar */}
@@ -246,7 +246,7 @@ export default function LitterDrawer({ litter, index }: LitterDrawerProps) {
         )}
 
         {/* Edit Button */}
-        <DialogComponent
+        <DrawerDialog
           title="แก้ไขข้อมูล"
           dialogTriggerButton={
             <Button
@@ -258,10 +258,10 @@ export default function LitterDrawer({ litter, index }: LitterDrawerProps) {
           }
         >
           <LitterForm litter={litter} />
-        </DialogComponent>
+        </DrawerDialog>
 
         {/* Delete Button */}
-        <DeleteDialog
+        {/* <DeleteDialog
           litter={litter}
           isSubmitting={false}
           trigger={
@@ -272,7 +272,7 @@ export default function LitterDrawer({ litter, index }: LitterDrawerProps) {
               <Trash2 className="w-4 h-4 mr-2" /> ลบข้อมูล
             </Button>
           }
-        />
+        /> */}
       </div>
     </div>
   );

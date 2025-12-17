@@ -229,6 +229,7 @@ export default function SowForm({ editingSow, setDialog }: any) {
                 <Button
                   disabled={form.formState.isSubmitting}
                   variant="ghost"
+                  size="lg"
                   className="text-red-500 hover:text-red-500"
                 >
                   <Trash /> ลบ
@@ -240,13 +241,22 @@ export default function SowForm({ editingSow, setDialog }: any) {
                 <span className="font-bold">{sow.name}</span>
               </p>
               <div className="flex justify-end gap-2">
-                <Button variant="destructive" onClick={() => onDelete(sow.id)}>
+                <Button
+                  variant="destructive"
+                  size="lg"
+                  onClick={() => onDelete(sow.id)}
+                >
                   <Trash /> ลบ
                 </Button>
               </div>
             </DialogComponent>
           )}
-          <Button disabled={form.formState.isSubmitting} type="submit" size="lg" className="w-full">
+          <Button
+            disabled={form.formState.isSubmitting}
+            type="submit"
+            size="lg"
+            className="w-full"
+          >
             {form.formState.isSubmitting ? (
               <>
                 <Loader className="animate-spin" />

@@ -128,7 +128,7 @@ export default function SowCard({ sow }: { sow: Sow }) {
               dialogTriggerButton={
                 <Button
                   size="lg"
-                  className="w-full h-12 text-base font-medium text-white bg-pink-500 rounded-full shadow-none hover:bg-pink-600"
+                  className="w-full h-12 text-base font-medium bg-pink-500 shadow-none hover:bg-pink-600"
                 >
                   <Check className="w-5 h-5 mr-2" /> บันทึกการคลอด
                 </Button>
@@ -140,7 +140,7 @@ export default function SowCard({ sow }: { sow: Sow }) {
             <AddToCalendarButton
               title={`กำหนดคลอด ${sow.name}`}
               startDate={new Date(latestBreeding.expected_farrow_date!)}
-              className="w-full h-12 text-base font-medium text-gray-900 bg-gray-100 border-none rounded-full shadow-none hover:bg-gray-200"
+              className="w-full h-12 text-base"
             />
           </div>
         ) : (
@@ -152,7 +152,7 @@ export default function SowCard({ sow }: { sow: Sow }) {
                   disabled={!sow.is_active}
                   size="lg"
                   variant="secondary"
-                  className="w-full h-12 text-base font-medium text-gray-900 bg-gray-100 rounded-full shadow-none hover:bg-gray-200"
+                  className="w-full h-12 text-base"
                 >
                   <Plus className="w-5 h-5 mr-2" /> เพิ่มประวัติผสม
                 </Button>

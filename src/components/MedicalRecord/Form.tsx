@@ -185,7 +185,7 @@ export function MedicalRecordForm({
             <FormItem>
               <FormLabel>อาการ</FormLabel>
               <FormControl>
-                <Textarea className="bg-white resize-none" {...field} />
+                <Textarea placeholder="อาการของสุกร" className="bg-white resize-none" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -199,7 +199,7 @@ export function MedicalRecordForm({
             <FormItem>
               <FormLabel>ยาที่ใช้</FormLabel>
               <FormControl>
-                <Input className="bg-white" {...field} />
+                <Input placeholder="ชื่อยาที่ใช้" className="bg-white" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -227,7 +227,12 @@ export function MedicalRecordForm({
           {medicalRecord && (
             <DeleteDialog setDialog={setDialog} id={medicalRecord.id!} />
           )}
-          <Button disabled={form.formState.isSubmitting} size="lg" className="w-full" type="submit">
+          <Button
+            disabled={form.formState.isSubmitting}
+            size="lg"
+            className="w-full"
+            type="submit"
+          >
             {form.formState.isSubmitting ? (
               <>
                 <Loader className="animate-spin" />
@@ -281,6 +286,7 @@ export default function DeleteDialog({
       title="บันทึกการคลอด"
       dialogTriggerButton={
         <Button
+          size="lg"
           variant={"ghost"}
           className="text-red-500 hover:text-red-500 hover:bg-red-50"
         >
@@ -290,7 +296,7 @@ export default function DeleteDialog({
     >
       <p>ต้องการลบข้อมูลการผสมนี้หรือไม่</p>
       <div className="flex justify-end gap-2">
-        <Button variant={"destructive"} onClick={handleDelete}>
+        <Button variant={"destructive"} size="lg" onClick={handleDelete}>
           ลบ
         </Button>
       </div>

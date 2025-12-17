@@ -27,7 +27,7 @@ export function FatteningSection({
         control={form.control}
         name="fattening_at"
         render={({ field }) => (
-          <FormItem className="w-full flex flex-col">
+          <FormItem className="flex flex-col w-full">
             <FormLabel>เริ่มขุนเมื่อ (ถ้ามี)</FormLabel>
             <DatePicker field={field} />
             <FormMessage />
@@ -35,15 +35,16 @@ export function FatteningSection({
         )}
       />
 
-      <FormItem className="w-full flex flex-col">
+      <FormItem className="flex flex-col w-full">
         <FormLabel>จะพร้อมขายช่วง</FormLabel>
         <FormControl>
           <Button
             variant={"outline"}
             disabled
+            size="lg"
             className={cn(
               "w-full pl-3 text-left font-normal",
-              !calculatedSaleableDate && "text-muted-foreground",
+              !calculatedSaleableDate && "text-muted-foreground"
             )}
           >
             {calculatedSaleableDate ? (
@@ -51,7 +52,7 @@ export function FatteningSection({
             ) : (
               <span>เลือกวันที่เริ่มขุน</span>
             )}
-            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+            <CalendarIcon className="w-4 h-4 ml-auto opacity-50" />
           </Button>
         </FormControl>
         <FormMessage />

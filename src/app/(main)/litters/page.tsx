@@ -17,6 +17,7 @@ import {
   Fence,
   Filter,
   ChevronDown,
+  ListFilter,
 } from "lucide-react";
 import { useState } from "react";
 import LitterCard from "@/components/Litter/Card";
@@ -58,7 +59,7 @@ export default function LittersPage() {
         }
         return litter[key] === value;
       });
-    },
+    }
   );
 
   if (error) {
@@ -143,15 +144,14 @@ function FilterControls({
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
+            size="icon"
             variant="outline"
             className={cn(
-              "flex items-center gap-2 rounded-full",
-              isFilterActive && "bg-pink-500 hover:bg-pink-600 !text-white",
+              "flex items-center gap-2 size-12 rounded-full",
+              isFilterActive && "bg-pink-500 hover:bg-pink-600 !text-white"
             )}
           >
-            <Filter size={16} />
-            {filter.label}
-            <ChevronDown size={16} />
+            <ListFilter />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
@@ -165,7 +165,7 @@ function FilterControls({
                 className={cn(
                   isSelected
                     ? "bg-black text-white hover:!bg-black hover:!text-white"
-                    : "bg-white text-black",
+                    : "bg-white text-black"
                 )}
               >
                 {option.label}

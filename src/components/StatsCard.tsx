@@ -27,23 +27,22 @@ export function StatsCard({
   trendColor = "#ec4899",
 }: StatsCardProps) {
   return (
-    <motion.div
-      whileHover={{ y: -5 }}
+    <div
       className={cn(
-        "flex flex-col bg-white rounded-xl p-4 overflow-hidden relative",
-        className,
+        "flex flex-col bg-white rounded-2xl p-4 overflow-hidden relative",
+        className
       )}
     >
-      <div className="flex justify-between items-start z-10">
-        <div className="text-sm text-muted-foreground font-medium">{title}</div>
-        <div className="p-2 bg-gray-50 rounded-full">
+      <div className="z-10 flex items-start justify-between">
+        <div className="text-sm font-medium text-muted-foreground">{title}</div>
+        <div className="p-2 rounded-full bg-gray-50">
           <Icon size={20} className={iconColor} />
         </div>
       </div>
 
       <div className="flex gap-4">
-        <div className="mt-2 z-10">
-          <div className="text-2xl font-bold">
+        <div className="z-10 mt-2">
+          <div className={cn("text-2xl font-bold")}>
             {value}{" "}
             <span className="text-sm font-normal text-muted-foreground">
               {unit}
@@ -52,7 +51,7 @@ export function StatsCard({
         </div>
 
         {trendData && trendData.length > 0 && (
-          <div className="h-12 pointer-events-none flex-1">
+          <div className="flex-1 h-12 pointer-events-none">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={trendData}>
                 <Area
@@ -68,6 +67,6 @@ export function StatsCard({
           </div>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 }

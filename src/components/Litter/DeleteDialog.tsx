@@ -15,7 +15,12 @@ interface DeleteDialogProps {
   trigger?: React.ReactNode;
 }
 
-export function DeleteDialog({ litter, isSubmitting, setDialog, trigger }: DeleteDialogProps) {
+export function DeleteDialog({
+  litter,
+  isSubmitting,
+  setDialog,
+  trigger,
+}: DeleteDialogProps) {
   const { toast } = useToast();
   const { removeLitter } = useLitterStore();
   const { updateSow } = useSowStore();
@@ -60,19 +65,20 @@ export function DeleteDialog({ litter, isSubmitting, setDialog, trigger }: Delet
       title="ลบข้อมูลครอก"
       dialogTriggerButton={
         trigger || (
-        <Button
-          disabled={isSubmitting}
-          variant={"ghost"}
-          className="text-red-500 hover:text-red-500 hover:bg-red-50"
-        >
-          <Trash /> ลบ
-        </Button>
+          <Button
+            disabled={isSubmitting}
+            variant={"ghost"}
+            size="lg"
+            className="text-red-500 hover:text-red-500 hover:bg-red-50"
+          >
+            <Trash /> ลบ
+          </Button>
         )
       }
     >
       <p>ต้องการลบข้อมูลครอกนี้หรือไม่</p>
       <div className="flex justify-end gap-2">
-        <Button variant={"destructive"} onClick={handleDelete}>
+        <Button variant={"destructive"} size="lg" onClick={handleDelete}>
           ลบ
         </Button>
       </div>

@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Litter } from "@/types/litter";
-import DialogComponent from "../DrawerDialog";
+import DrawerDialog from "../DrawerDialog";
 import { Button } from "../ui/button";
 import {
   PiggyBank,
@@ -54,7 +54,7 @@ export default function LitterCard({ litter, index }: LitterCardProps) {
   };
 
   return (
-    <DialogComponent
+    <DrawerDialog
       title={`ลูกขุนแม่${litter.sows?.name || "ไม่ระบุ"}`}
       dialogTriggerButton={
         <Card className="w-full overflow-hidden text-left transition-all bg-white border-none shadow-none cursor-pointer rounded-2xl md:hover:bg-gray-50">
@@ -120,7 +120,7 @@ export default function LitterCard({ litter, index }: LitterCardProps) {
               )}
 
               {/* Timeline Section */}
-              <div className="relative flex flex-col gap-4 p-4 bg-secondary rounded-xl">
+              <div className="relative flex flex-col gap-4 p-4 bg-accent rounded-xl">
                 {/* Vertical Line */}
                 {(isFattening || isSold) && (
                   <div className="absolute left-10 top-6 bottom-6 w-[2px] bg-gray-200 -z-0" />
@@ -186,23 +186,26 @@ export default function LitterCard({ litter, index }: LitterCardProps) {
               {/* Add Fattening Button */}
               {isBorn && (
                 <div onClick={(e) => e.stopPropagation()} className="w-full">
-                  <DialogComponent
+                  <DrawerDialog
                     title="เพิ่มวันเริ่มขุน"
                     dialogTriggerButton={
-                      <Button className="w-full h-12 text-base font-medium text-gray-900 bg-gray-100 rounded-full shadow-none hover:bg-gray-200">
+                      <Button
+                        variant="secondary"
+                        className="w-full h-12 text-base font-medium"
+                      >
                         <Plus className="w-5 h-5 mr-2" /> เพิ่มวันเริ่มขุน
                       </Button>
                     }
                   >
                     <LitterForm litter={litter} />
-                  </DialogComponent>
+                  </DrawerDialog>
                 </div>
               )}
 
               {/* Record Sale Button */}
               {isFattening && (
                 <div onClick={(e) => e.stopPropagation()} className="w-full">
-                  <DialogComponent
+                  <DrawerDialog
                     title="บันทึกวันขาย"
                     dialogTriggerButton={
                       <Button className="w-full h-12 text-base font-medium text-white bg-lime-500 rounded-full shadow-none hover:bg-[#65a30d]">
@@ -211,7 +214,7 @@ export default function LitterCard({ litter, index }: LitterCardProps) {
                     }
                   >
                     <LitterForm litter={litter} />
-                  </DialogComponent>
+                  </DrawerDialog>
                 </div>
               )}
 
@@ -221,7 +224,7 @@ export default function LitterCard({ litter, index }: LitterCardProps) {
                   <AddToCalendarButton
                     title={`กำหนดจับหมูขุน แม่${litter.sows?.name}`}
                     startDate={new Date(litter.saleable_at)}
-                    className="w-full h-12 text-base font-medium text-gray-900 bg-gray-100 border-none rounded-full shadow-none hover:bg-gray-200"
+                    className="w-full h-12 text-base font-medium"
                   />
                 </div>
               )}
@@ -231,6 +234,6 @@ export default function LitterCard({ litter, index }: LitterCardProps) {
       }
     >
       <LitterDrawer litter={litter} index={index} />
-    </DialogComponent>
+    </DrawerDialog>
   );
 }

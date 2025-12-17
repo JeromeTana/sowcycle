@@ -10,7 +10,11 @@ interface DeleteDialogProps {
   setDialog?: (open: boolean) => void;
 }
 
-export default function DeleteDialog({ breeding, isSubmitting, setDialog }: DeleteDialogProps) {
+export default function DeleteDialog({
+  breeding,
+  isSubmitting,
+  setDialog,
+}: DeleteDialogProps) {
   const { deleteBreeding } = useBreedingOperations();
 
   const handleDelete = async () => {
@@ -33,6 +37,7 @@ export default function DeleteDialog({ breeding, isSubmitting, setDialog }: Dele
         <Button
           disabled={isSubmitting}
           variant="ghost"
+          size="lg"
           className="text-red-500 hover:text-red-500 hover:bg-red-50"
         >
           <Trash /> ลบ
