@@ -127,6 +127,7 @@ export function MultiBreedDropdown({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
+  const [popoverContainer, setPopoverContainer] = useState<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const fetchBreeds = async () => {
@@ -182,7 +183,7 @@ export function MultiBreedDropdown({
   }
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2" ref={setPopoverContainer}>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
@@ -191,7 +192,7 @@ export function MultiBreedDropdown({
             role="combobox"
             aria-expanded={open}
             className={cn(
-              "w-full justify-between",
+              "w-full justify-between px-4",
               value.length === 0 && "text-muted-foreground"
             )}
             disabled={disabled}
@@ -200,7 +201,11 @@ export function MultiBreedDropdown({
             <ChevronDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-full p-0" align="start">
+        <PopoverContent
+          container={popoverContainer}
+          className="w-full p-0 shadow-none rounded-xl"
+          align="start"
+        >
           <div className="overflow-auto max-h-60">
             {breeds.length === 0 ? (
               <div className="p-4 text-sm text-center text-muted-foreground">
@@ -208,19 +213,23 @@ export function MultiBreedDropdown({
               </div>
             ) : (
               <div className="p-1 min-w-40">
-                {breeds.map((breed) => (
-                  <div
-                    key={breed.id}
-                    className="flex items-center space-x-2 rounded-full px-2 py-1.5 hover:bg-accent cursor-pointer"
-                    onClick={() => handleToggleBreed(breed.id)}
-                  >
-                    <Checkbox
-                      checked={value.includes(breed.id)}
-                      onChange={() => handleToggleBreed(breed.id)}
-                    />
-                    <span className="text-sm">{breed.breed}</span>
-                  </div>
-                ))}
+                {breeds.map((breed) => {
+                  const checkboxId = `multi-breed-${breed.id}`;
+                  return (
+                    <label
+                      key={breed.id}
+                      htmlFor={checkboxId}
+                      className="flex items-center space-x-2 rounded-full px-2 py-1.5 z-10 hover:bg-accent cursor-pointer"
+                    >
+                      <Checkbox
+                        id={checkboxId}
+                        checked={value.includes(breed.id)}
+                        onCheckedChange={() => handleToggleBreed(breed.id)}
+                      />
+                      <span className="text-sm">{breed.breed}</span>
+                    </label>
+                  );
+                })}
               </div>
             )}
           </div>
