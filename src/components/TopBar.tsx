@@ -3,12 +3,91 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { ChevronLeft, LogOut, Settings, User } from "lucide-react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { getCurrentUser } from "@/services/auth";
+import DrawerDialog from "@/components/DrawerDialog";
 import LogoutButton from "@/components/LogoutButton";
+import { Button } from "./ui/button";
+
+type AccountMenuProps = {
+  setDialog?: React.Dispatch<React.SetStateAction<boolean>>;
+  isDialogOpen?: boolean;
+};
+
+function AccountMenu({ setDialog }: AccountMenuProps) {
+  const [userEmail, setUserEmail] = React.useState<string | null>(null);
+  const [isLoadingUser, setIsLoadingUser] = React.useState(true);
+
+  React.useEffect(() => {
+    let isMounted = true;
+
+    (async () => {
+      try {
+        const user = await getCurrentUser();
+        if (isMounted) {
+          setUserEmail(user?.email ?? null);
+        }
+      } catch (error) {
+        console.error("Failed to load user details", error);
+      } finally {
+        if (isMounted) {
+          setIsLoadingUser(false);
+        }
+      }
+    })();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const emailDisplay = isLoadingUser
+    ? "กำลังโหลด..."
+    : userEmail ?? "ไม่พบอีเมล";
+
+  const closeDialog = React.useCallback(() => {
+    setDialog?.(false);
+  }, [setDialog]);
+
+  return (
+    <div className="grid gap-4">
+      <div className="bg-muted rounded-2xl p-4">
+        <div className="flex gap-4 items-center">
+          <div className="w-16 h-16 rounded-full bg-neutral-300" />
+          <p className="text-muted-foreground">{emailDisplay}</p>
+        </div>
+      </div>
+      <a href="/boars" onClick={closeDialog}>
+        <Button
+          variant={"secondary"}
+          size={"lg"}
+          className="w-full justify-start px-4"
+        >
+          <span>สายพันธุ์</span>
+        </Button>
+      </a>
+      <a href="/setting" onClick={closeDialog}>
+        <Button
+          variant={"secondary"}
+          size={"lg"}
+          className="w-full justify-start px-4"
+        >
+          {/* <Settings size={16} /> */}
+          <span>ตั้งค่า</span>
+        </Button>
+      </a>
+      <LogoutButton>
+        <Button
+          variant={"secondary"}
+          size={"lg"}
+          className="w-full justify-start text-red-500 px-4"
+        >
+          {/* <LogOut size={16} /> */}
+          <span>ออกจากระบบ</span>
+        </Button>
+      </LogoutButton>
+    </div>
+  );
+}
 
 export default function TopBar({
   title,
@@ -40,37 +119,19 @@ export default function TopBar({
         {title || "หน้าหลัก"}
       </h1>
       <div className="flex justify-end">
-        <Popover>
-          <PopoverTrigger asChild>
+        <DrawerDialog
+          title="บัญชีผู้ใช้"
+          dialogTriggerButton={
             <button className="flex items-center justify-center p-2 transition-colors rounded-full hover:bg-gray-100">
               <User
                 size={32}
                 className="text-gray-600 bg-gray-200 rounded-full p-1.5"
               />
             </button>
-          </PopoverTrigger>
-          <PopoverContent align="end" className="w-56 p-2">
-            <div className="grid gap-1">
-              <div className="px-2 py-1.5 text-sm font-semibold text-gray-900">
-                บัญชีผู้ใช้
-              </div>
-              <div className="h-px my-1 bg-gray-100" />
-              <a
-                href="/setting"
-                className="flex items-center gap-2 px-2 py-2 text-sm text-gray-700 transition-colors rounded-md hover:bg-gray-100"
-              >
-                <Settings size={16} />
-                <span>ตั้งค่า</span>
-              </a>
-              <LogoutButton>
-                <div className="flex items-center w-full gap-2 px-2 py-2 text-sm text-left text-red-600 transition-colors rounded-md hover:bg-red-50">
-                  <LogOut size={16} />
-                  <span>ออกจากระบบ</span>
-                </div>
-              </LogoutButton>
-            </div>
-          </PopoverContent>
-        </Popover>
+          }
+        >
+          <AccountMenu />
+        </DrawerDialog>
       </div>
     </motion.div>
   );

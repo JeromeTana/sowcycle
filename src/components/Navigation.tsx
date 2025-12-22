@@ -1,7 +1,15 @@
 "use client";
 
 import React from "react";
-import { Home, Calendar, PiggyBank, Dna, Fence } from "lucide-react";
+import {
+  Home,
+  Calendar,
+  PiggyBank,
+  Dna,
+  Fence,
+  Syringe,
+  LayoutGrid,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -16,16 +24,26 @@ const navItems = [
     label: "แม่พันธุ์",
     icon: PiggyBank,
   },
-  {
-    href: "/boars",
-    label: "สายพันธุ์",
-    icon: Dna,
-  },
+  // {
+  //   href: "/boars",
+  //   label: "สายพันธุ์",
+  //   icon: Dna,
+  // },
   {
     href: "/litters",
     label: "ครอก",
     icon: Fence,
   },
+  {
+    href: "/medicines",
+    label: "ยาวัคซีน",
+    icon: Syringe,
+  },
+  // {
+  //   href: "/inventory",
+  //   label: "เก็บของ",
+  //   icon: LayoutGrid,
+  // },
   {
     href: "/calendar",
     label: "Calendar",
