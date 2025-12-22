@@ -9,7 +9,7 @@
     --card-foreground: 0 0% 3.9%; /* #0a0a0a | Text/icons inside cards */
     --popover: 0 0% 100%; /* #ffffff | Popover/dropdown surfaces */
     --popover-foreground: 0 0% 3.9%; /* #0a0a0a | Content inside popovers */
-    --primary: 0 0% 9%; /* #171717 | High-emphasis primary actions */
+    --primary: 330 81% 60%; /* #ec4899 | High-emphasis primary actions */
     --primary-foreground: 0 0% 98%; /* #fafafa | Text/icons on primary actions */
     --secondary: 0 0% 96.1%; /* #f5f5f5 | Secondary surfaces + subtle buttons */
     --secondary-foreground: 0 0% 9%; /* #171717 | Content on secondary elements */

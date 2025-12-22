@@ -23,6 +23,7 @@ type DialogComponentProps = {
 
 type ChildElementProps = {
   setDialog: React.Dispatch<React.SetStateAction<boolean>>;
+  isDialogOpen: boolean;
 };
 
 export default function DialogComponent({
@@ -37,6 +38,7 @@ export default function DialogComponent({
     if (React.isValidElement(child)) {
       return React.cloneElement(child, {
         setDialog: setIsOpen,
+        isDialogOpen: isOpen,
       } as ChildElementProps);
     }
     return child;

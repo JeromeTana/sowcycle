@@ -106,10 +106,10 @@ export default function SowHistorySection({
         <button
           onClick={() => setFilter("all")}
           className={cn(
-            "px-4 py-1.5 rounded-full text-sm font-medium border whitespace-nowrap transition-colors",
+            "px-4 py-2 rounded-full text-sm border border-card font-medium whitespace-nowrap transition-colors",
             filter === "all"
-              ? "bg-white text-black"
-              : "bg-gray-100 text-gray-500 hover:bg-gray-200"
+              ? "bg-primary/10 border-primary text-primary"
+              : "bg-card text-card-foreground"
           )}
         >
           ทั้งหมด
@@ -117,10 +117,10 @@ export default function SowHistorySection({
         <button
           onClick={() => setFilter("breeding")}
           className={cn(
-            "px-4 py-1.5 rounded-full text-sm font-medium border whitespace-nowrap transition-colors",
+            "px-4 py-2 rounded-full text-sm border border-card font-medium whitespace-nowrap transition-colors",
             filter === "breeding"
-              ? "bg-white text-black"
-              : "bg-gray-100 text-gray-500 hover:bg-gray-200"
+              ? "bg-primary/10 border-primary text-primary"
+              : "bg-card text-card-foreground"
           )}
         >
           <Heart className="inline w-3 h-3 mr-1" />
@@ -129,10 +129,10 @@ export default function SowHistorySection({
         <button
           onClick={() => setFilter("medical")}
           className={cn(
-            "px-4 py-1.5 rounded-full text-sm font-medium border whitespace-nowrap transition-colors",
+            "px-4 py-2 rounded-full text-sm border border-card font-medium whitespace-nowrap transition-colors",
             filter === "medical"
-              ? "bg-white text-black"
-              : "bg-gray-100 text-gray-500 hover:bg-gray-200"
+              ? "bg-primary/10 border-primary text-primary"
+              : "bg-card text-card-foreground"
           )}
         >
           <Syringe className="inline w-3 h-3 mr-1" />

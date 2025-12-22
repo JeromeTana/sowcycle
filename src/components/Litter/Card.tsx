@@ -161,7 +161,9 @@ export default function LitterCard({ litter, index }: LitterCardProps) {
                 {/* Timeline: Sale/Expected Sale */}
                 {(isFattening || isSold) && (
                   <div className="relative flex items-start gap-4">
-                    <div className="flex items-center justify-center w-12 h-12 p-2 bg-white rounded-2xl text-muted-foreground">
+                    <div className={cn("flex items-center justify-center w-12 h-12 p-2  rounded-2xl ",
+                      isSold ? "bg-white text-muted-foreground" : "bg-muted text-neutral-300"
+                    )}>
                       <Banknote size={24} />
                     </div>
                     <div className="flex flex-col justify-center">

@@ -28,7 +28,7 @@ export default function TabsComponent({
   });
   return (
     <Tabs defaultValue={tabOptions.find((tab) => tab.default)?.value}>
-      <TabsList className={"flex w-full bg-gray-200"}>
+      <TabsList className={"flex w-full bg-neutral-200"}>
         {tabOptions.map((tab) => (
           <TabsTrigger key={tab.value} value={tab.value} className="w-full">
             {tab.label}
