@@ -54,7 +54,7 @@ export default function SowCard({ sow }: { sow: Sow }) {
                 !sow.is_active
                   ? "text-muted-foreground"
                   : isPregnant
-                  ? " text-pink-500"
+                  ? " text-primary"
                   : "text-black"
               )}
             >
@@ -79,7 +79,7 @@ export default function SowCard({ sow }: { sow: Sow }) {
             <div
               className={cn(
                 "p-2 rounded-2xl flex items-center justify-center w-12 h-12 bg-gray-100",
-                isPregnant ? " text-pink-500" : " text-muted-foreground"
+                isPregnant ? " text-primary" : " text-muted-foreground"
               )}
             >
               {!sow.is_active ? (
@@ -105,7 +105,7 @@ export default function SowCard({ sow }: { sow: Sow }) {
                 </span>
 
                 {isPregnant && latestBreeding?.expected_farrow_date && (
-                  <span className="text-sm font-medium text-pink-500">
+                  <span className="text-sm font-medium text-primary">
                     ภายใน{" "}
                     {getDaysRemaining(latestBreeding.expected_farrow_date)} วัน
                   </span>
@@ -130,7 +130,7 @@ export default function SowCard({ sow }: { sow: Sow }) {
               dialogTriggerButton={
                 <Button
                   size="lg"
-                  className="w-full h-12 text-base font-medium bg-pink-500 shadow-none hover:bg-pink-600"
+                  className="w-full h-12 text-base font-medium bg-primary shadow-none hover:bg-pink-600"
                 >
                   <Check className="w-5 h-5 mr-2" /> บันทึกการคลอด
                 </Button>

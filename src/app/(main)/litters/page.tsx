@@ -134,7 +134,7 @@ function LitterStats({ litters }: { litters: any[] }) {
         icon={PiggyBank}
         title="กำลังขุน"
         value={totalPiglets}
-        iconColor="text-pink-500"
+        iconColor="text-primary"
         unit="ตัว"
       />
     </div>
@@ -321,7 +321,7 @@ function FilterOptionsList({
                   className={cn(
                     "flex h-5 w-5 items-center justify-center rounded-full border",
                     isSelected
-                      ? "border-pink-500 bg-pink-500 text-white"
+                      ? "border-primary bg-primary text-white"
                       : "border-gray-300"
                   )}
                 >
@@ -364,13 +364,13 @@ function FilterOptionsList({
                   className={cn(
                     "rounded-full border px-4 py-2 text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-200",
                     isSelected
-                      ? "border-pink-500 bg-white text-pink-600 shadow-sm"
+                      ? "border-primary bg-white text-pink-600 shadow-sm"
                       : "border-transparent bg-white text-gray-600 hover:border-pink-200"
                   )}
                 >
                   <span className="flex items-center gap-2">
                     {isSelected && (
-                      <span className="flex h-4 w-4 items-center justify-center rounded-full bg-pink-500 text-[10px] text-white">
+                      <span className="flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] text-white">
                         <Check size={10} />
                       </span>
                     )}

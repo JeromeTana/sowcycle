@@ -73,7 +73,7 @@ export default function LitterDrawer({ litter, index }: LitterDrawerProps) {
                 <span className="px-2 py-1 text-xs font-semibold text-white bg-blue-500 rounded-full">
                   ผู้ {litter.piglets_male_born_alive}
                 </span>
-                <span className="px-2 py-1 text-xs font-semibold text-white bg-pink-500 rounded-full">
+                <span className="px-2 py-1 text-xs font-semibold text-white bg-primary rounded-full">
                   เมีย {litter.piglets_female_born_alive}
                 </span>
               </div>

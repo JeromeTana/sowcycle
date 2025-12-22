@@ -26,7 +26,7 @@ export function StatsGrid({
           icon={Heart}
           title="แม่พันธุ์ตั้งครรภ์"
           value={pregnantSowsCount}
-          iconColor="text-pink-500"
+          iconColor="text-primary"
         />
       </FadeIn>
       <FadeIn delay={0.2}>

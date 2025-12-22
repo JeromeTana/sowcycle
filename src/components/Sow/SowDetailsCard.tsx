@@ -79,7 +79,7 @@ export default function SowDetailsCard({
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
-                    <span className="inline-flex items-center gap-1 text-pink-500">
+                    <span className="inline-flex items-center gap-1 text-primary">
                       ตั้งครรภ์
                     </span>
                     <CountdownBadge date={breedings[0]?.expected_farrow_date} />

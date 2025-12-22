@@ -44,7 +44,7 @@ export const FarrowEventList: React.FC<FarrowEventListProps> = ({ events }) => {
               {/* Header */}
               <div className="flex items-start justify-between mb-4">
                 <div className="flex flex-col gap-2">
-                  <h3 className="text-lg font-bold text-pink-500">
+                  <h3 className="text-lg font-bold text-primary">
                     คลอด {event.sowName}
                   </h3>
                   {/* Tags */}
@@ -84,7 +84,7 @@ export const FarrowEventList: React.FC<FarrowEventListProps> = ({ events }) => {
               {/* Actions */}
               <div className="space-y-2">
                 {/* Record Farrowing Button - This would ideally open a form */}
-                <Button className="w-full h-12 text-base font-medium bg-pink-500 hover:bg-pink-600">
+                <Button className="w-full h-12 text-base font-medium bg-primary hover:bg-pink-600">
                   <Check className="w-5 h-5 mr-2" /> บันทึกการคลอด
                 </Button>
 

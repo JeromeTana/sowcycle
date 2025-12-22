@@ -134,7 +134,7 @@ export default function BoarsPage() {
                   JSON.stringify(filter.value) ===
                     JSON.stringify(filterSowOptions[0].value)
                     ? ""
-                    : "bg-pink-500 hover:bg-pink-600 !text-white",
+                    : "bg-primary hover:bg-pink-600 !text-white",
                   "size-12 rounded-full p-4",
                 )}
               >

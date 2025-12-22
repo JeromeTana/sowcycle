@@ -79,9 +79,9 @@ function FilterOptionsList({
             type="button"
             onClick={() => handleSelect(option)}
             className={cn(
-              "flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left transition hover:border-pink-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-200",
+              "flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left transition hover:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-200",
               isSelected
-                ? "border-pink-500 bg-pink-50 text-pink-600"
+                ? "border-primary bg-pink-50 text-pink-600"
                 : "border-gray-200 bg-white text-gray-700"
             )}
           >

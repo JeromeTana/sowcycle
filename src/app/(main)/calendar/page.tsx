@@ -95,9 +95,9 @@ export default function CalendarPage() {
                 modifiers={calendarModifiers}
                 modifiersClassNames={{
                   hasEvent:
-                    "bg-pink-500 text-white hover:bg-pink-600 hover:text-white",
+                    "bg-primary text-white hover:bg-pink-600 hover:text-white",
                   overdue:
-                    "bg-pink-500 text-white hover:bg-pink-600 hover:text-white",
+                    "bg-primary text-white hover:bg-pink-600 hover:text-white",
                   hasSaleableEvent:
                     "bg-lime-500 text-white hover:bg-lime-600 hover:text-white",
                   saleablePastDue:

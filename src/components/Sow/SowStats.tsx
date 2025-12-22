@@ -21,7 +21,7 @@ export function SowStats({ stats }: SowStatsProps) {
         icon={Heart}
         title="กำลังตั้งครรภ์"
         value={stats.pregnant}
-        iconColor="text-pink-500"
+        iconColor="text-primary"
       />
     </div>
   );

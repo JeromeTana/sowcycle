@@ -63,7 +63,7 @@ export default function BreedingCard({
                 <h3
                   className={cn(
                     "text-lg font-semibold",
-                    isPregnant ? "text-pink-500" : "text-black"
+                    isPregnant ? "text-primary" : "text-black"
                   )}
                 >
                   ผสมครั้งที่ {index}
@@ -87,7 +87,7 @@ export default function BreedingCard({
                 <div
                   className={cn(
                     "flex items-center justify-center w-12 h-12 p-2  bg-gray-100 rounded-2xl",
-                    isPregnant ? "text-pink-500" : "text-muted-foreground"
+                    isPregnant ? "text-primary" : "text-muted-foreground"
                   )}
                 >
                   <Heart size={24} />
@@ -107,7 +107,7 @@ export default function BreedingCard({
                 <div
                   className={cn(
                     "p-2 rounded-2xl flex items-center justify-center w-12 h-12 bg-gray-100",
-                    isPregnant ? "text-pink-500" : "text-muted-foreground"
+                    isPregnant ? "text-primary" : "text-muted-foreground"
                   )}
                 >
                   <Calendar size={24} />
@@ -184,7 +184,7 @@ export default function BreedingCard({
                         <span className="bg-blue-500 text-white text-xs px-2 py-0.5 rounded-full">
                           ผู้ {breeding.piglets_male_born_alive}
                         </span>
-                        <span className="bg-pink-500 text-white text-xs px-2 py-0.5 rounded-full">
+                        <span className="bg-primary text-white text-xs px-2 py-0.5 rounded-full">
                           เมีย {breeding.piglets_female_born_alive}
                         </span>
                       </div>
@@ -203,7 +203,7 @@ export default function BreedingCard({
                   dialogTriggerButton={
                     <Button
                       size="lg"
-                      className="w-full h-12 bg-pink-500 shadow-none md:hover:bg-pink-600"
+                      className="w-full h-12 bg-primary shadow-none md:hover:bg-pink-600"
                     >
                       <Check className="w-5 h-5 mr-2" /> บันทึกการคลอด
                     </Button>
