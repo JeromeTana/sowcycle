@@ -18,15 +18,40 @@ import { getAllMedicines } from "@/services/medicine";
 import { useMedicineStore } from "@/stores/useMedicineStore";
 import { ChevronDown, Filter, ListFilter, Plus, Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import TabsComponent from "@/components/TabsComponent";
 
 export default function MedicinesPage() {
+  return (
+    <>
+      <TopBar title="ยาวัคซีน" />
+      <div className="space-y-8">
+        <TabsComponent
+          tabOptions={[
+            {
+              label: "คลังยาวัคซีน",
+              value: "details",
+              content: <MedicineInventory />,
+              default: true,
+            },
+            {
+              label: "ประวัติใช้ยา",
+              value: "history",
+              content: <MedicineHistory />,
+            },
+          ]}
+        />
+      </div>
+    </>
+  );
+}
+
+function MedicineInventory() {
   const { medicines, setMedicines } = useMedicineStore();
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   const filteredMedicines = useMemo(() => {
-    return medicines
-      .filter((medicine) => medicine.title.includes(search))
+    return medicines.filter((medicine) => medicine.title.includes(search));
   }, [medicines, search]);
 
   useEffect(() => {
@@ -73,10 +98,8 @@ export default function MedicinesPage() {
       </>
     );
   }
-
   return (
-    <>
-      <TopBar title="ยาวัคซีน" />
+    <div>
       <DialogComponent
         title="เพิ่มยาวัคซีนใหม่"
         dialogTriggerButton={
@@ -96,44 +119,13 @@ export default function MedicinesPage() {
             placeholder="ค้นหาด้วยชื่อยาวัคซีน"
             className="bg-white rounded-full"
           />
-          {/* <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant={"outline"}
-                size="icon"
-                className={cn(
-                  JSON.stringify(filter.value) ===
-                    JSON.stringify(filterSowOptions[0].value)
-                    ? ""
-                    : "bg-primary hover:bg-pink-600 !text-white",
-                  "size-12 rounded-full p-4",
-                )}
-              >
-                <ListFilter />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {filterSowOptions.map((option, key) => (
-                <DropdownMenuItem
-                  key={key}
-                  onSelect={() => {
-                    setFilter(option);
-                  }}
-                  className={cn(
-                    JSON.stringify(option.value) ===
-                      JSON.stringify(filter.value)
-                      ? "bg-black text-white hover:!bg-black hover:!text-white"
-                      : "bg-white text-black",
-                  )}
-                >
-                  {option.label}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu> */}
         </div>
         <MedicineList medicines={filteredMedicines} />
       </div>
-    </>
+    </div>
   );
+}
+
+function MedicineHistory() {
+  return <div></div>;
 }

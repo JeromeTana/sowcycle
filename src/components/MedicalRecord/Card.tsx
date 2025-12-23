@@ -5,12 +5,13 @@ import { MedicalRecordForm } from "./Form";
 import { MedicalRecord } from "@/types/medicalRecord";
 import InfoIcon from "../InfoIcon";
 import { formatDate } from "@/lib/utils";
+import { Medicine } from "@/types/medicine";
 
 export default function MedicalRecordCard({
   medicalRecord,
   index,
 }: {
-  medicalRecord: MedicalRecord;
+  medicalRecord: MedicalRecord & { medicines: Medicine };
   index: number;
 }) {
   if (!medicalRecord) return null;
@@ -36,11 +37,27 @@ export default function MedicalRecordCard({
                     ? medicalRecord.symptoms
                     : "ไม่มีข้อมูล"}
                 </InfoIcon>
-                <InfoIcon label="ยาที่ใช้" icon={<Syringe size={22} />}>
-                  {medicalRecord?.medicine
-                    ? medicalRecord.medicine
-                    : "ไม่มีข้อมูล"}
-                </InfoIcon>
+                {medicalRecord?.medicines && (
+                  <div className="p-3 bg-muted rounded-xl">
+                    <InfoIcon
+                      label=""
+                      icon={<Syringe size={22} />}
+                      className="!bg-white"
+                    >
+                      <span className="flex flex-col">
+                        <span>{medicalRecord.medicines.title}</span>
+                        <span className="text-muted-foreground">
+                          {medicalRecord.medicines.description}
+                        </span>
+                      </span>
+                    </InfoIcon>
+                  </div>
+                )}
+                {medicalRecord?.medicine && (
+                  <InfoIcon label="ยาที่ใช้" icon={<Syringe size={22} />}>
+                    {medicalRecord.medicine}
+                  </InfoIcon>
+                )}
               </div>
             </div>
           </CardContent>

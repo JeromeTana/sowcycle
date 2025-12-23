@@ -39,12 +39,15 @@ import { MedicalRecord } from "@/types/medicalRecord";
 import { Textarea } from "../ui/textarea";
 import { useLoading } from "@/stores/useLoading";
 import { useMedicalRecordStore } from "@/stores/useMedicalRecordStore";
+import { getAllMedicines } from "@/services/medicine";
+import { useMedicineStore } from "@/stores/useMedicineStore";
 
 const newFormSchema = z.object({
   sow_id: z.string(),
   used_at: z.date({ required_error: "กรุณาเลือกวันที่" }),
   symptoms: z.string(),
-  medicine: z.string(),
+  // medicine: z.string(),
+  medicine_id: z.string(),
 });
 
 export function MedicalRecordForm({
@@ -57,6 +60,7 @@ export function MedicalRecordForm({
   setDialog?: any;
 }) {
   const { sows, setSows } = useSowStore();
+  const { medicines, setMedicines } = useMedicineStore();
   const { addMedicalRecord, updateMedicalRecord: updateMedicalRecordStore } =
     useMedicalRecordStore();
   const { toast } = useToast();
@@ -73,7 +77,7 @@ export function MedicalRecordForm({
           sow_id: id,
           used_at: new Date(),
           symptoms: "",
-          medicine: "",
+          medicine_id: "",
         },
   });
 
@@ -136,11 +140,16 @@ export function MedicalRecordForm({
 
   useEffect(() => {
     const fetchData = async () => {
-      const sows = await getAllSows();
-      if (!sows) return;
-      setSows(sows);
+      if (sows.length === 0) {
+        const sowsData = await getAllSows();
+        if (sowsData) setSows(sowsData);
+      }
+      if (medicines.length === 0) {
+        const medicinesData = await getAllMedicines();
+        if (medicinesData) setMedicines(medicinesData);
+      }
     };
-    if (sows.length === 0) fetchData();
+    fetchData();
   }, []);
 
   return (
@@ -194,13 +203,30 @@ export function MedicalRecordForm({
 
         <FormField
           control={form.control}
-          name="medicine"
+          name="medicine_id"
           render={({ field }) => (
             <FormItem>
               <FormLabel>ยาที่ใช้</FormLabel>
-              <FormControl>
-                <Input placeholder="ชื่อยาที่ใช้" className="bg-white" {...field} />
-              </FormControl>
+              <Select
+                onValueChange={field.onChange}
+                defaultValue={field.value}
+              >
+                <FormControl>
+                  <SelectTrigger className="bg-white">
+                    <SelectValue placeholder="เลือกยาที่ใช้" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>เลือกยา</SelectLabel>
+                    {medicines.map((medicine) => (
+                      <SelectItem key={medicine.id} value={medicine.id}>
+                        {medicine.title}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}

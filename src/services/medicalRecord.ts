@@ -6,7 +6,12 @@ const supabase = createClient();
 export const getMedicalRecordsBySowId = async (sowId: number) => {
   const { data, error } = (await supabase
     .from("medical_records")
-    .select()
+    .select(
+      `
+      *,
+      medicines(*)
+    `
+    )
     .eq("sow_id", sowId)
     .order("created_date", { ascending: false })) as {
     data: MedicalRecord[];
@@ -56,6 +61,26 @@ export const deleteMedicalRecord = async (id: number) => {
 
   if (error)
     throw new Error(`Failed to delete medical_record: ${error.message}`);
+
+  return data;
+};
+
+export const getAllMedicalRecords = async () => {
+  const { data, error } = (await supabase
+    .from("medical_records")
+    .select(
+      `
+      *,
+      medicines(*)
+    `
+    )
+    .order("used_at", { ascending: false })) as {
+    data: MedicalRecord[];
+    error: any;
+  };
+
+  if (error)
+    throw new Error(`Failed to fetch medical records: ${error.message}`);
 
   return data;
 };
