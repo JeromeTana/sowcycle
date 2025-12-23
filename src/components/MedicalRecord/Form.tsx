@@ -42,7 +42,7 @@ import { useMedicalRecordStore } from "@/stores/useMedicalRecordStore";
 
 const newFormSchema = z.object({
   sow_id: z.string(),
-  use_at: z.date({ required_error: "กรุณาเลือกวันที่" }),
+  used_at: z.date({ required_error: "กรุณาเลือกวันที่" }),
   symptoms: z.string(),
   medicine: z.string(),
 });
@@ -67,11 +67,11 @@ export function MedicalRecordForm({
       ? {
           ...medicalRecord,
           sow_id: medicalRecord?.sow_id.toString(),
-          use_at: new Date(medicalRecord.use_at),
+          used_at: new Date(medicalRecord.used_at),
         }
       : {
           sow_id: id,
-          use_at: new Date(),
+          used_at: new Date(),
           symptoms: "",
           medicine: "",
         },
@@ -95,7 +95,7 @@ export function MedicalRecordForm({
         ...medicalRecord,
         ...values,
         sow_id: Number(values.sow_id),
-        use_at: values.use_at.toISOString(),
+        used_at: values.used_at.toISOString(),
         updated_at: new Date().toISOString(),
       });
 
@@ -117,7 +117,7 @@ export function MedicalRecordForm({
       let res = await createMedicalRecord({
         ...values,
         sow_id: Number(values.sow_id),
-        use_at: values.use_at.toISOString(),
+        used_at: values.used_at.toISOString(),
         updated_at: new Date().toISOString(),
       });
 
@@ -208,7 +208,7 @@ export function MedicalRecordForm({
 
         <FormField
           control={form.control}
-          name="use_at"
+          name="used_at"
           render={({ field }) => (
             <FormItem className="flex flex-col w-full">
               <FormLabel>วันที่ใช้ยา</FormLabel>
@@ -256,7 +256,7 @@ export function MedicalRecordForm({
   );
 }
 
-export default function DeleteDialog({
+export function DeleteDialog({
   id,
   setDialog,
 }: {

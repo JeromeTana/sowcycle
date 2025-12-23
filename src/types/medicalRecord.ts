@@ -5,5 +5,6 @@ export interface MedicalRecord {
   sow_id: number;
   symptoms?: string;
   medicine?: string;
-  use_at: string;
+  used_at: string;
+  medicine_id?: string;
 }

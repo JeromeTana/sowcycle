@@ -75,7 +75,7 @@ export default function SowHistorySection({
     })),
     ...medicalRecords.map((m, i) => ({
       type: "medical" as const,
-      date: new Date(m.use_at),
+      date: new Date(m.used_at),
       data: m,
       number: medicalRecords.length - i,
     })),

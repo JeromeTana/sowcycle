@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { ChevronLeft, LogOut, Settings, User } from "lucide-react";
+import { ChevronLeft, ChevronRight, LogOut, Settings, User } from "lucide-react";
 import { getCurrentUser } from "@/services/auth";
 import DrawerDialog from "@/components/DrawerDialog";
 import LogoutButton from "@/components/LogoutButton";
@@ -60,19 +60,22 @@ function AccountMenu({ setDialog }: AccountMenuProps) {
         <Button
           variant={"secondary"}
           size={"lg"}
-          className="w-full justify-start px-4"
+          className="w-full px-4 justify-between"
         >
           <span>สายพันธุ์</span>
+          <ChevronRight size={16} className="text-muted-foreground"/>
         </Button>
       </a>
       <a href="/setting" onClick={closeDialog}>
         <Button
           variant={"secondary"}
           size={"lg"}
-          className="w-full justify-start px-4"
+          className="w-full justify-between px-4"
         >
           {/* <Settings size={16} /> */}
           <span>ตั้งค่า</span>
+          <ChevronRight size={16} className="text-muted-foreground"/>
+
         </Button>
       </a>
       <LogoutButton>
