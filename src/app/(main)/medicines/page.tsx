@@ -16,31 +16,35 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { getAllMedicines } from "@/services/medicine";
 import { useMedicineStore } from "@/stores/useMedicineStore";
+import { getAllMedicalRecords } from "@/services/medicalRecord";
+import { useMedicalRecordStore } from "@/stores/useMedicalRecordStore";
+import MedicalRecordCard from "@/components/MedicalRecord/Card";
+import { MedicalRecord } from "@/types/medicalRecord";
+import { Medicine } from "@/types/medicine";
 import { ChevronDown, Filter, ListFilter, Plus, Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import TabsComponent from "@/components/TabsComponent";
+import { MedicineHistoryCard } from "@/components/Medicine/Card";
 
 export default function MedicinesPage() {
   return (
     <>
       <TopBar title="ยาวัคซีน" />
-      <div className="space-y-8">
-        <TabsComponent
-          tabOptions={[
-            {
-              label: "คลังยาวัคซีน",
-              value: "details",
-              content: <MedicineInventory />,
-              default: true,
-            },
-            {
-              label: "ประวัติใช้ยา",
-              value: "history",
-              content: <MedicineHistory />,
-            },
-          ]}
-        />
-      </div>
+      <TabsComponent
+        tabOptions={[
+          {
+            label: "คลังยาวัคซีน",
+            value: "details",
+            content: <MedicineInventory />,
+            default: true,
+          },
+          {
+            label: "ประวัติใช้ยา",
+            value: "history",
+            content: <MedicineHistory />,
+          },
+        ]}
+      />
     </>
   );
 }
@@ -127,5 +131,48 @@ function MedicineInventory() {
 }
 
 function MedicineHistory() {
-  return <div></div>;
+  const { medicalRecords, setMedicalRecords } = useMedicalRecordStore();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const records = await getAllMedicalRecords();
+      if (!records) return;
+      setMedicalRecords(records);
+      setIsLoading(false);
+    };
+    fetchData();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        {[...Array(3)].map((_, i) => (
+          <Skeleton key={i} className="w-full h-32 rounded-xl" />
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-2">
+      {medicalRecords.length > 0 ? (
+        medicalRecords.map((record, index) => (
+          <MedicineHistoryCard
+            key={index}
+            medicalRecord={
+              record as MedicalRecord & {
+                medicines: Medicine;
+                sows: { name: string };
+              }
+            }
+          />
+        ))
+      ) : (
+        <div className="py-10 text-center text-muted-foreground">
+          ไม่พบประวัติการใช้ยา
+        </div>
+      )}
+    </div>
+  );
 }

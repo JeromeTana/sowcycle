@@ -116,15 +116,8 @@ export const patchMedicine = async (medicine: Partial<Medicine>) => {
       .from("medicines")
       .update(medicine)
       .eq("id", medicine.id)
-      .select(
-        `
-      *,
-      breedings(*)`
-      )
-      .order("breed_date", { ascending: false, referencedTable: "breedings" })
-      .limit(1, {
-        foreignTable: "breedings",
-      })
+      .select()
+      .limit(1)
       .single();
 
     if (error) throw new Error(`Failed to patch medicine: ${error.message}`);
@@ -133,6 +126,37 @@ export const patchMedicine = async (medicine: Partial<Medicine>) => {
   } catch (err) {
     if (err instanceof Error) {
       console.error(`Error patching medicine: ${err.message}`);
+      throw err;
+    }
+    throw new Error("An unexpected error occurred");
+  }
+};
+
+export const useMedicine = async (id: string) => {
+  try {
+    const { data: medicine, error: fetchError } = await supabase
+      .from("medicines")
+      .select("stock_count")
+      .eq("id", id)
+      .single();
+
+    if (fetchError) throw new Error(`Failed to fetch medicine: ${fetchError.message}`);
+
+    const { data, error } = await supabase
+      .from("medicines")
+      .update({
+        stock_count: (medicine.stock_count || 0) - 1,
+      })
+      .eq("id", id)
+      .select()
+      .single();
+
+    if (error) throw new Error(`Failed to use medicine: ${error.message}`);
+
+    return data;
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error(`Error using medicine: ${err.message}`);
       throw err;
     }
     throw new Error("An unexpected error occurred");

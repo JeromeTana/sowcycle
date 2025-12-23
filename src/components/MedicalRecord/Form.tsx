@@ -39,7 +39,7 @@ import { MedicalRecord } from "@/types/medicalRecord";
 import { Textarea } from "../ui/textarea";
 import { useLoading } from "@/stores/useLoading";
 import { useMedicalRecordStore } from "@/stores/useMedicalRecordStore";
-import { getAllMedicines } from "@/services/medicine";
+import { getAllMedicines, useMedicine } from "@/services/medicine";
 import { useMedicineStore } from "@/stores/useMedicineStore";
 
 const newFormSchema = z.object({
@@ -48,6 +48,7 @@ const newFormSchema = z.object({
   symptoms: z.string(),
   // medicine: z.string(),
   medicine_id: z.string(),
+  notes: z.string(),
 });
 
 export function MedicalRecordForm({
@@ -131,6 +132,7 @@ export function MedicalRecordForm({
           description: "เพิ่มประวัติการผสมเรียบร้อย",
         });
         addMedicalRecord(res);
+        await useMedicine(res.medicine_id);
         setDialog(false);
       }
     } catch (err) {
@@ -194,7 +196,11 @@ export function MedicalRecordForm({
             <FormItem>
               <FormLabel>อาการ</FormLabel>
               <FormControl>
-                <Textarea placeholder="อาการของสุกร" className="bg-white resize-none" {...field} />
+                <Textarea
+                  placeholder="อาการของสุกร"
+                  className="bg-white resize-none"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -207,10 +213,7 @@ export function MedicalRecordForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel>ยาที่ใช้</FormLabel>
-              <Select
-                onValueChange={field.onChange}
-                defaultValue={field.value}
-              >
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger className="bg-white">
                     <SelectValue placeholder="เลือกยาที่ใช้" />
@@ -219,11 +222,13 @@ export function MedicalRecordForm({
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>เลือกยา</SelectLabel>
-                    {medicines.map((medicine) => (
-                      <SelectItem key={medicine.id} value={medicine.id}>
-                        {medicine.title}
-                      </SelectItem>
-                    ))}
+                    {medicines
+                      .filter((medicine) => medicine.stock_count > 0)
+                      .map((medicine) => (
+                        <SelectItem key={medicine.id} value={medicine.id}>
+                          {medicine.title}
+                        </SelectItem>
+                      ))}
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -239,6 +244,24 @@ export function MedicalRecordForm({
             <FormItem className="flex flex-col w-full">
               <FormLabel>วันที่ใช้ยา</FormLabel>
               <DatePicker field={field} />
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="notes"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>หมายเหตุ</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="หมายเหตุ"
+                  className="bg-white resize-none"
+                  {...field}
+                />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}

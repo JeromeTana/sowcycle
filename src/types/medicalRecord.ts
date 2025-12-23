@@ -7,4 +7,5 @@ export interface MedicalRecord {
   medicine?: string;
   used_at: string;
   medicine_id?: string;
+  notes: string;
 }

@@ -1,5 +1,6 @@
 import { MedicalRecord } from "@/types/medicalRecord";
 import { createClient } from "@/utils/supabase/client";
+import { getCurrentUser } from "./auth";
 
 const supabase = createClient();
 
@@ -28,7 +29,7 @@ export const createMedicalRecord = async (medicalRecord: MedicalRecord) => {
   const { data, error } = await supabase
     .from("medical_records")
     .insert([medicalRecord])
-    .select()
+    .select(`*, medicines(*)`)
     .single();
 
   if (error)
@@ -42,7 +43,7 @@ export const updateMedicalRecord = async (medicalRecord: MedicalRecord) => {
     .from("medical_records")
     .update(medicalRecord)
     .eq("id", medicalRecord.id)
-    .select()
+    .select(`*, medicines(*)`)
     .single();
 
   if (error)
@@ -66,14 +67,17 @@ export const deleteMedicalRecord = async (id: number) => {
 };
 
 export const getAllMedicalRecords = async () => {
+  const user = await getCurrentUser();
   const { data, error } = (await supabase
     .from("medical_records")
     .select(
       `
       *,
-      medicines(*)
+      medicines(*),
+      sows!inner(name, user_id)
     `
     )
+    .eq("sows.user_id", user.id)
     .order("used_at", { ascending: false })) as {
     data: MedicalRecord[];
     error: any;

@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import DialogComponent from "../DrawerDialog";
-import { Syringe, Activity, ChevronRight } from "lucide-react";
+import { Syringe, Activity, ChevronRight, Asterisk } from "lucide-react";
 import { MedicalRecordForm } from "./Form";
 import { MedicalRecord } from "@/types/medicalRecord";
 import InfoIcon from "../InfoIcon";
@@ -23,7 +23,11 @@ export default function MedicalRecordCard({
           <CardContent className="p-4 space-y-6">
             <div className="flex justify-between">
               <div className="flex flex-col">
-                <h3 className="text-lg font-semibold">ใช้ยาครั้งที่ {index}</h3>
+                <h3 className="text-lg font-semibold">
+                  {medicalRecord.medicines?.title ||
+                    medicalRecord.medicine ||
+                    "ไม่ระบุ"}
+                </h3>
                 <p className="text-sm text-muted-foreground">
                   {formatDate(medicalRecord.used_at)}
                 </p>
@@ -37,10 +41,10 @@ export default function MedicalRecordCard({
                     ? medicalRecord.symptoms
                     : "ไม่มีข้อมูล"}
                 </InfoIcon>
-                {medicalRecord?.medicines && (
+                {/* {medicalRecord?.medicines && (
                   <div className="p-3 bg-muted rounded-xl">
                     <InfoIcon
-                      label=""
+                      label="ยาที่ใช้"
                       icon={<Syringe size={22} />}
                       className="!bg-white"
                     >
@@ -52,10 +56,15 @@ export default function MedicalRecordCard({
                       </span>
                     </InfoIcon>
                   </div>
-                )}
+                )} */}
                 {medicalRecord?.medicine && (
                   <InfoIcon label="ยาที่ใช้" icon={<Syringe size={22} />}>
                     {medicalRecord.medicine}
+                  </InfoIcon>
+                )}
+                {medicalRecord.notes && (
+                  <InfoIcon label="หมายเหตุ" icon={<Asterisk size={22} />}>
+                    {medicalRecord.notes}
                   </InfoIcon>
                 )}
               </div>
