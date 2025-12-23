@@ -88,7 +88,7 @@ export const getSowByIdWithAllInfo = async (id: number) => {
       .select(
         `*,
         breedings(*, boars(*)),
-        medical_records(*),
+        medical_records(*, medicines(*)),
         litters(*)
         `
       )
