@@ -13,6 +13,7 @@ import {
   Dna,
   HandHeart,
   Heart,
+  Home,
   Milk,
   Pen,
   PiggyBank,
@@ -124,7 +125,7 @@ export default function SowDetailsCard({
 
             <InfoIcon
               label="รับเข้าเมื่อ"
-              icon={<ArrowDown size={22} />}
+              icon={<Home size={22} />}
               className="text-muted-foreground"
             >
               {sow.add_date ? formatDate(sow.add_date) : "-"}
