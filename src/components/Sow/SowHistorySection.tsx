@@ -11,6 +11,7 @@ import { Breeding } from "@/types/breeding";
 import { MedicalRecord } from "@/types/medicalRecord";
 import { Heart, Plus, Syringe } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Medicine } from "@/types/medicine";
 
 interface SowHistorySectionProps {
   sow: Sow;
@@ -152,7 +153,7 @@ export default function SowHistorySection({
               ) : (
                 <MedicalRecordCard
                   index={item.number}
-                  medicalRecord={item.data as MedicalRecord}
+                  medicalRecord={item.data as MedicalRecord & {medicines:Medicine}}
                 />
               )}
             </div>

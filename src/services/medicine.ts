@@ -90,7 +90,7 @@ export const updateMedicine = async (medicine: Medicine) => {
   }
 };
 
-export const deleteMedicine = async (id: number) => {
+export const deleteMedicine = async (id: string) => {
   try {
     const { data, error } = await supabase
       .from("medicines")

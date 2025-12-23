@@ -99,7 +99,7 @@ export default function MedicineForm({ editingMedicine, setDialog }: any) {
     }
   };
 
-  const onDelete = async (id: number) => {
+  const onDelete = async (id: string) => {
     setIsLoading(true);
     try {
       await deleteMedicine(id);

@@ -8,7 +8,7 @@ interface MedicineState {
   setMedicine: (medicine: Medicine) => void;
   updateMedicine: (medicine: Medicine) => void;
   addMedicine: (medicine: Medicine) => void;
-  removeMedicine: (id: number) => void;
+  removeMedicine: (id: string) => void;
 }
 
 export const useMedicineStore = create<MedicineState>((set) => ({
@@ -22,7 +22,7 @@ export const useMedicineStore = create<MedicineState>((set) => ({
       medicines: state.medicines.map((s) => (s.id === medicine.id ? medicine : s)),
     })),
   addMedicine: (medicine: Medicine) => set((state) => ({ medicines: [medicine, ...state.medicines] })),
-  removeMedicine: (id: number) =>
+  removeMedicine: (id: string) =>
     set((state) => ({
       medicines: state.medicines.filter((medicine) => medicine.id !== id),
     })),
