@@ -102,45 +102,45 @@ export default function SowHistorySection({
           <TabsComponent tabOptions={tabFormOptions} />
         </DialogComponent>
       </div> */}
-
-      <div className="flex gap-2 mt-4 overflow-x-auto no-scrollbar">
-        <button
-          onClick={() => setFilter("all")}
-          className={cn(
-            "px-4 py-2 rounded-full text-sm border border-card font-medium whitespace-nowrap transition-colors",
-            filter === "all"
-              ? "bg-primary/10 border-primary text-primary"
-              : "bg-card text-card-foreground"
-          )}
-        >
-          ทั้งหมด
-        </button>
-        <button
-          onClick={() => setFilter("breeding")}
-          className={cn(
-            "px-4 py-2 rounded-full text-sm border border-card font-medium whitespace-nowrap transition-colors",
-            filter === "breeding"
-              ? "bg-primary/10 border-primary text-primary"
-              : "bg-card text-card-foreground"
-          )}
-        >
-          <Heart className="inline w-3 h-3 mr-1" />
-          ประวัติผสม ({breedings.length})
-        </button>
-        <button
-          onClick={() => setFilter("medical")}
-          className={cn(
-            "px-4 py-2 rounded-full text-sm border border-card font-medium whitespace-nowrap transition-colors",
-            filter === "medical"
-              ? "bg-primary/10 border-primary text-primary"
-              : "bg-card text-card-foreground"
-          )}
-        >
-          <Syringe className="inline w-3 h-3 mr-1" />
-          ประวัติใช้ยา ({medicalRecords.length})
-        </button>
+      <div className="mt-4 overflow-auto no-scrollbar">
+        <div className="flex flex-wrap gap-2 ">
+          <button
+            onClick={() => setFilter("all")}
+            className={cn(
+              "px-4 py-2 rounded-full text-sm border border-card font-medium whitespace-nowrap transition-colors",
+              filter === "all"
+                ? "bg-primary/10 border-primary text-primary"
+                : "bg-card text-card-foreground"
+            )}
+          >
+            ทั้งหมด
+          </button>
+          <button
+            onClick={() => setFilter("breeding")}
+            className={cn(
+              "px-4 py-2 rounded-full text-sm border border-card font-medium whitespace-nowrap transition-colors",
+              filter === "breeding"
+                ? "bg-primary/10 border-primary text-primary"
+                : "bg-card text-card-foreground"
+            )}
+          >
+            <Heart className="inline w-3 h-3 mr-1" />
+            ประวัติผสม ({breedings.length})
+          </button>
+          <button
+            onClick={() => setFilter("medical")}
+            className={cn(
+              "px-4 py-2 rounded-full text-sm border border-card font-medium whitespace-nowrap transition-colors",
+              filter === "medical"
+                ? "bg-primary/10 border-primary text-primary"
+                : "bg-card text-card-foreground"
+            )}
+          >
+            <Syringe className="inline w-3 h-3 mr-1" />
+            ประวัติใช้ยา ({medicalRecords.length})
+          </button>
+        </div>
       </div>
-
       <div className="space-y-2">
         {filteredHistory.length > 0 ? (
           filteredHistory.map((item, index) => (
@@ -153,7 +153,9 @@ export default function SowHistorySection({
               ) : (
                 <MedicalRecordCard
                   index={item.number}
-                  medicalRecord={item.data as MedicalRecord & {medicines:Medicine}}
+                  medicalRecord={
+                    item.data as MedicalRecord & { medicines: Medicine }
+                  }
                 />
               )}
             </div>

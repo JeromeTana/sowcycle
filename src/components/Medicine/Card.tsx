@@ -24,11 +24,15 @@ export default function MedicineCard({ medicine }: { medicine: Medicine }) {
             <div className="flex justify-between">
               <div className="flex flex-col">
                 <h3 className="text-lg font-semibold">{medicine.title} </h3>
-                <p className="text-base font-normal text-muted-foreground">
-                  {medicine.stock_count > 0
-                    ? `มีอยู่ ${medicine.stock_count}`
-                    : "หมดแล้ว"}
-                </p>
+                {medicine.stock_count > 0 ? (
+                  <p className="text-sm font-normal text-green-600">
+                    มีอยู่ {medicine.stock_count}
+                  </p>
+                ) : (
+                  <p className="text-sm font-normal text-muted-foreground">
+                    หมดแล้ว
+                  </p>
+                )}
               </div>
               <ChevronRight size={20} className="text-muted-foreground" />
             </div>

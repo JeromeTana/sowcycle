@@ -55,8 +55,8 @@ export default function Navigation() {
   const pathname = usePathname();
 
   return (
-    <div className="z-50 flex items-center justify-center pt-2 p-4 bg-white">
-      <nav className="grid grid-cols-5 gap-6">
+    <div className="z-50 flex items-center justify-center px-8 pt-2 p-4 bg-white">
+      <nav className="flex justify-between flex-1 gap-6">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           return (
