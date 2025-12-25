@@ -56,7 +56,7 @@ export default function SowForm({ editingSow, setDialog }: any) {
         ? new Date(editingSow.add_date)
         : undefined,
       breed_ids: editingSow?.breed_ids || [],
-      breasts_count: editingSow?.breasts_count || 0,
+      breasts_count: editingSow?.breasts_count || undefined,
     },
   });
 
@@ -146,6 +146,24 @@ export default function SowForm({ editingSow, setDialog }: any) {
 
         <FormField
           control={form.control}
+          name="breed_ids"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>สายพันธุ์</FormLabel>
+              <FormControl>
+                <MultiBreedDropdown
+                  value={field.value || []}
+                  onValueChange={field.onChange}
+                  disabled={form.formState.isSubmitting}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
           name="breasts_count"
           render={({ field }) => (
             <FormItem>
@@ -181,24 +199,6 @@ export default function SowForm({ editingSow, setDialog }: any) {
             <FormItem className="flex flex-col">
               <FormLabel>รับเข้าเมื่อ</FormLabel>
               <DatePicker field={field} />
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="breed_ids"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>สายพันธุ์</FormLabel>
-              <FormControl>
-                <MultiBreedDropdown
-                  value={field.value || []}
-                  onValueChange={field.onChange}
-                  disabled={form.formState.isSubmitting}
-                />
-              </FormControl>
               <FormMessage />
             </FormItem>
           )}
