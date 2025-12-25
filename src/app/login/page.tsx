@@ -175,7 +175,7 @@ const LoginForm = () => {
                 <Input
                   type="email"
                   placeholder="yourname@example.com"
-                  className="h-11 rounded-xl border-gray-200 focus:border-primary focus:ring-primary"
+                  className="h-11 border-gray-200 focus:border-primary focus:ring-primary"
                   {...field}
                 />
               </FormControl>
@@ -197,7 +197,7 @@ const LoginForm = () => {
                   <Input
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
-                    className="h-11 rounded-xl border-gray-200 focus:border-primary focus:ring-primary pr-10"
+                    className="h-11 border-gray-200 focus:border-primary focus:ring-primary pr-10"
                     {...field}
                   />
                   <button
@@ -313,7 +313,7 @@ const SignupForm = () => {
                 <Input
                   type="email"
                   placeholder="yourname@example.com"
-                  className="h-11 rounded-xl border-gray-200 focus:border-primary focus:ring-primary"
+                  className="h-11 border-gray-200 focus:border-primary focus:ring-primary"
                   {...field}
                 />
               </FormControl>
@@ -335,7 +335,7 @@ const SignupForm = () => {
                   <Input
                     type={showPassword ? "text" : "password"}
                     placeholder="Create a strong password"
-                    className="h-11 rounded-xl border-gray-200 focus:border-primary focus:ring-primary pr-10"
+                    className="h-11 border-gray-200 focus:border-primary focus:ring-primary pr-10"
                     {...field}
                   />
                   <button
@@ -369,7 +369,7 @@ const SignupForm = () => {
                   <Input
                     type={showRepeatPassword ? "text" : "password"}
                     placeholder="Repeat your password"
-                    className="h-11 rounded-xl border-gray-200 focus:border-primary focus:ring-primary pr-10"
+                    className="h-11 border-gray-200 focus:border-primary focus:ring-primary pr-10"
                     {...field}
                   />
                   <button
