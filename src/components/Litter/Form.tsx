@@ -26,9 +26,10 @@ import { DeleteDialog } from "./DeleteDialog";
 interface LitterFormProps {
   litter: Litter;
   setDialog?: (open: boolean) => void;
+  mode?: "edit" | "fattening" | "sale";
 }
 
-export function LitterForm({ litter, setDialog }: LitterFormProps) {
+export function LitterForm({ litter, setDialog, mode = "edit" }: LitterFormProps) {
   const { toast } = useToast();
   const { updateLitter: updateLitterStore } = useLitterStore();
 
@@ -107,63 +108,80 @@ export function LitterForm({ litter, setDialog }: LitterFormProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="birth_date"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel>วันที่คลอด</FormLabel>
-              <DatePicker field={field} />
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {mode === "edit" && (
+          <>
+            <FormField
+              control={form.control}
+              name="birth_date"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>วันที่คลอด</FormLabel>
+                  <DatePicker field={field} />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-        <PigletsSection form={form} totalBornPiglets={totalBornPiglets} />
+            <PigletsSection form={form} totalBornPiglets={totalBornPiglets} />
+          </>
+        )}
 
-        <FatteningSection
-          form={form}
-          calculatedSaleableDate={calculatedSaleableDate}
-        />
-
-        <FormField
-          control={form.control}
-          name="sold_at"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel>ขายแล้วเมื่อ (ถ้ามี)</FormLabel>
-              <DatePicker field={field} />
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="avg_weight"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>น้ำหนักขายเฉลี่ย (ถ้ามี)</FormLabel>
-              <FormControl>
-                <Input
-                  type="number"
-                  {...field}
-                  min={0}
-                  placeholder="หน่วยเป็นกิโลกรัม เช่น 150.45"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <div className="flex justify-between w-full">
-          <DeleteDialog
-            isSubmitting={form.formState.isSubmitting}
-            litter={litter}
-            setDialog={setDialog}
+        {(mode === "edit" || mode === "fattening") && (
+          <FatteningSection
+            form={form}
+            calculatedSaleableDate={calculatedSaleableDate}
           />
-          <Button disabled={form.formState.isSubmitting}  size="lg" className="w-full" type="submit">
+        )}
+
+        {(mode === "edit" || mode === "sale") && (
+          <>
+            <FormField
+              control={form.control}
+              name="sold_at"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>ขายแล้วเมื่อ (ถ้ามี)</FormLabel>
+                  <DatePicker field={field} />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="avg_weight"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>น้ำหนักขายเฉลี่ย (ถ้ามี)</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      {...field}
+                      min={0}
+                      placeholder="หน่วยเป็นกิโลกรัม เช่น 150.45"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </>
+        )}
+
+        <div className="flex justify-between w-full gap-2">
+          {mode === "edit" && (
+            <DeleteDialog
+              isSubmitting={form.formState.isSubmitting}
+              litter={litter}
+              setDialog={setDialog}
+            />
+          )}
+          <Button
+            disabled={form.formState.isSubmitting}
+            size="lg"
+            className="w-full"
+            type="submit"
+          >
             {form.formState.isSubmitting ? (
               <>
                 <Loader className="animate-spin" />

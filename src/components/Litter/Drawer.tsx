@@ -211,7 +211,7 @@ export default function LitterDrawer({ litter, index }: LitterDrawerProps) {
               </Button>
             }
           >
-            <LitterForm litter={litter} />
+            <LitterForm litter={litter} mode="fattening" />
           </DrawerDialog>
         )}
 
@@ -225,7 +225,7 @@ export default function LitterDrawer({ litter, index }: LitterDrawerProps) {
               </Button>
             }
           >
-            <LitterForm litter={litter} />
+            <LitterForm litter={litter} mode="sale" />
           </DrawerDialog>
         )}
 
@@ -250,7 +250,7 @@ export default function LitterDrawer({ litter, index }: LitterDrawerProps) {
             </Button>
           }
         >
-          <LitterForm litter={litter} />
+          <LitterForm litter={litter} mode="edit" />
         </DrawerDialog>
 
         {/* Delete Button */}

@@ -192,7 +192,7 @@ export default function LitterCard({ litter, index }: LitterCardProps) {
                       </Button>
                     }
                   >
-                    <LitterForm litter={litter} />
+                    <LitterForm litter={litter} mode="fattening" />
                   </DrawerDialog>
                 </div>
               )}
@@ -208,7 +208,7 @@ export default function LitterCard({ litter, index }: LitterCardProps) {
                       </Button>
                     }
                   >
-                    <LitterForm litter={litter} />
+                    <LitterForm litter={litter} mode="sale" />
                   </DrawerDialog>
                 </div>
               )}

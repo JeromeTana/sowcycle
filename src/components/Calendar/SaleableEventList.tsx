@@ -106,6 +106,7 @@ export const SaleableEventList: React.FC<SaleableEventListProps> = ({
                   }
                 >
                   <LitterForm
+                    mode="sale"
                     litter={{
                       id: event.litterId,
                       sow_id: event.sowId,

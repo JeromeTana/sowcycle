@@ -33,7 +33,7 @@ export default function DatePicker({ field }: any) {
           </Button>
         </FormControl>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="start">
+      <PopoverContent className="w-auto p-0" align="center">
         <Calendar
           mode="single"
           defaultMonth={field.value || new Date()}
@@ -46,7 +46,7 @@ export default function DatePicker({ field }: any) {
             date > new Date() || date < new Date("1900-01-01")
           }
           initialFocus
-          className="w-screen"
+          className="w-[calc(100vw-1rem)]"
         />
       </PopoverContent>
     </Popover>

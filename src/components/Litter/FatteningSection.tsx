@@ -22,7 +22,7 @@ export function FatteningSection({
   calculatedSaleableDate,
 }: FatteningSectionProps) {
   return (
-    <div className="flex gap-2">
+    <div className="flex flex-col gap-2">
       <FormField
         control={form.control}
         name="fattening_at"
