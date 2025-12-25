@@ -79,6 +79,7 @@ export function MedicalRecordForm({
           used_at: new Date(),
           symptoms: "",
           medicine_id: "",
+          notes: "",
         },
   });
 
@@ -191,6 +192,18 @@ export function MedicalRecordForm({
 
         <FormField
           control={form.control}
+          name="used_at"
+          render={({ field }) => (
+            <FormItem className="flex flex-col w-full">
+              <FormLabel>วันที่ใช้ยา</FormLabel>
+              <DatePicker field={field} />
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
           name="symptoms"
           render={({ field }) => (
             <FormItem>
@@ -232,18 +245,6 @@ export function MedicalRecordForm({
                   </SelectGroup>
                 </SelectContent>
               </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="used_at"
-          render={({ field }) => (
-            <FormItem className="flex flex-col w-full">
-              <FormLabel>วันที่ใช้ยา</FormLabel>
-              <DatePicker field={field} />
               <FormMessage />
             </FormItem>
           )}
