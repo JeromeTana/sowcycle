@@ -163,7 +163,7 @@ export function MultiBreedDropdown({
       const breed = breeds.find((b) => b.id === value[0]);
       return breed ? `${breed.breed}` : "เลือกแล้ว 1 รายการ";
     }
-    return `เลือกแล้ว ${value.length} รายการ`;
+    return `เลือกแล้ว ${value.length} สายพันธุ์`;
   };
 
   if (loading) {
@@ -212,7 +212,7 @@ export function MultiBreedDropdown({
                 ไม่มีข้อมูลสายพันธุ์
               </div>
             ) : (
-              <div className="p-1 min-w-40">
+              <div className="p-1 min-w-40 w-full">
                 {breeds.map((breed) => {
                   const checkboxId = `multi-breed-${breed.id}`;
                   return (

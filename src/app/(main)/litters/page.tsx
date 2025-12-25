@@ -5,7 +5,14 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Search, Baby, PiggyBank, Fence, ListFilter, Check } from "lucide-react";
+import {
+  Search,
+  Baby,
+  PiggyBank,
+  Fence,
+  ListFilter,
+  Check,
+} from "lucide-react";
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import LitterCard from "@/components/Litter/Card";
 import { FadeIn } from "@/components/animations/FadeIn";
@@ -189,7 +196,8 @@ function FilterControls({
             variant="outline"
             className={cn(
               "flex items-center gap-2 size-12 rounded-full",
-              isFilterActive && "bg-primary/10 border border-primary !text-primary"
+              isFilterActive &&
+                "bg-primary/10 border border-primary !text-primary"
             )}
           >
             <ListFilter />
@@ -227,12 +235,10 @@ function FilterOptionsList({
   setDialog,
   isDialogOpen,
 }: FilterOptionsListProps) {
-  const [selectedStatusFilters, setSelectedStatusFilters] = useState<
-    FilterOption[]
-  >(appliedStatusFilters);
-  const [selectedBreedFilters, setSelectedBreedFilters] = useState<string[]>(
-    appliedBreeds
-  );
+  const [selectedStatusFilters, setSelectedStatusFilters] =
+    useState<FilterOption[]>(appliedStatusFilters);
+  const [selectedBreedFilters, setSelectedBreedFilters] =
+    useState<string[]>(appliedBreeds);
 
   useEffect(() => {
     if (isDialogOpen) {
@@ -319,13 +325,11 @@ function FilterOptionsList({
                 <span>{option.label}</span>
                 <span
                   className={cn(
-                    "flex h-5 w-5 items-center justify-center rounded-full border",
-                    isSelected
-                      ? "border-primary bg-primary text-white"
-                      : "border-gray-300"
+                    "flex h-5 w-5 items-center justify-center",
+                    isSelected && "text-primary bg-white"
                   )}
                 >
-                  {isSelected && <Check size={14} />}
+                  {isSelected && <Check />}
                 </span>
               </button>
             );
@@ -393,7 +397,12 @@ function FilterOptionsList({
         >
           ล้างตัวกรอง
         </Button>
-        <Button type="button" size={"lg"} className="flex-1" onClick={handleApply}>
+        <Button
+          type="button"
+          size={"lg"}
+          className="flex-1"
+          onClick={handleApply}
+        >
           ใช้ตัวกรอง
         </Button>
       </div>
