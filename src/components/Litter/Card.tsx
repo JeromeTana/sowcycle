@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { LitterForm } from "./Form";
 import LitterDrawer from "./Drawer";
-import { cn } from "@/lib/utils";
+import { cn, formatDateTH } from "@/lib/utils";
 import { AddToCalendarButton } from "../AddToCalendarButton";
 import { Sow } from "@/types/sow";
 import { useMemo } from "react";
@@ -45,13 +45,6 @@ export default function LitterCard({ litter, index }: LitterCardProps) {
   const isSold = !!litter.sold_at;
   const isFattening = !!litter.fattening_at && !isSold;
   const isBorn = !litter.fattening_at; // Just born, not fattening yet
-
-  const formatDateDisplay = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("th-TH", {
-      month: "long",
-      day: "numeric",
-    });
-  };
 
   return (
     <DrawerDialog
@@ -136,7 +129,7 @@ export default function LitterCard({ litter, index }: LitterCardProps) {
                       คลอดเมื่อ
                     </p>
                     <span className="font-semibold text-gray-900">
-                      {formatDateDisplay(litter.birth_date!)}
+                      {formatDateTH(litter.birth_date!, true, true, false)}
                     </span>
                   </div>
                 </div>
@@ -152,7 +145,7 @@ export default function LitterCard({ litter, index }: LitterCardProps) {
                         เริ่มขุนเมื่อ
                       </p>
                       <span className="font-semibold text-gray-900">
-                        {formatDateDisplay(litter.fattening_at!)}
+                        {formatDateTH(litter.fattening_at!, true, true, false)}
                       </span>
                     </div>
                   </div>
@@ -172,8 +165,8 @@ export default function LitterCard({ litter, index }: LitterCardProps) {
                       </p>
                       <span className="font-semibold text-gray-900">
                         {isSold
-                          ? formatDateDisplay(litter.sold_at!)
-                          : formatDateDisplay(litter.saleable_at!)}
+                          ? formatDateTH(litter.sold_at!, true, true, false)
+                          : formatDateTH(litter.saleable_at!, true, true, false)}
                       </span>
                     </div>
                   </div>

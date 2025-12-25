@@ -17,30 +17,13 @@ import {
 
 import { FarrowForm, NewBreedingForm } from "../Breeding/Form";
 import DialogComponent from "../DrawerDialog";
-import { cn } from "@/lib/utils";
+import { cn, formatDateTH, getDaysDiff, getDaysRemaining } from "@/lib/utils";
 import { AddToCalendarButton } from "../AddToCalendarButton";
 import { SowTags } from "./SowTags";
 
 export default function SowCard({ sow }: { sow: Sow }) {
   const latestBreeding = sow.breedings?.[0];
   const isPregnant = !sow.is_available && sow.is_active;
-
-  const formatDateDisplay = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("th-TH", {
-      month: "long",
-      day: "numeric",
-    });
-  };
-
-  const getDaysDiff = (dateStr: string) => {
-    const diffTime = new Date().getTime() - new Date(dateStr).getTime();
-    return Math.floor(diffTime / (1000 * 60 * 60 * 24));
-  };
-
-  const getDaysRemaining = (dateStr: string) => {
-    const diffTime = new Date(dateStr).getTime() - new Date().getTime();
-    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  };
 
   return (
     <Card className="w-full overflow-hidden transition-all bg-white border-none shadow-none rounded-2xl">
@@ -98,9 +81,9 @@ export default function SowCard({ sow }: { sow: Sow }) {
                 <span className="font-semibold text-gray-900">
                   {isPregnant
                     ? latestBreeding.expected_farrow_date &&
-                      formatDateDisplay(latestBreeding.expected_farrow_date)
+                      formatDateTH(latestBreeding.expected_farrow_date, true, true, false)
                     : latestBreeding?.actual_farrow_date
-                    ? formatDateDisplay(latestBreeding.actual_farrow_date)
+                    ? formatDateTH(latestBreeding.actual_farrow_date, true, true, false)
                     : "ไม่มีประวัติคลอด"}
                 </span>
 

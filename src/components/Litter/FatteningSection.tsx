@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import DatePicker from "@/components/DatePicker";
-import { cn, formatDate } from "@/lib/utils";
+import { cn, formatDateTH } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 import { LitterFormData } from "../../schemas/litterSchema";
@@ -48,7 +48,7 @@ export function FatteningSection({
             )}
           >
             {calculatedSaleableDate ? (
-              formatDate(calculatedSaleableDate.toISOString())
+              formatDateTH(calculatedSaleableDate.toISOString())
             ) : (
               <span>เลือกวันที่เริ่มขุน</span>
             )}

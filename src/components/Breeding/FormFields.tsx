@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import DatePicker from "@/components/DatePicker";
 import BreedDropdown from "@/components/Boar/Dropdown";
-import { cn, formatDate } from "@/lib/utils";
+import { cn, formatDateTH } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { useSowOperations } from "@/hooks/useSowOperations";
 
@@ -121,7 +121,7 @@ export function ExpectedFarrowDateField({
           )}
         >
           {expectedDate ? (
-            formatDate(expectedDate.toISOString())
+            formatDateTH(expectedDate.toISOString())
           ) : (
             <span>เลือกวันที่ผสม</span>
           )}

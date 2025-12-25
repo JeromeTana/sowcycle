@@ -52,9 +52,9 @@ export default function Page() {
         <FadeIn delay={0.5}>
           <UpcomingEvents />
         </FadeIn>
-        <FadeIn delay={0.6}>
+        {/* <FadeIn delay={0.6}>
           <PregnantSowsSection sows={breededSows} />
-        </FadeIn>
+        </FadeIn> */}
       </div>
     </>
   );

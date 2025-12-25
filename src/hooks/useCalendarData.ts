@@ -15,6 +15,7 @@ export interface FarrowEvent {
   actualFarrowDate?: Date;
   boarBreed?: string;
   sowBreasts?: number;
+  boarId?: number | null;
 }
 
 export interface SaleableEvent {
@@ -30,6 +31,8 @@ export interface SaleableEvent {
   pigletCount: number;
   maleCount: number;
   femaleCount: number;
+  fattening_at?: Date;
+  boarId?: number;
 }
 
 export interface CalendarData {
@@ -68,6 +71,7 @@ export const useCalendarData = () => {
             : undefined,
           boarBreed: breeding.boars?.breed,
           sowBreasts: (breeding as any).sows?.breasts_count,
+          boarId: breeding.boar_id,
         };
       });
     },
@@ -80,7 +84,9 @@ export const useCalendarData = () => {
         .filter((litter) => litter.saleable_at)
         .map((litter) => {
           const saleableDate = parseISO(litter.saleable_at!);
-          const farrowDate = parseISO(litter.saleable_at!);
+          const farrowDate = litter.birth_date
+            ? parseISO(litter.birth_date)
+            : new Date();
           const today = new Date();
           const daysUntilSaleable = differenceInDays(saleableDate, today);
 
@@ -97,6 +103,10 @@ export const useCalendarData = () => {
             pigletCount: litter.piglets_born_count || 0,
             maleCount: litter.piglets_male_born_alive || 0,
             femaleCount: litter.piglets_female_born_alive || 0,
+            fattening_at: litter.fattening_at
+              ? parseISO(litter.fattening_at)
+              : undefined,
+            boarId: litter.boar_id,
           };
         });
     },

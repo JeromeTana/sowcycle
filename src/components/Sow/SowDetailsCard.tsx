@@ -3,7 +3,7 @@ import InfoIcon from "@/components/InfoIcon";
 import CountdownBadge from "@/components/CountdownBadge";
 import PigletCountChart from "@/components/Sow/PigletCountChart";
 import AvgWeightChart from "@/components/Sow/AvgWeightChart";
-import { formatDate } from "@/lib/utils";
+import { formatDateTH } from "@/lib/utils";
 import { Sow } from "@/types/sow";
 import { Breeding } from "@/types/breeding";
 import { Litter } from "@/types/litter";
@@ -106,7 +106,7 @@ export default function SowDetailsCard({
             >
               {sow.birth_date ? (
                 <>
-                  {formatDate(sow.birth_date)}{" "}
+                  {formatDateTH(sow.birth_date)}{" "}
                   <span className="text-muted-foreground">
                     (
                     {`อายุ 
@@ -128,7 +128,7 @@ export default function SowDetailsCard({
               icon={<Home size={22} />}
               className="text-muted-foreground"
             >
-              {sow.add_date ? formatDate(sow.add_date) : "-"}
+              {sow.add_date ? formatDateTH(sow.add_date) : "-"}
             </InfoIcon>
 
             <div className="flex flex-col gap-4">

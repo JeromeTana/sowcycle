@@ -4,7 +4,7 @@ import { Syringe, Activity, ChevronRight, Asterisk } from "lucide-react";
 import { MedicalRecordForm } from "./Form";
 import { MedicalRecord } from "@/types/medicalRecord";
 import InfoIcon from "../InfoIcon";
-import { formatDate } from "@/lib/utils";
+import { formatDateTH } from "@/lib/utils";
 import { Medicine } from "@/types/medicine";
 
 export default function MedicalRecordCard({
@@ -29,7 +29,7 @@ export default function MedicalRecordCard({
                     "ไม่ระบุ"}
                 </h3>
                 <p className="text-sm text-muted-foreground">
-                  {formatDate(medicalRecord.used_at)}
+                  {formatDateTH(medicalRecord.used_at)}
                 </p>
               </div>
               <ChevronRight size={20} className="text-muted-foreground" />

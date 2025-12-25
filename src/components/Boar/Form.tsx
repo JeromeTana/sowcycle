@@ -31,7 +31,7 @@ const formSchema = z.object({
   description: z.string().optional(),
 });
 
-export default function BoarForm({ editingBoar, setDialog }: any) {
+export default function BoarForm({ editingBoar, setDialog, onSuccess }: any) {
   const [boar, setBoar] = useState<Boar>({} as Boar);
   const { setIsLoading } = useLoading();
   const { addBoar, updateBoar: updateBoarState, removeBoar } = useBoarStore();
@@ -58,6 +58,9 @@ export default function BoarForm({ editingBoar, setDialog }: any) {
         title: "เพิ่มข้อมูลเรียบร้อย",
         description: "ข้อมูลของสายพันธุ์ถูกเพิ่มเรียบร้อยแล้ว",
       });
+      if (onSuccess) {
+        onSuccess(res);
+      }
       setDialog(false);
     }
   };

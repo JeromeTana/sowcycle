@@ -1,10 +1,21 @@
 import React from "react";
-import { PiggyBank, CalendarIcon, Check, ChevronRight } from "lucide-react";
+import {
+  PiggyBank,
+  CalendarIcon,
+  Check,
+  ChevronRight,
+  Calendar,
+} from "lucide-react";
 import { AddToCalendarButton } from "@/components/AddToCalendarButton";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import InfoIcon from "../InfoIcon";
+import { formatDateTH, getDaysRemaining } from "@/lib/utils";
+import DrawerDialog from "@/components/DrawerDialog";
+import { LitterForm } from "@/components/Litter/Form";
+import { Litter } from "@/types/litter";
 
 interface SaleableEvent {
   id: number;
@@ -19,6 +30,8 @@ interface SaleableEvent {
   pigletCount: number;
   maleCount: number;
   femaleCount: number;
+  fattening_at?: Date;
+  boarId?: number;
 }
 
 interface SaleableEventListProps {
@@ -46,13 +59,21 @@ export const SaleableEventList: React.FC<SaleableEventListProps> = ({
                 <ChevronRight size={20} className="text-muted-foreground" />
               </div>
 
-              {/* Piglet Info */}
-              <div className="flex items-center gap-4 mb-6">
-                <div className="flex items-center justify-center w-12 h-12 text-gray-500 bg-gray-100 rounded-2xl">
-                  <PiggyBank className="w-6 h-6" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-sm text-gray-500">จำนวน</span>
+              <div className="flex flex-col gap-4 mb-4">
+                <InfoIcon label="พร้อมขายเมื่อ" icon={<Calendar size={24} />}>
+                  <span className="font-semibold text-gray-900">
+                    {formatDateTH(event.saleableDate.toDateString())}
+                  </span>{" "}
+                  <span className="text-sm font-medium text-lime-500">
+                    ภายใน {getDaysRemaining(event.saleableDate.toDateString())}{" "}
+                    วัน
+                  </span>
+                </InfoIcon>
+                {/* Piglet Info */}
+                <InfoIcon
+                  label="จำนวน"
+                  icon={<PiggyBank className="w-6 h-6" />}
+                >
                   <div className="flex items-center gap-2">
                     <span className="text-lg font-bold">
                       {event.pigletCount} ตัว
@@ -66,19 +87,45 @@ export const SaleableEventList: React.FC<SaleableEventListProps> = ({
                       </span>
                     </div>
                   </div>
-                </div>
+                </InfoIcon>
               </div>
 
               {/* Actions */}
               <div className="space-y-2">
                 {/* Record Sale Button */}
 
-                <Button
-                  size={"lg"}
-                  className="w-full h-12 text-base shadow-none bg-lime-500 hover:bg-lime-600"
+                <DrawerDialog
+                  title="บันทึกวันขาย"
+                  dialogTriggerButton={
+                    <Button
+                      size={"lg"}
+                      className="w-full h-12 text-base shadow-none bg-lime-500 hover:bg-lime-600"
+                    >
+                      <Check className="w-5 h-5 mr-2" /> บันทึกวันขาย
+                    </Button>
+                  }
                 >
-                  <Check className="w-5 h-5 mr-2" /> บันทึกวันขาย
-                </Button>
+                  <LitterForm
+                    litter={{
+                      id: event.litterId,
+                      sow_id: event.sowId,
+                      birth_date: event.farrowDate.toISOString(),
+                      piglets_born_count: event.pigletCount,
+                      piglets_male_born_alive: event.maleCount,
+                      piglets_female_born_alive: event.femaleCount,
+                      saleable_at: event.saleableDate.toISOString(),
+                      fattening_at: event.fattening_at?.toISOString(),
+                      boar_id: event.boarId,
+                      boars: event.boarId
+                        ? ({
+                            id: event.boarId,
+                            breed: event.boarBreed,
+                            boar_id: event.boarId,
+                          } as any)
+                        : undefined,
+                    }}
+                  />
+                </DrawerDialog>
                 <AddToCalendarButton
                   title={`ลูกขุนพร้อมขาย แม่${event.sowName}`}
                   description={`แม่พันธุ์: ${event.sowName}\nจำนวน: ${event.pigletCount} ตัว`}

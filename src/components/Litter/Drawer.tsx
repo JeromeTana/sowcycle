@@ -23,6 +23,7 @@ import BoarDetailsCard from "../Boar/DetailsCard";
 import { DeleteDialog } from "./DeleteDialog";
 import { useMemo } from "react";
 import { SowTags } from "../Sow/SowTags";
+import { formatDateTH } from "@/lib/utils";
 
 interface ExtendedLitter extends Litter {
   sows: Sow | undefined;
@@ -45,14 +46,6 @@ export default function LitterDrawer({ litter, index }: LitterDrawerProps) {
   const isSold = !!litter.sold_at;
   const isFattening = !!litter.fattening_at && !isSold;
   const isBorn = !litter.fattening_at;
-
-  const formatDateDisplay = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("th-TH", {
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-    });
-  };
 
   return (
     <div className="space-y-4">
@@ -163,7 +156,7 @@ export default function LitterDrawer({ litter, index }: LitterDrawerProps) {
             <div className="flex flex-col justify-center">
               <p className="text-muted-foreground text-sm mb-0.5">คลอดเมื่อ</p>
               <span className="font-semibold text-gray-900">
-                {formatDateDisplay(litter.birth_date!)}
+                {formatDateTH(litter.birth_date!)}
               </span>
             </div>
           </div>
@@ -179,7 +172,7 @@ export default function LitterDrawer({ litter, index }: LitterDrawerProps) {
                   เริ่มขุนเมื่อ
                 </p>
                 <span className="font-semibold text-gray-900">
-                  {formatDateDisplay(litter.fattening_at!)}
+                  {formatDateTH(litter.fattening_at!)}
                 </span>
               </div>
             </div>
@@ -197,8 +190,8 @@ export default function LitterDrawer({ litter, index }: LitterDrawerProps) {
                 </p>
                 <span className="font-semibold text-gray-900">
                   {isSold
-                    ? formatDateDisplay(litter.sold_at!)
-                    : formatDateDisplay(litter.saleable_at!)}
+                    ? formatDateTH(litter.sold_at!)
+                    : formatDateTH(litter.saleable_at!)}
                 </span>
               </div>
             </div>

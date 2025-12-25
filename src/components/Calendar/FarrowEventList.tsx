@@ -6,6 +6,7 @@ import {
   Check,
   Milk,
   ChevronRight,
+  Calendar,
 } from "lucide-react";
 import InfoIcon from "@/components/InfoIcon";
 import { AddToCalendarButton } from "@/components/AddToCalendarButton";
@@ -14,6 +15,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { SowTags } from "../Sow/SowTags";
+import { formatDateTH, getDaysRemaining } from "@/lib/utils";
+import DrawerDialog from "@/components/DrawerDialog";
+import { FarrowForm } from "@/components/Breeding/Form";
+import { Breeding } from "@/types/breeding";
 
 interface FarrowEvent {
   id: number;
@@ -26,6 +31,7 @@ interface FarrowEvent {
   actualFarrowDate?: Date;
   boarBreed?: string;
   sowBreasts?: number;
+  boarId?: number | null;
 }
 
 interface FarrowEventListProps {
@@ -61,32 +67,59 @@ export const FarrowEventList: React.FC<FarrowEventListProps> = ({ events }) => {
                 <ChevronRight size={20} className="text-muted-foreground" />
               </div>
 
-              {/* Boar Info */}
-              {event.boarBreed && (
-                <div className="flex items-center justify-between p-4 mb-6 bg-secondary rounded-xl">
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center justify-center w-12 h-12 bg-white rounded-2xl">
-                      <Dna size={24} className="text-muted-foreground" />
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-xs text-muted-foreground">
-                        พ่อพันธุ์
-                      </span>
+              <div className="space-y-2  mb-4">
+                <InfoIcon label="กำหนดคลอด" icon={<Calendar size={24} />}>
+                  <span className="font-semibold text-gray-900">
+                    {formatDateTH(event.expectedDate.toDateString())}
+                  </span>{" "}
+                  <span className="text-sm font-medium text-primary">
+                    ภายใน {getDaysRemaining(event.expectedDate.toDateString())}{" "}
+                    วัน
+                  </span>
+                </InfoIcon>
+                {/* {event.boarBreed && (
+                  <div className="flex items-center justify-between p-4 bg-secondary rounded-xl">
+                    <InfoIcon
+                      label="พ่อพันธุ์"
+                      icon={<Dna size={24} />}
+                      className="bg-white"
+                    >
                       <span className="font-semibold text-gray-900">
                         {event.boarBreed}
                       </span>
-                    </div>
+                    </InfoIcon>
+                    <ChevronRight size={20} className="text-gray-400 " />
                   </div>
-                  <ChevronRight size={20} className="text-gray-400 " />
-                </div>
-              )}
+                )} */}
+              </div>
 
               {/* Actions */}
               <div className="space-y-2">
                 {/* Record Farrowing Button - This would ideally open a form */}
-                <Button className="w-full h-12 text-base font-medium bg-primary hover:bg-pink-600">
-                  <Check className="w-5 h-5 mr-2" /> บันทึกการคลอด
-                </Button>
+                <DrawerDialog
+                  title="บันทึกการคลอด"
+                  dialogTriggerButton={
+                    <Button className="w-full h-12 text-base font-medium bg-primary hover:bg-pink-600">
+                      <Check className="w-5 h-5 mr-2" /> บันทึกการคลอด
+                    </Button>
+                  }
+                >
+                  <FarrowForm
+                    breeding={{
+                      id: event.id,
+                      sow_id: event.sowId,
+                      breed_date: event.breedDate.toISOString(),
+                      expected_farrow_date: event.expectedDate.toISOString(),
+                      boar_id: event.boarId || null,
+                      boars: event.boarId
+                        ? ({
+                            id: event.boarId,
+                            breed: event.boarBreed,
+                          } as any)
+                        : undefined,
+                    }}
+                  />
+                </DrawerDialog>
 
                 <AddToCalendarButton
                   title={`กำหนดคลอด ${event.sowName}`}

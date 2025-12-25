@@ -12,7 +12,7 @@ import {
   Pencil,
   ChevronRight,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, formatDateTH } from "@/lib/utils";
 import DialogComponent from "../DrawerDialog";
 import { FarrowForm } from "./Form";
 import { AddToCalendarButton } from "../AddToCalendarButton";
@@ -28,14 +28,6 @@ export default function BreedingDrawer({
 }) {
   const isPregnant = !breeding.actual_farrow_date && !breeding.is_aborted;
   const isCompleted = !!breeding.actual_farrow_date;
-
-  const formatDateDisplay = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("th-TH", {
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-    });
-  };
 
   const getDaysRemaining = (dateStr: string) => {
     const diffTime = new Date(dateStr).getTime() - new Date().getTime();
@@ -85,7 +77,7 @@ export default function BreedingDrawer({
           <div className="flex flex-col justify-center">
             <p className="text-muted-foreground text-sm mb-0.5">ผสมเมื่อ</p>
             <span className="font-semibold text-gray-900">
-              {formatDateDisplay(breeding.breed_date)}
+              {formatDateTH(breeding.breed_date)}
             </span>
           </div>
         </div>
@@ -107,8 +99,8 @@ export default function BreedingDrawer({
             <div className="flex flex-wrap items-baseline gap-2">
               <span className="font-semibold text-gray-900">
                 {isCompleted
-                  ? formatDateDisplay(breeding.actual_farrow_date!)
-                  : formatDateDisplay(breeding.expected_farrow_date)}
+                  ? formatDateTH(breeding.actual_farrow_date!)
+                  : formatDateTH(breeding.expected_farrow_date)}
               </span>
               {isCompleted && (
                 <span className="text-sm text-muted-foreground">

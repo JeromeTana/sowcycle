@@ -10,7 +10,7 @@ import {
 import MedicineForm from "./Form";
 import { Medicine } from "@/types/medicine";
 import InfoIcon from "../InfoIcon";
-import { formatDate } from "@/lib/utils";
+import { formatDateTH } from "@/lib/utils";
 import { MedicalRecord } from "@/types/medicalRecord";
 
 export default function MedicineCard({ medicine }: { medicine: Medicine }) {
@@ -72,7 +72,7 @@ export function MedicineHistoryCard({
                 "ไม่ระบุ"}
             </h3>
             <p className="text-sm text-muted-foreground">
-              {formatDate(medicalRecord.used_at)}
+              {formatDateTH(medicalRecord.used_at)}
             </p>
           </div>
           {/* <ChevronRight size={20} className="text-muted-foreground" /> */}

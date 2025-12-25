@@ -18,14 +18,14 @@ export default function InfoIcon({
     <div className="inline-flex items-start gap-2 text-muted-foreground">
       <div
         className={cn(
-          className,
-          "bg-muted text-muted-foreground p-3 rounded-xl"
+          "bg-muted text-muted-foreground p-3 rounded-xl",
+          className
         )}
       >
         {icon}
       </div>
       <p className="inline-flex flex-col gap-1">
-        <span className="text-xs">{label}</span>
+        <span className="text-sm">{label}</span>
         <span className="text-black">{children}</span>
       </p>
     </div>
