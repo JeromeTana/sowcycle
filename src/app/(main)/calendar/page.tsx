@@ -80,7 +80,7 @@ export default function CalendarPage() {
       <main className="space-y-4 p-4 pt-0 md:pb-8 md:p-8">
         <div className="grid grid-cols-1 gap-8">
           <div className="lg:col-span-1">
-            <div className="p-1 bg-white rounded-xl">
+            <div className="p-1 bg-white rounded-2xl overflow-hidden">
               <Calendar
                 mode="single"
                 disabled={loading}
@@ -95,13 +95,13 @@ export default function CalendarPage() {
                 modifiers={calendarModifiers}
                 modifiersClassNames={{
                   hasEvent:
-                    "bg-primary text-white hover:bg-pink-600 hover:text-white",
+                    "bg-primary text-white",
                   overdue:
-                    "bg-primary text-white hover:bg-pink-600 hover:text-white",
+                    "bg-primary text-white",
                   hasSaleableEvent:
-                    "bg-lime-500 text-white hover:bg-lime-600 hover:text-white",
+                    "bg-lime-500 text-white",
                   saleablePastDue:
-                    "bg-lime-500 text-white hover:bg-lime-600 hover:text-white",
+                    "bg-lime-500 text-white",
                 }}
               />
             </div>
