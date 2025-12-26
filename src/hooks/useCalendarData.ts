@@ -3,6 +3,8 @@ import { parseISO, differenceInDays } from "date-fns";
 import { getAllBreedings } from "@/services/breeding";
 import { getAllLitters } from "@/services/litter";
 import { Breeding } from "@/types/breeding";
+import { Sow } from "@/types/sow";
+import { Boar } from "@/types/boar";
 
 export interface FarrowEvent {
   id: number;
@@ -51,7 +53,7 @@ export const useCalendarData = () => {
   const [error, setError] = useState<string | null>(null);
 
   const transformBreedingsToEvents = useCallback(
-    (breedings: Breeding[]): FarrowEvent[] => {
+    (breedings: (Breeding & { boars: Boar; sows: Sow })[]): FarrowEvent[] => {
       return breedings.map((breeding) => {
         const expectedDate = parseISO(breeding.expected_farrow_date);
         const breedDate = parseISO(breeding.breed_date);
@@ -61,6 +63,7 @@ export const useCalendarData = () => {
         return {
           id: breeding.id!,
           sowId: breeding.sow_id,
+          sowBreedsIds: breeding.sows.breed_ids,
           sowName: (breeding as any).sows?.name || `Sow #${breeding.sow_id}`,
           expectedDate,
           breedDate,
@@ -75,7 +78,7 @@ export const useCalendarData = () => {
         };
       });
     },
-    [],
+    []
   );
 
   const transformLittersToSaleableEvents = useCallback(
@@ -110,7 +113,7 @@ export const useCalendarData = () => {
           };
         });
     },
-    [],
+    []
   );
 
   const fetchData = useCallback(async () => {
@@ -133,7 +136,7 @@ export const useCalendarData = () => {
       });
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Failed to fetch calendar data",
+        err instanceof Error ? err.message : "Failed to fetch calendar data"
       );
     } finally {
       setLoading(false);

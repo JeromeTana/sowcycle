@@ -1,6 +1,8 @@
 import { Breeding } from "@/types/breeding";
 import { createClient } from "@/utils/supabase/client";
 import { getCurrentUser } from "./auth";
+import { Boar } from "@/types/boar";
+import { Sow } from "@/types/sow";
 
 const supabase = createClient();
 
@@ -18,7 +20,7 @@ export const getAllBreedings = async () => {
     )
     .eq("sows.user_id", user.id)
     .order("expected_farrow_date", { ascending: true })) as {
-    data: Breeding[];
+    data: (Breeding & { boars: Boar; sows: Sow })[];
     error: any;
   };
 

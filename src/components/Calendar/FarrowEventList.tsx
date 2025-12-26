@@ -32,6 +32,7 @@ interface FarrowEvent {
   boarBreed?: string;
   sowBreasts?: number;
   boarId?: number | null;
+  sowBreedsIds?: number[];
 }
 
 interface FarrowEventListProps {
@@ -54,10 +55,12 @@ export const FarrowEventList: React.FC<FarrowEventListProps> = ({ events }) => {
                     คลอด {event.sowName}
                   </h3>
                   {/* Tags */}
-                  {event.sowBreasts && (
+                  {((event.sowBreedsIds && event.sowBreedsIds.length > 0) ||
+                    (event.sowBreasts !== undefined &&
+                      event.sowBreasts > 0)) && (
                     <div className="flex flex-wrap gap-2">
                       <SowTags
-                        // breedIds={sow.breed_ids}
+                        breedIds={event.sowBreedsIds}
                         breastsCount={event.sowBreasts}
                         className="bg-secondary px-4 py-1.5 text-sm"
                       />
