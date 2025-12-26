@@ -114,7 +114,7 @@ function MedicineInventory() {
       >
         <MedicineForm />
       </DialogComponent>
-      <div className="space-y-4">
+      <div className="space-y-4 mt-4">
         <div className="flex gap-2">
           <Input
             value={search}
@@ -155,7 +155,7 @@ function MedicineHistory() {
   }
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 mt-4">
       {medicalRecords.length > 0 ? (
         medicalRecords.map((record, index) => (
           <MedicineHistoryCard
