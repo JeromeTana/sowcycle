@@ -14,7 +14,7 @@ export function DashboardLoadingSkeleton() {
         </div>
       </div>
 
-      <div className="space-y-8">
+      <div className="space-y-8 p-4 pt-0 md:pb-8 md:p-8">
         {/* Stats Cards Grid */}
         <div className="grid grid-cols-2 gap-4">
           {/* Large Cards with Graph */}

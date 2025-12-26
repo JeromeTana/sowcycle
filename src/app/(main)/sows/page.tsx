@@ -36,7 +36,7 @@ export default function SowPage() {
     <>
       <TopBar title="แม่พันธุ์" />
       <SowPageHeader />
-      <div className="space-y-4">
+      <main className="space-y-4 p-4 pt-0 md:pb-8 md:p-8">
         {/* <SowStats stats={stats} /> */}
         <SowFilters
           search={search}
@@ -45,7 +45,7 @@ export default function SowPage() {
           setFilter={setFilter}
         />
         <SowList sows={filteredSows} />
-      </div>
+      </main>
     </>
   );
 }

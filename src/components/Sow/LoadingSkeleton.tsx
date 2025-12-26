@@ -14,7 +14,7 @@ export function LoadingListSkeleton() {
         </div>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-6 p-4 pt-0 md:pb-8 md:p-8">
         {/* SowStats Skeleton */}
         <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
           <Skeleton className="h-[140px] rounded-xl" />

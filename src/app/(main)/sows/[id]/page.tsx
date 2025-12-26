@@ -57,7 +57,7 @@ export default function SowPage({ params }: SowPageProps) {
   return (
     <>
       <TopBar title={sow.name} hasBack />
-      <div className="space-y-8">
+      <main className="space-y-8 p-4 pt-0 md:pb-8 md:p-8">
         <TabsComponent
           tabOptions={[
             {
@@ -88,7 +88,7 @@ export default function SowPage({ params }: SowPageProps) {
             },
           ]}
         />
-      </div>
+      </main>
     </>
   );
 }

@@ -14,24 +14,24 @@ export function LitterLoadingSkeleton() {
         </div>
       </div>
 
-      <div className="min-h-screen">
+      <div className="min-h-screen p-4 pt-0 md:pb-8 md:p-8">
         <div className="max-w-4xl mx-auto space-y-6">
           {/* LitterStats Skeleton */}
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+          {/* <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
             <Skeleton className="h-[140px] rounded-xl" />
             <Skeleton className="h-[140px] rounded-xl" />
-          </div>
+          </div> */}
 
           {/* FilterControls Skeleton */}
           <div className="flex gap-2">
-            <Skeleton className="w-full h-10 rounded-full" />
-            <Skeleton className="w-32 h-10 rounded-full" />
+            <Skeleton className="w-full h-12 rounded-full" />
+            <Skeleton className="h-12 aspect-square rounded-full" />
           </div>
 
           {/* LittersList Skeleton */}
-          <div className="space-y-4">
+          <div className="space-y-2">
             {Array.from({ length: 5 }).map((_, i) => (
-              <Skeleton key={i} className="w-full h-48 rounded-xl" />
+              <Skeleton key={i} className="w-full h-48 rounded-2xl" />
             ))}
           </div>
         </div>

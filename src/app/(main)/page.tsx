@@ -43,7 +43,7 @@ export default function Page() {
   return (
     <>
       <TopBar title="หน้าหลัก" />
-      <div className="space-y-8">
+      <main className="space-y-8 p-4 pt-0 md:pb-8 md:p-8">
         <StatsGrid
           pregnantSowsCount={pregnantSowsCount}
           pigletsCount={pigletsCount}
@@ -60,7 +60,7 @@ export default function Page() {
         {/* <FadeIn delay={0.6}>
           <PregnantSowsSection sows={breededSows} />
         </FadeIn> */}
-      </div>
+      </main>
     </>
   );
 }

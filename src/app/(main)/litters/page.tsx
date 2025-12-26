@@ -105,7 +105,7 @@ export default function LittersPage() {
   return (
     <>
       <TopBar title="ครอกลูกหมู" />
-      <div className="min-h-screen">
+      <main className="min-h-screen p-4 pt-0 md:pb-8 md:p-8">
         <div className="max-w-4xl mx-auto space-y-4">
           {/*<PageHeader />*/}
           {/* <LitterStats litters={littersWithBreeds} /> */}
@@ -120,7 +120,7 @@ export default function LittersPage() {
           />
           <LittersList litters={filteredLitters} />
         </div>
-      </div>
+      </main>
     </>
   );
 }

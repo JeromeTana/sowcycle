@@ -4,7 +4,7 @@ export function MedicineLoadingSkeleton() {
   return (
     <>
       {/* TopBar Skeleton */}
-      <div className="grid items-center w-full grid-cols-3 mb-4">
+      {/* <div className="grid items-center w-full grid-cols-3 mb-4">
         <div className="flex"></div>
         <div className="flex justify-center">
           <Skeleton className="w-24 h-7" />
@@ -12,19 +12,19 @@ export function MedicineLoadingSkeleton() {
         <div className="flex justify-end">
           <Skeleton className="w-10 h-10 rounded-full" />
         </div>
-      </div>
+      </div> */}
 
-      <div className="space-y-4">
+      <div className="space-y-4 p-4 pt-0 md:pb-8 md:p-8">
         {/* Search and Filter Skeleton */}
         <div className="flex gap-2">
-          <Skeleton className="w-full h-10 rounded-full" />
-          <Skeleton className="w-32 h-10 rounded-full" />
+          <Skeleton className="w-full h-10 rounded-full mt-4" />
+          {/* <Skeleton className="w-32 h-10 rounded-full" /> */}
         </div>
 
         {/* MedicineList Skeleton */}
-        <div className="space-y-4">
+        <div className="space-y-2">
           {[...Array(3)].map((_, i) => (
-            <Skeleton key={i} className="w-full h-32 rounded-xl" />
+            <Skeleton key={i} className="w-full h-40 rounded-2xl" />
           ))}
         </div>
       </div>

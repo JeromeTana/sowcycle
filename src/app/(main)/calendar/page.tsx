@@ -77,7 +77,7 @@ export default function CalendarPage() {
   return (
     <>
       <TopBar title="Calendar" />
-      <div className="space-y-4">
+      <main className="space-y-4 p-4 pt-0 md:pb-8 md:p-8">
         <div className="grid grid-cols-1 gap-8">
           <div className="lg:col-span-1">
             <div className="p-1 bg-white rounded-xl">
@@ -150,7 +150,7 @@ export default function CalendarPage() {
             )}
           </div>
         </div>
-      </div>
+      </main>
     </>
   );
 }

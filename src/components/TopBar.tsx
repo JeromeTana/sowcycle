@@ -104,7 +104,7 @@ export default function TopBar({
       initial={{ y: 0, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="sticky top-0 z-10 grid items-center w-full grid-cols-3 p-2 mb-6 bg-gradient-to-b from-background via-60% via-background to-background/0"
+      className="sticky top-0 z-10 grid items-center w-full grid-cols-3 p-2 mb-4 bg-gradient-to-b from-background via-60% via-background to-background/0"
     >
       <div className="flex">
         {hasBack && (

@@ -143,7 +143,7 @@ export default function SettingPage() {
   return (
     <>
       <TopBar title="การตั้งค่า" hasBack />
-      <div className="container mx-auto max-w-2xl">
+      <main className="container mx-auto max-w-2xl p-4 pt-0 md:pb-8 md:p-8">
         <Card className="mb-6">
           <CardHeader>
             <CardTitle>Google Calendar Sync</CardTitle>
@@ -287,7 +287,7 @@ export default function SettingPage() {
             </Form>
           </CardContent>
         </Card>
-      </div>
+      </main>
     </>
   );
 }

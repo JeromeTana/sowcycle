@@ -31,21 +31,23 @@ export default function MedicinesPage() {
   return (
     <>
       <TopBar title="ยาวัคซีน" />
-      <TabsComponent
-        tabOptions={[
-          {
-            label: "คลังยาวัคซีน",
-            value: "details",
-            content: <MedicineInventory />,
-            default: true,
-          },
-          {
-            label: "ประวัติใช้ยา",
-            value: "history",
-            content: <MedicineHistory />,
-          },
-        ]}
-      />
+      <main className="min-h-screen p-4 pt-0 md:pb-8 md:p-8">
+        <TabsComponent
+          tabOptions={[
+            {
+              label: "คลังยาวัคซีน",
+              value: "details",
+              content: <MedicineInventory />,
+              default: true,
+            },
+            {
+              label: "ประวัติใช้ยา",
+              value: "history",
+              content: <MedicineHistory />,
+            },
+          ]}
+        />
+      </main>
     </>
   );
 }
@@ -116,9 +118,9 @@ function MedicineHistory() {
 
   if (isLoading) {
     return (
-      <div className="space-y-4">
+      <div className="space-y-2 mt-4">
         {[...Array(3)].map((_, i) => (
-          <Skeleton key={i} className="w-full h-32 rounded-xl" />
+          <Skeleton key={i} className="w-full h-52 rounded-2xl" />
         ))}
       </div>
     );
