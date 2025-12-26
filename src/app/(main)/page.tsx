@@ -8,6 +8,7 @@ import { UpcomingEvents } from "@/components/Dashboard/UpcomingEvents";
 import TopBar from "@/components/TopBar";
 import { StatsGrid } from "@/components/Dashboard/StatsGrid";
 import { FadeIn } from "@/components/animations/FadeIn";
+import { toast } from "@/hooks/use-toast";
 
 export default function Page() {
   const {
@@ -23,6 +24,13 @@ export default function Page() {
     isLoading,
     error,
   } = useDashboardData();
+
+  const showToast = () => {
+    toast({
+      title: "This is a toast notification",
+      description: "Hello! This is a sample toast message.",
+    });
+  }
 
   if (isLoading) {
     return <DashboardLoadingSkeleton />;
@@ -42,6 +50,8 @@ export default function Page() {
   return (
     <>
       <TopBar title="หน้าหลัก" />
+      {/* toast button */}
+      <button onClick={showToast}>Toast</button>
       <div className="space-y-8">
         <StatsGrid
           pregnantSowsCount={pregnantSowsCount}
