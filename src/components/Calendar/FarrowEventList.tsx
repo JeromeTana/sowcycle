@@ -37,9 +37,13 @@ interface FarrowEvent {
 
 interface FarrowEventListProps {
   events: FarrowEvent[];
+  onSuccess?: () => void;
 }
 
-export const FarrowEventList: React.FC<FarrowEventListProps> = ({ events }) => {
+export const FarrowEventList: React.FC<FarrowEventListProps> = ({
+  events,
+  onSuccess,
+}) => {
   if (events.length === 0) return null;
 
   return (
@@ -125,6 +129,7 @@ export const FarrowEventList: React.FC<FarrowEventListProps> = ({ events }) => {
                           } as any)
                         : undefined,
                     }}
+                    onSuccess={onSuccess}
                   />
                 </DrawerDialog>
 

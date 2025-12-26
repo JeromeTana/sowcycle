@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export const UpcomingEvents = () => {
-  const { data, loading, error } = useCalendarData();
+  const { data, loading, error, refetch } = useCalendarData();
   const { farrowEvents, saleableEvents } = data;
 
   const upcomingEvents = useMemo(() => {
@@ -18,12 +18,15 @@ export const UpcomingEvents = () => {
 
     const interval = { start: today, end: nextWeek };
 
-    const farrow = farrowEvents.filter((event) =>
-      isWithinInterval(event.expectedDate, interval),
+    const farrow = farrowEvents.filter(
+      (event) =>
+        isWithinInterval(event.expectedDate, interval) &&
+        !event.actualFarrowDate,
     );
 
-    const saleable = saleableEvents.filter((event) =>
-      isWithinInterval(event.saleableDate, interval),
+    const saleable = saleableEvents.filter(
+      (event) =>
+        isWithinInterval(event.saleableDate, interval) && !event.soldDate,
     );
 
     return { farrow, saleable };
@@ -88,6 +91,7 @@ export const UpcomingEvents = () => {
               <FarrowEventList
                 key={`farrow-${event.id}`}
                 events={[event as any]}
+                onSuccess={refetch}
               />
             );
           } else {
@@ -95,6 +99,7 @@ export const UpcomingEvents = () => {
               <SaleableEventList
                 key={`saleable-${event.id}`}
                 events={[event as any]}
+                onSuccess={refetch}
               />
             );
           }

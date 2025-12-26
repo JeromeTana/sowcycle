@@ -35,6 +35,7 @@ export interface SaleableEvent {
   femaleCount: number;
   fattening_at?: Date;
   boarId?: number;
+  soldDate?: Date;
 }
 
 export interface CalendarData {
@@ -110,6 +111,7 @@ export const useCalendarData = () => {
               ? parseISO(litter.fattening_at)
               : undefined,
             boarId: litter.boar_id,
+            soldDate: litter.sold_at ? parseISO(litter.sold_at) : undefined,
           };
         });
     },

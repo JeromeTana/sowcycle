@@ -36,10 +36,12 @@ interface SaleableEvent {
 
 interface SaleableEventListProps {
   events: SaleableEvent[];
+  onSuccess?: () => void;
 }
 
 export const SaleableEventList: React.FC<SaleableEventListProps> = ({
   events,
+  onSuccess,
 }) => {
   if (events.length === 0) return null;
 
@@ -128,6 +130,7 @@ export const SaleableEventList: React.FC<SaleableEventListProps> = ({
                           } as any)
                         : undefined,
                     }}
+                    onSuccess={onSuccess}
                   />
                 </DrawerDialog>
                 <AddToCalendarButton

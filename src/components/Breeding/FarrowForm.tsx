@@ -20,9 +20,10 @@ import DeleteDialog from "./DeleteDialog";
 interface FarrowFormProps {
   breeding: Breeding;
   setDialog?: (open: boolean) => void;
+  onSuccess?: () => void;
 }
 
-export function FarrowForm({ breeding, setDialog }: FarrowFormProps) {
+export function FarrowForm({ breeding, setDialog, onSuccess }: FarrowFormProps) {
   const { updateBreeding, createFarrowRecord } = useBreedingOperations();
 
   const form = useForm<FarrowFormData>({
@@ -88,6 +89,7 @@ export function FarrowForm({ breeding, setDialog }: FarrowFormProps) {
       }
       
       setDialog?.(false);
+      onSuccess?.();
     } catch (error) {
       console.error("Farrow form submission error:", error);
     }

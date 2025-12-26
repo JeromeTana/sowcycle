@@ -27,9 +27,10 @@ interface LitterFormProps {
   litter: Litter;
   setDialog?: (open: boolean) => void;
   mode?: "edit" | "fattening" | "sale";
+  onSuccess?: () => void;
 }
 
-export function LitterForm({ litter, setDialog, mode = "edit" }: LitterFormProps) {
+export function LitterForm({ litter, setDialog, mode = "edit", onSuccess }: LitterFormProps) {
   const { toast } = useToast();
   const { updateLitter: updateLitterStore } = useLitterStore();
 
@@ -81,6 +82,7 @@ export function LitterForm({ litter, setDialog, mode = "edit" }: LitterFormProps
         });
         updateLitterStore(res);
         setDialog?.(false);
+        onSuccess?.();
       }
     } catch (err) {
       console.error(err);
