@@ -4,6 +4,8 @@ import { useBoarStore } from "@/stores/useBoarStore";
 import { getAllLitters } from "@/services/litter";
 import { getAllBoars } from "@/services/boar";
 import { Sow } from "@/types/sow";
+import { Litter } from "@/types/litter";
+import { Boar } from "@/types/boar";
 
 export function useLitterData() {
   const { litters, setLitters } = useLitterStore();
@@ -54,7 +56,7 @@ export function useLitterData() {
   };
 }
 
-function addBreedNamesToLitters(litters: any[], breeds: any[]) {
+function addBreedNamesToLitters(litters: Litter[], breeds: Boar[]) {
   return litters.map((litter) => {
     const sowBreedNames = getSowBreedNames(litter.sows, breeds);
     return {
@@ -67,7 +69,7 @@ function addBreedNamesToLitters(litters: any[], breeds: any[]) {
   });
 }
 
-function getSowBreedNames(sow: Sow | undefined, breeds: any[]): string[] {
+function getSowBreedNames(sow: Sow | undefined, breeds: Boar[]): string[] {
   if (!sow?.breed_ids) return [];
 
   return sow.breed_ids

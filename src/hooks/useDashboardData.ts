@@ -79,7 +79,7 @@ export function useDashboardData() {
       .slice(-6) // Last 6 records
       .map((l) => ({
         date: l.sold_at,
-        value: l.avg_weight,
+        value: l.avg_weight || 0,
       }));
   }, [litters]);
 
@@ -93,7 +93,7 @@ export function useDashboardData() {
       .slice(-6)
       .map((l) => ({
         date: l.birth_date,
-        value: l.piglets_born_count,
+        value: l.piglets_born_count || 0,
       }));
   }, [litters]);
 
