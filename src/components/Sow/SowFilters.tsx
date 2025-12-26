@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { Check, ListFilter, Search } from "lucide-react";
-import { FilterOption, FILTER_OPTIONS } from "@/hooks/useSowFilters";
+import { FilterOption, FILTER_OPTIONS, DEFAULT_FILTER } from "@/hooks/useSowFilters";
 
 interface SowFiltersProps {
   search: string;
@@ -19,7 +19,7 @@ export function SowFilters({
   setFilter,
 }: SowFiltersProps) {
   const isFilterActive =
-    JSON.stringify(filter.value) !== JSON.stringify(FILTER_OPTIONS[0].value);
+    JSON.stringify(filter.value) !== JSON.stringify(DEFAULT_FILTER.value);
 
   return (
     <div className="flex gap-2">
@@ -79,7 +79,7 @@ function FilterOptionsList({
             type="button"
             onClick={() => handleSelect(option)}
             className={cn(
-              "flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left transition hover:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-200",
+              "flex w-full items-center justify-between rounded-full border px-4 py-3 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-200",
               isSelected
                 ? "border-primary bg-pink-50 text-pink-600"
                 : "border-gray-200 bg-white text-gray-700"

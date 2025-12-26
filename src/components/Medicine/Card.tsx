@@ -72,7 +72,7 @@ export function MedicineHistoryCard({
                 "ไม่ระบุ"}
             </h3>
             <p className="text-sm text-muted-foreground">
-              {formatDateTH(medicalRecord.used_at)}
+              {formatDateTH(medicalRecord.used_at, true, true, true)}
             </p>
           </div>
           {/* <ChevronRight size={20} className="text-muted-foreground" /> */}

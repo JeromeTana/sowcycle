@@ -140,7 +140,7 @@ export function ActualFarrowDateField({ form }: { form: any }) {
       name="actual_farrow_date"
       render={({ field }) => (
         <FormItem className="flex flex-col">
-          <FormLabel>วันที่คลอดจริง</FormLabel>
+          <FormLabel>วันที่คลอด</FormLabel>
           <DatePicker field={field} />
           <FormMessage />
         </FormItem>
@@ -162,7 +162,7 @@ export function PigletCountFields({
     <>
       <div className="space-y-2">
         <p className="text-sm">จำนวนลูกเกิด</p>
-        <div className="p-4 space-y-4 border rounded-lg bg-gray-50">
+        <div className="p-4 space-y-4 rounded-2xl bg-muted">
           <div className="flex gap-2">
             <FormField
               control={form.control}
@@ -252,7 +252,7 @@ export function AbortionToggle({ form, show }: { form: any; show: boolean }) {
       control={form.control}
       name="is_aborted"
       render={({ field }) => (
-        <FormItem className="flex flex-row items-center justify-between p-4 border rounded-lg">
+        <FormItem className="flex flex-row items-center justify-between p-4 border rounded-xl">
           <div className="space-y-0.5">
             <FormLabel className="text-base">แท้งลูก</FormLabel>
           </div>

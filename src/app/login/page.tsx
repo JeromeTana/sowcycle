@@ -20,7 +20,7 @@ import { authOnChange, login, signUp } from "@/services/auth";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
-import { Loader, Eye, EyeOff, Sprout, PiggyBank } from "lucide-react";
+import { Eye, EyeOff, Sprout, PiggyBank, Loader2 } from "lucide-react";
 import Image from "next/image";
 
 const loginSchema = z.object({
@@ -235,7 +235,7 @@ const LoginForm = () => {
         >
           {form.formState.isSubmitting ? (
             <>
-              <Loader className="animate-spin w-4 h-4 mr-2" />
+              <Loader2 className="animate-spin w-4 h-4 mr-2" />
               Logging in
             </>
           ) : (
@@ -405,7 +405,7 @@ const SignupForm = () => {
         >
           {form.formState.isSubmitting ? (
             <>
-              <Loader className="animate-spin w-4 h-4 mr-2" />
+              <Loader2 className="animate-spin w-4 h-4 mr-2" />
               Creating account...
             </>
           ) : (

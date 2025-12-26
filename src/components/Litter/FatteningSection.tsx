@@ -22,13 +22,13 @@ export function FatteningSection({
   calculatedSaleableDate,
 }: FatteningSectionProps) {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-4">
       <FormField
         control={form.control}
         name="fattening_at"
         render={({ field }) => (
           <FormItem className="flex flex-col w-full">
-            <FormLabel>เริ่มขุนเมื่อ (ถ้ามี)</FormLabel>
+            <FormLabel>เริ่มขุนเมื่อ</FormLabel>
             <DatePicker field={field} />
             <FormMessage />
           </FormItem>
@@ -43,7 +43,7 @@ export function FatteningSection({
             disabled
             size="lg"
             className={cn(
-              "w-full pl-3 text-left font-normal",
+              "w-full px-4 text-base text-left font-normal",
               !calculatedSaleableDate && "text-muted-foreground"
             )}
           >

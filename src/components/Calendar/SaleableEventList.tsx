@@ -60,15 +60,6 @@ export const SaleableEventList: React.FC<SaleableEventListProps> = ({
               </div>
 
               <div className="flex flex-col gap-4 mb-4">
-                <InfoIcon label="พร้อมขายเมื่อ" icon={<Calendar size={24} />}>
-                  <span className="font-semibold text-gray-900">
-                    {formatDateTH(event.saleableDate.toDateString())}
-                  </span>{" "}
-                  <span className="text-sm font-medium text-lime-500">
-                    ภายใน {getDaysRemaining(event.saleableDate.toDateString())}{" "}
-                    วัน
-                  </span>
-                </InfoIcon>
                 {/* Piglet Info */}
                 <InfoIcon
                   label="จำนวน"
@@ -87,6 +78,18 @@ export const SaleableEventList: React.FC<SaleableEventListProps> = ({
                       </span>
                     </div>
                   </div>
+                </InfoIcon>
+                <InfoIcon label="พร้อมขายเมื่อ" icon={<Calendar size={24} />}>
+                  <span className="font-semibold text-gray-900">
+                    {formatDateTH(event.saleableDate.toDateString())}
+                  </span>{" "}
+                  <span className="text-sm font-medium text-lime-500">
+                    {getDaysRemaining(event.saleableDate.toDateString()) > 0
+                      ? `ภายใน ${getDaysRemaining(
+                          event.saleableDate.toDateString()
+                        )} วัน`
+                      : `วันนี้`}
+                  </span>
                 </InfoIcon>
               </div>
 

@@ -18,6 +18,8 @@ export default function Page() {
     avgPigletsBorn,
     weightTrend,
     pigletsTrend,
+    breedingTrend,
+    pigletsCountTrend,
     isLoading,
     error,
   } = useDashboardData();
@@ -48,6 +50,8 @@ export default function Page() {
           avgPigletsBorn={avgPigletsBorn}
           weightTrend={weightTrend}
           pigletsTrend={pigletsTrend}
+          breedingTrend={breedingTrend}
+          pigletsCountTrend={pigletsCountTrend}
         />
         <FadeIn delay={0.5}>
           <UpcomingEvents />

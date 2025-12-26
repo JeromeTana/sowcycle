@@ -21,7 +21,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/hooks/use-toast";
 import DialogComponent from "../DrawerDialog";
-import { Check, Loader, Trash } from "lucide-react";
+import { Check, Loader2, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useLoading } from "@/stores/useLoading";
 import { Textarea } from "../ui/textarea";
@@ -189,7 +189,7 @@ export default function BoarForm({ editingBoar, setDialog, onSuccess }: any) {
           >
             {form.formState.isSubmitting ? (
               <>
-                <Loader className="animate-spin" />
+                <Loader2 className="animate-spin" />
                 กำลังบันทึก
               </>
             ) : (

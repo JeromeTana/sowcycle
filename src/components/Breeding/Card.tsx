@@ -17,6 +17,7 @@ import { cn, formatDateTH } from "@/lib/utils";
 import BoarDetailsCard from "../Boar/DetailsCard";
 import { AddToCalendarButton } from "../AddToCalendarButton";
 import BreedingDrawer from "./Drawer";
+import InfoIcon from "../InfoIcon";
 
 export default function BreedingCard({
   breeding,
@@ -73,58 +74,54 @@ export default function BreedingCard({
               <ChevronRight size={20} className="text-muted-foreground" />
             </div>
 
-            <div className="space-y-4">
+            <div className="flex flex-col gap-4">
               {/* Breeding Date */}
-              <div className="flex items-start gap-4">
-                <div
-                  className={cn(
-                    "flex items-center justify-center w-12 h-12 p-2  bg-gray-100 rounded-2xl",
-                    isPregnant ? "text-primary" : "text-muted-foreground"
-                  )}
-                >
-                  <Heart size={24} />
-                </div>
-                <div className="flex flex-col justify-center">
-                  <p className="text-muted-foreground text-sm mb-0.5">
-                    ผสมเมื่อ
-                  </p>
-                  <span className="font-semibold text-gray-900">
-                    {formatDateTH(breeding.breed_date)}
-                  </span>
-                </div>
-              </div>
+              <InfoIcon
+                icon={<Heart size={24} />}
+                label="ผสมเมื่อ"
+                className={cn(
+                  isPregnant ? "text-primary" : "text-muted-foreground"
+                )}
+              >
+                <span className="font-semibold text-gray-900">
+                  {formatDateTH(breeding.breed_date, true, true, true)}
+                </span>
+              </InfoIcon>
 
               {/* Farrow Date / Expected Date */}
-              <div className="flex items-start gap-4">
-                <div
-                  className={cn(
-                    "p-2 rounded-2xl flex items-center justify-center w-12 h-12 bg-gray-100",
-                    isPregnant ? "text-primary" : "text-muted-foreground"
-                  )}
-                >
-                  <Calendar size={24} />
-                </div>
-                <div className="flex flex-col justify-center">
-                  <p className="text-muted-foreground text-sm mb-0.5">
-                    {isCompleted ? "คลอดเมื่อ" : "กำหนดคลอด"}
-                  </p>
-                  <div className="flex flex-wrap items-baseline gap-2">
-                    <span className="font-semibold text-gray-900">
-                      {isCompleted
-                        ? formatDateTH(breeding.actual_farrow_date!)
-                        : formatDateTH(breeding.expected_farrow_date)}
-                    </span>
-                    {isCompleted && (
-                      <span className="text-sm text-muted-foreground">
-                        {getDaysDiffFromExpected(
+              <InfoIcon
+                icon={<Calendar size={24} />}
+                label={isCompleted ? "คลอดเมื่อ" : "กำหนดคลอด"}
+                className={cn(
+                  isPregnant ? "text-primary" : "text-muted-foreground"
+                )}
+              >
+                <div className="flex flex-wrap items-baseline gap-2">
+                  <span className="font-semibold text-gray-900">
+                    {isCompleted
+                      ? formatDateTH(
                           breeding.actual_farrow_date!,
-                          breeding.expected_farrow_date
+                          true,
+                          true,
+                          true
+                        )
+                      : formatDateTH(
+                          breeding.expected_farrow_date,
+                          true,
+                          true,
+                          true
                         )}
-                      </span>
-                    )}
-                  </div>
+                  </span>
+                  {isCompleted && (
+                    <span className="text-sm text-muted-foreground">
+                      {getDaysDiffFromExpected(
+                        breeding.actual_farrow_date!,
+                        breeding.expected_farrow_date
+                      )}
+                    </span>
+                  )}
                 </div>
-              </div>
+              </InfoIcon>
 
               {/* Boar Info */}
               {breeding.boars && (

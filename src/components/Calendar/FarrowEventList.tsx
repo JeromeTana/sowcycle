@@ -73,8 +73,12 @@ export const FarrowEventList: React.FC<FarrowEventListProps> = ({ events }) => {
                     {formatDateTH(event.expectedDate.toDateString())}
                   </span>{" "}
                   <span className="text-sm font-medium text-primary">
-                    ภายใน {getDaysRemaining(event.expectedDate.toDateString())}{" "}
-                    วัน
+                    {getDaysRemaining(event.expectedDate.toDateString()) > 0
+                      ? `ภายใน ${getDaysRemaining(
+                          event.expectedDate.toDateString()
+                        )} 
+                    วัน`
+                      : `วันนี้`}
                   </span>
                 </InfoIcon>
                 {/* {event.boarBreed && (

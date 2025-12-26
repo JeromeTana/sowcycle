@@ -13,9 +13,11 @@ export const FILTER_OPTIONS: FilterOption[] = [
   { label: "ไม่อยู่", value: { is_active: false } },
 ];
 
+export const DEFAULT_FILTER = FILTER_OPTIONS[3];
+
 export function useSowFilters(sows: any[]) {
   const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState<FilterOption>(FILTER_OPTIONS[0]);
+  const [filter, setFilter] = useState<FilterOption>(DEFAULT_FILTER);
 
   const filteredSows = useMemo(() => {
     return sows

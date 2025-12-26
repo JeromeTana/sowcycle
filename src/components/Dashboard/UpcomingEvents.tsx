@@ -56,7 +56,7 @@ export const UpcomingEvents = () => {
     return (
       <div className="space-y-4">
         <h2 className="text-xl font-bold">ครบกำหนดใน 7 วัน</h2>
-        <Card className="bg-white">
+        <Card className="bg-transparent">
           <CardContent className="flex items-center justify-center h-32 text-muted-foreground">
             ไม่มีรายการใน 7 วันข้างหน้า
           </CardContent>

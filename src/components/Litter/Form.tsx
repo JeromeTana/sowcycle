@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import DatePicker from "@/components/DatePicker";
-import { Check, Loader } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLitterStore } from "@/stores/useLitterStore";
 import { updateLitter } from "@/services/litter";
@@ -184,7 +184,7 @@ export function LitterForm({ litter, setDialog, mode = "edit" }: LitterFormProps
           >
             {form.formState.isSubmitting ? (
               <>
-                <Loader className="animate-spin" />
+                <Loader2 className="animate-spin" />
                 กำลังบันทึก
               </>
             ) : (

@@ -77,7 +77,7 @@ export default function BreedingDrawer({
           <div className="flex flex-col justify-center">
             <p className="text-muted-foreground text-sm mb-0.5">ผสมเมื่อ</p>
             <span className="font-semibold text-gray-900">
-              {formatDateTH(breeding.breed_date)}
+              {formatDateTH(breeding.breed_date, true, true, true)}
             </span>
           </div>
         </div>
@@ -99,8 +99,13 @@ export default function BreedingDrawer({
             <div className="flex flex-wrap items-baseline gap-2">
               <span className="font-semibold text-gray-900">
                 {isCompleted
-                  ? formatDateTH(breeding.actual_farrow_date!)
-                  : formatDateTH(breeding.expected_farrow_date)}
+                  ? formatDateTH(breeding.actual_farrow_date!, true, true, true)
+                  : formatDateTH(
+                      breeding.expected_farrow_date,
+                      true,
+                      true,
+                      true
+                    )}
               </span>
               {isCompleted && (
                 <span className="text-sm text-muted-foreground">
@@ -131,7 +136,7 @@ export default function BreedingDrawer({
                     </span>
                   </div>
                 </div>
-                <ChevronRight size={16} className="text-muted-foreground" />
+                <ChevronRight size={20} className="text-muted-foreground" />
               </div>
             }
           >
@@ -184,7 +189,12 @@ export default function BreedingDrawer({
 
             {/* Total */}
             <div className="flex items-center justify-between p-4 bg-white border rounded-full">
-              <span className="font-semibold text-gray-900">รวมทั้งหมด { (breeding.piglets_born_count || 0) + (breeding.piglets_born_dead || 0) } ตัว</span>
+              <span className="font-semibold text-gray-900">
+                รวมทั้งหมด{" "}
+                {(breeding.piglets_born_count || 0) +
+                  (breeding.piglets_born_dead || 0)}{" "}
+                ตัว
+              </span>
             </div>
           </div>
         )}

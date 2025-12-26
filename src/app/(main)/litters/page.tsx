@@ -32,7 +32,7 @@ interface FilterOption {
 // Constants
 const FILTER_OPTIONS: FilterOption[] = [
   { label: "ทั้งหมด", value: {} },
-  { label: "ยังไม่ขุน", value: { fattening_at: "null" } },
+  { label: "ยังไม่ขุน", value: { fattening_at: "null", sold_at: "null" } },
   { label: "กำลังขุน", value: { fattening_at: "not_null", sold_at: "null" } },
   { label: "ขายแล้ว", value: { sold_at: "not_null" } },
 ];

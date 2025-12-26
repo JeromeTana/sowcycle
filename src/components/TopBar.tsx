@@ -63,7 +63,7 @@ function AccountMenu({ setDialog }: AccountMenuProps) {
           className="w-full px-4 justify-between"
         >
           <span>สายพันธุ์</span>
-          <ChevronRight size={16} className="text-muted-foreground"/>
+          <ChevronRight size={20} className="text-muted-foreground"/>
         </Button>
       </a>
       <a href="/setting" onClick={closeDialog}>
@@ -74,7 +74,7 @@ function AccountMenu({ setDialog }: AccountMenuProps) {
         >
           {/* <Settings size={16} /> */}
           <span>ตั้งค่า</span>
-          <ChevronRight size={16} className="text-muted-foreground"/>
+          <ChevronRight size={20} className="text-muted-foreground"/>
 
         </Button>
       </a>

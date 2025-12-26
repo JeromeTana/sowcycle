@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useMemo } from "react";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { Check, Loader } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
 import { PREGNANCY_DURATION } from "@/lib/constant";
 import { Breeding } from "@/types/breeding";
 import { useBreedingOperations } from "@/hooks/useBreedingOperations";
@@ -96,7 +96,7 @@ export function FarrowForm({ breeding, setDialog }: FarrowFormProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <div className="flex w-full gap-2 p-4 border rounded-lg bg-gray-50">
+        <div className="flex w-full gap-2 p-4 rounded-2xl bg-muted">
           <BreedDateField form={form} />
           <ExpectedFarrowDateField expectedDate={expectedFarrowDate} />
         </div>
@@ -122,7 +122,7 @@ export function FarrowForm({ breeding, setDialog }: FarrowFormProps) {
           <Button disabled={form.formState.isSubmitting} size="lg" type="submit" className="w-full">
             {form.formState.isSubmitting ? (
               <>
-                <Loader className="animate-spin" />
+                <Loader2 className="animate-spin" />
                 กำลังบันทึก
               </>
             ) : (

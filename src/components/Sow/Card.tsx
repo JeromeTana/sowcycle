@@ -47,16 +47,16 @@ export default function SowCard({ sow }: { sow: Sow }) {
           </div>
 
           {/* Tags */}
-          {(sow.breed_ids && sow.breed_ids.length > 0) ||
-            (sow.breasts_count && (
-              <div className="flex flex-wrap gap-2 mb-4">
-                <SowTags
-                  breedIds={sow.breed_ids}
-                  breastsCount={sow.breasts_count}
-                  className="bg-secondary px-4 py-1.5 text-sm"
-                />
-              </div>
-            ))}
+          {((sow.breed_ids && sow.breed_ids.length > 0) ||
+            (sow.breasts_count !== undefined && sow.breasts_count > 0)) && (
+            <div className="flex flex-wrap gap-2 mb-4">
+              <SowTags
+                breedIds={sow.breed_ids}
+                breastsCount={sow.breasts_count}
+                className="bg-secondary px-4 py-1.5 text-sm"
+              />
+            </div>
+          )}
           {/* Status Info */}
           <div className="flex items-start gap-4">
             <div

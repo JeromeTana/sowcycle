@@ -24,7 +24,7 @@ import { Input } from "../ui/input";
 import DatePicker from "../DatePicker";
 
 import { cn } from "@/lib/utils";
-import { Check, Loader, Syringe, Trash } from "lucide-react";
+import { Check, Loader2, Syringe, Trash } from "lucide-react";
 import { useEffect } from "react";
 import {
   createMedicalRecord,
@@ -47,7 +47,7 @@ const newFormSchema = z.object({
   used_at: z.date({ required_error: "กรุณาเลือกวันที่" }),
   symptoms: z.string(),
   // medicine: z.string(),
-  medicine_id: z.string(),
+  medicine_id: z.string().min(1, { message: "กรุณาเลือกยา" }),
   notes: z.string(),
 });
 
@@ -285,7 +285,7 @@ export function MedicalRecordForm({
           >
             {form.formState.isSubmitting ? (
               <>
-                <Loader className="animate-spin" />
+                <Loader2 className="animate-spin" />
                 กำลังบันทึก
               </>
             ) : medicalRecord ? (

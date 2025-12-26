@@ -112,7 +112,7 @@ export default function LitterDrawer({ litter, index }: LitterDrawerProps) {
                 </div>
               </div>
             </div>
-            <ChevronRight size={16} className="text-muted-foreground" />
+            <ChevronRight size={20} className="text-muted-foreground" />
           </div>
         )}
 
@@ -133,7 +133,7 @@ export default function LitterDrawer({ litter, index }: LitterDrawerProps) {
                     </span>
                   </div>
                 </div>
-                <ChevronRight size={16} className="text-muted-foreground" />
+                <ChevronRight size={20} className="text-muted-foreground" />
               </div>
             }
           >
@@ -156,7 +156,7 @@ export default function LitterDrawer({ litter, index }: LitterDrawerProps) {
             <div className="flex flex-col justify-center">
               <p className="text-muted-foreground text-sm mb-0.5">คลอดเมื่อ</p>
               <span className="font-semibold text-gray-900">
-                {formatDateTH(litter.birth_date!)}
+                {formatDateTH(litter.birth_date!, true, true, true)}
               </span>
             </div>
           </div>
@@ -172,7 +172,9 @@ export default function LitterDrawer({ litter, index }: LitterDrawerProps) {
                   เริ่มขุนเมื่อ
                 </p>
                 <span className="font-semibold text-gray-900">
-                  {formatDateTH(litter.fattening_at!)}
+                  {litter.fattening_at
+                    ? formatDateTH(litter.fattening_at, true, true, true)
+                    : "ไม่ระบุ"}{" "}
                 </span>
               </div>
             </div>
@@ -190,8 +192,8 @@ export default function LitterDrawer({ litter, index }: LitterDrawerProps) {
                 </p>
                 <span className="font-semibold text-gray-900">
                   {isSold
-                    ? formatDateTH(litter.sold_at!)
-                    : formatDateTH(litter.saleable_at!)}
+                    ? formatDateTH(litter.sold_at!, true, true, true)
+                    : formatDateTH(litter.saleable_at!, true, true, true)}
                 </span>
               </div>
             </div>
@@ -206,7 +208,11 @@ export default function LitterDrawer({ litter, index }: LitterDrawerProps) {
           <DrawerDialog
             title="เพิ่มวันเริ่มขุน"
             dialogTriggerButton={
-              <Button variant="secondary" size="lg" className="w-full text-base font-medium">
+              <Button
+                variant="secondary"
+                size="lg"
+                className="w-full text-base font-medium"
+              >
                 <Plus className="w-5 h-5 mr-2" /> เพิ่มวันเริ่มขุน
               </Button>
             }

@@ -10,6 +10,7 @@ import { Litter } from "@/types/litter";
 import {
   ArrowDown,
   Cake,
+  ChevronRight,
   Dna,
   HandHeart,
   Heart,
@@ -131,21 +132,22 @@ export default function SowDetailsCard({
               {sow.add_date ? formatDateTH(sow.add_date) : "-"}
             </InfoIcon>
 
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
               {sowBreeds.length > 0 ? (
                 sowBreeds.map((breed, index) => (
                   <DialogComponent
                     key={breed?.id || index}
                     title={breed.breed}
                     dialogTriggerButton={
-                      <div className="flex flex-col gap-4 p-3 bg-gray-100 rounded-lg cursor-pointer">
+                      <div className="flex gap-4 p-3 bg-muted rounded-xl cursor-pointer">
                         <InfoIcon
                           label="สายพันธุ์"
                           icon={<Dna size={22} />}
-                          className="text-secondary !bg-white"
+                          className="text-muted-foreground !bg-white"
                         >
                           {breed?.breed || "ไม่ระบุ"}
                         </InfoIcon>
+                        <ChevronRight size={20} className="ml-auto text-muted-foreground" />
                       </div>
                     }
                   >
@@ -153,7 +155,7 @@ export default function SowDetailsCard({
                   </DialogComponent>
                 ))
               ) : (
-                <div className="flex flex-col gap-4 p-3 bg-gray-100 rounded-lg">
+                <div className="flex flex-col gap-4 p-3 bg-muted rounded-xl">
                   <InfoIcon
                     label="สายพันธุ์"
                     icon={<Dna size={22} />}

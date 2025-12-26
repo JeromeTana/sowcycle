@@ -24,10 +24,10 @@ export default function InfoIcon({
       >
         {icon}
       </div>
-      <p className="inline-flex flex-col gap-1">
-        <span className="text-sm">{label}</span>
-        <span className="text-black">{children}</span>
-      </p>
+      <div className="inline-flex flex-col gap-1">
+        <div className="text-sm">{label}</div>
+        <div className="text-black">{children}</div>
+      </div>
     </div>
   );
 }

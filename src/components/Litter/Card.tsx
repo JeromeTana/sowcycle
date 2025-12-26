@@ -74,7 +74,7 @@ export default function LitterCard({ litter, index }: LitterCardProps) {
             <div className="space-y-4">
               {/* Count Stats */}
               <div className="flex items-start gap-4">
-                <div className="flex items-center justify-center w-12 h-12 p-2 bg-gray-100 rounded-2xl text-muted-foreground">
+                <div className="flex items-center justify-center w-12 h-12 p-2 bg-muted rounded-2xl text-muted-foreground">
                   <PiggyBank size={24} />
                 </div>
                 <div className="flex flex-col justify-center">
@@ -98,7 +98,7 @@ export default function LitterCard({ litter, index }: LitterCardProps) {
               {/* Weight Stats (Only if Sold) */}
               {isSold && litter.avg_weight && (
                 <div className="flex items-start gap-4">
-                  <div className="flex items-center justify-center w-12 h-12 p-2 bg-gray-100 rounded-2xl text-muted-foreground">
+                  <div className="flex items-center justify-center w-12 h-12 p-2 bg-muted rounded-2xl text-muted-foreground">
                     <Gauge size={24} />
                   </div>
                   <div className="flex flex-col justify-center">
@@ -116,7 +116,7 @@ export default function LitterCard({ litter, index }: LitterCardProps) {
               <div className="relative flex flex-col gap-4 p-4 bg-accent rounded-xl">
                 {/* Vertical Line */}
                 {(isFattening || isSold) && (
-                  <div className="absolute left-10 top-6 bottom-6 w-[2px] bg-gray-200 -z-0" />
+                  <div className="absolute left-10 top-6 bottom-6 w-[2px] bg-neutral-200 -z-0" />
                 )}
 
                 {/* Timeline: Born */}
@@ -145,7 +145,9 @@ export default function LitterCard({ litter, index }: LitterCardProps) {
                         เริ่มขุนเมื่อ
                       </p>
                       <span className="font-semibold text-gray-900">
-                        {formatDateTH(litter.fattening_at!, true, true, false)}
+                        {litter.fattening_at
+                          ? formatDateTH(litter.fattening_at, true, true, false)
+                          : "ไม่ระบุ"}
                       </span>
                     </div>
                   </div>
@@ -154,9 +156,14 @@ export default function LitterCard({ litter, index }: LitterCardProps) {
                 {/* Timeline: Sale/Expected Sale */}
                 {(isFattening || isSold) && (
                   <div className="relative flex items-start gap-4">
-                    <div className={cn("flex items-center justify-center w-12 h-12 p-2  rounded-2xl ",
-                      isSold ? "bg-white text-muted-foreground" : "bg-muted text-neutral-300"
-                    )}>
+                    <div
+                      className={cn(
+                        "flex items-center justify-center w-12 h-12 p-2  rounded-2xl ",
+                        isSold
+                          ? "bg-white text-muted-foreground"
+                          : "bg-muted text-neutral-300"
+                      )}
+                    >
                       <Banknote size={24} />
                     </div>
                     <div className="flex flex-col justify-center">
@@ -166,7 +173,12 @@ export default function LitterCard({ litter, index }: LitterCardProps) {
                       <span className="font-semibold text-gray-900">
                         {isSold
                           ? formatDateTH(litter.sold_at!, true, true, false)
-                          : formatDateTH(litter.saleable_at!, true, true, false)}
+                          : formatDateTH(
+                              litter.saleable_at!,
+                              true,
+                              true,
+                              false
+                            )}
                       </span>
                     </div>
                   </div>

@@ -21,7 +21,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/hooks/use-toast";
 import DialogComponent from "../DrawerDialog";
-import { Check, Loader, Trash } from "lucide-react";
+import { Check, Loader2, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Switch } from "../ui/switch";
 import { useLoading } from "@/stores/useLoading";
@@ -208,7 +208,7 @@ export default function SowForm({ editingSow, setDialog }: any) {
           control={form.control}
           name="is_active"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between p-4 border rounded-lg">
+            <FormItem className="flex flex-row items-center justify-between p-4 border rounded-xl">
               <div className="space-y-0.5">
                 <FormLabel className="text-base">ยังอยู่</FormLabel>
               </div>
@@ -259,7 +259,7 @@ export default function SowForm({ editingSow, setDialog }: any) {
           >
             {form.formState.isSubmitting ? (
               <>
-                <Loader className="animate-spin" />
+                <Loader2 className="animate-spin" />
                 กำลังบันทึก
               </>
             ) : (
