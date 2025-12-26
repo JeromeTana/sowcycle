@@ -12,7 +12,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { getAllMedicines } from "@/services/medicine";
 import { useMedicineStore } from "@/stores/useMedicineStore";
@@ -25,6 +24,8 @@ import { ChevronDown, Filter, ListFilter, Plus, Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import TabsComponent from "@/components/TabsComponent";
 import { MedicineHistoryCard } from "@/components/Medicine/Card";
+import { MedicineLoadingSkeleton } from "@/components/Medicine/LoadingSkeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function MedicinesPage() {
   return (
@@ -69,38 +70,7 @@ function MedicineInventory() {
   }, []);
 
   if (isLoading) {
-    return (
-      <>
-        {/* TopBar Skeleton */}
-        <div className="grid items-center w-full grid-cols-3 mb-4">
-          <div className="flex"></div>
-          <div className="flex justify-center">
-            <Skeleton className="w-24 h-7" />
-          </div>
-          <div className="flex justify-end">
-            <Skeleton className="w-10 h-10 rounded-full" />
-          </div>
-        </div>
-
-        <div className="space-y-4">
-          {/* Search and Filter Skeleton */}
-          <div className="flex gap-2">
-            <Skeleton className="w-full h-10 rounded-full" />
-            <Skeleton className="w-32 h-10 rounded-full" />
-          </div>
-
-          {/* MedicineList Skeleton */}
-          <div className="space-y-4">
-            {[...Array(3)].map((_, i) => (
-              <Skeleton key={i} className="w-full h-32 rounded-xl" />
-            ))}
-          </div>
-        </div>
-
-        {/* FAB Skeleton */}
-        <Skeleton className="fixed rounded-full h-14 w-14 bottom-24 right-4" />
-      </>
-    );
+    return <MedicineLoadingSkeleton />;
   }
   return (
     <div>

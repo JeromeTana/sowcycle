@@ -68,7 +68,7 @@ export function StatsGrid({
         <Link href="/litters">
           <StatsCard
             icon={Baby}
-            title="ลูกเกิดต่อครอกเฉลี่ย"
+            title="ลูกเกิดเฉลี่ย"
             value={avgPigletsBorn}
             unit="ตัว"
             iconColor="text-green-500"

@@ -25,13 +25,6 @@ export default function Page() {
     error,
   } = useDashboardData();
 
-  const showToast = () => {
-    toast({
-      title: "This is a toast notification",
-      description: "Hello! This is a sample toast message.",
-    });
-  }
-
   if (isLoading) {
     return <DashboardLoadingSkeleton />;
   }
@@ -50,8 +43,6 @@ export default function Page() {
   return (
     <>
       <TopBar title="หน้าหลัก" />
-      {/* toast button */}
-      <button onClick={showToast}>Toast</button>
       <div className="space-y-8">
         <StatsGrid
           pregnantSowsCount={pregnantSowsCount}

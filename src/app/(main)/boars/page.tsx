@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import { Skeleton } from "@/components/ui/skeleton";
+import { BoarLoadingSkeleton } from "@/components/Boar/LoadingSkeleton";
 import { cn } from "@/lib/utils";
 import { getAllBoars } from "@/services/boar";
 import { useBoarStore } from "@/stores/useBoarStore";
@@ -69,38 +69,7 @@ export default function BoarsPage() {
   }, []);
 
   if (isLoading) {
-    return (
-      <>
-        {/* TopBar Skeleton */}
-        <div className="grid items-center w-full grid-cols-3 mb-4">
-          <div className="flex"></div>
-          <div className="flex justify-center">
-            <Skeleton className="w-24 h-7" />
-          </div>
-          <div className="flex justify-end">
-            <Skeleton className="w-10 h-10 rounded-full" />
-          </div>
-        </div>
-
-        <div className="space-y-4">
-          {/* Search and Filter Skeleton */}
-          <div className="flex gap-2">
-            <Skeleton className="w-full h-10 rounded-full" />
-            <Skeleton className="w-32 h-10 rounded-full" />
-          </div>
-
-          {/* BoarList Skeleton */}
-          <div className="space-y-4">
-            {[...Array(3)].map((_, i) => (
-              <Skeleton key={i} className="w-full h-32 rounded-xl" />
-            ))}
-          </div>
-        </div>
-
-        {/* FAB Skeleton */}
-        <Skeleton className="fixed rounded-full h-14 w-14 bottom-24 right-4" />
-      </>
-    );
+    return <BoarLoadingSkeleton />;
   }
 
   return (
