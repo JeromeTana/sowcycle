@@ -3,6 +3,8 @@
 import { Dna, Milk } from "lucide-react";
 import { useBoarStore } from "@/stores/useBoarStore";
 import { cn } from "@/lib/utils";
+import { useEffect } from "react";
+import { getAllBoars } from "@/services/boar";
 
 interface BreedTagsProps {
   breedIds?: number[];
@@ -11,7 +13,15 @@ interface BreedTagsProps {
 }
 
 export function SowTags({ breedIds, breastsCount, className }: BreedTagsProps) {
-  const { boars } = useBoarStore();
+  const { boars, setBoars } = useBoarStore();
+
+  useEffect(() => {
+    if (boars.length === 0) {
+      getAllBoars().then((data) => {
+        if (data) setBoars(data);
+      });
+    }
+  }, [setBoars]);
 
   const hasBreeds = breedIds && breedIds.length > 0;
   const hasBreasts = breastsCount !== undefined && breastsCount > 0;

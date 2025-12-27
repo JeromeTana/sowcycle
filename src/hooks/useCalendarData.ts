@@ -18,6 +18,7 @@ export interface FarrowEvent {
   boarBreed?: string;
   sowBreasts?: number;
   boarId?: number | null;
+  originalBreeding: Breeding;
 }
 
 export interface SaleableEvent {
@@ -69,13 +70,14 @@ export const useCalendarData = () => {
           expectedDate,
           breedDate,
           daysUntilFarrow,
-          isOverdue: daysUntilFarrow < 0 && !breeding.actual_farrow_date,
+          isOverdue: daysUntilFarrow < 0,
           actualFarrowDate: breeding.actual_farrow_date
             ? parseISO(breeding.actual_farrow_date)
             : undefined,
           boarBreed: breeding.boars?.breed,
           sowBreasts: (breeding as any).sows?.breasts_count,
           boarId: breeding.boar_id,
+          originalBreeding: breeding,
         };
       });
     },

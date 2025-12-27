@@ -12,7 +12,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import InfoIcon from "../InfoIcon";
-import { formatDateTH, getDaysRemaining } from "@/lib/utils";
+import { formatDateTH, getDaysRemaining, cn } from "@/lib/utils";
 import DrawerDialog from "@/components/DrawerDialog";
 import { LitterForm } from "@/components/Litter/Form";
 import { Litter } from "@/types/litter";
@@ -32,6 +32,7 @@ interface SaleableEvent {
   femaleCount: number;
   fattening_at?: Date;
   boarId?: number;
+  soldDate?: Date;
 }
 
 interface SaleableEventListProps {
@@ -54,14 +55,20 @@ export const SaleableEventList: React.FC<SaleableEventListProps> = ({
               {/* Header */}
               <div className="flex items-start justify-between mb-4">
                 <div className="flex flex-col gap-1">
-                  <h3 className="text-lg font-bold text-lime-500">
-                    ขาย ลูกขุนแม่{event.sowName}
+                  <h3
+                    className={cn(
+                      "text-lg font-bold",
+                      event.soldDate ? "text-gray-500" : "text-lime-500"
+                    )}
+                  >
+                    {event.soldDate ? "ขายแล้ว" : "ขาย"} ลูกขุนแม่
+                    {event.sowName}
                   </h3>
                 </div>
                 <ChevronRight size={20} className="text-muted-foreground" />
               </div>
 
-              <div className="flex flex-col gap-4 mb-4">
+              <div className="flex flex-col gap-4">
                 {/* Piglet Info */}
                 <InfoIcon
                   label="จำนวน"
@@ -81,22 +88,30 @@ export const SaleableEventList: React.FC<SaleableEventListProps> = ({
                     </div>
                   </div>
                 </InfoIcon>
-                <InfoIcon label="พร้อมขายเมื่อ" icon={<Calendar size={24} />}>
+                <InfoIcon
+                  label={event.soldDate ? "ขายแล้วเมื่อ" : "พร้อมขายเมื่อ"}
+                  icon={<Calendar size={24} />}
+                >
                   <span className="font-semibold text-gray-900">
-                    {formatDateTH(event.saleableDate.toDateString())}
+                    {formatDateTH(
+                      (event.soldDate || event.saleableDate).toDateString()
+                    )}
                   </span>{" "}
-                  <span className="text-sm font-medium text-lime-500">
-                    {getDaysRemaining(event.saleableDate.toDateString()) > 0
-                      ? `ภายใน ${getDaysRemaining(
-                          event.saleableDate.toDateString()
-                        )} วัน`
-                      : `วันนี้`}
-                  </span>
+                  {!event.soldDate && (
+                    <span className="text-sm font-medium text-lime-500">
+                      {getDaysRemaining(event.saleableDate.toDateString()) > 0
+                        ? `ภายใน ${getDaysRemaining(
+                            event.saleableDate.toDateString()
+                          )} วัน`
+                        : `วันนี้`}
+                    </span>
+                  )}
                 </InfoIcon>
               </div>
 
               {/* Actions */}
-              <div className="space-y-2">
+              {!event.soldDate && (
+                <div className="space-y-2 mt-4">
                 {/* Record Sale Button */}
 
                 <DrawerDialog
@@ -140,6 +155,7 @@ export const SaleableEventList: React.FC<SaleableEventListProps> = ({
                   className="w-full h-12 text-base font-medium"
                 />
               </div>
+              )}
             </CardContent>
           </Card>
         </FadeIn>
