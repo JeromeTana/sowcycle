@@ -31,7 +31,7 @@ const formSchema = z.object({
   description: z.string().optional(),
 });
 
-export default function BoarForm({ editingBoar, setDialog, onSuccess }: any) {
+export default function BoarForm({ editingBoar, setDialog }: any) {
   const [boar, setBoar] = useState<Boar>({} as Boar);
   const { setIsLoading } = useLoading();
   const { addBoar, updateBoar: updateBoarState, removeBoar } = useBoarStore();
@@ -58,10 +58,7 @@ export default function BoarForm({ editingBoar, setDialog, onSuccess }: any) {
         title: "เพิ่มข้อมูลเรียบร้อย",
         description: "ข้อมูลของสายพันธุ์ถูกเพิ่มเรียบร้อยแล้ว",
       });
-      if (onSuccess) {
-        onSuccess(res);
-      }
-      setDialog(false);
+      setDialog(false)
     }
   };
 
@@ -83,7 +80,6 @@ export default function BoarForm({ editingBoar, setDialog, onSuccess }: any) {
         title: "แก้ไขข้อมูลเรียบร้อย",
         description: "ข้อมูลของสายพันธุ์ถูกแก้ไขเรียบร้อยแล้ว",
       });
-      setDialog(false);
     }
   };
 
@@ -117,7 +113,13 @@ export default function BoarForm({ editingBoar, setDialog, onSuccess }: any) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form
+        onSubmit={(e) => {
+          e.stopPropagation();
+          form.handleSubmit(onSubmit)(e);
+        }}
+        className="space-y-4"
+      >
         <FormField
           control={form.control}
           name="breed"
@@ -157,6 +159,7 @@ export default function BoarForm({ editingBoar, setDialog, onSuccess }: any) {
               title="ลบสายพันธุ์"
               dialogTriggerButton={
                 <Button
+                  type="button"
                   disabled={form.formState.isSubmitting}
                   variant="ghost"
                   size="lg"
@@ -172,6 +175,7 @@ export default function BoarForm({ editingBoar, setDialog, onSuccess }: any) {
               </p>
               <div className="flex justify-end gap-2">
                 <Button
+                  type="button"
                   variant="destructive"
                   size="lg"
                   onClick={() => onDelete(boar.id)}

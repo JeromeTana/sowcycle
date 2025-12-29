@@ -17,6 +17,7 @@ export default function DatePicker({ field }: any) {
       <PopoverTrigger asChild>
         <FormControl>
           <Button
+            type="button"
             variant={"outline"}
             size="lg"
             className={cn(

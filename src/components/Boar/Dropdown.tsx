@@ -9,8 +9,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import BoarForm from "./Form";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Check, ChevronDown, Dna, X } from "lucide-react";
+import DrawerDialog from "../DrawerDialog";
+import { Check, ChevronDown, Dna, X, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useBoarStore } from "@/stores/useBoarStore";
 import {
@@ -65,7 +67,12 @@ export default function BreedDropdown({
 
   if (loading) {
     return (
-      <Button variant="outline" size="lg" className="justify-between w-full" disabled>
+      <Button
+        variant="outline"
+        size="lg"
+        className="justify-between w-full"
+        disabled
+      >
         กำลังโหลด...
         <ChevronDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
       </Button>
@@ -76,7 +83,7 @@ export default function BreedDropdown({
     return (
       <Button
         variant="outline"
-        size="lg" 
+        size="lg"
         className="justify-between w-full text-red-500 rounded-full"
         disabled
       >
@@ -101,11 +108,30 @@ export default function BreedDropdown({
             ไม่มีข้อมูลสายพันธุ์
           </SelectItem>
         ) : (
-          breeds.map((breed) => (
-            <SelectItem key={breed.id} value={breed.id.toString()}>
-              {breed.breed}
-            </SelectItem>
-          ))
+          <>
+            {breeds.map((breed) => (
+              <SelectItem key={breed.id} value={breed.id.toString()}>
+                {breed.breed}
+                <span className="!ml-8 text-right text-muted-foreground">
+                  {breed.description}
+                </span>
+              </SelectItem>
+            ))}
+            <DrawerDialog
+              title="เพิ่มสายพันธุ์ใหม่"
+              dialogTriggerButton={
+                <Button
+                  type="button"
+                  variant="secondary"
+                  className="w-full my-1 text-primary justify-start"
+                >
+                  <Plus /> เพิ่มสายพันธุ์ใหม่
+                </Button>
+              }
+            >
+              <BoarForm />
+            </DrawerDialog>
+          </>
         )}
       </SelectContent>
     </Select>
@@ -127,7 +153,8 @@ export function MultiBreedDropdown({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
-  const [popoverContainer, setPopoverContainer] = useState<HTMLDivElement | null>(null);
+  const [popoverContainer, setPopoverContainer] =
+    useState<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const fetchBreeds = async () => {

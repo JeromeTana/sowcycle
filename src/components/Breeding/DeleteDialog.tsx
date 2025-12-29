@@ -35,6 +35,7 @@ export default function DeleteDialog({
       title="ลบประวัติการผสม"
       dialogTriggerButton={
         <Button
+          type="button"
           disabled={isSubmitting}
           variant="ghost"
           size="lg"
@@ -46,7 +47,7 @@ export default function DeleteDialog({
     >
       <p>ต้องการลบข้อมูลการผสมนี้หรือไม่</p>
       <div className="flex justify-end gap-2">
-        <Button variant="destructive" onClick={handleDelete}>
+        <Button type="button" variant="destructive" onClick={handleDelete}>
           ลบ
         </Button>
       </div>
