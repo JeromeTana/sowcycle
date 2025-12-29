@@ -112,7 +112,7 @@ export default function TopBar({
             onClick={() => {
               window.history.back();
             }}
-            className="p-2 bg-white border rounded-full"
+            className="p-2 rounded-full"
           >
             <ChevronLeft size={20} />
           </button>

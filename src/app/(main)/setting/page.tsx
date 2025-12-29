@@ -81,7 +81,7 @@ export default function SettingPage() {
         JSON.stringify({
           pregnancyDuration: values.pregnancyDuration,
           fatteningDuration: values.fatteningDuration,
-        }),
+        })
       );
 
       if (values.googleClientId) {
@@ -144,7 +144,7 @@ export default function SettingPage() {
     <>
       <TopBar title="การตั้งค่า" hasBack />
       <main className="container mx-auto max-w-2xl p-4 pt-0 md:pb-8 md:p-8">
-        <Card className="mb-6">
+        {/* <Card className="mb-6">
           <CardHeader>
             <CardTitle>Google Calendar Sync</CardTitle>
             <CardDescription>
@@ -176,7 +176,7 @@ export default function SettingPage() {
               </Button>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
 
         <Card>
           <CardHeader>
@@ -189,7 +189,7 @@ export default function SettingPage() {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-6"
               >
-                <FormField
+                {/* <FormField
                   control={form.control}
                   name="googleClientId"
                   render={({ field }) => (
@@ -207,7 +207,7 @@ export default function SettingPage() {
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                /> */}
 
                 <FormField
                   control={form.control}
@@ -262,6 +262,7 @@ export default function SettingPage() {
                 <div className="flex gap-3 pt-4">
                   <Button
                     type="button"
+                    size="lg"
                     variant="outline"
                     onClick={resetToDefaults}
                     disabled={isLoading}
@@ -269,7 +270,12 @@ export default function SettingPage() {
                     <RotateCcw className="w-4 h-4 mr-2" />
                     รีเซ็ต
                   </Button>
-                  <Button type="submit" disabled={isLoading} className="flex-1">
+                  <Button
+                    type="submit"
+                    size="lg"
+                    disabled={isLoading}
+                    className="flex-1"
+                  >
                     {isLoading ? (
                       <>
                         <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
