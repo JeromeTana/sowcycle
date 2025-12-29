@@ -26,6 +26,7 @@ import TabsComponent from "@/components/TabsComponent";
 import { MedicineHistoryCard } from "@/components/Medicine/Card";
 import { MedicineLoadingSkeleton } from "@/components/Medicine/LoadingSkeleton";
 import { Skeleton } from "@/components/ui/skeleton";
+import { FadeIn } from "@/components/animations/FadeIn";
 
 export default function MedicinesPage() {
   return (
@@ -130,15 +131,17 @@ function MedicineHistory() {
     <div className="space-y-2 mt-4">
       {medicalRecords.length > 0 ? (
         medicalRecords.map((record, index) => (
-          <MedicineHistoryCard
-            key={index}
-            medicalRecord={
-              record as MedicalRecord & {
-                medicines: Medicine;
-                sows: { name: string };
+          <FadeIn key={index} delay={index * 0.1}>
+            <MedicineHistoryCard
+              key={index}
+              medicalRecord={
+                record as MedicalRecord & {
+                  medicines: Medicine;
+                  sows: { name: string };
+                }
               }
-            }
-          />
+            />
+          </FadeIn>
         ))
       ) : (
         <div className="py-10 text-center text-muted-foreground">

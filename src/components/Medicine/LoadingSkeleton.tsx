@@ -14,12 +14,9 @@ export function MedicineLoadingSkeleton() {
         </div>
       </div> */}
 
-      <div className="space-y-4 p-4 pt-0 md:pb-8 md:p-8">
-        {/* Search and Filter Skeleton */}
-        <div className="flex gap-2">
-          <Skeleton className="w-full h-10 rounded-full mt-4" />
-          {/* <Skeleton className="w-32 h-10 rounded-full" /> */}
-        </div>
+      <div className="space-y-4">
+        {/* Search Skeleton */}
+        <Skeleton className="w-full h-10 rounded-full mt-4" />
 
         {/* MedicineList Skeleton */}
         <div className="space-y-2">

@@ -60,7 +60,7 @@ function Calendar({
         day_range_end: "day-range-end",
         day_selected:
           "border-2 border-black",
-        day_today: "!bg-black text-accent-foreground",
+        day_today: "!bg-black text-white hover:!text-white",
         day_outside:
           "day-outside text-muted-foreground aria-selected:bg-accent/50 aria-selected:text-muted-foreground",
         day_disabled: "text-muted-foreground opacity-50",
