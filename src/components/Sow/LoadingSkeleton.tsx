@@ -4,7 +4,7 @@ export function LoadingListSkeleton() {
   return (
     <>
       {/* TopBar Skeleton */}
-      <div className="grid items-center w-full grid-cols-3 mb-4">
+      <div className="grid items-center w-full grid-cols-3 mb-4 p-4">
         <div className="flex"></div>
         <div className="flex justify-center">
           <Skeleton className="w-24 h-7" />
@@ -16,10 +16,10 @@ export function LoadingListSkeleton() {
 
       <div className="space-y-6 p-4 pt-0 md:pb-8 md:p-8">
         {/* SowStats Skeleton */}
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
+        {/* <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
           <Skeleton className="h-[140px] rounded-xl" />
           <Skeleton className="h-[140px] rounded-xl" />
-        </div>
+        </div> */}
 
         {/* SowFilters Skeleton */}
         <div className="flex gap-2">
