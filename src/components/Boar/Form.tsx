@@ -58,7 +58,7 @@ export default function BoarForm({ editingBoar, setDialog }: any) {
         title: "เพิ่มข้อมูลเรียบร้อย",
         description: "ข้อมูลของสายพันธุ์ถูกเพิ่มเรียบร้อยแล้ว",
       });
-      setDialog(false)
+      setDialog(false);
     }
   };
 
@@ -70,9 +70,9 @@ export default function BoarForm({ editingBoar, setDialog }: any) {
       ...boar,
       ...values,
       updated_at: new Date().toISOString(),
+      breedings: undefined,
+      medical_records: undefined,
     };
-    delete data.breedings;
-    delete data.medical_records;
     let res = await updateBoar(data);
     if (res) {
       updateBoarState(res);

@@ -13,7 +13,7 @@ export const getAllLitters = async () => {
       `
       *,
       boars(*),
-      sows!inner(*)
+      sows!inner(*, boars(*))
     `
     )
     .eq("sows.user_id", user.id)

@@ -124,8 +124,8 @@ export default function SettingPage() {
   const handleSync = async () => {
     const events = [
       ...calendarData.farrowEvents.map((e) => ({
-        title: `กำหนดคลอด ${e.sowName}`,
-        description: `แม่พันธุ์: ${e.sowName}`,
+        title: `กำหนดคลอด ${e.sows.name}`,
+        description: `แม่พันธุ์: ${e.sows.name}`,
         startDate: e.expectedDate,
         allDay: true,
       })),

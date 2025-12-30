@@ -15,12 +15,12 @@ export const getAllBreedings = async () => {
       `
       *,
       boars(*),
-      sows!inner(*)
+      sows!inner(*, boars(*))
     `
     )
     .eq("sows.user_id", user.id)
     .order("expected_farrow_date", { ascending: true })) as {
-    data: (Breeding & { boars: Boar; sows: Sow })[];
+    data: (Breeding & { boars: Boar; sows: Sow & { boars: Boar[] } })[];
     error: any;
   };
 

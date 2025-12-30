@@ -21,22 +21,7 @@ import DrawerDialog from "@/components/DrawerDialog";
 import { FarrowForm } from "@/components/Breeding/Form";
 import { Breeding } from "@/types/breeding";
 import BreedingCard from "@/components/Breeding/Card";
-
-interface FarrowEvent {
-  id: number;
-  sowId: number;
-  sowName: string;
-  expectedDate: Date;
-  breedDate: Date;
-  daysUntilFarrow: number;
-  isOverdue: boolean;
-  actualFarrowDate?: Date;
-  boarBreed?: string;
-  sowBreasts?: number;
-  boarId?: number | null;
-  sowBreedsIds?: number[];
-  originalBreeding: Breeding;
-}
+import { FarrowEvent } from "@/hooks/useCalendarData";
 
 interface FarrowEventListProps {
   events: FarrowEvent[];
@@ -61,16 +46,16 @@ export const FarrowEventList: React.FC<FarrowEventListProps> = ({
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex flex-col gap-2">
                       <h3 className="text-lg font-bold text-primary">
-                        {event.sowName} คลอด
+                        {event.sows.name} คลอด
                       </h3>
                       {/* Tags */}
-                      {((event.sowBreedsIds && event.sowBreedsIds.length > 0) ||
-                        (event.sowBreasts !== undefined &&
-                          event.sowBreasts > 0)) && (
+                      {((event.sows.boars && event.sows.boars.length > 0) ||
+                        (event.sows.breasts_count !== undefined &&
+                          event.sows.breasts_count > 0)) && (
                         <div className="flex flex-wrap gap-2">
                           <SowTags
-                            breedIds={event.sowBreedsIds}
-                            breastsCount={event.sowBreasts}
+                            breeds={event.sows.boars}
+                            breastsCount={event.sows.breasts_count}
                             className="bg-secondary px-4 py-1.5 text-sm"
                           />
                         </div>
@@ -159,16 +144,16 @@ export const FarrowEventList: React.FC<FarrowEventListProps> = ({
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex flex-col gap-2">
                     <h3 className="text-lg font-bold text-primary">
-                      ทำคลอด {event.sowName}
+                      {event.sows.name} คลอด
                     </h3>
                     {/* Tags */}
-                    {((event.sowBreedsIds && event.sowBreedsIds.length > 0) ||
-                      (event.sowBreasts !== undefined &&
-                        event.sowBreasts > 0)) && (
+                    {((event.sows.boars && event.sows.boars.length > 0) ||
+                      (event.sows.breasts_count !== undefined &&
+                        event.sows.breasts_count > 0)) && (
                       <div className="flex flex-wrap gap-2">
                         <SowTags
-                          breedIds={event.sowBreedsIds}
-                          breastsCount={event.sowBreasts}
+                          breeds={event.sows.boars}
+                          breastsCount={event.sows.breasts_count}
                           className="bg-secondary px-4 py-1.5 text-sm"
                         />
                       </div>
@@ -207,7 +192,7 @@ export const FarrowEventList: React.FC<FarrowEventListProps> = ({
                     <FarrowForm
                       breeding={{
                         id: event.id,
-                        sow_id: event.sowId,
+                        sow_id: event.sows.id,
                         breed_date: event.breedDate.toISOString(),
                         expected_farrow_date: event.expectedDate.toISOString(),
                         boar_id: event.boarId || null,
@@ -223,8 +208,8 @@ export const FarrowEventList: React.FC<FarrowEventListProps> = ({
                   </DrawerDialog>
 
                   <AddToCalendarButton
-                    title={`กำหนดคลอด ${event.sowName}`}
-                    description={`แม่พันธุ์: ${event.sowName}\nพ่อพันธุ์: ${
+                    title={`กำหนดคลอด ${event.sows.name}`}
+                    description={`แม่พันธุ์: ${event.sows.name}\nพ่อพันธุ์: ${
                       event.boarBreed || "ไม่ระบุ"
                     }`}
                     startDate={event.expectedDate}

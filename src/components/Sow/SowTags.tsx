@@ -1,29 +1,17 @@
 "use client";
 
 import { Dna, Milk } from "lucide-react";
-import { useBoarStore } from "@/stores/useBoarStore";
 import { cn } from "@/lib/utils";
-import { useEffect } from "react";
-import { getAllBoars } from "@/services/boar";
+import { Boar } from "@/types/boar";
 
 interface BreedTagsProps {
-  breedIds?: number[];
+  breeds?: Boar[];
   breastsCount?: number;
   className?: string;
 }
 
-export function SowTags({ breedIds, breastsCount, className }: BreedTagsProps) {
-  const { boars, setBoars } = useBoarStore();
-
-  useEffect(() => {
-    if (boars.length === 0) {
-      getAllBoars().then((data) => {
-        if (data) setBoars(data);
-      });
-    }
-  }, [setBoars]);
-
-  const hasBreeds = breedIds && breedIds.length > 0;
+export function SowTags({ breeds, breastsCount, className }: BreedTagsProps) {
+  const hasBreeds = breeds && breeds.length > 0;
   const hasBreasts = breastsCount !== undefined && breastsCount > 0;
 
   if (!hasBreeds && !hasBreasts) return null;
@@ -42,20 +30,17 @@ export function SowTags({ breedIds, breastsCount, className }: BreedTagsProps) {
         </div>
       )}
       {hasBreeds &&
-        breedIds!.map((breedId) => {
-          const boar = boars.find((b) => b.id === breedId);
-          const breedName = boar ? boar.breed : breedId;
-
+        breeds!.map((breed) => {
           return (
             <div
-              key={breedId}
+              key={breed.id}
               className={cn(
                 "flex items-center gap-2 px-2 py-1 text-xs font-medium bg-white rounded-full text-muted-foreground",
                 className
               )}
             >
               <Dna size={16} />
-              <span>{breedName}</span>
+              <span>{breed.breed}</span>
             </div>
           );
         })}

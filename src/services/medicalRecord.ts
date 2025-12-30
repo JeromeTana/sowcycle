@@ -1,6 +1,8 @@
 import { MedicalRecord } from "@/types/medicalRecord";
 import { createClient } from "@/utils/supabase/client";
 import { getCurrentUser } from "./auth";
+import { Sow } from "@/types/sow";
+import { Boar } from "@/types/boar";
 
 const supabase = createClient();
 
@@ -74,12 +76,12 @@ export const getAllMedicalRecords = async () => {
       `
       *,
       medicines(*),
-      sows!inner(name, user_id)
+      sows!inner(name, user_id, breasts_count, boars(*))
     `
     )
     .eq("sows.user_id", user.id)
     .order("used_at", { ascending: false })) as {
-    data: MedicalRecord[];
+    data: (MedicalRecord & { sows: Sow & { boars: Boar[] } })[];
     error: any;
   };
 

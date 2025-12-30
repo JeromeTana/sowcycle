@@ -84,12 +84,8 @@ export function useBreedingOperations() {
         boar_id: breeding.boars?.id || breeding.boars?.boar_id,
         sows: undefined,
         sow: undefined,
+        boars: undefined,
       };
-
-      // Clean up nested objects
-      delete requestBody.boars;
-      delete requestBody.sows;
-      delete requestBody.sow;
 
       const response = await updateBreedingService(requestBody);
 
@@ -124,12 +120,8 @@ export function useBreedingOperations() {
         updated_at: new Date().toISOString(),
         sows: undefined,
         sow: undefined,
+        boars: undefined,
       };
-
-      // Clean up nested objects
-      delete requestBody.boars;
-      delete requestBody.sows;
-      delete requestBody.sow;
 
       const updateResponse = await updateBreedingService(requestBody);
 

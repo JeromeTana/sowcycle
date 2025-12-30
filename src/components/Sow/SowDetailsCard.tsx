@@ -24,10 +24,10 @@ import DialogComponent from "../DrawerDialog";
 import BoarDetailsCard from "../Boar/DetailsCard";
 import { Button } from "../ui/button";
 import SowForm from "./Form";
+import { Boar } from "@/types/boar";
 
 interface SowDetailsCardProps {
-  sow: Sow;
-  sowBreeds: any[];
+  sow: Sow & { boars: Boar[] };
   breedings: Breeding[];
   litters: Litter[];
   averagePigletsBornCount: number;
@@ -36,7 +36,6 @@ interface SowDetailsCardProps {
 
 export default function SowDetailsCard({
   sow,
-  sowBreeds,
   breedings,
   litters,
   averagePigletsBornCount,
@@ -133,11 +132,11 @@ export default function SowDetailsCard({
             </InfoIcon>
 
             <div className="flex flex-col gap-2">
-              {sowBreeds.length > 0 ? (
-                sowBreeds.map((breed, index) => (
+              {sow.boars.length > 0 ? (
+                sow.boars.map((boar, index) => (
                   <DialogComponent
-                    key={breed?.id || index}
-                    title={breed.breed}
+                    key={boar?.id || index}
+                    title={boar.breed}
                     dialogTriggerButton={
                       <div className="flex gap-4 p-3 bg-muted rounded-xl cursor-pointer">
                         <InfoIcon
@@ -145,13 +144,16 @@ export default function SowDetailsCard({
                           icon={<Dna size={22} />}
                           className="text-muted-foreground !bg-white"
                         >
-                          {breed?.breed || "ไม่ระบุ"}
+                          {boar.breed || "ไม่ระบุ"}
                         </InfoIcon>
-                        <ChevronRight size={20} className="ml-auto text-muted-foreground" />
+                        <ChevronRight
+                          size={20}
+                          className="ml-auto text-muted-foreground"
+                        />
                       </div>
                     }
                   >
-                    <BoarDetailsCard boar={breed} />
+                    <BoarDetailsCard boar={boar} />
                   </DialogComponent>
                 ))
               ) : (

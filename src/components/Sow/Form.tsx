@@ -87,6 +87,7 @@ export default function SowForm({ editingSow, setDialog }: any) {
       breedings: undefined,
       medical_records: undefined,
       litters: undefined,
+      boars: undefined,
     };
     let res = await updateSow(data);
     if (res) {

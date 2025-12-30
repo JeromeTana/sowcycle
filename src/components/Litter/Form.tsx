@@ -67,11 +67,8 @@ export function LitterForm({ litter, setDialog, mode = "edit", onSuccess }: Litt
       updated_at: new Date().toISOString(),
       sows: undefined,
       sow: undefined,
+      boars: undefined,
     };
-
-    delete requestBody.boars;
-    delete requestBody.sows;
-    delete requestBody.sow;
 
     try {
       const res = await updateLitter(requestBody);

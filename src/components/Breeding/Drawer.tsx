@@ -146,7 +146,7 @@ export default function BreedingDrawer({
 
         {/* Piglets Info (Only if completed) */}
         {isCompleted && (
-          <div className="p-4 space-y-8 bg-muted rounded-xl">
+          <div className="p-4 space-y-4 bg-muted rounded-xl">
             {/* Born Alive */}
             <div className="flex items-start gap-4">
               <div className="flex items-center justify-center w-12 h-12 p-2 bg-white text-muted-foreground rounded-2xl">

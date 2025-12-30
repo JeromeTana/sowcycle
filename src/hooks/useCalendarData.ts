@@ -8,15 +8,13 @@ import { Boar } from "@/types/boar";
 
 export interface FarrowEvent {
   id: number;
-  sowId: number;
-  sowName: string;
+  sows: Sow & { boars: Boar[] };
   expectedDate: Date;
   breedDate: Date;
   daysUntilFarrow: number;
   isOverdue: boolean;
   actualFarrowDate?: Date;
   boarBreed?: string;
-  sowBreasts?: number;
   boarId?: number | null;
   originalBreeding: Breeding;
 }
@@ -55,7 +53,9 @@ export const useCalendarData = () => {
   const [error, setError] = useState<string | null>(null);
 
   const transformBreedingsToEvents = useCallback(
-    (breedings: (Breeding & { boars: Boar; sows: Sow })[]): FarrowEvent[] => {
+    (
+      breedings: (Breeding & { boars: Boar; sows: Sow & { boars: Boar[] } })[]
+    ): FarrowEvent[] => {
       return breedings.map((breeding) => {
         const expectedDate = parseISO(breeding.expected_farrow_date);
         const breedDate = parseISO(breeding.breed_date);
@@ -64,9 +64,7 @@ export const useCalendarData = () => {
 
         return {
           id: breeding.id!,
-          sowId: breeding.sow_id,
-          sowBreedsIds: breeding.sows.breed_ids,
-          sowName: (breeding as any).sows?.name || `Sow #${breeding.sow_id}`,
+          sows: breeding.sows,
           expectedDate,
           breedDate,
           daysUntilFarrow,
@@ -75,7 +73,6 @@ export const useCalendarData = () => {
             ? parseISO(breeding.actual_farrow_date)
             : undefined,
           boarBreed: breeding.boars?.breed,
-          sowBreasts: (breeding as any).sows?.breasts_count,
           boarId: breeding.boar_id,
           originalBreeding: breeding,
         };

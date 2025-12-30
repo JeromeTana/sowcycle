@@ -12,6 +12,9 @@ import { Medicine } from "@/types/medicine";
 import InfoIcon from "../InfoIcon";
 import { formatDateTH } from "@/lib/utils";
 import { MedicalRecord } from "@/types/medicalRecord";
+import { SowTags } from "../Sow/SowTags";
+import { Sow } from "@/types/sow";
+import { Boar } from "@/types/boar";
 
 export default function MedicineCard({ medicine }: { medicine: Medicine }) {
   if (!medicine) return null;
@@ -57,7 +60,7 @@ export function MedicineHistoryCard({
 }: {
   medicalRecord: MedicalRecord & {
     medicines: Medicine;
-    sows: { name: string };
+    sows: Sow & { boars: Boar[] };
   };
 }) {
   if (!medicalRecord) return null;
@@ -85,6 +88,12 @@ export function MedicineHistoryCard({
               className="!bg-white"
             >
               {medicalRecord.sows.name!}
+              <div className="flex flex-wrap gap-2 mt-2">
+                <SowTags
+                  breastsCount={medicalRecord.sows.breasts_count}
+                  breeds={medicalRecord.sows.boars}
+                />
+              </div>
             </InfoIcon>
           </div>
           <InfoIcon label="อาการ" icon={<Activity size={22} />}>

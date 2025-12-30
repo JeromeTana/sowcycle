@@ -112,9 +112,9 @@ export default function BreedDropdown({
             {breeds.map((breed) => (
               <SelectItem key={breed.id} value={breed.id.toString()}>
                 {breed.breed}
-                <span className="!ml-8 text-right text-muted-foreground">
+                {/* <span className="!ml-8 text-right text-muted-foreground">
                   {breed.description}
-                </span>
+                </span> */}
               </SelectItem>
             ))}
             <DrawerDialog

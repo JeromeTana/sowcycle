@@ -11,6 +11,8 @@ import SowHistorySection from "@/components/Sow/SowHistorySection";
 import { LoadingPageSkeleton } from "@/components/Sow/LoadingSkeleton";
 import TopBar from "@/components/TopBar";
 import TabsComponent from "@/components/TabsComponent";
+import { Sow } from "@/types/sow";
+import { Boar } from "@/types/boar";
 
 interface SowPageProps {
   params: Promise<{ id: string }>;
@@ -19,15 +21,8 @@ interface SowPageProps {
 export default function SowPage({ params }: SowPageProps) {
   const [id, setId] = useState<number | null>(null);
 
-  const {
-    sow,
-    breedings,
-    litters,
-    medicalRecords,
-    sowBreeds,
-    isLoading,
-    error,
-  } = useSowDetailData(id);
+  const { sow, breedings, litters, medicalRecords, isLoading, error } =
+    useSowDetailData(id);
 
   const { averagePigletsBornCount, averageWeightChart } =
     useSowDetailCalculations(breedings, litters);
@@ -65,8 +60,7 @@ export default function SowPage({ params }: SowPageProps) {
               value: "details",
               content: (
                 <SowDetailsCard
-                  sow={sow}
-                  sowBreeds={sowBreeds}
+                  sow={sow as Sow & { boars: Boar[] }}
                   breedings={breedings}
                   litters={litters}
                   averagePigletsBornCount={averagePigletsBornCount}

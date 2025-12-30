@@ -22,6 +22,7 @@ import { cn } from "@/lib/utils";
 import TopBar from "@/components/TopBar";
 import { StatsCard } from "@/components/StatsCard";
 import { LitterLoadingSkeleton } from "@/components/Litter/LoadingSkeleton";
+import { Boar } from "@/types/boar";
 
 // Types
 interface FilterOption {
@@ -48,19 +49,19 @@ export default function LittersPage() {
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<FilterOption[]>([DEFAULT_FILTER]);
   const [selectedBreeds, setSelectedBreeds] = useState<string[]>([]);
-  const { littersWithBreeds, isLoading, error } = useLitterData();
+  const { litters, isLoading, error } = useLitterData();
 
   const availableBreeds = useMemo(() => {
     const breedSet = new Set<string>();
 
-    littersWithBreeds.forEach((litter) => {
-      (litter.sows?.breeds || []).forEach((breed: string) => {
-        if (breed) breedSet.add(breed);
+    litters.forEach((litter) => {
+      (litter.sows?.boars || []).forEach((boar: Boar) => {
+        if (boar) breedSet.add(boar.breed);
       });
     });
 
     return Array.from(breedSet).sort((a, b) => a.localeCompare(b, "th-TH"));
-  }, [littersWithBreeds]);
+  }, [litters]);
 
   const isDefaultFilterActive =
     filters.length === 0 ||
@@ -68,7 +69,7 @@ export default function LittersPage() {
       isSameFilterValue(filters[0].value, DEFAULT_FILTER.value));
 
   // Apply filters to litters
-  const filteredLitters = useLitterFilters(littersWithBreeds, search).filter(
+  const filteredLitters = useLitterFilters(litters, search).filter(
     (litter) => {
       const matchesStatus =
         isDefaultFilterActive ||

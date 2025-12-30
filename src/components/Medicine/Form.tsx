@@ -85,9 +85,8 @@ export default function MedicineForm({ editingMedicine, setDialog }: any) {
       ...values,
       updated_at: new Date().toISOString(),
       stock_count: Number(values.stock_count),
+      medical_records: undefined,
     };
-    delete data.titleings;
-    delete data.medical_records;
     let res = await updateMedicine(data);
     if (res) {
       updateMedicineState(res);
