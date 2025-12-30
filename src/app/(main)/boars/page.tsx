@@ -85,7 +85,7 @@ export default function BoarsPage() {
       >
         <BoarForm />
       </DialogComponent>
-      <main className="space-y-8 p-4 pt-0 md:pb-8 md:p-8">
+      <main className="space-y-4 p-4 pt-0 md:pb-8 md:p-8">
         <div className="flex gap-2">
           <Input
             value={search}
