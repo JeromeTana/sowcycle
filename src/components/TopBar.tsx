@@ -2,12 +2,19 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, LogOut, Settings, User } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  LogOut,
+  Settings,
+  User,
+} from "lucide-react";
 import { getCurrentUser } from "@/services/auth";
 import DrawerDialog from "@/components/DrawerDialog";
 import LogoutButton from "@/components/LogoutButton";
 import { Button } from "./ui/button";
 import BoarsContent from "@/components/Boar/BoarsContent";
+import DurationSetting from "@/components/Settings/DurationSetting";
 
 type AccountMenuProps = {
   setDialog?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -51,7 +58,7 @@ function AccountMenu({ setDialog }: AccountMenuProps) {
 
   return (
     <div className="grid gap-4">
-      <div className="bg-muted rounded-2xl p-4">
+      <div className="bg-muted rounded-3xl p-4">
         <div className="flex gap-4 items-center">
           <div className="w-16 h-16 rounded-full bg-neutral-300" />
           <p className="text-muted-foreground">{emailDisplay}</p>
@@ -72,18 +79,53 @@ function AccountMenu({ setDialog }: AccountMenuProps) {
       >
         <BoarsContent />
       </DrawerDialog>
-      <a href="/setting" onClick={closeDialog}>
-        <Button
-          variant={"secondary"}
-          size={"lg"}
-          className="w-full justify-between px-4"
+      <div className="flex flex-col overflow-clip rounded-3xl divide-y ">
+        <DrawerDialog
+          title="ตั้งค่าระยะเวลาตั้งครรภ์"
+          dialogTriggerButton={
+            <Button
+              variant={"secondary"}
+              size={"lg"}
+              className="w-full justify-between px-4 rounded-none"
+            >
+              <span>ระยะเวลาตั้งครรภ์</span>
+              <ChevronRight size={20} className="text-muted-foreground" />
+            </Button>
+          }
         >
-          {/* <Settings size={16} /> */}
-          <span>ตั้งค่า</span>
-          <ChevronRight size={20} className="text-muted-foreground"/>
+          <DurationSetting
+            title="ระยะเวลาตั้งครรภ์ (วัน)"
+            settingKey="pregnancyDuration"
+            defaultDuration={114}
+            min={100}
+            max={130}
+            description="ระยะเวลาการตั้งครรภ์ของแม่สุกร (ปกติ 114 วัน)"
+          />
+        </DrawerDialog>
 
-        </Button>
-      </a>
+        <DrawerDialog
+          title="ตั้งค่าระยะเวลาเลี้ยงขุน"
+          dialogTriggerButton={
+            <Button
+              variant={"secondary"}
+              size={"lg"}
+              className="w-full justify-between px-4 rounded-none"
+            >
+              <span>ระยะเวลาเลี้ยงขุน</span>
+              <ChevronRight size={20} className="text-muted-foreground" />
+            </Button>
+          }
+        >
+          <DurationSetting
+            title="ระยะเวลาเลี้ยงขุน (วัน)"
+            settingKey="fatteningDuration"
+            defaultDuration={145}
+            min={120}
+            max={180}
+            description="ระยะเวลาการเลี้ยงขุนลูกสุกร (ปกติ 145 วัน)"
+          />
+        </DrawerDialog>
+      </div>
       <LogoutButton>
         <Button
           variant={"secondary"}
