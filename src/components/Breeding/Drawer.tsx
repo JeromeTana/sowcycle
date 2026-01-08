@@ -221,7 +221,7 @@ export default function BreedingDrawer({
             <AddToCalendarButton
               title={`กำหนดคลอด`}
               startDate={new Date(breeding.expected_farrow_date)}
-              className="w-full h-12 text-base font-medium text-gray-900 bg-gray-100 border-none rounded-full shadow-none hover:bg-gray-200"
+              className="w-full h-12 text-base font-medium"
             />
           </>
         )}

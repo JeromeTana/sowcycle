@@ -248,7 +248,7 @@ export default function LitterDrawer({ litter, index }: LitterDrawerProps) {
           <AddToCalendarButton
             title={`กำหนดจับหมูขุน แม่${litter.sows?.name}`}
             startDate={new Date(litter.saleable_at)}
-            className="w-full h-12 text-base font-medium text-gray-900 bg-gray-100 border-none rounded-full shadow-none hover:bg-gray-200"
+            className="w-full h-12 text-base font-medium"
           />
         )}
 
