@@ -27,6 +27,7 @@ import { useMemo } from "react";
 import { SowTags } from "../Sow/SowTags";
 import { formatDateTH } from "@/lib/utils";
 import InfoIcon from "../InfoIcon";
+import Link from "next/link";
 
 interface ExtendedLitter extends Litter {
   sows: Sow | undefined;
@@ -103,24 +104,26 @@ export default function LitterDrawer({ litter, index }: LitterDrawerProps) {
       {/* Parents Info */}
       {/* Sow */}
       {litter.sows && (
-        <div className="flex justify-between w-full p-3 bg-secondary rounded-xl">
-          <InfoIcon
-            icon={<PiggyBank size={24} />}
-            label="แม่พันธุ์"
-            className="bg-white rounded-2xl w-12 h-12 flex items-center justify-center"
-          >
-            <span className="font-semibold text-gray-900">
-              {litter.sows.name}
-            </span>
-            <div className="flex flex-wrap gap-2 mt-2">
-              <SowTags
-                breeds={litter.sows.boars}
-                breastsCount={litter.sows.breasts_count}
-              />
-            </div>
-          </InfoIcon>
-          <ChevronRight size={20} className="text-muted-foreground" />
-        </div>
+        <Link href={`/sows/${litter.sow_id}`}>
+          <div className="flex justify-between w-full p-3 bg-secondary rounded-xl">
+            <InfoIcon
+              icon={<PiggyBank size={24} />}
+              label="แม่พันธุ์"
+              className="bg-white rounded-2xl w-12 h-12 flex items-center justify-center"
+            >
+              <span className="font-semibold text-gray-900">
+                {litter.sows.name}
+              </span>
+              <div className="flex flex-wrap gap-2 mt-2">
+                <SowTags
+                  breeds={litter.sows.boars}
+                  breastsCount={litter.sows.breasts_count}
+                />
+              </div>
+            </InfoIcon>
+            <ChevronRight size={20} className="text-muted-foreground" />
+          </div>
+        </Link>
       )}
 
       {/* Boar */}

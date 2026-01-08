@@ -4,7 +4,7 @@ export function LitterLoadingSkeleton() {
   return (
     <>
       {/* TopBar Skeleton */}
-      <div className="grid items-center w-full grid-cols-3 mb-4">
+      <div className="grid items-center w-full grid-cols-3 mb-4 p-4">
         <div className="flex"></div>
         <div className="flex justify-center">
           <Skeleton className="w-24 h-7" />

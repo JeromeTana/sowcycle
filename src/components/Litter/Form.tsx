@@ -178,7 +178,7 @@ export function LitterForm({ litter, setDialog, mode = "edit", onSuccess }: Litt
           <Button
             disabled={form.formState.isSubmitting}
             size="lg"
-            className="w-full"
+            className="w-full bg-lime-500"
             type="submit"
           >
             {form.formState.isSubmitting ? (

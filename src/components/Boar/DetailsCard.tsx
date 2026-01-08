@@ -16,7 +16,11 @@ export default function BoarDetailsCard({ boar }: BoarDetailsCardProps) {
         <DialogComponent
           title="แก้ไขสายพันธุ์"
           dialogTriggerButton={
-            <Button variant={"ghost"}>
+            <Button
+              variant="secondary"
+              size="lg"
+              className="w-full text-base font-medium"
+            >
               <Pen /> แก้ไขสายพันธุ์
             </Button>
           }

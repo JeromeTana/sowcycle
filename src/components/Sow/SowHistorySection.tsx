@@ -125,7 +125,7 @@ export default function SowHistorySection({
             )}
           >
             <Heart className="inline w-3 h-3 mr-1" />
-            ประวัติผสม ({breedings.length})
+            การผสม ({breedings.length})
           </button>
           <button
             onClick={() => setFilter("medical")}
@@ -137,7 +137,7 @@ export default function SowHistorySection({
             )}
           >
             <Syringe className="inline w-3 h-3 mr-1" />
-            ประวัติใช้ยา ({medicalRecords.length})
+            การใช้ยา ({medicalRecords.length})
           </button>
         </div>
       </div>
@@ -167,7 +167,7 @@ export default function SowHistorySection({
         )}
       </div>
       <DialogComponent
-        title=""
+        title="เพิ่มประวัติใหม่"
         dialogTriggerButton={
           <div className="fixed z-10 flex items-center gap-2 p-4 text-white rounded-full shadow cursor-pointer bg-primary bottom-24 right-4">
             <Plus size={22} />
