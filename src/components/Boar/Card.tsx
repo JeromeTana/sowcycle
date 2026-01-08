@@ -14,7 +14,7 @@ export default function BoarCard({ boar }: { boar: Boar }) {
       title={`${boar.breed}`}
       dialogTriggerButton={
         <div className="w-full cursor-pointer">
-          <Card>
+          <Card className="bg-secondary">
             <CardContent className="p-4">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold">{boar.breed}</h3>

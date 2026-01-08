@@ -7,6 +7,7 @@ import { getCurrentUser } from "@/services/auth";
 import DrawerDialog from "@/components/DrawerDialog";
 import LogoutButton from "@/components/LogoutButton";
 import { Button } from "./ui/button";
+import BoarsContent from "@/components/Boar/BoarsContent";
 
 type AccountMenuProps = {
   setDialog?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -56,16 +57,21 @@ function AccountMenu({ setDialog }: AccountMenuProps) {
           <p className="text-muted-foreground">{emailDisplay}</p>
         </div>
       </div>
-      <a href="/boars" onClick={closeDialog}>
-        <Button
-          variant={"secondary"}
-          size={"lg"}
-          className="w-full px-4 justify-between"
-        >
-          <span>สายพันธุ์</span>
-          <ChevronRight size={20} className="text-muted-foreground"/>
-        </Button>
-      </a>
+      <DrawerDialog
+        title="สายพันธุ์"
+        dialogTriggerButton={
+          <Button
+            variant={"secondary"}
+            size={"lg"}
+            className="w-full px-4 justify-between"
+          >
+            <span>สายพันธุ์</span>
+            <ChevronRight size={20} className="text-muted-foreground" />
+          </Button>
+        }
+      >
+        <BoarsContent />
+      </DrawerDialog>
       <a href="/setting" onClick={closeDialog}>
         <Button
           variant={"secondary"}
