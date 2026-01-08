@@ -30,14 +30,14 @@ const navItems = [
   //   icon: Dna,
   // },
   {
-    href: "/litters",
-    label: "ครอก",
-    icon: Fence,
-  },
-  {
     href: "/medicines",
     label: "ยาวัคซีน",
     icon: Syringe,
+  },
+  {
+    href: "/litters",
+    label: "ครอก",
+    icon: Fence,
   },
   // {
   //   href: "/inventory",
