@@ -133,7 +133,7 @@ export function MedicalRecordForm({
           description: "เพิ่มประวัติการผสมเรียบร้อย",
         });
         addMedicalRecord(res);
-        await useMedicine(res.medicine_id);
+        // await useMedicine(res.medicine_id);
         setDialog(false);
       }
     } catch (err) {
