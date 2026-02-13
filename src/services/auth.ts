@@ -3,7 +3,10 @@ import { redirect } from "next/navigation";
 
 const supabase = createClient();
 
+let currentUserPromise: Promise<any> | null = null;
+
 export const login = async (email: string, password: string) => {
+  currentUserPromise = null;
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
@@ -15,6 +18,7 @@ export const login = async (email: string, password: string) => {
 };
 
 export const signUp = async (email: string, password: string) => {
+  currentUserPromise = null;
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
@@ -26,6 +30,7 @@ export const signUp = async (email: string, password: string) => {
 };
 
 export const signOut = async () => {
+  currentUserPromise = null;
   const { error } = await supabase.auth.signOut();
   if (error) throw new Error(`Failed to sign out: ${error.message}`);
 
@@ -33,18 +38,34 @@ export const signOut = async () => {
 };
 
 export const getCurrentUser = async () => {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  if (currentUserPromise) return currentUserPromise;
 
-  if (!user) {
-    redirect("/login");
-  }
-  return user;
+  currentUserPromise = (async () => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    if (!session?.user) {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        redirect("/login");
+      }
+      return user;
+    }
+    return session.user;
+  })();
+
+  return currentUserPromise;
 };
 
 export const authOnChange = (callBack: any) => {
   supabase.auth.onAuthStateChange((event, session) => {
+    if (event === "SIGNED_OUT" || event === "USER_UPDATED") {
+      currentUserPromise = null;
+    }
     callBack(event, session);
   });
 };

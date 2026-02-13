@@ -1,12 +1,20 @@
 import { MedicalRecord } from "@/types/medicalRecord";
 import { createClient } from "@/utils/supabase/client";
+import { getCurrentUser } from "./auth";
+import { Sow } from "@/types/sow";
+import { Boar } from "@/types/boar";
 
 const supabase = createClient();
 
 export const getMedicalRecordsBySowId = async (sowId: number) => {
   const { data, error } = (await supabase
     .from("medical_records")
-    .select()
+    .select(
+      `
+      *,
+      medicines(*)
+    `
+    )
     .eq("sow_id", sowId)
     .order("created_date", { ascending: false })) as {
     data: MedicalRecord[];
@@ -23,7 +31,7 @@ export const createMedicalRecord = async (medicalRecord: MedicalRecord) => {
   const { data, error } = await supabase
     .from("medical_records")
     .insert([medicalRecord])
-    .select()
+    .select(`*, medicines(*)`)
     .single();
 
   if (error)
@@ -37,7 +45,7 @@ export const updateMedicalRecord = async (medicalRecord: MedicalRecord) => {
     .from("medical_records")
     .update(medicalRecord)
     .eq("id", medicalRecord.id)
-    .select()
+    .select(`*, medicines(*)`)
     .single();
 
   if (error)
@@ -56,6 +64,29 @@ export const deleteMedicalRecord = async (id: number) => {
 
   if (error)
     throw new Error(`Failed to delete medical_record: ${error.message}`);
+
+  return data;
+};
+
+export const getAllMedicalRecords = async () => {
+  const user = await getCurrentUser();
+  const { data, error } = (await supabase
+    .from("medical_records")
+    .select(
+      `
+      *,
+      medicines(*),
+      sows!inner(name, user_id, breasts_count, boars(*))
+    `
+    )
+    .eq("sows.user_id", user.id)
+    .order("used_at", { ascending: false })) as {
+    data: (MedicalRecord & { sows: Sow & { boars: Boar[] } })[];
+    error: any;
+  };
+
+  if (error)
+    throw new Error(`Failed to fetch medical records: ${error.message}`);
 
   return data;
 };

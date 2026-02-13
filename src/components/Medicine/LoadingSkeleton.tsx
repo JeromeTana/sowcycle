@@ -1,0 +1,33 @@
+import { Skeleton } from "@/components/ui/skeleton";
+
+export function MedicineLoadingSkeleton() {
+  return (
+    <>
+      {/* TopBar Skeleton */}
+      {/* <div className="grid items-center w-full grid-cols-3 mb-4">
+        <div className="flex"></div>
+        <div className="flex justify-center">
+          <Skeleton className="w-24 h-7" />
+        </div>
+        <div className="flex justify-end">
+          <Skeleton className="w-10 h-10 rounded-full" />
+        </div>
+      </div> */}
+
+      <div className="space-y-4">
+        {/* Search Skeleton */}
+        <Skeleton className="w-full h-10 rounded-full mt-4" />
+
+        {/* MedicineList Skeleton */}
+        <div className="space-y-2">
+          {[...Array(3)].map((_, i) => (
+            <Skeleton key={i} className="w-full h-40 rounded-2xl" />
+          ))}
+        </div>
+      </div>
+
+      {/* FAB Skeleton */}
+      <Skeleton className="fixed rounded-full h-14 w-14 bottom-24 right-4" />
+    </>
+  );
+}

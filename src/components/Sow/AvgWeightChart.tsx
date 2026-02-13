@@ -1,6 +1,6 @@
 "use client";
 
-import { formatDate } from "@/lib/utils";
+import { formatDateTH } from "@/lib/utils";
 import { Litter } from "@/types/litter";
 import {
   LineChart,
@@ -29,7 +29,7 @@ export default function AvgWeightChart({ litters }: PigletCountChartProps) {
     .map((litter, index) => ({
       litter: `ครอกที่ ${index + 1}`,
       avg_weight: litter.avg_weight || 0,
-      date: formatDate(litter.birth_date!),
+      date: formatDateTH(litter.birth_date!),
     }));
 
   if (chartData.length === 0) {

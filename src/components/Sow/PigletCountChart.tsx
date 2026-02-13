@@ -1,6 +1,6 @@
 "use client";
 
-import { formatDate } from "@/lib/utils";
+import { formatDateTH } from "@/lib/utils";
 import { Breeding } from "@/types/breeding";
 import {
   LineChart,
@@ -35,7 +35,7 @@ export default function PigletCountChart({ breedings }: PigletCountChartProps) {
     .map((breeding, index) => ({
       breeding: `ครั้งที่ ${index + 1}`,
       piglets: breeding.piglets_born_count || 0,
-      date: formatDate(breeding.actual_farrow_date!),
+      date: formatDateTH(breeding.actual_farrow_date!),
     }));
 
   if (chartData.length === 0) {

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "../globals.css";
+import { interFont } from "@/utils/fonts";
 
 export const metadata: Metadata = {
   title: "Login - SowCycle",
@@ -18,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body suppressHydrationWarning>{children}</body>
+      <body suppressHydrationWarning className={interFont.variable}>{children}</body>
     </html>
   );
 }

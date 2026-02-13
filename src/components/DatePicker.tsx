@@ -17,9 +17,11 @@ export default function DatePicker({ field }: any) {
       <PopoverTrigger asChild>
         <FormControl>
           <Button
+            type="button"
             variant={"outline"}
+            size="lg"
             className={cn(
-              "w-full pl-3 text-left text-base font-normal",
+              "w-full px-4 text-left text-base font-normal",
               !field.value && "text-muted-foreground",
             )}
           >
@@ -28,11 +30,11 @@ export default function DatePicker({ field }: any) {
             ) : (
               <span>เลือกวันที่</span>
             )}
-            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+            <CalendarIcon className="w-4 h-4 ml-auto opacity-50" />
           </Button>
         </FormControl>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="start">
+      <PopoverContent className="w-auto p-0" align="center">
         <Calendar
           mode="single"
           defaultMonth={field.value || new Date()}
@@ -45,7 +47,7 @@ export default function DatePicker({ field }: any) {
             date > new Date() || date < new Date("1900-01-01")
           }
           initialFocus
-          className="w-screen"
+          className="w-[calc(100vw-1rem)]"
         />
       </PopoverContent>
     </Popover>

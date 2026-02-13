@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import DialogComponent from "@/components/DialogComponent";
+import DialogComponent from "@/components/DrawerDialog";
 import SowForm from "@/components/Sow/Form";
 import { Sow } from "@/types/sow";
 import { Pen, PiggyBankIcon } from "lucide-react";

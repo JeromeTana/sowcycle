@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import DatePicker from "@/components/DatePicker";
-import { cn, formatDate } from "@/lib/utils";
+import { cn, formatDateTH } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 import { LitterFormData } from "../../schemas/litterSchema";
@@ -22,36 +22,37 @@ export function FatteningSection({
   calculatedSaleableDate,
 }: FatteningSectionProps) {
   return (
-    <div className="flex gap-2">
+    <div className="flex flex-col gap-4">
       <FormField
         control={form.control}
         name="fattening_at"
         render={({ field }) => (
-          <FormItem className="w-full flex flex-col">
-            <FormLabel>เริ่มขุนเมื่อ (ถ้ามี)</FormLabel>
+          <FormItem className="flex flex-col w-full">
+            <FormLabel>เริ่มขุนเมื่อ</FormLabel>
             <DatePicker field={field} />
             <FormMessage />
           </FormItem>
         )}
       />
 
-      <FormItem className="w-full flex flex-col">
+      <FormItem className="flex flex-col w-full">
         <FormLabel>จะพร้อมขายช่วง</FormLabel>
         <FormControl>
           <Button
             variant={"outline"}
             disabled
+            size="lg"
             className={cn(
-              "w-full pl-3 text-left font-normal",
-              !calculatedSaleableDate && "text-muted-foreground",
+              "w-full px-4 text-base text-left font-normal",
+              !calculatedSaleableDate && "text-muted-foreground"
             )}
           >
             {calculatedSaleableDate ? (
-              formatDate(calculatedSaleableDate.toISOString())
+              formatDateTH(calculatedSaleableDate.toISOString())
             ) : (
               <span>เลือกวันที่เริ่มขุน</span>
             )}
-            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+            <CalendarIcon className="w-4 h-4 ml-auto opacity-50" />
           </Button>
         </FormControl>
         <FormMessage />

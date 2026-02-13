@@ -20,8 +20,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/hooks/use-toast";
-import DialogComponent from "../DialogComponent";
-import { Check, Loader, Trash } from "lucide-react";
+import DialogComponent from "../DrawerDialog";
+import { Check, Loader2, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useLoading } from "@/stores/useLoading";
 import { Textarea } from "../ui/textarea";
@@ -70,9 +70,9 @@ export default function BoarForm({ editingBoar, setDialog }: any) {
       ...boar,
       ...values,
       updated_at: new Date().toISOString(),
+      breedings: undefined,
+      medical_records: undefined,
     };
-    delete data.breedings;
-    delete data.medical_records;
     let res = await updateBoar(data);
     if (res) {
       updateBoarState(res);
@@ -80,7 +80,6 @@ export default function BoarForm({ editingBoar, setDialog }: any) {
         title: "แก้ไขข้อมูลเรียบร้อย",
         description: "ข้อมูลของสายพันธุ์ถูกแก้ไขเรียบร้อยแล้ว",
       });
-      setDialog(false);
     }
   };
 
@@ -114,7 +113,13 @@ export default function BoarForm({ editingBoar, setDialog }: any) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 ">
+      <form
+        onSubmit={(e) => {
+          e.stopPropagation();
+          form.handleSubmit(onSubmit)(e);
+        }}
+        className="space-y-4"
+      >
         <FormField
           control={form.control}
           name="breed"
@@ -136,21 +141,28 @@ export default function BoarForm({ editingBoar, setDialog }: any) {
             <FormItem>
               <FormLabel>คำอธิบาย</FormLabel>
               <FormControl>
-                <Textarea rows={5} placeholder="เขียนอธิบายสายพันธุ์" className="bg-white resize-none" {...field} />
+                <Textarea
+                  rows={5}
+                  placeholder="เขียนอธิบายสายพันธุ์"
+                  className="bg-white resize-none"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <div className="w-full flex justify-between gap-2">
+        <div className="flex justify-between w-full gap-2">
           {boar.id && (
             <DialogComponent
               title="ลบสายพันธุ์"
               dialogTriggerButton={
                 <Button
+                  type="button"
                   disabled={form.formState.isSubmitting}
                   variant="ghost"
+                  size="lg"
                   className="text-red-500 hover:text-red-500"
                 >
                   <Trash /> ลบ
@@ -162,16 +174,26 @@ export default function BoarForm({ editingBoar, setDialog }: any) {
                 <span className="font-bold">{boar.name}</span>
               </p>
               <div className="flex justify-end gap-2">
-                <Button variant="destructive" onClick={() => onDelete(boar.id)}>
+                <Button
+                  type="button"
+                  variant="destructive"
+                  size="lg"
+                  onClick={() => onDelete(boar.id)}
+                >
                   <Trash /> ลบ
                 </Button>
               </div>
             </DialogComponent>
           )}
-          <Button disabled={form.formState.isSubmitting} type="submit">
+          <Button
+            disabled={form.formState.isSubmitting}
+            size="lg"
+            className="w-full"
+            type="submit"
+          >
             {form.formState.isSubmitting ? (
               <>
-                <Loader className="animate-spin" />
+                <Loader2 className="animate-spin" />
                 กำลังบันทึก
               </>
             ) : (

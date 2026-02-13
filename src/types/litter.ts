@@ -1,10 +1,12 @@
 import { Boar } from "./boar";
+import { Sow } from "./sow";
 
 export interface Litter {
   id?: number;
   created_at?: string;
   updated_at?: string;
   sow_id: number;
+  sows?: Sow;
   birth_date?: string;
   piglets_born_count?: number;
   piglets_male_born_alive?: number;

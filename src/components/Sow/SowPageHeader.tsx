@@ -1,4 +1,4 @@
-import DialogComponent from "@/components/DialogComponent";
+import DialogComponent from "@/components/DrawerDialog";
 import SowForm from "@/components/Sow/Form";
 import { Plus } from "lucide-react";
 

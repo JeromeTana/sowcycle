@@ -24,7 +24,7 @@ import { Input } from "../ui/input";
 import DatePicker from "../DatePicker";
 
 import { cn } from "@/lib/utils";
-import { Check, Loader, Syringe, Trash } from "lucide-react";
+import { Check, Loader2, Syringe, Trash } from "lucide-react";
 import { useEffect } from "react";
 import {
   createMedicalRecord,
@@ -34,17 +34,21 @@ import {
 import { getAllSows } from "@/services/sow";
 import { useSowStore } from "@/stores/useSowStore";
 import { useToast } from "@/hooks/use-toast";
-import DialogComponent from "../DialogComponent";
+import DialogComponent from "../DrawerDialog";
 import { MedicalRecord } from "@/types/medicalRecord";
 import { Textarea } from "../ui/textarea";
 import { useLoading } from "@/stores/useLoading";
 import { useMedicalRecordStore } from "@/stores/useMedicalRecordStore";
+import { getAllMedicines, useMedicine } from "@/services/medicine";
+import { useMedicineStore } from "@/stores/useMedicineStore";
 
 const newFormSchema = z.object({
   sow_id: z.string(),
-  use_at: z.date({ required_error: "กรุณาเลือกวันที่" }),
+  used_at: z.date({ required_error: "กรุณาเลือกวันที่" }),
   symptoms: z.string(),
-  medicine: z.string(),
+  // medicine: z.string(),
+  medicine_id: z.string().min(1, { message: "กรุณาเลือกยา" }),
+  notes: z.string(),
 });
 
 export function MedicalRecordForm({
@@ -57,6 +61,7 @@ export function MedicalRecordForm({
   setDialog?: any;
 }) {
   const { sows, setSows } = useSowStore();
+  const { medicines, setMedicines } = useMedicineStore();
   const { addMedicalRecord, updateMedicalRecord: updateMedicalRecordStore } =
     useMedicalRecordStore();
   const { toast } = useToast();
@@ -67,13 +72,14 @@ export function MedicalRecordForm({
       ? {
           ...medicalRecord,
           sow_id: medicalRecord?.sow_id.toString(),
-          use_at: new Date(medicalRecord.use_at),
+          used_at: new Date(medicalRecord.used_at),
         }
       : {
           sow_id: id,
-          use_at: new Date(),
+          used_at: new Date(),
           symptoms: "",
-          medicine: "",
+          medicine_id: "",
+          notes: "",
         },
   });
 
@@ -95,7 +101,7 @@ export function MedicalRecordForm({
         ...medicalRecord,
         ...values,
         sow_id: Number(values.sow_id),
-        use_at: values.use_at.toISOString(),
+        used_at: values.used_at.toISOString(),
         updated_at: new Date().toISOString(),
       });
 
@@ -117,7 +123,7 @@ export function MedicalRecordForm({
       let res = await createMedicalRecord({
         ...values,
         sow_id: Number(values.sow_id),
-        use_at: values.use_at.toISOString(),
+        used_at: values.used_at.toISOString(),
         updated_at: new Date().toISOString(),
       });
 
@@ -127,6 +133,7 @@ export function MedicalRecordForm({
           description: "เพิ่มประวัติการผสมเรียบร้อย",
         });
         addMedicalRecord(res);
+        // await useMedicine(res.medicine_id);
         setDialog(false);
       }
     } catch (err) {
@@ -136,11 +143,16 @@ export function MedicalRecordForm({
 
   useEffect(() => {
     const fetchData = async () => {
-      const sows = await getAllSows();
-      if (!sows) return;
-      setSows(sows);
+      if (sows.length === 0) {
+        const sowsData = await getAllSows();
+        if (sowsData) setSows(sowsData);
+      }
+      if (medicines.length === 0) {
+        const medicinesData = await getAllMedicines();
+        if (medicinesData) setMedicines(medicinesData);
+      }
     };
-    if (sows.length === 0) fetchData();
+    fetchData();
   }, []);
 
   return (
@@ -180,12 +192,28 @@ export function MedicalRecordForm({
 
         <FormField
           control={form.control}
+          name="used_at"
+          render={({ field }) => (
+            <FormItem className="flex flex-col w-full">
+              <FormLabel>วันที่ใช้ยา</FormLabel>
+              <DatePicker field={field} />
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
           name="symptoms"
           render={({ field }) => (
             <FormItem>
               <FormLabel>อาการ</FormLabel>
               <FormControl>
-                <Textarea className="bg-white resize-none" {...field} />
+                <Textarea
+                  placeholder="อาการของสุกร"
+                  className="bg-white resize-none"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -194,13 +222,29 @@ export function MedicalRecordForm({
 
         <FormField
           control={form.control}
-          name="medicine"
+          name="medicine_id"
           render={({ field }) => (
             <FormItem>
               <FormLabel>ยาที่ใช้</FormLabel>
-              <FormControl>
-                <Input className="bg-white" {...field} />
-              </FormControl>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger className="bg-white">
+                    <SelectValue placeholder="เลือกยาที่ใช้" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>เลือกยา</SelectLabel>
+                    {medicines
+                      .filter((medicine) => medicine.stock_count > 0)
+                      .map((medicine) => (
+                        <SelectItem key={medicine.id} value={medicine.id}>
+                          {medicine.title}
+                        </SelectItem>
+                      ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}
@@ -208,11 +252,17 @@ export function MedicalRecordForm({
 
         <FormField
           control={form.control}
-          name="use_at"
+          name="notes"
           render={({ field }) => (
-            <FormItem className="w-full flex flex-col">
-              <FormLabel>วันที่ใช้ยา</FormLabel>
-              <DatePicker field={field} />
+            <FormItem>
+              <FormLabel>หมายเหตุ</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="หมายเหตุ"
+                  className="bg-white resize-none"
+                  {...field}
+                />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
@@ -227,10 +277,15 @@ export function MedicalRecordForm({
           {medicalRecord && (
             <DeleteDialog setDialog={setDialog} id={medicalRecord.id!} />
           )}
-          <Button disabled={form.formState.isSubmitting} type="submit">
+          <Button
+            disabled={form.formState.isSubmitting}
+            size="lg"
+            className="w-full"
+            type="submit"
+          >
             {form.formState.isSubmitting ? (
               <>
-                <Loader className="animate-spin" />
+                <Loader2 className="animate-spin" />
                 กำลังบันทึก
               </>
             ) : medicalRecord ? (
@@ -251,7 +306,7 @@ export function MedicalRecordForm({
   );
 }
 
-export default function DeleteDialog({
+export function DeleteDialog({
   id,
   setDialog,
 }: {
@@ -281,6 +336,7 @@ export default function DeleteDialog({
       title="บันทึกการคลอด"
       dialogTriggerButton={
         <Button
+          size="lg"
           variant={"ghost"}
           className="text-red-500 hover:text-red-500 hover:bg-red-50"
         >
@@ -290,7 +346,7 @@ export default function DeleteDialog({
     >
       <p>ต้องการลบข้อมูลการผสมนี้หรือไม่</p>
       <div className="flex justify-end gap-2">
-        <Button variant={"destructive"} onClick={handleDelete}>
+        <Button variant={"destructive"} size="lg" onClick={handleDelete}>
           ลบ
         </Button>
       </div>

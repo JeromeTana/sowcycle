@@ -1,6 +1,6 @@
 import { Boar } from "@/types/boar";
 import { Pen } from "lucide-react";
-import DialogComponent from "../DialogComponent";
+import DialogComponent from "../DrawerDialog";
 import { Button } from "../ui/button";
 import BoarForm from "./Form";
 
@@ -16,7 +16,11 @@ export default function BoarDetailsCard({ boar }: BoarDetailsCardProps) {
         <DialogComponent
           title="แก้ไขสายพันธุ์"
           dialogTriggerButton={
-            <Button variant={"ghost"}>
+            <Button
+              variant="secondary"
+              size="lg"
+              className="w-full text-base font-medium"
+            >
               <Pen /> แก้ไขสายพันธุ์
             </Button>
           }

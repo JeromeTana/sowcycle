@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export const UpcomingEvents = () => {
-  const { data, loading, error } = useCalendarData();
+  const { data, loading, error, refetch } = useCalendarData();
   const { farrowEvents, saleableEvents } = data;
 
   const upcomingEvents = useMemo(() => {
@@ -18,12 +18,15 @@ export const UpcomingEvents = () => {
 
     const interval = { start: today, end: nextWeek };
 
-    const farrow = farrowEvents.filter((event) =>
-      isWithinInterval(event.expectedDate, interval),
+    const farrow = farrowEvents.filter(
+      (event) =>
+        isWithinInterval(event.expectedDate, interval) &&
+        !event.actualFarrowDate,
     );
 
-    const saleable = saleableEvents.filter((event) =>
-      isWithinInterval(event.saleableDate, interval),
+    const saleable = saleableEvents.filter(
+      (event) =>
+        isWithinInterval(event.saleableDate, interval) && !event.soldDate,
     );
 
     return { farrow, saleable };
@@ -55,8 +58,8 @@ export const UpcomingEvents = () => {
   if (!hasEvents) {
     return (
       <div className="space-y-4">
-        <h2 className="text-xl font-bold">ใน 7 วัน</h2>
-        <Card className="bg-white">
+        <h2 className="text-xl font-bold">ครบกำหนดใน 7 วัน</h2>
+        <Card className="bg-transparent">
           <CardContent className="flex items-center justify-center h-32 text-muted-foreground">
             ไม่มีรายการใน 7 วันข้างหน้า
           </CardContent>
@@ -65,18 +68,43 @@ export const UpcomingEvents = () => {
     );
   }
 
+  // Combine and sort events
+  const combinedEvents = [
+    ...upcomingEvents.farrow.map((e) => ({ ...e, type: "farrow" as const })),
+    ...upcomingEvents.saleable.map((e) => ({
+      ...e,
+      type: "saleable" as const,
+    })),
+  ].sort((a, b) => {
+    const dateA = a.type === "farrow" ? a.expectedDate : a.saleableDate;
+    const dateB = b.type === "farrow" ? b.expectedDate : b.saleableDate;
+    return dateA.getTime() - dateB.getTime();
+  });
+
   return (
-    <div className="">
-      {upcomingEvents.saleable.length > 0 && (
-        <div>
-          <h2 className="pb-4 font-semibold text-xl">ลูกขุนใกล้พร้อมขาย</h2>
-          <SaleableEventList
-            events={upcomingEvents.saleable.sort(
-              (a, b) => a.saleableDate.getTime() - b.saleableDate.getTime(),
-            )}
-          />
-        </div>
-      )}
+    <div className="space-y-4">
+      <h2 className="text-xl font-semibold">ครบกำหนดใน 7 วัน</h2>
+      <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+        {combinedEvents.map((event) => {
+          if (event.type === "farrow") {
+            return (
+              <FarrowEventList
+                key={`farrow-${event.id}`}
+                events={[event as any]}
+                onSuccess={refetch}
+              />
+            );
+          } else {
+            return (
+              <SaleableEventList
+                key={`saleable-${event.id}`}
+                events={[event as any]}
+                onSuccess={refetch}
+              />
+            );
+          }
+        })}
+      </div>
     </div>
   );
 };

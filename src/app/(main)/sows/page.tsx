@@ -2,9 +2,7 @@
 
 import { useSowOperations } from "@/hooks/useSowOperations";
 import { useSowFilters } from "@/hooks/useSowFilters";
-import { useSowStats } from "@/hooks/useSowStats";
 import { SowPageHeader } from "@/components/Sow/SowPageHeader";
-import { SowStats } from "@/components/Sow/SowStats";
 import { SowFilters } from "@/components/Sow/SowFilters";
 import SowList from "@/components/Sow/List";
 import { LoadingListSkeleton } from "@/components/Sow/LoadingSkeleton";
@@ -18,15 +16,13 @@ export default function SowPage() {
   const { search, setSearch, filter, setFilter, filteredSows } =
     useSowFilters(sows);
 
-  const stats = useSowStats(sows);
-
   if (isLoading) {
     return <LoadingListSkeleton />;
   }
 
   if (error) {
     return (
-      <div className="text-center text-red-500 p-8">
+      <div className="p-8 text-center text-red-500">
         เกิดข้อผิดพลาด: {error}
       </div>
     );
@@ -36,8 +32,8 @@ export default function SowPage() {
     <>
       <TopBar title="แม่พันธุ์" />
       <SowPageHeader />
-      <div className="space-y-6 mb-20">
-        <SowStats stats={stats} />
+      <main className="space-y-4 p-4 pt-0 md:pb-8 md:p-8">
+        {/* <SowStats stats={stats} /> */}
         <SowFilters
           search={search}
           setSearch={setSearch}
@@ -45,7 +41,7 @@ export default function SowPage() {
           setFilter={setFilter}
         />
         <SowList sows={filteredSows} />
-      </div>
+      </main>
     </>
   );
 }

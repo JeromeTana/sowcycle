@@ -13,7 +13,7 @@ export const getAllLitters = async () => {
       `
       *,
       boars(*),
-      sows!inner(*)
+      sows!inner(*, boars(*))
     `
     )
     .eq("sows.user_id", user.id)
@@ -46,7 +46,7 @@ export const createLitter = async (litter: Litter) => {
   const { data, error } = await supabase
     .from("litters")
     .insert([litter])
-    .select(`*, boars(*)`)
+    .select(`*, boars(*), sows(*)`)
     .single();
 
   if (error) throw new Error(`Failed to create litter: ${error.message}`);
@@ -59,7 +59,7 @@ export const updateLitter = async (litter: Litter) => {
     .from("litters")
     .update(litter)
     .eq("id", litter.id)
-    .select(`*, boars(*)`)
+    .select(`*, boars(*), sows(*)`)
     .single();
 
   if (error) throw new Error(`Failed to update litter: ${error.message}`);

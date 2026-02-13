@@ -20,7 +20,7 @@ import { authOnChange, login, signUp } from "@/services/auth";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
-import { Loader, Eye, EyeOff, Sprout, PiggyBank } from "lucide-react";
+import { Eye, EyeOff, Sprout, PiggyBank, Loader2 } from "lucide-react";
 import Image from "next/image";
 
 const loginSchema = z.object({
@@ -107,7 +107,7 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setIsSignUp(!isSignUp)}
-                  className="text-pink-500 hover:text-pink-600 font-medium underline"
+                  className="text-primary hover:text-pink-600 font-medium underline"
                 >
                   {isSignUp ? "Login" : "Create an account"}
                 </button>
@@ -117,7 +117,7 @@ export default function LoginPage() {
               type="button"
               variant="ghost"
               onClick={() => setIsSignUp(!isSignUp)}
-              className="w-full rounded-full h-11 mt-2 text-pink-500 hover:text-pink-600 font-medium"
+              className="w-full rounded-full h-11 mt-2 text-primary hover:text-pink-600 font-medium"
             >
               {isSignUp ? "Login" : "Create an account"}
             </Button>
@@ -175,7 +175,7 @@ const LoginForm = () => {
                 <Input
                   type="email"
                   placeholder="yourname@example.com"
-                  className="h-11 rounded-xl border-gray-200 focus:border-pink-500 focus:ring-pink-500"
+                  className="h-11 border-gray-200 focus:border-primary focus:ring-primary"
                   {...field}
                 />
               </FormControl>
@@ -197,7 +197,7 @@ const LoginForm = () => {
                   <Input
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
-                    className="h-11 rounded-xl border-gray-200 focus:border-pink-500 focus:ring-pink-500 pr-10"
+                    className="h-11 border-gray-200 focus:border-primary focus:ring-primary pr-10"
                     {...field}
                   />
                   <button
@@ -223,7 +223,7 @@ const LoginForm = () => {
             <input type="checkbox" className="rounded border-gray-300" />
             <span>Remember me</span>
           </label>
-          <a href="#" className="text-pink-500 hover:text-pink-600 font-medium">
+          <a href="#" className="text-primary hover:text-pink-600 font-medium">
             Forgot password?
           </a>
         </div> */}
@@ -231,11 +231,11 @@ const LoginForm = () => {
         <Button
           disabled={form.formState.isSubmitting}
           type="submit"
-          className="w-full rounded-full h-11 bg-pink-500 hover:bg-pink-600 text-white font-medium"
+          className="w-full rounded-full h-11 bg-primary hover:bg-pink-600 text-white font-medium"
         >
           {form.formState.isSubmitting ? (
             <>
-              <Loader className="animate-spin w-4 h-4 mr-2" />
+              <Loader2 className="animate-spin w-4 h-4 mr-2" />
               Logging in
             </>
           ) : (
@@ -313,7 +313,7 @@ const SignupForm = () => {
                 <Input
                   type="email"
                   placeholder="yourname@example.com"
-                  className="h-11 rounded-xl border-gray-200 focus:border-pink-500 focus:ring-pink-500"
+                  className="h-11 border-gray-200 focus:border-primary focus:ring-primary"
                   {...field}
                 />
               </FormControl>
@@ -335,7 +335,7 @@ const SignupForm = () => {
                   <Input
                     type={showPassword ? "text" : "password"}
                     placeholder="Create a strong password"
-                    className="h-11 rounded-xl border-gray-200 focus:border-pink-500 focus:ring-pink-500 pr-10"
+                    className="h-11 border-gray-200 focus:border-primary focus:ring-primary pr-10"
                     {...field}
                   />
                   <button
@@ -369,7 +369,7 @@ const SignupForm = () => {
                   <Input
                     type={showRepeatPassword ? "text" : "password"}
                     placeholder="Repeat your password"
-                    className="h-11 rounded-xl border-gray-200 focus:border-pink-500 focus:ring-pink-500 pr-10"
+                    className="h-11 border-gray-200 focus:border-primary focus:ring-primary pr-10"
                     {...field}
                   />
                   <button
@@ -401,11 +401,11 @@ const SignupForm = () => {
         <Button
           disabled={disabled}
           type="submit"
-          className="w-full rounded-full h-11 bg-pink-500 hover:bg-pink-600 text-white font-medium"
+          className="w-full rounded-full h-11 bg-primary hover:bg-pink-600 text-white font-medium"
         >
           {form.formState.isSubmitting ? (
             <>
-              <Loader className="animate-spin w-4 h-4 mr-2" />
+              <Loader2 className="animate-spin w-4 h-4 mr-2" />
               Creating account...
             </>
           ) : (

@@ -20,8 +20,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/hooks/use-toast";
-import DialogComponent from "../DialogComponent";
-import { Check, Loader, Trash } from "lucide-react";
+import DialogComponent from "../DrawerDialog";
+import { Check, Loader2, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Switch } from "../ui/switch";
 import { useLoading } from "@/stores/useLoading";
@@ -56,7 +56,7 @@ export default function SowForm({ editingSow, setDialog }: any) {
         ? new Date(editingSow.add_date)
         : undefined,
       breed_ids: editingSow?.breed_ids || [],
-      breasts_count: editingSow?.breasts_count || 0,
+      breasts_count: editingSow?.breasts_count || undefined,
     },
   });
 
@@ -87,6 +87,7 @@ export default function SowForm({ editingSow, setDialog }: any) {
       breedings: undefined,
       medical_records: undefined,
       litters: undefined,
+      boars: undefined,
     };
     let res = await updateSow(data);
     if (res) {
@@ -129,7 +130,7 @@ export default function SowForm({ editingSow, setDialog }: any) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 ">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
           name="name"
@@ -138,6 +139,24 @@ export default function SowForm({ editingSow, setDialog }: any) {
               <FormLabel>ชื่อ</FormLabel>
               <FormControl>
                 <Input placeholder="เช่น ทองดี" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="breed_ids"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>สายพันธุ์</FormLabel>
+              <FormControl>
+                <MultiBreedDropdown
+                  value={field.value || []}
+                  onValueChange={field.onChange}
+                  disabled={form.formState.isSubmitting}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -188,27 +207,9 @@ export default function SowForm({ editingSow, setDialog }: any) {
 
         <FormField
           control={form.control}
-          name="breed_ids"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>สายพันธุ์</FormLabel>
-              <FormControl>
-                <MultiBreedDropdown
-                  value={field.value || []}
-                  onValueChange={field.onChange}
-                  disabled={form.formState.isSubmitting}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
           name="is_active"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+            <FormItem className="flex flex-row items-center justify-between p-4 border rounded-xl">
               <div className="space-y-0.5">
                 <FormLabel className="text-base">ยังอยู่</FormLabel>
               </div>
@@ -221,7 +222,7 @@ export default function SowForm({ editingSow, setDialog }: any) {
             </FormItem>
           )}
         />
-        <div className="w-full flex justify-between gap-2">
+        <div className="flex justify-between w-full gap-2">
           {sow.id && (
             <DialogComponent
               title="ลบแม่พันธุ์"
@@ -229,6 +230,7 @@ export default function SowForm({ editingSow, setDialog }: any) {
                 <Button
                   disabled={form.formState.isSubmitting}
                   variant="ghost"
+                  size="lg"
                   className="text-red-500 hover:text-red-500"
                 >
                   <Trash /> ลบ
@@ -240,16 +242,25 @@ export default function SowForm({ editingSow, setDialog }: any) {
                 <span className="font-bold">{sow.name}</span>
               </p>
               <div className="flex justify-end gap-2">
-                <Button variant="destructive" onClick={() => onDelete(sow.id)}>
+                <Button
+                  variant="destructive"
+                  size="lg"
+                  onClick={() => onDelete(sow.id)}
+                >
                   <Trash /> ลบ
                 </Button>
               </div>
             </DialogComponent>
           )}
-          <Button disabled={form.formState.isSubmitting} type="submit">
+          <Button
+            disabled={form.formState.isSubmitting}
+            type="submit"
+            size="lg"
+            className="w-full"
+          >
             {form.formState.isSubmitting ? (
               <>
-                <Loader className="animate-spin" />
+                <Loader2 className="animate-spin" />
                 กำลังบันทึก
               </>
             ) : (

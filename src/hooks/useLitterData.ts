@@ -1,35 +1,44 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useLitterStore } from "@/stores/useLitterStore";
-import { useBoarStore } from "@/stores/useBoarStore";
+// import { useBoarStore } from "@/stores/useBoarStore";
 import { getAllLitters } from "@/services/litter";
-import { getAllBoars } from "@/services/boar";
-import { Sow } from "@/types/sow";
+// import { getAllBoars } from "@/services/boar";
+// import { Sow } from "@/types/sow";
+// import { Litter } from "@/types/litter";
+// import { Boar } from "@/types/boar";
 
 export function useLitterData() {
   const { litters, setLitters } = useLitterStore();
-  const { boars: breeds, setBoars: setBreeds } = useBoarStore();
+  // const { boars: breeds, setBoars: setBreeds } = useBoarStore();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const littersWithBreeds = useMemo(() => {
-    return addBreedNamesToLitters(litters, breeds);
-  }, [litters, breeds]);
+  // const littersWithBreeds = useMemo(() => {
+  //   return addBreedNamesToLitters(litters, breeds);
+  // }, [litters, breeds]);
 
   useEffect(() => {
     fetchLitterData();
-  }, [setLitters, setBreeds]);
+  }, [setLitters]);
 
   async function fetchLitterData() {
     try {
       setIsLoading(true);
       setError(null);
 
-      const littersData = await getAllLitters();
+      const littersPromise = getAllLitters();
+      // const breedsPromise = !breeds.length
+      //   ? getAllBoars()
+      //   : Promise.resolve(null);
 
-      if (!breeds.length) {
-        const breedsData = await getAllBoars();
-        setBreeds(breedsData);
-      }
+      const [littersData] = await Promise.all([
+        littersPromise,
+        // breedsPromise,
+      ]);
+
+      // if (breedsData) {
+      //   setBreeds(breedsData);
+      // }
 
       setLitters(littersData);
     } catch (error) {
@@ -41,32 +50,32 @@ export function useLitterData() {
   }
 
   return {
-    littersWithBreeds,
+    litters,
     isLoading,
     error,
   };
 }
 
-function addBreedNamesToLitters(litters: any[], breeds: any[]) {
-  return litters.map((litter) => {
-    const sowBreedNames = getSowBreedNames(litter.sows, breeds);
-    return {
-      ...litter,
-      sows: {
-        ...litter.sows,
-        breeds: sowBreedNames,
-      },
-    };
-  });
-}
+// function addBreedNamesToLitters(litters: Litter[], breeds: Boar[]) {
+//   return litters.map((litter) => {
+//     const sowBreedNames = getSowBreedNames(litter.sows, breeds);
+//     return {
+//       ...litter,
+//       sows: {
+//         ...litter.sows,
+//         breeds: sowBreedNames,
+//       },
+//     };
+//   });
+// }
 
-function getSowBreedNames(sow: Sow | undefined, breeds: any[]): string[] {
-  if (!sow?.breed_ids) return [];
+// function getSowBreedNames(sow: Sow | undefined, breeds: Boar[]): string[] {
+//   if (!sow?.breed_ids) return [];
 
-  return sow.breed_ids
-    .map((breedId) => {
-      const breed = breeds.find((b) => b.id === breedId);
-      return breed ? breed.breed : "";
-    })
-    .filter(Boolean);
-}
+//   return sow.breed_ids
+//     .map((breedId) => {
+//       const breed = breeds.find((b) => b.id === breedId);
+//       return breed ? breed.breed : "";
+//     })
+//     .filter(Boolean);
+// }

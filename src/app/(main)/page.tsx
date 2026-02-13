@@ -8,6 +8,7 @@ import { UpcomingEvents } from "@/components/Dashboard/UpcomingEvents";
 import TopBar from "@/components/TopBar";
 import { StatsGrid } from "@/components/Dashboard/StatsGrid";
 import { FadeIn } from "@/components/animations/FadeIn";
+import { toast } from "@/hooks/use-toast";
 
 export default function Page() {
   const {
@@ -18,6 +19,8 @@ export default function Page() {
     avgPigletsBorn,
     weightTrend,
     pigletsTrend,
+    breedingTrend,
+    pigletsCountTrend,
     isLoading,
     error,
   } = useDashboardData();
@@ -40,7 +43,7 @@ export default function Page() {
   return (
     <>
       <TopBar title="หน้าหลัก" />
-      <div className="space-y-8">
+      <main className="space-y-8 p-4 pt-0 md:pb-8 md:p-8">
         <StatsGrid
           pregnantSowsCount={pregnantSowsCount}
           pigletsCount={pigletsCount}
@@ -48,14 +51,16 @@ export default function Page() {
           avgPigletsBorn={avgPigletsBorn}
           weightTrend={weightTrend}
           pigletsTrend={pigletsTrend}
+          breedingTrend={breedingTrend}
+          pigletsCountTrend={pigletsCountTrend}
         />
         <FadeIn delay={0.5}>
           <UpcomingEvents />
         </FadeIn>
-        <FadeIn delay={0.6}>
+        {/* <FadeIn delay={0.6}>
           <PregnantSowsSection sows={breededSows} />
-        </FadeIn>
-      </div>
+        </FadeIn> */}
+      </main>
     </>
   );
 }

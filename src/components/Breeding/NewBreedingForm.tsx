@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Check, Heart, Loader } from "lucide-react";
+import { Check, Heart, Loader2 } from "lucide-react";
 import { PREGNANCY_DURATION } from "@/lib/constant";
 import { Breeding } from "@/types/breeding";
 import { useBreedingOperations } from "@/hooks/useBreedingOperations";
@@ -77,7 +77,7 @@ export function NewBreedingForm({ id, breeding, setDialog }: NewBreedingFormProp
         <SowSelectField form={form} disabled={!!breeding?.id} />
         <BoarSelectField form={form} disabled={form.formState.isSubmitting} />
 
-        <div className="w-full flex gap-2">
+        <div className="flex w-full gap-2">
           <BreedDateField form={form} />
           <ExpectedFarrowDateField expectedDate={expectedFarrowDate} />
         </div>
@@ -93,10 +93,10 @@ export function NewBreedingForm({ id, breeding, setDialog }: NewBreedingFormProp
               setDialog={setDialog}
             />
           )}
-          <Button disabled={form.formState.isSubmitting} type="submit">
+          <Button disabled={form.formState.isSubmitting} size="lg" className="w-full" type="submit">
             {form.formState.isSubmitting ? (
               <>
-                <Loader className="animate-spin" />
+                <Loader2 className="animate-spin" />
                 กำลังบันทึก
               </>
             ) : breeding ? (

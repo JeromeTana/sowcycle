@@ -26,8 +26,8 @@ export default function LogoutButton({ children }: LogoutButtonProps) {
   };
 
   return (
-    <button className="w-full" onClick={handleLogout}>
+    <div className="w-full" onClick={handleLogout}>
       {children}
-    </button>
+    </div>
   );
 }

@@ -1,27 +1,26 @@
+"use client";
+
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Litter } from "@/types/litter";
-import DialogComponent from "../DialogComponent";
+import DrawerDialog from "../DrawerDialog";
 import { Button } from "../ui/button";
 import {
   PiggyBank,
-  Dna,
-  Fence,
-  Pen,
-  Cake,
+  ChevronRight,
+  Calendar,
   Beef,
   Banknote,
   Gauge,
-  Milk,
   Plus,
+  Check,
+  Cake,
 } from "lucide-react";
 import { LitterForm } from "./Form";
-import { cn, formatDate } from "@/lib/utils";
-import InfoIcon from "../InfoIcon";
-import Link from "next/link";
-import { Badge } from "../ui/badge";
+import LitterDrawer from "./Drawer";
+import { cn, formatDateTH } from "@/lib/utils";
+import { AddToCalendarButton } from "../AddToCalendarButton";
 import { Sow } from "@/types/sow";
 import { useMemo } from "react";
-import BoarDetailsCard from "../Boar/DetailsCard";
 
 interface ExtendedLitter extends Litter {
   sows: Sow | undefined;
@@ -32,275 +31,216 @@ interface LitterCardProps {
   index: number;
 }
 
-// Helper component for piglet count badges
-const PigletCountBadges = ({
-  male,
-  female,
-}: {
-  male: number;
-  female: number;
-}) => (
-  <span className="ml-2 space-x-1">
-    <span className="bg-blue-500 font-bold text-white rounded-full px-3 py-1 text-xs">
-      ผู้ {male}
-    </span>
-    <span className="bg-pink-500 font-bold text-white rounded-full px-3 py-1 text-xs">
-      เมีย {female}
-    </span>
-  </span>
-);
-
-// Helper component for breed display
-const BreedBadges = ({
-  breasts_count,
-  breeds,
-}: {
-  breasts_count: number;
-  breeds: string[];
-}) => (
-  <span className="flex gap-1 flex-wrap">
-    {breasts_count > 0 ? (
-      <span className="flex items-center gap-1 px-2 py-0.5 border bg-white rounded-full text-xs text-muted-foreground">
-        <Milk size={12} />
-        <span>{breasts_count} เต้า</span>
-      </span>
-    ) : null}
-    {breeds.map((breed: string, i: number) => (
-      <span
-        key={i}
-        className="flex items-center gap-1 px-2 py-0.5 border bg-white rounded-full text-xs text-muted-foreground"
-      >
-        <Dna size={12} />
-        <span>{breed}</span>
-      </span>
-    ))}
-  </span>
-);
-
-// Helper component for status indicator
-const StatusIndicator = ({ litter }: { litter: ExtendedLitter }) => {
-  if (litter.sold_at) {
-    return <span className="text-green-700">ขายแล้ว · </span>;
-  }
-  if (litter.fattening_at && !litter.sold_at) {
-    return <span className="text-orange-500">กำลังขุน · </span>;
-  }
-  return null;
-};
-
-// Helper component for timeline connector
-const TimelineConnector = ({ type }: { type: "solid" | "dashed" }) => (
-  <div
-    className={cn(
-      "w-[0px] border-l-2 border-gray-300 -z-0 h-7 absolute top-10 left-5 -translate-x-1/2",
-      type === "dashed" && "border-dashed",
-    )}
-  />
-);
-
-// Helper component for sow information
-const SowInfo = ({ sow }: { sow: Sow | undefined }) => (
-  <Link href={`/sows/${sow?.id}`} className="rounded-lg p-3 bg-gray-100">
-    <InfoIcon
-      icon={<PiggyBank size={22} />}
-      label="แม่พันธุ์"
-      className="!bg-white"
-    >
-      {sow?.name ? (
-        <span className="flex flex-col gap-2">
-          {sow.name}
-          {sow.breeds && (
-            <BreedBadges
-              breasts_count={sow.breasts_count}
-              breeds={sow.breeds}
-            />
-          )}
-        </span>
-      ) : (
-        "ไม่ระบุ"
-      )}
-    </InfoIcon>
-  </Link>
-);
-
-// Helper component for boar information
-const BoarInfo = ({ boars }: { boars: any }) => (
-  <DialogComponent
-    title={boars.breed}
-    dialogTriggerButton={
-      <div className="flex flex-col gap-4 bg-gray-100 p-3 rounded-lg cursor-pointer">
-        <InfoIcon
-          icon={<Dna size={22} />}
-          label="พ่อพันธุ์"
-          className="!bg-white"
-        >
-          {boars.breed}
-        </InfoIcon>
-      </div>
-    }
-  >
-    <BoarDetailsCard boar={boars} />
-  </DialogComponent>
-);
-
-// Main timeline component
-const LitterTimeline = ({
-  litter,
-  index,
-}: {
-  litter: ExtendedLitter;
-  index: number;
-}) => {
-  const showFatteningConnector = litter.fattening_at;
-  const showSaleConnector = litter.fattening_at && !litter.sold_at;
-  const showSoldConnector = litter.sold_at;
-
-  return (
-    <div className="flex flex-col gap-6">
-      {/* Birth Date */}
-      <div className="relative">
-        <InfoIcon
-          icon={<Cake size={22} />}
-          label="คลอดเมื่อ"
-          className="bg-white"
-        >
-          {formatDate(litter.birth_date!)}
-        </InfoIcon>
-        {showFatteningConnector && <TimelineConnector type="solid" />}
-      </div>
-
-      {/* Fattening Date */}
-      {litter.fattening_at ? (
-        <div className="relative">
-          <InfoIcon
-            icon={<Beef size={22} />}
-            label="เข้าคอกขุนเมื่อ"
-            className="bg-white"
-          >
-            {formatDate(litter.fattening_at)}
-          </InfoIcon>
-          {showSaleConnector && <TimelineConnector type="dashed" />}
-          {showSoldConnector && <TimelineConnector type="solid" />}
-        </div>
-      ) : (
-        <DialogComponent
-          title={`แก้ไขข้อมูลครอกที่ ${index}`}
-          dialogTriggerButton={
-            <div className="inline-flex items-center gap-2 text-pink-500 cursor-pointer hover:opacity-80 transition-opacity">
-              <div className={cn("border p-2 rounded-lg bg-white")}>
-                <Plus />
-              </div>
-              <p className="inline-flex font-medium">เพิ่มวันเข้าคอกขุน</p>
-            </div>
-          }
-        >
-          <LitterForm litter={litter} />
-        </DialogComponent>
-      )}
-
-      {/* Sale Information */}
-      {litter.fattening_at && !litter.sold_at && (
-        <InfoIcon
-          icon={<Banknote size={22} className="bg-white" />}
-          label="พร้อมขายช่วง"
-          className="bg-white"
-        >
-          {formatDate(litter.saleable_at!)}
-        </InfoIcon>
-      )}
-
-      {litter.sold_at && (
-        <InfoIcon
-          icon={<Banknote size={22} className="bg-white" />}
-          label="ขายแล้วเมื่อ"
-          className="bg-white"
-        >
-          {formatDate(litter.sold_at)}
-        </InfoIcon>
-      )}
-    </div>
-  );
-};
-
 export default function LitterCard({ litter, index }: LitterCardProps) {
-  // Calculate age once and memoize
   const ageInDays = useMemo(() => {
     const endDate = litter.sold_at ? new Date(litter.sold_at) : new Date();
     const birthDate = new Date(litter.birth_date!);
     return Math.floor(
-      (endDate.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24),
+      (endDate.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24)
     );
   }, [litter.birth_date, litter.sold_at]);
 
   if (!litter) return null;
 
+  const isSold = !!litter.sold_at;
+  const isFattening = !!litter.fattening_at && !isSold;
+  const isBorn = !litter.fattening_at; // Just born, not fattening yet
+
   return (
-    <Card key={litter.id} className={cn(litter.sold_at && "opacity-70")}>
-      <CardContent className="p-6">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
-          <div className="space-y-6">
+    <DrawerDialog
+      title={`ลูกขุนแม่${litter.sows?.name || "ไม่ระบุ"}`}
+      dialogTriggerButton={
+        <Card className="w-full overflow-hidden text-left transition-all bg-white border-none shadow-none cursor-pointer rounded-2xl md:hover:bg-gray-50">
+          <CardContent className="p-4">
             {/* Header */}
-            <div className="flex gap-2">
-              <Fence />
+            <div className="flex justify-between mb-4">
               <div className="flex flex-col">
-                <h3 className="text-lg font-semibold">ครอกที่ {index}</h3>
-                <p className="text-sm">
-                  <StatusIndicator litter={litter} />
+                <h3 className="text-lg font-semibold text-gray-900">
+                  ลูกขุนแม่{litter.sows?.name || "ไม่ระบุ"}
+                </h3>
+                <div className="flex items-center gap-2 text-sm">
+                  {isSold && <span className="text-green-600">ขายแล้ว</span>}
+                  {isFattening && (
+                    <span className="text-orange-500">กำลังขุน</span>
+                  )}
                   <span className="text-muted-foreground">
                     อายุ {ageInDays} วัน
                   </span>
-                </p>
+                </div>
+              </div>
+              <ChevronRight size={20} className="text-muted-foreground" />
+            </div>
+
+            <div className="space-y-4">
+              {/* Count Stats */}
+              <div className="flex items-start gap-4">
+                <div className="flex items-center justify-center w-12 h-12 p-2 bg-muted rounded-2xl text-muted-foreground">
+                  <PiggyBank size={24} />
+                </div>
+                <div className="flex flex-col justify-center">
+                  <p className="text-muted-foreground text-sm mb-0.5">จำนวน</p>
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold text-gray-900">
+                      {litter.piglets_born_count} ตัว
+                    </span>
+                    <div className="flex gap-1">
+                      <span className="px-2 py-1 text-xs font-semibold text-white bg-blue-500 rounded-full">
+                        ผู้ {litter.piglets_male_born_alive}
+                      </span>
+                      <span className="px-2 py-1 text-xs font-semibold text-white bg-primary rounded-full">
+                        เมีย {litter.piglets_female_born_alive}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Weight Stats (Only if Sold) */}
+              {isSold && litter.avg_weight && (
+                <div className="flex items-start gap-4">
+                  <div className="flex items-center justify-center w-12 h-12 p-2 bg-muted rounded-2xl text-muted-foreground">
+                    <Gauge size={24} />
+                  </div>
+                  <div className="flex flex-col justify-center">
+                    <p className="text-muted-foreground text-sm mb-0.5">
+                      น้ำหนักขายเฉลี่ย
+                    </p>
+                    <span className="font-semibold text-gray-900">
+                      {litter.avg_weight} kg
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {/* Timeline Section */}
+              <div className="relative flex flex-col gap-4 p-4 bg-accent rounded-xl">
+                {/* Vertical Line */}
+                {(isFattening || isSold) && (
+                  <div className="absolute left-10 top-6 bottom-6 w-[2px] bg-neutral-200 -z-0" />
+                )}
+
+                {/* Timeline: Born */}
+                <div className="relative flex items-start gap-4">
+                  <div className="flex items-center justify-center w-12 h-12 p-2 bg-white rounded-2xl text-muted-foreground">
+                    <Cake size={24} />
+                  </div>
+                  <div className="flex flex-col justify-center">
+                    <p className="text-muted-foreground text-sm mb-0.5">
+                      คลอดเมื่อ
+                    </p>
+                    <span className="font-semibold text-gray-900">
+                      {formatDateTH(litter.birth_date!, true, true, false)}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Timeline: Fattening */}
+                {(isFattening || isSold) && (
+                  <div className="relative flex items-start gap-4">
+                    <div className="flex items-center justify-center w-12 h-12 p-2 bg-white rounded-2xl text-muted-foreground">
+                      <Beef size={24} />
+                    </div>
+                    <div className="flex flex-col justify-center">
+                      <p className="text-muted-foreground text-sm mb-0.5">
+                        เริ่มขุนเมื่อ
+                      </p>
+                      <span className="font-semibold text-gray-900">
+                        {litter.fattening_at
+                          ? formatDateTH(litter.fattening_at, true, true, false)
+                          : "ไม่ระบุ"}
+                      </span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Timeline: Sale/Expected Sale */}
+                {(isFattening || isSold) && (
+                  <div className="relative flex items-start gap-4">
+                    <div
+                      className={cn(
+                        "flex items-center justify-center w-12 h-12 p-2  rounded-2xl ",
+                        isSold
+                          ? "bg-white text-muted-foreground"
+                          : "bg-muted text-neutral-300"
+                      )}
+                    >
+                      <Banknote size={24} />
+                    </div>
+                    <div className="flex flex-col justify-center">
+                      <p className="text-muted-foreground text-sm mb-0.5">
+                        {isSold ? "ขายแล้วเมื่อ" : "กำหนดขาย"}
+                      </p>
+                      <span className="font-semibold text-gray-900">
+                        {isSold
+                          ? formatDateTH(litter.sold_at!, true, true, false)
+                          : formatDateTH(
+                              litter.saleable_at!,
+                              true,
+                              true,
+                              false
+                            )}
+                      </span>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
+          </CardContent>
 
-            {/* Statistics */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              <InfoIcon icon={<PiggyBank size={22} />} label="จำนวน">
-                {litter.piglets_born_count} ตัว
-                <PigletCountBadges
-                  male={litter.piglets_male_born_alive || 0}
-                  female={litter.piglets_female_born_alive || 0}
-                />
-              </InfoIcon>
-
-              {litter.avg_weight ? (
-                <InfoIcon icon={<Gauge size={22} />} label="น้ำหนักขายเฉลี่ย">
-                  {litter.avg_weight?.toFixed(2)} กิโลกรัม
-                </InfoIcon>
-              ) : null}
-            </div>
-
-            {/* Parent Information */}
-            <div className="flex flex-col gap-4 text-muted-foreground">
-              <SowInfo sow={litter.sows} />
-
-              {litter.boars && <BoarInfo boars={litter.boars} />}
-
-              {litter.boars?.name && (
-                <Badge variant="outline">พ่อหมู: {litter.boars.breed}</Badge>
+          {/* Footer Actions */}
+          {isSold ? null : (
+            <CardFooter className="flex flex-col gap-2 pt-0">
+              {/* Add Fattening Button */}
+              {isBorn && (
+                <div onClick={(e) => e.stopPropagation()} className="w-full">
+                  <DrawerDialog
+                    title="เพิ่มวันเริ่มขุน"
+                    dialogTriggerButton={
+                      <Button
+                        variant="secondary"
+                        className="w-full h-12 text-base font-medium"
+                      >
+                        <Plus className="w-5 h-5 mr-2" /> เพิ่มวันเริ่มขุน
+                      </Button>
+                    }
+                  >
+                    <LitterForm litter={litter} mode="fattening" />
+                  </DrawerDialog>
+                </div>
               )}
-            </div>
 
-            {/* Timeline */}
-            <LitterTimeline litter={litter} index={index} />
-          </div>
-        </div>
-      </CardContent>
+              {/* Record Sale Button */}
+              {isFattening && (
+                <div onClick={(e) => e.stopPropagation()} className="w-full">
+                  <DrawerDialog
+                    title="บันทึกวันขาย"
+                    dialogTriggerButton={
+                      <Button className="w-full h-12 text-base font-medium text-white bg-lime-500 rounded-full shadow-none hover:bg-[#65a30d]">
+                        <Check className="w-5 h-5 mr-2" /> บันทึกวันขาย
+                      </Button>
+                    }
+                  >
+                    <LitterForm litter={litter} mode="sale" />
+                  </DrawerDialog>
+                </div>
+              )}
 
-      <CardFooter>
-        <div className="w-full flex justify-end gap-2">
-          <DialogComponent
-            title={`แก้ไขข้อมูลครอกที่ ${index}`}
-            dialogTriggerButton={
-              <Button variant="outline">
-                <Pen /> แก้ไขข้อมูล
-              </Button>
-            }
-          >
-            <LitterForm litter={litter} />
-          </DialogComponent>
-        </div>
-      </CardFooter>
-    </Card>
+              {/* Add to Calendar */}
+              {isFattening && litter.saleable_at && (
+                <div onClick={(e) => e.stopPropagation()} className="w-full">
+                  <AddToCalendarButton
+                    title={`กำหนดจับหมูขุน แม่${litter.sows?.name}`}
+                    startDate={new Date(litter.saleable_at)}
+                    className="w-full h-12 text-base font-medium"
+                  />
+                </div>
+              )}
+            </CardFooter>
+          )}
+        </Card>
+      }
+    >
+      <LitterDrawer litter={litter} index={index} />
+    </DrawerDialog>
   );
 }

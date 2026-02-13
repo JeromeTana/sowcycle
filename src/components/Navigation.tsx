@@ -1,7 +1,15 @@
 "use client";
 
 import React from "react";
-import { Home, Calendar, PiggyBank, Dna, Fence } from "lucide-react";
+import {
+  Home,
+  Calendar,
+  PiggyBank,
+  Dna,
+  Fence,
+  Syringe,
+  LayoutGrid,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -16,16 +24,26 @@ const navItems = [
     label: "แม่พันธุ์",
     icon: PiggyBank,
   },
+  // {
+  //   href: "/boars",
+  //   label: "สายพันธุ์",
+  //   icon: Dna,
+  // },
   {
-    href: "/boars",
-    label: "สายพันธุ์",
-    icon: Dna,
+    href: "/medicines",
+    label: "ยาวัคซีน",
+    icon: Syringe,
   },
   {
     href: "/litters",
     label: "ครอก",
     icon: Fence,
   },
+  // {
+  //   href: "/inventory",
+  //   label: "เก็บของ",
+  //   icon: LayoutGrid,
+  // },
   {
     href: "/calendar",
     label: "Calendar",
@@ -37,8 +55,8 @@ export default function Navigation() {
   const pathname = usePathname();
 
   return (
-    <div className="z-50 flex items-center justify-center pt-2 p-4 bg-white">
-      <nav className="grid grid-cols-5 gap-6">
+    <div className="z-50 flex items-center justify-center px-8 pt-2 p-4 bg-white">
+      <nav className="flex justify-between flex-1 gap-6">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           return (
@@ -46,7 +64,9 @@ export default function Navigation() {
               key={item.href}
               href={item.href}
               className={`flex flex-col items-center justify-center py-2 transition-colors ${
-                isActive ? "text-pink-500" : "text-gray-600 hover:text-pink-500"
+                isActive
+                  ? "text-primary"
+                  : "text-gray-600 md:hover:text-primary"
               }`}
             >
               <item.icon size={24} />

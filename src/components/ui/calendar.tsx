@@ -3,6 +3,8 @@
 import * as React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DayPicker } from "react-day-picker";
+import { th } from "date-fns/locale";
+import { format } from "date-fns";
 
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
@@ -17,8 +19,15 @@ function Calendar({
 }: CalendarProps) {
   return (
     <DayPicker
+      locale={th}
       showOutsideDays={showOutsideDays}
       className={cn("p-3", className)}
+      formatters={{
+        formatCaption: (date, options) => {
+          const year = date.getFullYear() + 543;
+          return `${format(date, "MMMM", options)} ${year}`;
+        },
+      }}
       classNames={{
         months:
           "flex flex-col sm:flex-row w-full space-y-4 sm:space-x-4 sm:space-y-0",
@@ -41,7 +50,7 @@ function Calendar({
           "relative p-0 w-full text-center text-sm focus-within:relative focus-within:z-20 [&:has([aria-selected])]:bg-accent [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected].day-range-end)]:rounded-r-md",
           props.mode === "range"
             ? "[&:has(>.day-range-end)]:rounded-r-md [&:has(>.day-range-start)]:rounded-l-md first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md"
-            : "[&:has([aria-selected])]:rounded-md",
+            : "[&:has([aria-selected])]:rounded-full",
         ),
         day: cn(
           buttonVariants({ variant: "ghost" }),
@@ -50,8 +59,8 @@ function Calendar({
         day_range_start: "day-range-start",
         day_range_end: "day-range-end",
         day_selected:
-          "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
-        day_today: "bg-accent text-accent-foreground",
+          "border-2 border-black",
+        day_today: "!bg-black text-white hover:!text-white",
         day_outside:
           "day-outside text-muted-foreground aria-selected:bg-accent/50 aria-selected:text-muted-foreground",
         day_disabled: "text-muted-foreground opacity-50",
