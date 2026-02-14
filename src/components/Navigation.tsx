@@ -31,7 +31,7 @@ const navItems = [
   // },
   {
     href: "/medicines",
-    label: "ยาวัคซีน",
+    label: "ยา",
     icon: Syringe,
   },
   {

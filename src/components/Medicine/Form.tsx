@@ -31,7 +31,7 @@ import { useLoading } from "@/stores/useLoading";
 import { Textarea } from "../ui/textarea";
 
 const formSchema = z.object({
-  title: z.string().nonempty("กรุณากรอกยาวัคซีน"),
+  title: z.string().nonempty("กรุณากรอกชื่อยาหรือวัคซีน"),
   description: z.string().optional(),
   stock_count: z.coerce.number().optional(),
 });
@@ -70,7 +70,7 @@ export default function MedicineForm({ editingMedicine, setDialog }: any) {
       form.reset();
       toast({
         title: "เพิ่มข้อมูลเรียบร้อย",
-        description: "ข้อมูลของยาวัคซีนถูกเพิ่มเรียบร้อยแล้ว",
+        description: "ข้อมูลของยาถูกเพิ่มเรียบร้อยแล้ว",
       });
       setDialog(false);
     }
@@ -92,7 +92,7 @@ export default function MedicineForm({ editingMedicine, setDialog }: any) {
       updateMedicineState(res);
       toast({
         title: "แก้ไขข้อมูลเรียบร้อย",
-        description: "ข้อมูลของยาวัคซีนถูกแก้ไขเรียบร้อยแล้ว",
+        description: "ข้อมูลของยาถูกแก้ไขเรียบร้อยแล้ว",
       });
       setDialog(false);
     }
@@ -134,9 +134,9 @@ export default function MedicineForm({ editingMedicine, setDialog }: any) {
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>ยาวัคซีน</FormLabel>
+              <FormLabel>ชื่อยาหรือวัคซีน</FormLabel>
               <FormControl>
-                <Input placeholder="พิมพ์ชื่อยาวัคซีน" {...field} />
+                <Input placeholder="พิมพ์ชื่อยาหรือวัคซีน" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -152,7 +152,7 @@ export default function MedicineForm({ editingMedicine, setDialog }: any) {
               <FormControl>
                 <Textarea
                   rows={5}
-                  placeholder="เขียนอธิบายยาวัคซีน"
+                  placeholder="เขียนอธิบายยาหรือวัคซีน"
                   className="bg-white resize-none"
                   {...field}
                 />
@@ -179,7 +179,7 @@ export default function MedicineForm({ editingMedicine, setDialog }: any) {
         <div className="flex justify-between w-full gap-2">
           {medicine.id && (
             <DialogComponent
-              title="ลบยาวัคซีน"
+              title="ลบยา"
               dialogTriggerButton={
                 <Button
                   disabled={form.formState.isSubmitting}
@@ -192,7 +192,7 @@ export default function MedicineForm({ editingMedicine, setDialog }: any) {
               }
             >
               <p>
-                คุณแน่ใจหรือไม่ที่จะลบยาวัคซีน{" "}
+                คุณแน่ใจหรือไม่ที่จะลบยานี้{" "}
                 <span className="font-bold">{medicine.name}</span>
               </p>
               <div className="flex justify-end gap-2">

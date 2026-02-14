@@ -20,7 +20,7 @@ export default function MedicineCard({ medicine }: { medicine: Medicine }) {
   if (!medicine) return null;
   return (
     <DialogComponent
-      title="แก้ไขยาวัคซีน"
+      title="แก้ไขยาหรือวัคซีน"
       dialogTriggerButton={
         <Card>
           <CardContent className="p-4 space-y-6">
@@ -39,13 +39,13 @@ export default function MedicineCard({ medicine }: { medicine: Medicine }) {
               </div>
               <ChevronRight size={20} className="text-muted-foreground" />
             </div>
-            <div className="space-y-4">
+            {/* <div className="space-y-4">
               <div className="flex flex-col gap-4">
                 <InfoIcon label="คำอธิบาย" icon={<Syringe size={22} />}>
                   {medicine.description || "ไม่มีข้อมูล"}
                 </InfoIcon>
               </div>
-            </div>
+            </div> */}
           </CardContent>
         </Card>
       }

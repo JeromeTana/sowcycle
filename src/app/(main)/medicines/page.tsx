@@ -33,12 +33,12 @@ import { Boar } from "@/types/boar";
 export default function MedicinesPage() {
   return (
     <>
-      <TopBar title="ยาวัคซีน" />
+      <TopBar title="ยาและวัคซีน" />
       <main className="min-h-screen p-4 pt-0 md:pb-8 md:p-8">
         <TabsComponent
           tabOptions={[
             {
-              label: "คลังยาวัคซีน",
+              label: "คลังยา",
               value: "details",
               content: <MedicineInventory />,
               default: true,
@@ -80,7 +80,7 @@ function MedicineInventory() {
   return (
     <div>
       <DialogComponent
-        title="เพิ่มยาวัคซีนใหม่"
+        title="เพิ่มยาหรือวัคซีนใหม่"
         dialogTriggerButton={
           <div className="fixed z-10 flex items-center gap-2 p-4 text-white rounded-full shadow cursor-pointer bg-primary bottom-24 right-4">
             <Plus size={22} />
@@ -95,7 +95,7 @@ function MedicineInventory() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             startIcon={Search}
-            placeholder="ค้นหาด้วยชื่อยาวัคซีน"
+            placeholder="ค้นหาด้วยชื่อยาหรือวัคซีน"
             className="bg-white rounded-full"
           />
         </div>
