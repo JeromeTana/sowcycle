@@ -27,7 +27,7 @@ export function StatsGrid({
   return (
     <div className="grid grid-cols-2 gap-2">
       <FadeIn delay={0.1} className="col-span-2">
-        <Link href="/sows">
+        <Link href="/pregnant">
           <StatsCard
             icon={Heart}
             title="แม่พันธุ์ตั้งครรภ์"

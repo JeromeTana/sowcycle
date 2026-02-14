@@ -54,12 +54,12 @@ export default function Page() {
           breedingTrend={breedingTrend}
           pigletsCountTrend={pigletsCountTrend}
         />
+        <FadeIn delay={0.6}>
+          <PregnantSowsSection sows={breededSows} />
+        </FadeIn>
         <FadeIn delay={0.5}>
           <UpcomingEvents />
         </FadeIn>
-        {/* <FadeIn delay={0.6}>
-          <PregnantSowsSection sows={breededSows} />
-        </FadeIn> */}
       </main>
     </>
   );
