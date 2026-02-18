@@ -11,7 +11,7 @@ import {
   PiggyBank,
   Heart,
   Dna,
-  Eye,
+  CircleAlert,
 } from "lucide-react";
 import { FarrowForm } from "./Form";
 import { cn, formatDateTH } from "@/lib/utils";
@@ -102,10 +102,10 @@ export default function BreedingCard({
                 <>
                   {/* 21-day check */}
                   <InfoIcon
-                    icon={<Eye size={24} />}
+                    icon={<CircleAlert size={24} />}
                     label="กลับสัดครั้งที่ 1"
                     className={
-                      isCheck21Passed ? "text-green-600" : "text-amber-600"
+                      isCheck21Passed ? "text-green-600" : "text-amber-500"
                     }
                   >
                     <div className="flex items-center gap-2">
@@ -118,7 +118,7 @@ export default function BreedingCard({
                         )}
                       </span>
                       {!isCheck21Passed && (
-                        <span className="text-xs text-amber-600 font-medium">
+                        <span className="text-sm text-amber-500 font-medium">
                           อีก {getDaysRemaining(checkDate21.toISOString())} วัน
                         </span>
                       )}
@@ -127,10 +127,10 @@ export default function BreedingCard({
 
                   {/* 42-day check */}
                   <InfoIcon
-                    icon={<Eye size={24} />}
+                    icon={<CircleAlert size={24} />}
                     label="กลับสัดครั้งที่ 2"
                     className={
-                      isCheck42Passed ? "text-green-600" : "text-amber-600"
+                      isCheck42Passed ? "text-green-600" : "text-amber-500"
                     }
                   >
                     <div className="flex items-center gap-2">
@@ -143,7 +143,7 @@ export default function BreedingCard({
                         )}
                       </span>
                       {!isCheck42Passed && (
-                        <span className="text-xs text-amber-600 font-medium">
+                        <span className="text-sm text-amber-500 font-medium">
                           อีก {getDaysRemaining(checkDate42.toISOString())} วัน
                         </span>
                       )}

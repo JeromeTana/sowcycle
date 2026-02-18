@@ -11,7 +11,7 @@ import {
   X,
   Pencil,
   ChevronRight,
-  Eye,
+  CircleAlert,
 } from "lucide-react";
 import { cn, formatDateTH } from "@/lib/utils";
 import { addDays } from "date-fns";
@@ -90,16 +90,16 @@ export default function BreedingDrawer({
           <>
             {/* 21-day check */}
             <InfoIcon
-              icon={<Eye size={24} />}
+              icon={<CircleAlert size={24} />}
               label="กลับสัดครั้งที่ 1"
-              className={isCheck21Passed ? "text-green-600" : "text-amber-600"}
+              className={isCheck21Passed ? "text-green-600" : "text-amber-500"}
             >
               <div className="flex items-center gap-2">
                 <span className="font-semibold text-gray-900">
                   {formatDateTH(checkDate21.toISOString(), true, true, true)}
                 </span>
                 {!isCheck21Passed && (
-                  <span className="text-xs text-amber-600 font-medium">
+                  <span className="text-sm text-amber-500 font-medium">
                     อีก {getDaysRemaining(checkDate21.toISOString())} วัน
                   </span>
                 )}
@@ -108,16 +108,16 @@ export default function BreedingDrawer({
 
             {/* 42-day check */}
             <InfoIcon
-              icon={<Eye size={24} />}
+              icon={<CircleAlert size={24} />}
               label="กลับสัดครั้งที่ 2"
-              className={isCheck42Passed ? "text-green-600" : "text-amber-600"}
+              className={isCheck42Passed ? "text-green-600" : "text-amber-500"}
             >
               <div className="flex items-center gap-2">
                 <span className="font-semibold text-gray-900">
                   {formatDateTH(checkDate42.toISOString(), true, true, true)}
                 </span>
                 {!isCheck42Passed && (
-                  <span className="text-xs text-amber-600 font-medium">
+                  <span className="text-sm text-amber-500 font-medium">
                     อีก {getDaysRemaining(checkDate42.toISOString())} วัน
                   </span>
                 )}
