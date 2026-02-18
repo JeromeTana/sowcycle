@@ -11,9 +11,11 @@ import {
   PiggyBank,
   Heart,
   Dna,
+  Eye,
 } from "lucide-react";
 import { FarrowForm } from "./Form";
 import { cn, formatDateTH } from "@/lib/utils";
+import { addDays } from "date-fns";
 import BoarDetailsCard from "../Boar/DetailsCard";
 import { AddToCalendarButton } from "../AddToCalendarButton";
 import BreedingDrawer from "./Drawer";
@@ -30,6 +32,13 @@ export default function BreedingCard({
 
   const isPregnant = !breeding.actual_farrow_date && !breeding.is_aborted;
   const isCompleted = !!breeding.actual_farrow_date;
+
+  const breedDate = new Date(breeding.breed_date);
+  const checkDate21 = addDays(breedDate, 21);
+  const checkDate42 = addDays(breedDate, 42);
+  const today = new Date();
+  const isCheck21Passed = today >= checkDate21;
+  const isCheck42Passed = today >= checkDate42;
 
   const getDaysRemaining = (dateStr: string) => {
     const diffTime = new Date(dateStr).getTime() - new Date().getTime();
@@ -56,7 +65,7 @@ export default function BreedingCard({
                 <h3
                   className={cn(
                     "text-lg font-semibold",
-                    isPregnant ? "text-primary" : "text-black"
+                    isPregnant ? "text-primary" : "text-black",
                   )}
                 >
                   ผสมครั้งที่ {index}
@@ -80,7 +89,7 @@ export default function BreedingCard({
                 icon={<Heart size={24} />}
                 label="ผสมเมื่อ"
                 className={cn(
-                  isPregnant ? "text-primary" : "text-muted-foreground"
+                  isPregnant ? "text-primary" : "text-muted-foreground",
                 )}
               >
                 <span className="font-semibold text-gray-900">
@@ -88,12 +97,67 @@ export default function BreedingCard({
                 </span>
               </InfoIcon>
 
+              {/* Breeding Check Dates (21 and 42 days) - only when pregnant */}
+              {isPregnant && (
+                <>
+                  {/* 21-day check */}
+                  <InfoIcon
+                    icon={<Eye size={24} />}
+                    label="กลับสัดครั้งที่ 1"
+                    className={
+                      isCheck21Passed ? "text-green-600" : "text-amber-600"
+                    }
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold text-gray-900">
+                        {formatDateTH(
+                          checkDate21.toISOString(),
+                          true,
+                          true,
+                          true,
+                        )}
+                      </span>
+                      {!isCheck21Passed && (
+                        <span className="text-xs text-amber-600 font-medium">
+                          อีก {getDaysRemaining(checkDate21.toISOString())} วัน
+                        </span>
+                      )}
+                    </div>
+                  </InfoIcon>
+
+                  {/* 42-day check */}
+                  <InfoIcon
+                    icon={<Eye size={24} />}
+                    label="กลับสัดครั้งที่ 2"
+                    className={
+                      isCheck42Passed ? "text-green-600" : "text-amber-600"
+                    }
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold text-gray-900">
+                        {formatDateTH(
+                          checkDate42.toISOString(),
+                          true,
+                          true,
+                          true,
+                        )}
+                      </span>
+                      {!isCheck42Passed && (
+                        <span className="text-xs text-amber-600 font-medium">
+                          อีก {getDaysRemaining(checkDate42.toISOString())} วัน
+                        </span>
+                      )}
+                    </div>
+                  </InfoIcon>
+                </>
+              )}
+
               {/* Farrow Date / Expected Date */}
               <InfoIcon
                 icon={<Calendar size={24} />}
                 label={isCompleted ? "คลอดเมื่อ" : "กำหนดคลอด"}
                 className={cn(
-                  isPregnant ? "text-primary" : "text-muted-foreground"
+                  isPregnant ? "text-primary" : "text-muted-foreground",
                 )}
               >
                 <div className="flex flex-wrap items-baseline gap-2">
@@ -103,20 +167,20 @@ export default function BreedingCard({
                           breeding.actual_farrow_date!,
                           true,
                           true,
-                          true
+                          true,
                         )
                       : formatDateTH(
                           breeding.expected_farrow_date,
                           true,
                           true,
-                          true
+                          true,
                         )}
                   </span>
                   {isCompleted && (
                     <span className="text-sm text-muted-foreground">
                       {getDaysDiffFromExpected(
                         breeding.actual_farrow_date!,
-                        breeding.expected_farrow_date
+                        breeding.expected_farrow_date,
                       )}
                     </span>
                   )}

@@ -11,13 +11,16 @@ import {
   X,
   Pencil,
   ChevronRight,
+  Eye,
 } from "lucide-react";
 import { cn, formatDateTH } from "@/lib/utils";
+import { addDays } from "date-fns";
 import DialogComponent from "../DrawerDialog";
 import { FarrowForm } from "./Form";
 import { AddToCalendarButton } from "../AddToCalendarButton";
 import BoarDetailsCard from "../Boar/DetailsCard";
 import { NewBreedingForm } from "./NewBreedingForm";
+import InfoIcon from "../InfoIcon";
 
 export default function BreedingDrawer({
   breeding,
@@ -28,6 +31,13 @@ export default function BreedingDrawer({
 }) {
   const isPregnant = !breeding.actual_farrow_date && !breeding.is_aborted;
   const isCompleted = !!breeding.actual_farrow_date;
+
+  const breedDate = new Date(breeding.breed_date);
+  const checkDate21 = addDays(breedDate, 21);
+  const checkDate42 = addDays(breedDate, 42);
+  const today = new Date();
+  const isCheck21Passed = today >= checkDate21;
+  const isCheck42Passed = today >= checkDate42;
 
   const getDaysRemaining = (dateStr: string) => {
     const diffTime = new Date(dateStr).getTime() - new Date().getTime();
@@ -65,59 +75,79 @@ export default function BreedingDrawer({
       {/* List Items */}
       <div className="space-y-4">
         {/* Breed Date */}
-        <div className="flex items-start gap-4">
-          <div
-            className={cn(
-              "flex items-center justify-center w-12 h-12 p-2 bg-gray-100 rounded-2xl",
-              isPregnant ? "text-primary" : "text-muted-foreground",
-            )}
-          >
-            <Heart size={24} />
-          </div>
-          <div className="flex flex-col justify-center">
-            <p className="text-muted-foreground text-sm mb-0.5">ผสมเมื่อ</p>
-            <span className="font-semibold text-gray-900">
-              {formatDateTH(breeding.breed_date, true, true, true)}
-            </span>
-          </div>
-        </div>
+        <InfoIcon
+          icon={<Heart size={24} />}
+          label="ผสมเมื่อ"
+          className={cn(isPregnant ? "text-primary" : "text-muted-foreground")}
+        >
+          <span className="font-semibold text-gray-900">
+            {formatDateTH(breeding.breed_date, true, true, true)}
+          </span>
+        </InfoIcon>
+
+        {/* Breeding Check Dates (21 and 42 days) - only when pregnant */}
+        {isPregnant && (
+          <>
+            {/* 21-day check */}
+            <InfoIcon
+              icon={<Eye size={24} />}
+              label="กลับสัดครั้งที่ 1"
+              className={isCheck21Passed ? "text-green-600" : "text-amber-600"}
+            >
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-gray-900">
+                  {formatDateTH(checkDate21.toISOString(), true, true, true)}
+                </span>
+                {!isCheck21Passed && (
+                  <span className="text-xs text-amber-600 font-medium">
+                    อีก {getDaysRemaining(checkDate21.toISOString())} วัน
+                  </span>
+                )}
+              </div>
+            </InfoIcon>
+
+            {/* 42-day check */}
+            <InfoIcon
+              icon={<Eye size={24} />}
+              label="กลับสัดครั้งที่ 2"
+              className={isCheck42Passed ? "text-green-600" : "text-amber-600"}
+            >
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-gray-900">
+                  {formatDateTH(checkDate42.toISOString(), true, true, true)}
+                </span>
+                {!isCheck42Passed && (
+                  <span className="text-xs text-amber-600 font-medium">
+                    อีก {getDaysRemaining(checkDate42.toISOString())} วัน
+                  </span>
+                )}
+              </div>
+            </InfoIcon>
+          </>
+        )}
 
         {/* Farrow Date / Expected Date */}
-        <div className="flex items-start gap-4">
-          <div
-            className={cn(
-              "p-2 rounded-2xl flex items-center justify-center w-12 h-12 bg-gray-100",
-              isPregnant ? "text-primary" : "text-muted-foreground",
-            )}
-          >
-            <Calendar size={24} />
-          </div>
-          <div className="flex flex-col justify-center">
-            <p className="text-muted-foreground text-sm mb-0.5">
-              {isCompleted ? "คลอดเมื่อ" : "กำหนดคลอด"}
-            </p>
-            <div className="flex flex-wrap items-baseline gap-2">
-              <span className="font-semibold text-gray-900">
-                {isCompleted
-                  ? formatDateTH(breeding.actual_farrow_date!, true, true, true)
-                  : formatDateTH(
-                      breeding.expected_farrow_date,
-                      true,
-                      true,
-                      true,
-                    )}
+        <InfoIcon
+          icon={<Calendar size={24} />}
+          label={isCompleted ? "คลอดเมื่อ" : "กำหนดคลอด"}
+          className={cn(isPregnant ? "text-primary" : "text-muted-foreground")}
+        >
+          <div className="flex flex-wrap items-baseline gap-2">
+            <span className="font-semibold text-gray-900">
+              {isCompleted
+                ? formatDateTH(breeding.actual_farrow_date!, true, true, true)
+                : formatDateTH(breeding.expected_farrow_date, true, true, true)}
+            </span>
+            {isCompleted && (
+              <span className="text-sm text-muted-foreground">
+                {getDaysDiffFromExpected(
+                  breeding.actual_farrow_date!,
+                  breeding.expected_farrow_date,
+                )}
               </span>
-              {isCompleted && (
-                <span className="text-sm text-muted-foreground">
-                  {getDaysDiffFromExpected(
-                    breeding.actual_farrow_date!,
-                    breeding.expected_farrow_date,
-                  )}
-                </span>
-              )}
-            </div>
+            )}
           </div>
-        </div>
+        </InfoIcon>
 
         {/* Boar Info */}
         {breeding.boars && (
