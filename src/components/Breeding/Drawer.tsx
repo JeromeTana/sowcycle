@@ -69,7 +69,7 @@ export default function BreedingDrawer({
           <div
             className={cn(
               "flex items-center justify-center w-12 h-12 p-2 bg-gray-100 rounded-2xl",
-              isPregnant ? "text-primary" : "text-muted-foreground"
+              isPregnant ? "text-primary" : "text-muted-foreground",
             )}
           >
             <Heart size={24} />
@@ -87,7 +87,7 @@ export default function BreedingDrawer({
           <div
             className={cn(
               "p-2 rounded-2xl flex items-center justify-center w-12 h-12 bg-gray-100",
-              isPregnant ? "text-primary" : "text-muted-foreground"
+              isPregnant ? "text-primary" : "text-muted-foreground",
             )}
           >
             <Calendar size={24} />
@@ -104,14 +104,14 @@ export default function BreedingDrawer({
                       breeding.expected_farrow_date,
                       true,
                       true,
-                      true
+                      true,
                     )}
               </span>
               {isCompleted && (
                 <span className="text-sm text-muted-foreground">
                   {getDaysDiffFromExpected(
                     breeding.actual_farrow_date!,
-                    breeding.expected_farrow_date
+                    breeding.expected_farrow_date,
                   )}
                 </span>
               )}
@@ -237,7 +237,11 @@ export default function BreedingDrawer({
             </Button>
           }
         >
-          <FarrowForm breeding={breeding} />
+          {breeding.actual_farrow_date ? (
+            <FarrowForm breeding={breeding} />
+          ) : (
+            <NewBreedingForm breeding={breeding} />
+          )}
         </DialogComponent>
       </div>
     </div>
