@@ -21,6 +21,7 @@ import { AddToCalendarButton } from "../AddToCalendarButton";
 import BoarDetailsCard from "../Boar/DetailsCard";
 import { NewBreedingForm } from "./NewBreedingForm";
 import InfoIcon from "../InfoIcon";
+import DeleteDialog from "./DeleteDialog";
 
 export default function BreedingDrawer({
   breeding,
@@ -273,6 +274,8 @@ export default function BreedingDrawer({
             <NewBreedingForm breeding={breeding} />
           )}
         </DialogComponent>
+
+        <DeleteDialog breeding={breeding} isSubmitting={false} />
       </div>
     </div>
   );
